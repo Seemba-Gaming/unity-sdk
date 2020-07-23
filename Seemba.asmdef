@@ -1,6 +1,6 @@
 {
     "name": "Seemba",
-    "references": [],
+    "references": ["NativeShare.Editor", "NativeShare.Runtime"],
     "includePlatforms": [],
     "excludePlatforms": [
         "LinuxStandalone64",
@@ -17,8 +17,6 @@
         "XboxOne"
     ],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

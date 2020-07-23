@@ -1,23 +1,19 @@
-using UnityEngine;
+using RestSharp;
+using SimpleJSON;
+using System;
 using System.Collections;
+using System.IO;
 //using System.Threading.Tasks;
 //using System.Net.Http;
 //using Parse.Common.Internal;
 using System.Net;
-using System;
-using System.IO;
-using System.Text;
-using SimpleJSON;
-using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine.SceneManagement;
-using System.Threading;
-using UnityEngine.UI;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-using RestSharp;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Text.RegularExpressions;
+using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 public class UserManager : MonoBehaviour
 {
     public static string CurrentUsername, UserId, userToken, UserEmail;
@@ -492,7 +488,7 @@ public class UserManager : MonoBehaviour
                         UserManager.CurrentUsername = N["user"]["username"].Value;
                         UserService.updateCredit(N["user"]["money_credit"].Value, N["user"]["bubble_credit"].Value);
                         Byte[] lnByte = um.getAvatar(N["user"]["avatar"].Value);
-                       
+
                         UnityThreadHelper.Dispatcher.Dispatch(() =>
                         {
                             UserManager.CurrentFlagBytesString = um.GetFlagByte(N["user"]["country_code"].Value);

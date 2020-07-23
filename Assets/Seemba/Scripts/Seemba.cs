@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 public class Seemba : MonoBehaviour
 {
@@ -29,8 +29,8 @@ public class Seemba : MonoBehaviour
         UserManager um = new UserManager();
         StartCoroutine(nbs.checkInternetConnection((isConnected) =>
         {
-                // handle connection status here
-                if (isConnected == true)
+            // handle connection status here
+            if (isConnected == true)
             {
                 SceneManager.UnloadSceneAsync("Loader");
                 SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
@@ -78,8 +78,8 @@ public class Seemba : MonoBehaviour
                                         }
                                         catch (NullReferenceException ex)
                                         {
-                                                //Catch
-                                            }
+                                            //Catch
+                                        }
                                     }
                                 });
                             }

@@ -1,14 +1,10 @@
-using UnityEngine;
-using System.Collections;
-using System;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
-using UnityEngine.UI;
-using System.Net;
-using System.Threading;
-using System.IO;
 using SimpleJSON;
-using System.Globalization;
+using System;
+using System.Collections;
+using System.Net;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class LastResultListItemController : MonoBehaviour
 {
     public GameObject ContentPanel;
@@ -37,8 +33,8 @@ public class LastResultListItemController : MonoBehaviour
     private int nbChild = 0;
     private bool isFinished = false;
     // Use this for initialization
-   
-   
+
+
     void OnDisable()
     {
         foreach (Transform child in ContentPanel.transform)

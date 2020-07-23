@@ -1,14 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PopupsController : MonoBehaviour
 {
 
-    public enum PopupType 
+    public enum PopupType
     {
         DUELS,
         INSUFFICIENT_BALANCE,
@@ -17,7 +13,7 @@ public class PopupsController : MonoBehaviour
         VPN,
         PROHIBITED_LOCATION,
     }
-   
+
 
     public static PopupType CURRENT_POPUP;
     private static PopupsController _Instance;
@@ -35,7 +31,7 @@ public class PopupsController : MonoBehaviour
 
     public async void ShowPopup(PopupType popupType, object[] _params)
     {
-       
+
         //Load Popups Scene
         LoadPopup();
         //Set Current popup type

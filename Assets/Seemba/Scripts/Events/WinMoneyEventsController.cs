@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class WinMoneyEventsController : MonoBehaviour
@@ -42,20 +40,20 @@ public class WinMoneyEventsController : MonoBehaviour
         });
         _1v1_cash_confident.onClick.AddListener(() =>
         {
-           
+
             object[] _params = { ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2"), ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupsController.getInstance().ShowPopup(PopupsController.PopupType.DUELS, _params);
         });
         _1v1_cash_champion.onClick.AddListener(() =>
         {
-           
+
 
             object[] _params = { ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2"), ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupsController.getInstance().ShowPopup(PopupsController.PopupType.DUELS, _params);
         });
         _1v1_cash_legend.onClick.AddListener(() =>
         {
-            
+
 
             object[] _params = { ChallengeManager.FEE_1V1_PRO_LEGEND.ToString("N2"), ChallengeManager.WIN_1V1_PRO_LEGEND.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupsController.getInstance().ShowPopup(PopupsController.PopupType.DUELS, _params);

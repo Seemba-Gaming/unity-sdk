@@ -84,8 +84,8 @@ public class UnityThreadHelper
     }
     private void EnsureHelperInstance()
     {
-		dispatcher = UnityThreading.Dispatcher.MainNoThrow ?? new UnityThreading.Dispatcher();
-		taskDistributor = UnityThreading.TaskDistributor.MainNoThrow ?? new UnityThreading.TaskDistributor("TaskDistributor");
+        dispatcher = UnityThreading.Dispatcher.MainNoThrow ?? new UnityThreading.Dispatcher();
+        taskDistributor = UnityThreading.TaskDistributor.MainNoThrow ?? new UnityThreading.TaskDistributor("TaskDistributor");
     }
     /// <summary>
     /// Creates new thread which runs the given action. The given action will be wrapped so that any exception will be catched and logged.
@@ -185,7 +185,7 @@ public class UnityThreadHelper
     }
     #endregion
     List<UnityThreading.ThreadBase> registeredThreads = new List<UnityThreading.ThreadBase>();
-	private void RegisterThread(UnityThreading.ThreadBase thread)
+    private void RegisterThread(UnityThreading.ThreadBase thread)
     {
         if (registeredThreads.Contains(thread))
         {

@@ -1,10 +1,9 @@
-using UnityEngine;
-using System.Collections;
-using System;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.IO;
 using SimpleJSON;
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class OnGoingGameListController : MonoBehaviour
 {
     public GameObject ContentPanel, ContentOngoing;
@@ -24,7 +23,7 @@ public class OnGoingGameListController : MonoBehaviour
     JSONArray ItemsTournamentsPending;
     int onGoingItemsCount;
     int i;
-    public VerticalLayoutGroup verticalLayoutGroupForOngoing,ContentLastResult;
+    public VerticalLayoutGroup verticalLayoutGroupForOngoing, ContentLastResult;
     private bool initialized = false;
     // Use this for initialization
     public bool ItemsBracketFinished()
@@ -35,8 +34,9 @@ public class OnGoingGameListController : MonoBehaviour
         }
         return false;
     }
-    public void Start(){
-        i=0;
+    public void Start()
+    {
+        i = 0;
     }
     void OnDisable()
     {
@@ -55,26 +55,30 @@ public class OnGoingGameListController : MonoBehaviour
         {
             if (item.gain == ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString())
             {
-                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_PRO_CONFIDENT+CurrencyManager.CURRENT_CURRENCY;
-            }else if (item.gain == ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString())
+                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_PRO_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
+            }
+            else if (item.gain == ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString())
             {
-                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_PRO_CHAMPION+CurrencyManager.CURRENT_CURRENCY;
-            }else if(item.gain == ChallengeManager.WIN_1V1_PRO_LEGEND.ToString())
+                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_PRO_CHAMPION + CurrencyManager.CURRENT_CURRENCY;
+            }
+            else if (item.gain == ChallengeManager.WIN_1V1_PRO_LEGEND.ToString())
             {
-                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_PRO_LEGEND+CurrencyManager.CURRENT_CURRENCY;
+                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_PRO_LEGEND + CurrencyManager.CURRENT_CURRENCY;
             }
         }
         else
         {
             if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT.ToString())
             {
-                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT+" "+ HomeTranslationController.BUBBLES;
-            }else if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_CHAMPION.ToString())
+                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT + " " + HomeTranslationController.BUBBLES;
+            }
+            else if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_CHAMPION.ToString())
             {
-                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CHAMPION+ " " + HomeTranslationController.BUBBLES;
-            }else if(item.gain == ChallengeManager.WIN_1V1_BUBBLES_LEGEND.ToString())
+                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CHAMPION + " " + HomeTranslationController.BUBBLES;
+            }
+            else if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_LEGEND.ToString())
             {
-                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_LEGEND+ " " + HomeTranslationController.BUBBLES;
+                controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_LEGEND + " " + HomeTranslationController.BUBBLES;
             }
         }
     }
@@ -85,13 +89,13 @@ public class OnGoingGameListController : MonoBehaviour
             switch (item["gain"].AsFloat)
             {
                 case TournamentManager.WIN_BRACKET_CASH_CONFIDENT:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CONFIDENT+CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
                     break;
                 case TournamentManager.WIN_BRACKET_CASH_CHAMPION:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CHAMPION+CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CHAMPION + CurrencyManager.CURRENT_CURRENCY;
                     break;
                 case TournamentManager.WIN_BRACKET_CASH_LEGEND:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_LEGEND+CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_LEGEND + CurrencyManager.CURRENT_CURRENCY;
                     break;
             }
         }
@@ -100,13 +104,13 @@ public class OnGoingGameListController : MonoBehaviour
             switch (item["gain"].AsFloat)
             {
                 case TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT+ " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT + " " + HomeTranslationController.BUBBLES;
                     break;
                 case TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION+ " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION + " " + HomeTranslationController.BUBBLES;
                     break;
                 case TournamentManager.WIN_BRACKET_BUBBLE_LEGEND:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_LEGEND+ " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_LEGEND + " " + HomeTranslationController.BUBBLES;
                     break;
             }
         }
@@ -154,7 +158,7 @@ public class OnGoingGameListController : MonoBehaviour
                             SetControllerTournamentTitle(item, controller);
                             controller.GoToBracket.onClick.AddListener(() =>
                             {
-                                
+
                                 TournamentController.setCurrentTournamentID(item["_id"].Value);
                                 SceneManager.LoadScene("Bracket");
                             });
@@ -300,19 +304,19 @@ public class OnGoingGameListController : MonoBehaviour
                     PullToRefresh.ongoingfinished = true;
                 });
             });
-        }   
+        }
     }
     void removeDuplication()
     {
         try
         {
-            if (ContentPanel.transform.childCount > Items1vs1SeeResults.Count + Items1vs1Pending.Count+ItemsTournamentsPending.Count)
+            if (ContentPanel.transform.childCount > Items1vs1SeeResults.Count + Items1vs1Pending.Count + ItemsTournamentsPending.Count)
             {
                 Debug.Log("-Duplication Detected-");
                 int count = 0;
                 foreach (Transform child in ContentPanel.transform)
                 {
-                    if (count >= Items1vs1SeeResults.Count + Items1vs1Pending.Count+ Items1vs1Pending.Count+ItemsTournamentsPending.Count)
+                    if (count >= Items1vs1SeeResults.Count + Items1vs1Pending.Count + Items1vs1Pending.Count + ItemsTournamentsPending.Count)
                     {
                         DestroyObject(child.gameObject);
                     }

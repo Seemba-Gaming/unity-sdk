@@ -1,17 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using SimpleJSON;
-using UnityEngine.UI;
-using System.Text;
-using System.IO;
-using System.Linq;
-using UnityEngine.SceneManagement;
+﻿using SimpleJSON;
 using System;
-using System.Net;
-using System.Globalization;
-using System.Net.NetworkInformation;
-using System.Timers;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class TournamentPresenter : MonoBehaviour
 {
     UserManager um;
@@ -169,7 +161,7 @@ public class TournamentPresenter : MonoBehaviour
         catch (NullReferenceException ex) { }
         try
         {
-             
+
             user_2_score = match["user_2_score"].AsFloat;
             //Set Score
             GameObject.Find("Challenge (" + pos + ")/Player2/Score").GetComponent<Text>().text = ((float)Math.Round(match["user_2_score"].AsFloat * 100f) / 100f).ToString();

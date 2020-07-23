@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
-public class SendLink : MonoBehaviour {
-	public Button sendLink;
-	// Use this for initialization
-	void Start () {
-		string ExtraSubject = "";
-		string ExtraTitle = "";
-		string ExtraText = "Download Modern Snike and earn money *TestMessage* ";
-		sendLink.onClick.AddListener (() => {
-			#if UNITY_ANDROID
+public class SendLink : MonoBehaviour
+{
+    public Button sendLink;
+    // Use this for initialization
+    void Start()
+    {
+        string ExtraSubject = "";
+        string ExtraTitle = "";
+        string ExtraText = "Download Modern Snike and earn money *TestMessage* ";
+        sendLink.onClick.AddListener(() =>
+        {
+#if UNITY_ANDROID
 			AndroidJavaClass intentClass = new AndroidJavaClass ("android.content.Intent");
 			AndroidJavaObject intentObject = new AndroidJavaObject ("android.content.Intent");
 			intentObject.Call<AndroidJavaObject> ("setAction", intentClass.GetStatic<string> ("ACTION_SEND"));
@@ -19,13 +21,14 @@ public class SendLink : MonoBehaviour {
 			AndroidJavaClass unity = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
 			AndroidJavaObject currentActivity = unity.GetStatic<AndroidJavaObject> ("currentActivity");
 			currentActivity.Call ("startActivity", intentObject);
-			#endif
-			#if UNITY_IOS
+#endif
+#if UNITY_IOS
 			GeneralSharingiOSBridge.ShareSimpleText (ExtraText);
-			#endif
-		});
-	}
-	// Update is called once per frame
-	void Update () {
-	}
+#endif
+        });
+    }
+    // Update is called once per frame
+    void Update()
+    {
+    }
 }

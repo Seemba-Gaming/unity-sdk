@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using UnityEngine;
 public class NotificationController : MonoBehaviour
 {
     // Start is called before the first frame update

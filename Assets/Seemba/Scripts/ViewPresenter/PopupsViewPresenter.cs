@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,7 +9,7 @@ public class PopupsViewPresenter : MonoBehaviour
     public class PopupsText
     {
         static PopupsText _Instance;
-       
+
 
 
         // Add some elements to the dictionary. There are no
@@ -146,7 +142,7 @@ public class PopupsViewPresenter : MonoBehaviour
         confirm_duels.onClick.AddListener(async () =>
         {
             await HideSuccessPopupAsync(popup_duels_animator);
-            if(_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_1V1))
+            if (_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_1V1))
                 StartDuels();
             if (_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_BRACKET))
                 StartTournament();

@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
-using SimpleJSON;
+﻿using System;
 using System.Threading;
+using UnityEngine;
+using UnityEngine.UI;
 public class SearchingForPlayerPresenter : MonoBehaviour
 {
 
     public Text fee, username, gain, nb_players;
     public Text counter;
     public Image user_flag, user_avatar;
-    public Text looking_for_opponent,start_now,same_game;
+    public Text looking_for_opponent, start_now, same_game;
     public Button Continue;
     public static string nbPlayer, GameMontant;
 
@@ -78,7 +76,7 @@ public class SearchingForPlayerPresenter : MonoBehaviour
         {
         }
     }
-   
+
     void CheckOpponent()
     {
         UserManager um = new UserManager();

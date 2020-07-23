@@ -1,20 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
-using System.Text;
-using System.Threading;
 using UnityEngine.UI;
-public class HomeController : MonoBehaviour {
-	public GameObject Ongoing,LastResult,Home;
-	bool notConnected;
-	public static bool NoLastResult,NoOngoing;
+public class HomeController : MonoBehaviour
+{
+    public GameObject Ongoing, LastResult, Home;
+    bool notConnected;
+    public static bool NoLastResult, NoOngoing;
     string UserId, userToken;
     UserManager userManager;
     WithdrawManager withdrawManager;
     // Use this for initialization
-    void OnEnable () {
+    void OnEnable()
+    {
         userManager = new UserManager();
         withdrawManager = new WithdrawManager();
         UserId = userManager.getCurrentUserId();
@@ -23,17 +22,18 @@ public class HomeController : MonoBehaviour {
 
         StartCoroutine(SelectHome());
 
-        if (string.IsNullOrEmpty (UserManager.CurrentMoney)){
-			StartCoroutine (CheckHeader ());
-		}
-		StartCoroutine (CheckOngoingAndLastResult ());
-       
+        if (string.IsNullOrEmpty(UserManager.CurrentMoney))
+        {
+            StartCoroutine(CheckHeader());
+        }
+        StartCoroutine(CheckOngoingAndLastResult());
+
         if (UserManager.CurrentUsername == null && !PullToRefresh.pullActivated)
         {
-            
-            UnityThreadHelper.CreateThread(() => 
+
+            UnityThreadHelper.CreateThread(() =>
             {
-            user = userManager.getUser(UserId, userToken);
+                user = userManager.getUser(UserId, userToken);
                 string accountStatus = withdrawManager.accountVerificationStatus(userToken);
                 UserManager.CurrentUser = user;
                 Byte[] lnByte = null;
@@ -41,8 +41,9 @@ public class HomeController : MonoBehaviour {
                 {
                     lnByte = userManager.getAvatar(user.avatar);
                 }
-                UnityThreadHelper.Dispatcher.Dispatch(() => {
-                    
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                {
+
                     if (user == null)
                     {
                         SceneManager.LoadSceneAsync("ConnectionFailed", LoadSceneMode.Additive);
@@ -117,36 +118,43 @@ public class HomeController : MonoBehaviour {
         {
             EncartPlayerPresenter.Init();
         }
-	}
-	// Update is called once per frame
-	void Update () {
-	}
+    }
+    // Update is called once per frame
+    void Update()
+    {
+    }
 
 
 
-	IEnumerator CheckHeader(){
-		SceneManager.LoadScene ("Loader", LoadSceneMode.Additive);
-		float timer = 0; 
-		bool failed = false;
-		while (string.IsNullOrEmpty (UserManager.CurrentMoney)) {
-			if(timer > 12){ failed = true; break; }
-			timer += Time.deltaTime;
-			yield return null;
-		}
-		if (failed) {
-			ConnectivityController.CURRENT_ACTION = ConnectivityController.HOME_ACTION;
-			SceneManager.LoadSceneAsync ("ConnectionFailed", LoadSceneMode.Additive);
-		}
-		try{
-		SceneManager.UnloadScene ("Loader");
-		}catch(ArgumentException ex){
-		}
-	}
+    IEnumerator CheckHeader()
+    {
+        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+        float timer = 0;
+        bool failed = false;
+        while (string.IsNullOrEmpty(UserManager.CurrentMoney))
+        {
+            if (timer > 12) { failed = true; break; }
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        if (failed)
+        {
+            ConnectivityController.CURRENT_ACTION = ConnectivityController.HOME_ACTION;
+            SceneManager.LoadSceneAsync("ConnectionFailed", LoadSceneMode.Additive);
+        }
+        try
+        {
+            SceneManager.UnloadScene("Loader");
+        }
+        catch (ArgumentException ex)
+        {
+        }
+    }
     IEnumerator SelectHome()
     {
         notConnected = false;
         float timer = 0;
-        
+
         while (BottomMenuController.getInstance() == null)
         {
             yield return new WaitForSeconds(0.1f);
@@ -163,51 +171,67 @@ public class HomeController : MonoBehaviour {
         v.HomeClick();
 
     }
-    IEnumerator CheckOngoingAndLastResult(){
-		notConnected = false;
-		float timer = 0; 
-		while (Ongoing.transform.childCount==0&&LastResult.transform.childCount==0) {
-			if (timer > 2) {
-				if (GameObject.Find ("LoadingHomeBloc").transform.localScale == Vector3.zero) {
-					GameObject.Find ("LoadingHomeBloc").transform.localScale = Vector3.one;
-					GameObject.Find ("reconnectMessage").transform.localScale = Vector3.one;
-				}
-				InvokeRepeating ("tryingtoreconnect", 0f, 1f);;
-				break;
-			}
-			timer += Time.deltaTime;
-			yield return null;
-		}
-	}
-	void tryingtoreconnect(){
-		StartCoroutine (checkInternetConnection ());
-	}
-	public IEnumerator checkInternetConnection() {
-		WWW www = new WWW("https://www.google.fr");
-		float timer = 0; 
-		while(!www.isDone){
-			if(timer > 5){ notConnected = true; break; }
-			timer += Time.deltaTime;
-			yield return null;
-		}
-		if (notConnected) {
-			www.Dispose ();
-		} else {
-			if (www.error == null) { 
-				CancelInvoke ();
-				GameObject.Find ("reconnectMessage").transform.localScale = Vector3.zero;
-				InvokeRepeating ("unloadLoader", 0f, 0.5f);
-			}
-			else {
-			}
-		}
-	} 
-	public void unloadLoader(){
-		if (Ongoing.transform.childCount != 0 || LastResult.transform.childCount != 0 ||(NoOngoing==true&&NoLastResult==true)) {
-			try{
-                GameObject.Find ("LoadingHomeBloc").transform.localScale = Vector3.zero;
-            }catch(NullReferenceException ex){}
-			CancelInvoke ();
-		}
-	}
+    IEnumerator CheckOngoingAndLastResult()
+    {
+        notConnected = false;
+        float timer = 0;
+        while (Ongoing.transform.childCount == 0 && LastResult.transform.childCount == 0)
+        {
+            if (timer > 2)
+            {
+                if (GameObject.Find("LoadingHomeBloc").transform.localScale == Vector3.zero)
+                {
+                    GameObject.Find("LoadingHomeBloc").transform.localScale = Vector3.one;
+                    GameObject.Find("reconnectMessage").transform.localScale = Vector3.one;
+                }
+                InvokeRepeating("tryingtoreconnect", 0f, 1f); ;
+                break;
+            }
+            timer += Time.deltaTime;
+            yield return null;
+        }
+    }
+    void tryingtoreconnect()
+    {
+        StartCoroutine(checkInternetConnection());
+    }
+    public IEnumerator checkInternetConnection()
+    {
+        WWW www = new WWW("https://www.google.fr");
+        float timer = 0;
+        while (!www.isDone)
+        {
+            if (timer > 5) { notConnected = true; break; }
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        if (notConnected)
+        {
+            www.Dispose();
+        }
+        else
+        {
+            if (www.error == null)
+            {
+                CancelInvoke();
+                GameObject.Find("reconnectMessage").transform.localScale = Vector3.zero;
+                InvokeRepeating("unloadLoader", 0f, 0.5f);
+            }
+            else
+            {
+            }
+        }
+    }
+    public void unloadLoader()
+    {
+        if (Ongoing.transform.childCount != 0 || LastResult.transform.childCount != 0 || (NoOngoing == true && NoLastResult == true))
+        {
+            try
+            {
+                GameObject.Find("LoadingHomeBloc").transform.localScale = Vector3.zero;
+            }
+            catch (NullReferenceException ex) { }
+            CancelInvoke();
+        }
+    }
 }

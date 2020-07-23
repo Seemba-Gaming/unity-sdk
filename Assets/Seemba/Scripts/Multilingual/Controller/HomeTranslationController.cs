@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 public class HomeTranslationController : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class HomeTranslationController : MonoBehaviour
     [SerializeField]
     private Text last_results;
     [SerializeField]
-    private Text  more_duels_lr;
+    private Text more_duels_lr;
     [Space]
     [Header("HaveFun")]
     [SerializeField]
@@ -21,9 +19,9 @@ public class HomeTranslationController : MonoBehaviour
     private Text more_duels_hf,
         less_duels_hf,
         more_tournaments_hf,
-        less_tournaments_hf, 
-        get_bubbles, 
-        free_bubbles, 
+        less_tournaments_hf,
+        get_bubbles,
+        free_bubbles,
         extra_bubbles;
     [Space]
     [Header("WinMoney")]
@@ -41,19 +39,19 @@ public class HomeTranslationController : MonoBehaviour
     [SerializeField]
     private Text account;
     [SerializeField]
-    private Text credit, 
-        withdraw, 
-        history, 
-        help_center, 
-        back_to_game_menu, 
+    private Text credit,
+        withdraw,
+        history,
+        help_center,
+        back_to_game_menu,
         log_out;
     [Space]
     [Header("Account")]
     [SerializeField]
     private Text personal_info;
     [SerializeField]
-    private Text 
-        security, 
+    private Text
+        security,
         id_proof;
     [Space]
     [Header("Security")]
@@ -72,13 +70,13 @@ public class HomeTranslationController : MonoBehaviour
     [SerializeField]
     private Text select2, select3, select4, selected1, selected2, selected3, selected4;
     [SerializeField]
-    private Text[] accountTitle,creditTitle,creditWallet, other_amount, secured_payment;
+    private Text[] accountTitle, creditTitle, creditWallet, other_amount, secured_payment;
     [Space]
     [Header("Withdraw")]
     [SerializeField]
     private Text money;
     [SerializeField]
-    private Text withdrawTitle,available_balance, enter_the_amount_to_withdraw;
+    private Text withdrawTitle, available_balance, enter_the_amount_to_withdraw;
     [Space]
     [Header("HelpCenter")]
     [SerializeField]
@@ -112,17 +110,17 @@ public class HomeTranslationController : MonoBehaviour
     [SerializeField]
     private Text insufficient;
     [SerializeField]
-    private Text 
-            bubbles, 
+    private Text
+            bubbles,
             get_free_bubbles,
             got_it;
     [Header("UnknownDevice")]
     [SerializeField]
     private Text unknown;
     [SerializeField]
-    private Text 
-            device, 
-            sorry_ads_not_supported, 
+    private Text
+            device,
+            sorry_ads_not_supported,
             got_it_unknown;
     [Header("Payment Failed")]
     [Header("*********WinMoney*********")]
@@ -276,7 +274,7 @@ public class HomeTranslationController : MonoBehaviour
         DUEL = TranslationManager.Get("duel") != string.Empty ? TranslationManager.Get("duel") : "duel";
         YOU_WON = TranslationManager.Get("you_won") != string.Empty ? TranslationManager.Get("you_won") : "you won";
         YOU_LOST = TranslationManager.Get("you_lost") != string.Empty ? TranslationManager.Get("you_lost") : "you lost";
-        SCORE_DRAW= TranslationManager.Get("score_draw") != string.Empty ? TranslationManager.Get("score_draw") : "score draw";
+        SCORE_DRAW = TranslationManager.Get("score_draw") != string.Empty ? TranslationManager.Get("score_draw") : "score draw";
         VICTORY = TranslationManager.Get("victory") != string.Empty ? TranslationManager.Get("victory") : "victory";
         DEFEAT = TranslationManager.Get("defeat") != string.Empty ? TranslationManager.Get("defeat") : "defeat";
         EQUALITY = TranslationManager.Get("equality") != string.Empty ? TranslationManager.Get("equality") : "equality";
@@ -290,7 +288,7 @@ public class HomeTranslationController : MonoBehaviour
         more_duels_hf.text = TranslationManager.Get("more_duels") != string.Empty ? TranslationManager.Get("more_duels") : more_duels_hf.text;
         less_duels_hf.text = TranslationManager.Get("less_duels") != string.Empty ? TranslationManager.Get("less_duels") : less_duels_hf.text;
         foreach (Text multiplayers in multiplayers_hf)
-        { multiplayers.text = TranslationManager.Get("multiplayers") != string.Empty ? TranslationManager.Get("multiplayers") : multiplayers.text; } 
+        { multiplayers.text = TranslationManager.Get("multiplayers") != string.Empty ? TranslationManager.Get("multiplayers") : multiplayers.text; }
         more_tournaments_hf.text = TranslationManager.Get("more_tournaments") != string.Empty ? TranslationManager.Get("more_tournaments") : more_tournaments_hf.text;
         less_tournaments_hf.text = TranslationManager.Get("less_tournaments") != string.Empty ? TranslationManager.Get("less_tournaments") : less_tournaments_hf.text;
         get_bubbles.text = TranslationManager.Get("get_bubbles") != string.Empty ? TranslationManager.Get("get_bubbles") : get_bubbles.text;
@@ -314,11 +312,11 @@ public class HomeTranslationController : MonoBehaviour
         got_it_unknown.text = TranslationManager.Get("got_it") != string.Empty ? TranslationManager.Get("got_it") : got_it_unknown.text;
         //WinMoney
         foreach (Text duel in duels_wm)
-        {duel.text = TranslationManager.Get("duels") != string.Empty ? TranslationManager.Get("duels") : duel.text;}
+        { duel.text = TranslationManager.Get("duels") != string.Empty ? TranslationManager.Get("duels") : duel.text; }
         more_duels_wm.text = TranslationManager.Get("more_duels") != string.Empty ? TranslationManager.Get("more_duels") : more_duels_wm.text;
         less_duels_wm.text = TranslationManager.Get("less_duels") != string.Empty ? TranslationManager.Get("less_duels") : less_duels_wm.text;
         foreach (Text multiplayers in multiplayers_wm)
-        {multiplayers.text = TranslationManager.Get("multiplayers") != string.Empty ? TranslationManager.Get("multiplayers") : multiplayers.text;}
+        { multiplayers.text = TranslationManager.Get("multiplayers") != string.Empty ? TranslationManager.Get("multiplayers") : multiplayers.text; }
         more_tournaments_wm.text = TranslationManager.Get("more_tournaments") != string.Empty ? TranslationManager.Get("more_tournaments") : more_tournaments_wm.text;
         less_tournaments_wm.text = TranslationManager.Get("less_tournaments") != string.Empty ? TranslationManager.Get("less_tournaments") : less_tournaments_wm.text;
         //----> "WinMoney" POPUPS : Payment failed
@@ -453,4 +451,4 @@ public class HomeTranslationController : MonoBehaviour
         legal.text = TranslationManager.Get("legal") != string.Empty ? TranslationManager.Get("legal") : legal.text;
         contact.text = TranslationManager.Get("contact") != string.Empty ? TranslationManager.Get("contact") : contact.text;
     }
-    }
+}

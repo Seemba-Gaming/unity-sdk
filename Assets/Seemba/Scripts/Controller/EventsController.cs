@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using SimpleJSON;
+using System;
 using System.Collections;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Threading;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Threading;
-using SimpleJSON;
-using System;
-using System.Text.RegularExpressions;
-using System.Globalization;
 public class EventsController : MonoBehaviour
 {
     //public string currentScene;
@@ -267,7 +267,7 @@ public class EventsController : MonoBehaviour
                     {
                         GameObject.Find("Calque").transform.localScale = Vector3.zero;
                     }
-                    
+
                 }
             });
         });
@@ -543,8 +543,8 @@ public class EventsController : MonoBehaviour
     {
         Debug.Log("CurrentChallenge:" + ChallengeManager.CurrentChallenge.gain);
         Debug.Log("CurrentChallenge:" + ChallengeManager.CurrentChallenge.gain_type);
-        
-        
+
+
         OpponentFound.adversaireName = null; //usr.username
         OpponentFound.Avatar = null;
         OpponentFound.AdvCountryCode = null; //.country_code;
@@ -639,7 +639,7 @@ public class EventsController : MonoBehaviour
     }
     public void Play()
     {
-        
+
         BackgroundController.CurrentBackground = null;
         EventsController.advFound = false;
         SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
@@ -656,7 +656,7 @@ public class EventsController : MonoBehaviour
 
         }
         AO.allowSceneActivation = true;
-        
+
     }
     public void CreatePassword()
     {
@@ -1306,7 +1306,7 @@ public class EventsController : MonoBehaviour
         {
             Thread.Sleep(500);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {   
+            {
                 ViewsEvents v = new ViewsEvents();
                 BottomMenuController bottomMenu = BottomMenuController.getInstance();
                 bottomMenu.unselectWinMoney();
@@ -1316,7 +1316,7 @@ public class EventsController : MonoBehaviour
                 v.WalletClick(last_view);
             });
         });
-        
+
     }
 
     public void WalletBack()
@@ -1438,7 +1438,7 @@ public class EventsController : MonoBehaviour
     {
 
         return false;
-    #if UNITY_ANDROID
+#if UNITY_ANDROID
         if (gainType == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
         {
             using (var actClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
@@ -1464,7 +1464,7 @@ public class EventsController : MonoBehaviour
             return false;
         }
 #else
-		return false;
+        return false;
 #endif
     }
     public bool checkVPNBeforePlaying(string gainType)
@@ -1504,7 +1504,7 @@ public class EventsController : MonoBehaviour
     {
         string userId = um.getCurrentUserId();
         string token = um.getCurrentSessionToken();
-        
+
         SearchingForPlayerPresenter.GameMontant = GameMontant;
         if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
         {
@@ -1773,68 +1773,68 @@ public class EventsController : MonoBehaviour
     }
     public void ConfirmButtonpopupChallenge()
     {
-        
+
         //HidePopup ("popup",false);
         switch (ChallengeName)
         {
             case "NoviceArgent":
-                
-                
+
+
                 noviceButton();
                 break;
             case "AmateurArgent":
-                
-                
+
+
                 AmateurButton();
                 break;
             case "ConfirmedArgent":
-                
-                
+
+
                 ConfirmedButton();
                 break;
             case "NoviceGoutte":
-                
-                
+
+
                 noviceGoutteButton();
                 break;
             case "AmateurGoutte":
-                
-                
+
+
                 AmateurGoutteButton();
                 break;
             case "ConfirmedGoutte":
-                
-                
+
+
                 ConfirmedGoutteButton();
                 break;
             case "TournamentBubbleConfident":
-                
-                
+
+
                 ConfirmJoiningBubbleTournament(TournamentManager.FEE_BRACKET_BUBBLE_CONFIDENT, TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT, TournamentManager.GAIN_TYPE_BUBBLE);
                 break;
             case "TournamentBubbleChampion":
-                
-                
+
+
                 ConfirmJoiningBubbleTournament(TournamentManager.FEE_BRACKET_BUBBLE_CHAMPION, TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION, TournamentManager.GAIN_TYPE_BUBBLE);
                 break;
             case "TournamentBubbleLegend":
-                
-                
+
+
                 ConfirmJoiningBubbleTournament(TournamentManager.FEE_BRACKET_BUBBLE_LEGEND, TournamentManager.WIN_BRACKET_BUBBLE_LEGEND, TournamentManager.GAIN_TYPE_BUBBLE);
                 break;
             case "TournamentCashConfident":
-                
-                
+
+
                 ConfirmJoiningCashTournament(TournamentManager.FEE_BRACKET_CASH_CONFIDENT, TournamentManager.WIN_BRACKET_CASH_CONFIDENT, TournamentManager.GAIN_TYPE_CASH);
                 break;
             case "TournamentCashChampion":
-                
-                
+
+
                 ConfirmJoiningCashTournament(TournamentManager.FEE_BRACKET_CASH_CHAMPION, TournamentManager.WIN_BRACKET_CASH_CHAMPION, TournamentManager.GAIN_TYPE_CASH);
                 break;
             case "TournamentCashLegend":
-                
-                
+
+
                 ConfirmJoiningCashTournament(TournamentManager.FEE_BRACKET_CASH_LEGEND, TournamentManager.WIN_BRACKET_CASH_LEGEND, TournamentManager.GAIN_TYPE_CASH);
                 break;
         }
@@ -2235,7 +2235,7 @@ public class EventsController : MonoBehaviour
     {
         SceneManager.LoadScene("TournamentDetails");
     }
-    
+
     public void backBankingInformations()
     {
         SceneManager.UnloadScene("BankingInformation");

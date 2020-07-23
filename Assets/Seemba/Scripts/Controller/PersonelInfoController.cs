@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System;
-using UnityEngine.SceneManagement;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class PersonelInfoController : MonoBehaviour
 {
     public InputField LastName, FirstName, Address, City, ZipCode, Country, Personel_id_number, Phone;
@@ -58,7 +56,7 @@ public class PersonelInfoController : MonoBehaviour
                         country_flag.sprite = newSprite;
                         country_flag.transform.localScale = Vector3.one;
                     }
-                    catch (ArgumentNullException ex){}
+                    catch (ArgumentNullException ex) { }
                     if (!string.IsNullOrEmpty(usr.birthday))
                     {
                         Birthdate.text = DateTime.Parse(usr.birthday).ToString("yyyy-MM-dd");
@@ -126,7 +124,7 @@ public class PersonelInfoController : MonoBehaviour
                     {
                         if (Phone.text != "" && Phone.text != usr.phone)
                         {
-                            string formatedPhone =  prefix + Phone.text;
+                            string formatedPhone = prefix + Phone.text;
                             Debug.Log("formatedPhone: " + formatedPhone);
                             string[] attrib = {
                             "phone"
@@ -135,7 +133,7 @@ public class PersonelInfoController : MonoBehaviour
                             formatedPhone
                             };
                             show("Button_Phone", "Loader");
-                            if (await updateStripeAccount("phone",formatedPhone))
+                            if (await updateStripeAccount("phone", formatedPhone))
                             {
                                 updateUser(attrib, value);
                                 show("Button_Phone", "Accepted");
@@ -447,10 +445,10 @@ public class PersonelInfoController : MonoBehaviour
         set
         {
             _selectedDateString2 = value;
-            
+
             Birthdate.text = SelectedDateString2;
             PlaceHolderAge.transform.localScale = Vector3.zero;
-            
+
         }
     }
     public void showExpPicker(UnityEngine.Object button)

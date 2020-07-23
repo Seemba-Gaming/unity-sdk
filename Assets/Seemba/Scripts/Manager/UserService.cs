@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
 using System.Text.RegularExpressions;
 using System.Timers;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class UserService : MonoBehaviour
 {
     public static string Seemba_Email = "noreply@seemba.com,djo@seemba.com,slim@seemba.com,geoffrey@seemba.com,jean-philippe@seemba.com,mohamed@seemba.com";
@@ -404,7 +404,7 @@ public class UserService : MonoBehaviour
                         {
                             StartCoroutine(um.signingUp(Username.text.ToUpper(), Email.text, Password.text, ImagesManager.AvatarURL));
                         });
-                          while (statusCode == null) { }
+                        while (statusCode == null) { }
                         Debug.Log(statusCode);
                         UnityThreadHelper.Dispatcher.Dispatch(() =>
                         {

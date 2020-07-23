@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 public class LoginTranslationController : MonoBehaviour
 {
@@ -26,7 +24,7 @@ public class LoginTranslationController : MonoBehaviour
     [SerializeField]
     private Text
             enter_your_email_below_to_reset_password,
-            email,_continue_email;
+            email, _continue_email;
     [Header("--------------Code------------")]
     [SerializeField]
     private Text

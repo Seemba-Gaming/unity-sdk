@@ -1,9 +1,6 @@
-using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
 public class GeneralSharingiOSBridge
 {
-	#if UNITY_IPHONE
+#if UNITY_IPHONE
 	[DllImport("__Internal")]
 	private static extern void _TAG_ShareTextWithImage (string iosPath, string message);
 	[DllImport("__Internal")]
@@ -16,5 +13,5 @@ public class GeneralSharingiOSBridge
 	{
 		_TAG_ShareTextWithImage (imagePath, message);
 	}
-	#endif
+#endif
 }

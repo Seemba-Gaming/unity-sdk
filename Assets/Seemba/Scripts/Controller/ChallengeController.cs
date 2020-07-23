@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static ChallengeTypePresenter;
 using static PopupsViewPresenter;
 
 public class ChallengeController : MonoBehaviour
@@ -43,8 +39,8 @@ public class ChallengeController : MonoBehaviour
             ChallengeManager.CurrentChallengeGain = gain.ToString();
             ChallengeManager.CurrentChallengeGainType = gain_type.ToString();
 
-            
-            
+
+
 
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
@@ -151,7 +147,7 @@ public class ChallengeController : MonoBehaviour
 #endif
     }
     private bool isProhibitedLocation(string code)
-    {   
+    {
         return CountryController.checkCountry(code);
     }
     private bool isVPNEnabled()

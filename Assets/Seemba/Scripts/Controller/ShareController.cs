@@ -1,17 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using UnityEngine.UI;
-using System;
+using UnityEngine;
 public class ShareController : MonoBehaviour
 {
-    private string text = "I challenge you on " + GamesManager.GAME_NAME + ". are you up to the challenge? Can you beat my highscore? Waiting for you on "+GamesManager.GAME_ANDROID_URL;
+    private string text = "I challenge you on " + GamesManager.GAME_NAME + ". are you up to the challenge? Can you beat my highscore? Waiting for you on " + GamesManager.GAME_ANDROID_URL;
     public void ShareScreenshot()
-    {   
+    {
         StartCoroutine(TakeSSAndShare());
     }
-    public void ShareText() {
+    public void ShareText()
+    {
         StartCoroutine(ShareTextInBG());
     }
     private IEnumerator TakeSSAndShare()

@@ -1,41 +1,47 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-public class IntroPresenter : MonoBehaviour {
-	public Text Title,text;
-	string fulltextTitle,fullTextforText;
-    
-	// Use this for initialization
-	void Start () {
-        if (!isLaunched()) {
+public class IntroPresenter : MonoBehaviour
+{
+    public Text Title, text;
+    string fulltextTitle, fullTextforText;
+
+    // Use this for initialization
+    void Start()
+    {
+        if (!isLaunched())
+        {
             saveFirstLaunch();
 
         }
         StartCoroutine(waitText());
         Debug.Log("fulltextTitle: " + fulltextTitle);
         Debug.Log("fullTextforText: " + fullTextforText);
-        Text GameTitle = GameObject.Find ("GameTitle").GetComponent<Text> () ;
-		GameTitle.text =GamesManager.GAME_NAME;
-		StartCoroutine (WriteText ());
-	}
-	// Update is called once per frame
-	void Update () {
-	}
-	IEnumerator WriteText(){
+        Text GameTitle = GameObject.Find("GameTitle").GetComponent<Text>();
+        GameTitle.text = GamesManager.GAME_NAME;
+        StartCoroutine(WriteText());
+    }
+    // Update is called once per frame
+    void Update()
+    {
+    }
+    IEnumerator WriteText()
+    {
         yield return waitText();
         fulltextTitle = IntroTranslationController.CHANGE_THE_WAY_YOU_PLAY;
         fullTextforText = IntroTranslationController.DISCOVER_CASH_TOURNAMENT_POWERED_BY_SEEMBA;
-        for (int i = 0; i < fulltextTitle.Length; i++) {
-			Title.text+= fulltextTitle.Substring (i,1);
-			yield return new WaitForSeconds (0.05f);
-		}
-		for (int i = 0; i < fullTextforText.Length; i++) {
-			text.text+= fullTextforText.Substring (i,1);
-			yield return new WaitForSeconds (0.04f);
-		}
-	}
+        for (int i = 0; i < fulltextTitle.Length; i++)
+        {
+            Title.text += fulltextTitle.Substring(i, 1);
+            yield return new WaitForSeconds(0.05f);
+        }
+        for (int i = 0; i < fullTextforText.Length; i++)
+        {
+            text.text += fullTextforText.Substring(i, 1);
+            yield return new WaitForSeconds(0.04f);
+        }
+    }
     IEnumerator waitText()
     {
         yield return new WaitForSeconds(0.5f);
@@ -43,14 +49,16 @@ public class IntroPresenter : MonoBehaviour {
     }
     public void saveFirstLaunch()
     {
-        UnityThreadHelper.Dispatcher.Dispatch(() => {
+        UnityThreadHelper.Dispatcher.Dispatch(() =>
+        {
             writeStringToFile("true", "firstLaunch.dat");
         });
     }
     public bool isLaunched()
     {
-        if (readStringFromFile("firstLaunch.dat") == null) { 
-            return false; 
+        if (readStringFromFile("firstLaunch.dat") == null)
+        {
+            return false;
         }
         else return true;
     }

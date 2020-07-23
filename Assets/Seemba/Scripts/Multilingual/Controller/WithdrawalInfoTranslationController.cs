@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 public class WithdrawalInfoTranslationController : MonoBehaviour
 {
@@ -13,7 +11,7 @@ public class WithdrawalInfoTranslationController : MonoBehaviour
     [SerializeField]
     private Text id_proof;
     [SerializeField]
-    private Text next_iban,next_personal_info,withdraw;
+    private Text next_iban, next_personal_info, withdraw;
     [Header("IDENTITY")]
     [Header("----------------------ID PROOF----------------------")]
     [SerializeField]
@@ -48,7 +46,7 @@ public class WithdrawalInfoTranslationController : MonoBehaviour
     [SerializeField]
     private Text last_name;
     [SerializeField]
-    private Text first_name, date_of_birth, address,city,zip,country,phone;
+    private Text first_name, date_of_birth, address, city, zip, country, phone;
     // Start is called before the first frame update
     void Start()
     {

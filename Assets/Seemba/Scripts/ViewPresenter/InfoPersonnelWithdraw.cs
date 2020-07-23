@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.Threading;
-using Kakera;
+﻿using SimpleJSON;
 using System;
-using SimpleJSON;
-public class InfoPersonnelWithdraw : MonoBehaviour {
-    public InputField LastName, FirstName, Adress, city, zip, state, country, personal_id_number, IBAN, Swift,Phone;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+public class InfoPersonnelWithdraw : MonoBehaviour
+{
+    public InputField LastName, FirstName, Adress, city, zip, state, country, personal_id_number, IBAN, Swift, Phone;
     public Text Birthday, WithdrawButtonText, placeholderAge;
     public Button ContinueButton, ContinueButtonIBAN, WithdrawButton, Id1, Passport, Residency;
     bool validIban;
@@ -19,21 +16,26 @@ public class InfoPersonnelWithdraw : MonoBehaviour {
     string userId, token;
     Image AcceptedIban;
     // Use this for initialization
-    void OnEnable() {
+    void OnEnable()
+    {
         userId = um.getCurrentUserId();
         token = um.getCurrentSessionToken();
         WithdrawButton.interactable = false;
         AcceptedIban = GameObject.Find("AcceptedIBAN").GetComponent<Image>();
-        IBAN.onValueChanged.AddListener(delegate {
+        IBAN.onValueChanged.AddListener(delegate
+        {
             Image DeclinedIban = GameObject.Find("DeclinedIBAN").GetComponent<Image>();
             Image LoaderIban = GameObject.Find("LoaderIBAN").GetComponent<Image>();
             LoaderIban.transform.localScale = Vector3.one;
             validIban = wm.validateIBAN(IBAN.text);
             LoaderIban.transform.localScale = Vector3.zero;
-            if (validIban) {
+            if (validIban)
+            {
                 AcceptedIban.transform.localScale = Vector3.one;
                 DeclinedIban.transform.localScale = Vector3.zero;
-            } else {
+            }
+            else
+            {
                 AcceptedIban.transform.localScale = Vector3.zero;
                 DeclinedIban.transform.localScale = Vector3.one;
             }
@@ -42,34 +44,45 @@ public class InfoPersonnelWithdraw : MonoBehaviour {
         string Id = um.getCurrentUserId();
         string Token = um.getCurrentSessionToken();
         SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(() => {
+        UnityThreadHelper.CreateThread(() =>
+        {
             User user = um.getUser(Id, Token);
             var account = wm.accountVerificationJSON(Token);
-            UnityThreadHelper.Dispatcher.Dispatch(() => {
+            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            {
                 SceneManager.UnloadScene("Loader");
-                if (user != null) {
+                if (user != null)
+                {
                     //Check Personel Info (Individual)
                     personelInfoVerification(user);
                     //Check Docs Verification (Document + additional document)
                     docsVerification(account);
                     //check Iban Upload 
                     ibanVerification(user);
-                    WithdrawButton.onClick.AddListener(() => {
+                    WithdrawButton.onClick.AddListener(() =>
+                    {
                         Withdraw();
                     });
-                    ContinueButtonIBAN.onClick.AddListener(() => {
+                    ContinueButtonIBAN.onClick.AddListener(() =>
+                    {
                         InfoPersonnelWithdraw.currentIBAN = IBAN.text;
                         tokenizeAndAttach();
                     });
-                } else {
-                    try {
+                }
+                else
+                {
+                    try
+                    {
                         SceneManager.UnloadSceneAsync("ConnectionFailed");
-                    } catch (ArgumentException ex) { }
+                    }
+                    catch (ArgumentException ex) { }
                     ConnectivityController.CURRENT_ACTION = ConnectivityController.PERSONNEL_INFO_WITHDRAW_ACTION;
                     SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                    try {
+                    try
+                    {
                         SceneManager.UnloadSceneAsync("Loader");
-                    } catch (ArgumentException ex) { }
+                    }
+                    catch (ArgumentException ex) { }
                 }
             });
         });
@@ -129,7 +142,8 @@ public class InfoPersonnelWithdraw : MonoBehaviour {
             }
         }
     }
-    void personelInfoVerification(User user) {
+    void personelInfoVerification(User user)
+    {
         if (!string.IsNullOrEmpty(user.lastname))
         {
             LastName.text = user.lastname;
@@ -198,108 +212,133 @@ public class InfoPersonnelWithdraw : MonoBehaviour {
             ibanUploaded = true;
         }
     }
-    public bool InformationAlreadyExist(User user){
-		if (user.country_code.ToLower ().Equals ("us")) {
-			return !string.IsNullOrEmpty (user.firstname) && !string.IsNullOrEmpty (user.lastname) && !string.IsNullOrEmpty (user.birthday) && !string.IsNullOrEmpty (user.adress) && !string.IsNullOrEmpty (user.city) && !string.IsNullOrEmpty (user.zipcode) && !string.IsNullOrEmpty (user.country)&& !string.IsNullOrEmpty (user.personal_id_number);
-		}
-		else
-		return !string.IsNullOrEmpty (user.firstname) && !string.IsNullOrEmpty (user.lastname) && !string.IsNullOrEmpty (user.birthday) && !string.IsNullOrEmpty (user.adress) && !string.IsNullOrEmpty (user.city) && !string.IsNullOrEmpty (user.zipcode) && !string.IsNullOrEmpty (user.country);
-	}
-	void disable(string doc){
-		Image DocDisableimg=GameObject.Find (doc+"/disable").GetComponent<Image> ();
-		var tempColor = DocDisableimg.color;
-          tempColor.a = 0.50f;
-          DocDisableimg.color = tempColor;
-	}
-	public void Withdraw ()
-	{
-		EventsController behaviourScript = new EventsController ();
-		behaviourScript.StepAnimation ("circleEmpty3");
-		WithdrawManager wm = new WithdrawManager ();
-		SceneManager.LoadScene ("Loader", LoadSceneMode.Additive);
-		string DocId=PlayerPrefs.GetString("DocId");
-		UnityThreadHelper.CreateThread (() => {
-			string withdrawResult=null;
-			withdrawResult = wm.payout(token, WithdrawPresenter.WithdrawMoney);
+    public bool InformationAlreadyExist(User user)
+    {
+        if (user.country_code.ToLower().Equals("us"))
+        {
+            return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthday) && !string.IsNullOrEmpty(user.adress) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country) && !string.IsNullOrEmpty(user.personal_id_number);
+        }
+        else
+            return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthday) && !string.IsNullOrEmpty(user.adress) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country);
+    }
+    void disable(string doc)
+    {
+        Image DocDisableimg = GameObject.Find(doc + "/disable").GetComponent<Image>();
+        var tempColor = DocDisableimg.color;
+        tempColor.a = 0.50f;
+        DocDisableimg.color = tempColor;
+    }
+    public void Withdraw()
+    {
+        EventsController behaviourScript = new EventsController();
+        behaviourScript.StepAnimation("circleEmpty3");
+        WithdrawManager wm = new WithdrawManager();
+        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+        string DocId = PlayerPrefs.GetString("DocId");
+        UnityThreadHelper.CreateThread(() =>
+        {
+            string withdrawResult = null;
+            withdrawResult = wm.payout(token, WithdrawPresenter.WithdrawMoney);
             Debug.Log("withdrawResult: " + withdrawResult);
-            InfoPersonnelWithdraw.currentIdProof=null;
-			InfoPersonnelWithdraw.currentIBAN=null;
-			if(!string.IsNullOrEmpty(withdrawResult)) {
-				if(withdrawResult=="ProhibitedLocation") {
-					UnityThreadHelper.Dispatcher.Dispatch (() => { 
-							SceneManager.UnloadSceneAsync ("Loader");
-							GameObject.Find ("CalqueWidhraw").transform.localScale = Vector3.one;	
-							var animator = GameObject.Find ("popupProhibitedLocation").GetComponent<Animator> ();
-							animator.SetBool ("Show Error", true);
-					});
-				}
+            InfoPersonnelWithdraw.currentIdProof = null;
+            InfoPersonnelWithdraw.currentIBAN = null;
+            if (!string.IsNullOrEmpty(withdrawResult))
+            {
+                if (withdrawResult == "ProhibitedLocation")
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        SceneManager.UnloadSceneAsync("Loader");
+                        GameObject.Find("CalqueWidhraw").transform.localScale = Vector3.one;
+                        var animator = GameObject.Find("popupProhibitedLocation").GetComponent<Animator>();
+                        animator.SetBool("Show Error", true);
+                    });
+                }
                 else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_AMOUNT_INSUFFICIENT)
                 {
-                    UnityThreadHelper.Dispatcher.Dispatch(() => {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
                         behaviourScript.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
                     });
                 }
-                else if(withdrawResult==WithdrawManager.WITHDRAW_ERROR_BALANCE_INSUFFICIENT){
-					UnityThreadHelper.Dispatcher.Dispatch (() => {
-							behaviourScript.withdrawFailed("Withdrawal", null,WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
-					});
-				}
-				else if(withdrawResult=="error") {
-					UnityThreadHelper.Dispatcher.Dispatch (() => {
-						behaviourScript.withdrawFailed(null,null,WithdrawManager.WITHDRAW_FAILED_MESSAGE);
-					});
-				}else if (withdrawResult == WithdrawManager.WITHDRAW_SUCCEEDED_STATUS) {	
-						UnityThreadHelper.Dispatcher.Dispatch (() => {
-							SceneManager.UnloadSceneAsync ("Loader");
-							SceneManager.UnloadSceneAsync ("WithdrawalInfo");
-							UserManager.CurrentMoney = (float.Parse (UserManager.CurrentMoney) - WithdrawPresenter.WithdrawMoney).ToString ("N2").Replace (",", ".");
-                            behaviourScript.backToWinMoney();
-                            behaviourScript.ShowPopup("popupCongratWithdraw");
-						});
-					}
-			}else{
-				UnityThreadHelper.Dispatcher.Dispatch (() => {
-					behaviourScript.withdrawFailed(null,null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
-				});
-			}
-			});	
-	}
+                else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_BALANCE_INSUFFICIENT)
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        behaviourScript.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
+                    });
+                }
+                else if (withdrawResult == "error")
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        behaviourScript.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
+                    });
+                }
+                else if (withdrawResult == WithdrawManager.WITHDRAW_SUCCEEDED_STATUS)
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        SceneManager.UnloadSceneAsync("Loader");
+                        SceneManager.UnloadSceneAsync("WithdrawalInfo");
+                        UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney) - WithdrawPresenter.WithdrawMoney).ToString("N2").Replace(",", ".");
+                        behaviourScript.backToWinMoney();
+                        behaviourScript.ShowPopup("popupCongratWithdraw");
+                    });
+                }
+            }
+            else
+            {
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                {
+                    behaviourScript.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
+                });
+            }
+        });
+    }
     private void tokenizeAndAttach()
     {
-        if (!String.IsNullOrEmpty(InfoPersonnelWithdraw.currentIBAN)) {
-            SceneManager.LoadScene("Loader",LoadSceneMode.Additive);
+        if (!String.IsNullOrEmpty(InfoPersonnelWithdraw.currentIBAN))
+        {
+            SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
             UnityThreadHelper.CreateThread(() =>
             {
-            string accounttoken = wm.TokenizeAccount(um.getUser(userId, token),InfoPersonnelWithdraw.currentIBAN);
-                if(!String.IsNullOrEmpty(accounttoken))
-                    if(wm.attachTokenToAccount(accounttoken, token))
+                string accounttoken = wm.TokenizeAccount(um.getUser(userId, token), InfoPersonnelWithdraw.currentIBAN);
+                if (!String.IsNullOrEmpty(accounttoken))
+                    if (wm.attachTokenToAccount(accounttoken, token))
                     {
                         string[] attrib = { "iban_uploaded" };
                         string[] value5 = { "true" };
                         um.UpdateUserByField(userId, token, attrib, value5);
                     }
-                UnityThreadHelper.Dispatcher.Dispatch(() => {
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                {
                     SceneManager.UnloadScene("Loader");
                 });
             });
         }
     }
     // Update is called once per frame
-    void Update () {
-		if (string.IsNullOrEmpty (LastName.text) || string.IsNullOrEmpty (FirstName.text) || string.IsNullOrEmpty (Adress.text) || string.IsNullOrEmpty (city.text) || string.IsNullOrEmpty (zip.text) || string.IsNullOrEmpty (country.text) || string.IsNullOrEmpty (Birthday.text)) {	
-			ContinueButton.interactable = false;
-		} else {
-			if (UserManager.CurrentCountryCode.ToLower().Equals("us")) {
-				if(!string.IsNullOrEmpty(personal_id_number.text))
-					ContinueButton.interactable = true;
-				else ContinueButton.interactable = false;
-			}
-			else ContinueButton.interactable = true;
-		}
-		if(validIban==true)
-		{	
-			ContinueButtonIBAN.interactable = true;
-		}
-		else ContinueButtonIBAN.interactable = false;
-	}
+    void Update()
+    {
+        if (string.IsNullOrEmpty(LastName.text) || string.IsNullOrEmpty(FirstName.text) || string.IsNullOrEmpty(Adress.text) || string.IsNullOrEmpty(city.text) || string.IsNullOrEmpty(zip.text) || string.IsNullOrEmpty(country.text) || string.IsNullOrEmpty(Birthday.text))
+        {
+            ContinueButton.interactable = false;
+        }
+        else
+        {
+            if (UserManager.CurrentCountryCode.ToLower().Equals("us"))
+            {
+                if (!string.IsNullOrEmpty(personal_id_number.text))
+                    ContinueButton.interactable = true;
+                else ContinueButton.interactable = false;
+            }
+            else ContinueButton.interactable = true;
+        }
+        if (validIban == true)
+        {
+            ContinueButtonIBAN.interactable = true;
+        }
+        else ContinueButtonIBAN.interactable = false;
+    }
 }

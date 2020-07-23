@@ -1,8 +1,6 @@
-using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using System;
-using SimpleJSON;
+using UnityEngine;
+using UnityEngine.UI;
 public class OpponentFound : MonoBehaviour
 {
     public static string adversaireName;
@@ -48,7 +46,7 @@ public class OpponentFound : MonoBehaviour
                     }
                     catch (NullReferenceException ex)
                     {
-                        
+
                     }
                     Versus_background.SetBool("StopBG", true);
                     Versus_container.SetActive(true);

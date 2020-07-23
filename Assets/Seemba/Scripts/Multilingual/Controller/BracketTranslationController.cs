@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 public class BracketTranslationController : MonoBehaviour
 {
@@ -10,7 +8,7 @@ public class BracketTranslationController : MonoBehaviour
     [SerializeField]
     private Text
                   final,
-                  champion,play;
+                  champion, play;
     [SerializeField]
     private Text[] to_be_determined;
     // Start is called before the first frame update
@@ -29,10 +27,11 @@ public class BracketTranslationController : MonoBehaviour
         {
             for (int player = 1; player <= 2; player++)
             {
-                try { 
-                Debug.Log("Challenge (" + (pos) + ")/Player" + player + "/Username");
-                    Text to_be_determined = GameObject.Find("Challenge (" + (pos) + ")/Player"+ player + "/Username").GetComponent<Text>();
-                to_be_determined.text = TranslationManager.Get("to_be_determined") != string.Empty ? TranslationManager.Get("to_be_determined") : to_be_determined.text;
+                try
+                {
+                    Debug.Log("Challenge (" + (pos) + ")/Player" + player + "/Username");
+                    Text to_be_determined = GameObject.Find("Challenge (" + (pos) + ")/Player" + player + "/Username").GetComponent<Text>();
+                    to_be_determined.text = TranslationManager.Get("to_be_determined") != string.Empty ? TranslationManager.Get("to_be_determined") : to_be_determined.text;
                 }
                 catch (System.NullReferenceException ex) { }
             }

@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using SimpleJSON;
+﻿using SimpleJSON;
 using System;
-using UnityEngine.SceneManagement;
-using System.Threading;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class ChargePresenter : MonoBehaviour
 {
     UserManager um = new UserManager();
@@ -48,7 +46,7 @@ public class ChargePresenter : MonoBehaviour
     {
         userId = um.getCurrentUserId();
         userToken = um.getCurrentSessionToken();
-        
+
 
         CardColors.Add(Orca);
         CardColors.Add(Favourit);
@@ -59,97 +57,97 @@ public class ChargePresenter : MonoBehaviour
         setCardColor(new System.Random().Next(0, 5));
 
 
-        
-            cardHolderError = GameObject.Find("CardHolderPanel").GetComponent<Animator>();
-            cardNumberError = GameObject.Find("CardNumberPanel").GetComponent<Animator>();
-            DAEError = GameObject.Find("DAEPanel").GetComponent<Animator>();
-            CVVError = GameObject.Find("CVVPanel").GetComponent<Animator>();
-            cardHolder = GameObject.Find("card holder").GetComponent<InputField>();
-            cardNumber = GameObject.Find("card number").GetComponent<InputField>();
-            CVV = GameObject.Find("CVV").GetComponent<InputField>();
-            Years = GameObject.Find("Years").GetComponent<Dropdown>();
-            Month = GameObject.Find("Months").GetComponent<Dropdown>();
-            GameObject.Find("Card/Front/" + paymentCard).GetComponent<Image>().transform.localScale = Vector3.one;
-            GameObject.Find("Card/Back/" + paymentCard).GetComponent<Image>().transform.localScale = Vector3.one;
-            //Credit Amount
-            Amount = GameObject.Find("Amount").GetComponent<Text>();
-            //Toggle
-            TermsToggel = GameObject.Find("ToggleTerms").GetComponent<Toggle>();
-            //charge 
-            Credit = GameObject.Find("Credit").GetComponent<Button>();
-            Credit.onClick.AddListener(() =>
+
+        cardHolderError = GameObject.Find("CardHolderPanel").GetComponent<Animator>();
+        cardNumberError = GameObject.Find("CardNumberPanel").GetComponent<Animator>();
+        DAEError = GameObject.Find("DAEPanel").GetComponent<Animator>();
+        CVVError = GameObject.Find("CVVPanel").GetComponent<Animator>();
+        cardHolder = GameObject.Find("card holder").GetComponent<InputField>();
+        cardNumber = GameObject.Find("card number").GetComponent<InputField>();
+        CVV = GameObject.Find("CVV").GetComponent<InputField>();
+        Years = GameObject.Find("Years").GetComponent<Dropdown>();
+        Month = GameObject.Find("Months").GetComponent<Dropdown>();
+        GameObject.Find("Card/Front/" + paymentCard).GetComponent<Image>().transform.localScale = Vector3.one;
+        GameObject.Find("Card/Back/" + paymentCard).GetComponent<Image>().transform.localScale = Vector3.one;
+        //Credit Amount
+        Amount = GameObject.Find("Amount").GetComponent<Text>();
+        //Toggle
+        TermsToggel = GameObject.Find("ToggleTerms").GetComponent<Toggle>();
+        //charge 
+        Credit = GameObject.Find("Credit").GetComponent<Button>();
+        Credit.onClick.AddListener(() =>
+        {
+            confirmCredit();
+        });
+        try
+        {
+            Amount.text = WalletScript.LastCredit.ToString("N2").Replace(",", ".") + CurrencyManager.CURRENT_CURRENCY;
+            TermsToggel.onValueChanged.AddListener(delegate
             {
-                confirmCredit();
-            });
-            try
-            {
-                Amount.text = WalletScript.LastCredit.ToString("N2").Replace(",", ".") + CurrencyManager.CURRENT_CURRENCY;
-                TermsToggel.onValueChanged.AddListener(delegate
+                if (TermsToggel.isOn == true)
                 {
-                    if (TermsToggel.isOn == true)
-                    {
-                        Credit.interactable = true;
-                    }
-                    else
-                        Credit.interactable = false;
-                });
+                    Credit.interactable = true;
+                }
+                else
+                    Credit.interactable = false;
+            });
+        }
+        catch (NullReferenceException)
+        {
+        }
+        cardHolder.onValueChanged.AddListener(delegate
+        {
+            card_Name.text = cardHolder.text;
+            if (cardHolderError.GetBool("wrongcardholder") == true)
+            {
+                cardHolderError.SetBool("wrongcardholder", false);
             }
-            catch (NullReferenceException)
+        });
+        string content = "";
+        cardNumber.onValueChanged.AddListener(delegate
+        {
+            content = cardNumber.text;
+            card_Number.text = separated(content);
+            Debug.Log(content);
+            card_NumberHint.text = numberhintEditor(content);
+            if (cardNumberError.GetBool("wrongcardnumber") == true)
             {
+                cardNumberError.SetBool("wrongcardnumber", false);
             }
-            cardHolder.onValueChanged.AddListener(delegate
+        });
+        CVV.onValueChanged.AddListener(delegate
+        {
+            card_CVV.text = CVV.text;
+            if (CVVError.GetBool("cvverror") == true)
             {
-                card_Name.text = cardHolder.text;
-                if (cardHolderError.GetBool("wrongcardholder") == true)
-                {
-                    cardHolderError.SetBool("wrongcardholder", false);
-                }
-            });
-            string content = "";
-            cardNumber.onValueChanged.AddListener(delegate
+                CVVError.SetBool("cvverror", false);
+            }
+        });
+        Month.onValueChanged.AddListener(delegate
+        {
+            int _monthIndex = GameObject.Find("Months").GetComponent<Dropdown>().value;
+            string valueMonths = GameObject.Find("Months").GetComponent<Dropdown>().options[_monthIndex].text;
+            if (valueMonths != "MM")
+                card_ExpireDate_Month.text = valueMonths;
+            else card_ExpireDate_Month.text = "";
+            if (DAEError.GetBool("daeerror") == true)
             {
-                content = cardNumber.text;
-                card_Number.text = separated(content);
-                Debug.Log(content);
-                card_NumberHint.text = numberhintEditor(content);
-                if (cardNumberError.GetBool("wrongcardnumber") == true)
-                {
-                    cardNumberError.SetBool("wrongcardnumber", false);
-                }
-            });
-            CVV.onValueChanged.AddListener(delegate
+                DAEError.SetBool("daeerror", false);
+            }
+        });
+        Years.onValueChanged.AddListener(delegate
+        {
+            int _yearIndex = GameObject.Find("Years").GetComponent<Dropdown>().value;
+            string valueYears = GameObject.Find("Years").GetComponent<Dropdown>().options[_yearIndex].text;
+            if (valueYears != "YYYY")
+                card_ExpireDate_Year.text = valueYears.Substring(2, 2);
+            else card_ExpireDate_Year.text = "";
+            if (DAEError.GetBool("daeerror") == true)
             {
-                card_CVV.text = CVV.text;
-                if (CVVError.GetBool("cvverror") == true)
-                {
-                    CVVError.SetBool("cvverror", false);
-                }
-            });
-            Month.onValueChanged.AddListener(delegate
-            {
-                int _monthIndex = GameObject.Find("Months").GetComponent<Dropdown>().value;
-                string valueMonths = GameObject.Find("Months").GetComponent<Dropdown>().options[_monthIndex].text;
-                if (valueMonths != "MM")
-                    card_ExpireDate_Month.text = valueMonths;
-                else card_ExpireDate_Month.text = "";
-                if (DAEError.GetBool("daeerror") == true)
-                {
-                    DAEError.SetBool("daeerror", false);
-                }
-            });
-            Years.onValueChanged.AddListener(delegate
-            {
-                int _yearIndex = GameObject.Find("Years").GetComponent<Dropdown>().value;
-                string valueYears = GameObject.Find("Years").GetComponent<Dropdown>().options[_yearIndex].text;
-                if (valueYears != "YYYY")
-                    card_ExpireDate_Year.text = valueYears.Substring(2, 2);
-                else card_ExpireDate_Year.text = "";
-                if (DAEError.GetBool("daeerror") == true)
-                {
-                    DAEError.SetBool("daeerror", false);
-                }
-            });
-       
+                DAEError.SetBool("daeerror", false);
+            }
+        });
+
         try
         {
             for (int i = DateTime.Today.Year; i < DateTime.Today.Year + 50; i++)
@@ -255,9 +253,9 @@ public class ChargePresenter : MonoBehaviour
         if (confirmData == true)
         {
             // a changer pour mettre la popup
-            
-            SceneManager.LoadScene("Loader",LoadSceneMode.Additive);
-            
+
+            SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+
             thread = UnityThreadHelper.CreateThread(() =>
             {
                 try
@@ -287,7 +285,7 @@ public class ChargePresenter : MonoBehaviour
                             UnityThreadHelper.Dispatcher.Dispatch(() =>
                             {
                                 isBackAfterPayment = false;
-                                
+
                             });
                         }
                         else
@@ -295,7 +293,7 @@ public class ChargePresenter : MonoBehaviour
                             //Charge Refused : not confirmed
                             chargeCanceled();
                         }
-                        
+
                     }
                     else
                     {
@@ -367,7 +365,7 @@ public class ChargePresenter : MonoBehaviour
     private void chargeSucceeded()
     {
         float credit = float.Parse(UserManager.CurrentMoney) + WalletScript.LastCredit;
-        
+
         UnityThreadHelper.Dispatcher.Dispatch(() =>
         {
             // Payment Completed 
@@ -380,8 +378,8 @@ public class ChargePresenter : MonoBehaviour
             Text TextMain = GameObject.Find("TextMain").GetComponent<Text>();
             TextMain.text = credit + CurrencyManager.CURRENT_CURRENCY;
             Text lastCreditValue = GameObject.Find("lastCreditValue").GetComponent<Text>();
-            lastCreditValue.text = "(+"+ WalletScript.LastCredit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY+")";
-            
+            lastCreditValue.text = "(+" + WalletScript.LastCredit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY + ")";
+
             try
             {
                 SceneManager.UnloadScene("Loader");

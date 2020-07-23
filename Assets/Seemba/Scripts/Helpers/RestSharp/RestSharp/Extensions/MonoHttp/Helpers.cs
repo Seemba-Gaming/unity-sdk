@@ -25,12 +25,11 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
 using System.Globalization;
 namespace RestSharp.Contrib
 {
-	class Helpers
-	{
-		public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-	}
+    class Helpers
+    {
+        public static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
+    }
 }

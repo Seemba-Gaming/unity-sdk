@@ -132,7 +132,7 @@ namespace RestSharp.Compression.ZLib
             return URShift(number, (int)bits);
         }
 #endif
-#if POINTLESS        
+#if POINTLESS
         /*******************************/
         /// <summary>Reads a number of characters from the current source Stream and writes the data to the target array at the specified index.</summary>
         /// <param name="sourceStream">The source Stream to read from.</param>

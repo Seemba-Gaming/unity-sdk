@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using SimpleJSON;
+﻿using SimpleJSON;
 using System;
-using UnityEngine.SceneManagement;
 using System.Globalization;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class ResultManager : MonoBehaviour
 {
     ChallengeManager challengeManager;

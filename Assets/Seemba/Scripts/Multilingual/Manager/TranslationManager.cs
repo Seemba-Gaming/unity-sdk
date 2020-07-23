@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using SimpleJSON;
 using System;
-using System.IO;
-using SimpleJSON;
-using UnityEditor;
 using System.Collections;
+using System.IO;
+using UnityEngine;
 using UnityEngine.Networking;
 public sealed class TranslationManager : MonoBehaviour
 {
-    public static string scene = null; 
+    public static string scene = null;
     public static bool? isDownloaded = null;
-    public static readonly SystemLanguage[] Languages = {SystemLanguage.English,SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German};
+    public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
     private static JSONNode Translations = null;
     static string systemLanguage = Application.systemLanguage.ToString();
 #if UNITY_EDITOR
@@ -19,24 +17,25 @@ public sealed class TranslationManager : MonoBehaviour
 #endif
     private static void CheckInstance()
     {
-        if (Translations == null) {
+        if (Translations == null)
+        {
             // Get the current language.
             var lang = Application.systemLanguage;
-            
+
 #if UNITY_EDITOR
             // Override the current language for testing purpose.
             if (d_OverrideLanguage)
-            lang = d_Language;
+                lang = d_Language;
 #endif
-        // Check if the current language is supported.
-        // Otherwise use the first language as default.
-        if (Array.IndexOf<SystemLanguage>(Languages, lang) == -1)
-            lang = Languages[0];
+            // Check if the current language is supported.
+            // Otherwise use the first language as default.
+            if (Array.IndexOf<SystemLanguage>(Languages, lang) == -1)
+                lang = Languages[0];
 
-        
+
             if (getTranslationFile() != null)
-            {   
-            
+            {
+
                 ParseFile(getTranslationFile());
             }
 
@@ -46,11 +45,13 @@ public sealed class TranslationManager : MonoBehaviour
     public static string Get(string key)
     {
         CheckInstance();
-        try {
-            
+        try
+        {
+
 
             return Translations[scene][key].Value;
-        }catch(NullReferenceException ex) { return string.Empty; }
+        }
+        catch (NullReferenceException ex) { return string.Empty; }
     }
     public static void ParseFile(string data)
     {
@@ -60,10 +61,10 @@ public sealed class TranslationManager : MonoBehaviour
     {
         yield return waitIcon();
         Debug.Log("systemLanguage: " + systemLanguage);
-        if (!isLanguageSupported()) {isDownloaded = true;}
-        else if((!systemLanguage.Equals("English")) &&(string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage))))
+        if (!isLanguageSupported()) { isDownloaded = true; }
+        else if ((!systemLanguage.Equals("English")) && (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage))))
         {
-            Debug.Log("Downloding "+ systemLanguage + " File...");
+            Debug.Log("Downloding " + systemLanguage + " File...");
             string url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
             using (UnityWebRequest www = UnityWebRequest.Get(url))
             {
@@ -94,7 +95,7 @@ public sealed class TranslationManager : MonoBehaviour
     }
     private static bool isLanguageSupported()
     {
-        foreach(SystemLanguage lang in Languages)
+        foreach (SystemLanguage lang in Languages)
         {
             if (lang.ToString().Equals(systemLanguage)) return true;
         }
@@ -108,7 +109,7 @@ public sealed class TranslationManager : MonoBehaviour
     }
     public static string getTranslationFile()
     {
-        return readStringFromFile(systemLanguage+ ".json");
+        return readStringFromFile(systemLanguage + ".json");
     }
     public static string readStringFromFile(string filename)
     {

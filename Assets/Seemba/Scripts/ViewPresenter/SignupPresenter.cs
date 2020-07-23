@@ -1,12 +1,7 @@
-using UnityEngine;
-using System.Collections;
-using System.IO;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
-using System.Text;
 using System.Text.RegularExpressions;
-using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
 public class SignupPresenter : MonoBehaviour
 {
     public InputField username, email, password, confirmPassword;
@@ -127,7 +122,7 @@ public class SignupPresenter : MonoBehaviour
         });
         confirmPassword.onValueChanged.AddListener(delegate
         {
-            
+
         });
     }
 
@@ -173,9 +168,9 @@ public class SignupPresenter : MonoBehaviour
         }
         else Signup.interactable = false;
 
-        
-        
-        
+
+
+
         if (confirmPassword.text == password.text)
         {
             GameObject.Find("AcceptedConfirmPassword").GetComponent<Image>().transform.localScale = Vector3.one;

@@ -6,19 +6,19 @@ using System;
 public class IntegrationGUI : EditorWindow
 {
     private const string CONFIG_FILE_NAME = "seemba-services";
-    private const string FIILE_PATH = "Assets/Seemba/Resources/"+ CONFIG_FILE_NAME +".json";
+    private const string PATH = "Assets/Seemba/Resources/";
+    private const string FILE_PATH = PATH + CONFIG_FILE_NAME + ".json";
 
     private Texture2D m_Logo = null;
-    
+
     string GAME_ID = "";
     string GAME_SCENE_NAME = "";
     string GAME_NAME = "";
+    string GAME_LEVEL = "";
 
-    
     #region UNITY_METHOD
     private void OnGUI()
     {
-        Debug.Log(Application.streamingAssetsPath);
         SetLogo();
         SetFields();
         SetValidateButton();
@@ -72,6 +72,7 @@ public class IntegrationGUI : EditorWindow
         GAME_ID = EditorGUILayout.TextField("GAME_ID: ", GAME_ID, GUILayout.Width(800), GUILayout.Height(20));
         GAME_NAME = EditorGUILayout.TextField("GAME_NAME: ", GAME_NAME, GUILayout.Width(800), GUILayout.Height(20));
         GAME_SCENE_NAME = EditorGUILayout.TextField("GAME_SCENE_NAME: ", GAME_SCENE_NAME, GUILayout.Width(800), GUILayout.Height(20));
+        GAME_LEVEL = EditorGUILayout.TextField("GAME_LEVEL: ", GAME_LEVEL, GUILayout.Width(800), GUILayout.Height(20));
         GUILayout.Label("");
         /**********************************************************/
     }
@@ -86,7 +87,7 @@ public class IntegrationGUI : EditorWindow
 
         if (GUILayout.Button("Apply", GUILayout.Width(400), GUILayout.Height(50)))
         {
-            SaveConfig(new Game(GAME_ID, GAME_NAME, GAME_SCENE_NAME));
+            SaveConfig(new Game(GAME_ID, GAME_NAME, GAME_SCENE_NAME, GAME_LEVEL));
         }
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
@@ -110,25 +111,35 @@ public class IntegrationGUI : EditorWindow
             }
         }
         catch (Exception ex) { }
-        if (!string.IsNullOrEmpty(game._id) || !string.IsNullOrEmpty(game.name) || !string.IsNullOrEmpty(game.game_scene_name))
-        {
-            string str = JsonUtility.ToJson(game);
-            using (FileStream fs = new FileStream(FIILE_PATH, FileMode.Create))
-            {
-                using (StreamWriter writer = new StreamWriter(fs))
-                {
-                    writer.Write(str);
-                }
-            }
-            UnityEditor.AssetDatabase.Refresh();
-        }
-        else
+
+        if (string.IsNullOrEmpty(game._id) && string.IsNullOrEmpty(game.name) && string.IsNullOrEmpty(game.game_scene_name))
         {
             Debug.LogError("Cannot save empty content");
+            return;
+
         }
+        if (!string.IsNullOrEmpty(game.game_level) && !int.TryParse(game.game_level, out int val))
+        {
+            Debug.LogError("GAME_LEVEL should be a decimal number");
+            return;
+        }
+        if (!Directory.Exists(PATH))
+        {
+            Directory.CreateDirectory(PATH);
+        }
+        string str = JsonUtility.ToJson(game);
+        using (FileStream fs = new FileStream(FILE_PATH, FileMode.Create))
+        {
+            using (StreamWriter writer = new StreamWriter(fs))
+            {
+                writer.Write(str);
+            }
+        }
+        UnityEditor.AssetDatabase.Refresh();
     }
     Game GetSavedGame()
     {
+        if (File.Exists(FILE_PATH)) { Debug.Log("Exist"); }
         var jsonTextFile = Resources.Load<TextAsset>(CONFIG_FILE_NAME);
         Game SavedGame = JsonUtility.FromJson<Game>(jsonTextFile.ToString());
         return SavedGame;

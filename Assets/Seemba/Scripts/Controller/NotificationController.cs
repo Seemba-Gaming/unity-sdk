@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 public class NotificationController : MonoBehaviour
 {
-  /*  // Start is called before the first frame update
+    // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Notification");
@@ -22,5 +22,5 @@ public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedE
     // Update is called once per frame
     void Update()
     {
-    }*/
+    }
 }

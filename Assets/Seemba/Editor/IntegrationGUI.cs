@@ -14,7 +14,7 @@ public class IntegrationGUI : EditorWindow
     string GAME_SCENE_NAME = "";
     string GAME_NAME = "";
 
-    [MenuItem("Seemba/Integration Parameters")]
+    
     #region UNITY_METHOD
     private void OnGUI()
     {
@@ -49,6 +49,7 @@ public class IntegrationGUI : EditorWindow
     }
     #endregion
     #region METHOD
+    [MenuItem("Seemba/Integration Parameters")]
     public static void ShowWindow()
     {
         EditorWindow.GetWindow<IntegrationGUI>("Integration Parameters");

@@ -1,17 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class ResultEqualityTranslationController : MonoBehaviour
 {
     [SerializeField]
     private Text equality,
       try_again,
-      score1, score2,
+      score1,score2,
       you_will_win,
       never_give_up,
-      date,
+	  date,
       ID,
-      play_again,
-      _continue;
+	  play_again,
+	  _continue;
     // Start is called before the first frame update
     void Start()
     {

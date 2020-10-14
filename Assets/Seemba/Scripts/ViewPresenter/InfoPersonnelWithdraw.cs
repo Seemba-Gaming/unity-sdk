@@ -1,8 +1,12 @@
-﻿using SimpleJSON;
-using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Threading;
+using Kakera;
+using System;
+using SimpleJSON;
 public class InfoPersonnelWithdraw : MonoBehaviour
 {
     public InputField LastName, FirstName, Adress, city, zip, state, country, personal_id_number, IBAN, Swift, Phone;
@@ -13,13 +17,13 @@ public class InfoPersonnelWithdraw : MonoBehaviour
     public static string currentIBAN, currentIdProof, currentDocUploaded;
     UserManager um = new UserManager();
     WithdrawManager wm = new WithdrawManager();
-    string userId, token;
+    string user_id, user_token;
     Image AcceptedIban;
     // Use this for initialization
     void OnEnable()
     {
-        userId = um.getCurrentUserId();
-        token = um.getCurrentSessionToken();
+        user_id = um.getCurrentUserId();
+        user_token = um.getCurrentSessionToken();
         WithdrawButton.interactable = false;
         AcceptedIban = GameObject.Find("AcceptedIBAN").GetComponent<Image>();
         IBAN.onValueChanged.AddListener(delegate
@@ -44,10 +48,10 @@ public class InfoPersonnelWithdraw : MonoBehaviour
         string Id = um.getCurrentUserId();
         string Token = um.getCurrentSessionToken();
         SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(() =>
+        UnityThreadHelper.CreateThread(async() =>
         {
             User user = um.getUser(Id, Token);
-            var account = wm.accountVerificationJSON(Token);
+            var account =await wm.accountVerificationStatus(Token);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 SceneManager.UnloadScene("Loader");
@@ -66,7 +70,7 @@ public class InfoPersonnelWithdraw : MonoBehaviour
                     ContinueButtonIBAN.onClick.AddListener(() =>
                     {
                         InfoPersonnelWithdraw.currentIBAN = IBAN.text;
-                        tokenizeAndAttach();
+                        //TokenizeAndCreate();
                     });
                 }
                 else
@@ -238,7 +242,7 @@ public class InfoPersonnelWithdraw : MonoBehaviour
         UnityThreadHelper.CreateThread(() =>
         {
             string withdrawResult = null;
-            withdrawResult = wm.payout(token, WithdrawPresenter.WithdrawMoney);
+            //withdrawResult = wm.payout(user_token, WithdrawPresenter.WithdrawMoney);
             Debug.Log("withdrawResult: " + withdrawResult);
             InfoPersonnelWithdraw.currentIdProof = null;
             InfoPersonnelWithdraw.currentIBAN = null;
@@ -281,7 +285,7 @@ public class InfoPersonnelWithdraw : MonoBehaviour
                     {
                         SceneManager.UnloadSceneAsync("Loader");
                         SceneManager.UnloadSceneAsync("WithdrawalInfo");
-                        UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney) - WithdrawPresenter.WithdrawMoney).ToString("N2").Replace(",", ".");
+                        UserManager.CurrentUser.money_credit = UserManager.CurrentUser.money_credit - WithdrawPresenter.WithdrawMoney;
                         behaviourScript.backToWinMoney();
                         behaviourScript.ShowPopup("popupCongratWithdraw");
                     });
@@ -296,28 +300,7 @@ public class InfoPersonnelWithdraw : MonoBehaviour
             }
         });
     }
-    private void tokenizeAndAttach()
-    {
-        if (!String.IsNullOrEmpty(InfoPersonnelWithdraw.currentIBAN))
-        {
-            SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-            UnityThreadHelper.CreateThread(() =>
-            {
-                string accounttoken = wm.TokenizeAccount(um.getUser(userId, token), InfoPersonnelWithdraw.currentIBAN);
-                if (!String.IsNullOrEmpty(accounttoken))
-                    if (wm.attachTokenToAccount(accounttoken, token))
-                    {
-                        string[] attrib = { "iban_uploaded" };
-                        string[] value5 = { "true" };
-                        um.UpdateUserByField(userId, token, attrib, value5);
-                    }
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    SceneManager.UnloadScene("Loader");
-                });
-            });
-        }
-    }
+    
     // Update is called once per frame
     void Update()
     {

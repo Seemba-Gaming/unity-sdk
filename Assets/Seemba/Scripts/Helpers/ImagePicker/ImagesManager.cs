@@ -1,7 +1,13 @@
-﻿using SimpleJSON;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using SimpleJSON;
+using UnityEngine.SceneManagement;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 public class ImagesManager : MonoBehaviour
 {
     public static string AvatarURL;
@@ -92,33 +98,30 @@ public class ImagesManager : MonoBehaviour
         croppedTexture.Apply();
         return croppedTexture;
     }
-    public static IEnumerator FixImage(byte[] avatar)
+    public async static Task<string> FixImage(byte[] avatar)
     {
-        WWWForm form = new WWWForm();
+        WWWForm form = new WWWForm(); 
         form.AddBinaryData("avatar", avatar);
         var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/avatars/upload", form);
         download.timeout = 4000;
-        yield return download.Send();
+        await download.SendWebRequest();
+
         if (download.isNetworkError)
         {
             print("Error downloading: " + download.error);
-            //SceneManager.LoadScene ("ConnectionFailed", LoadSceneMode.Additive);
             AvatarURL = "error";
-            yield return AvatarURL;
+            return AvatarURL;
+        }
+        if (download.responseCode == 200)
+        {
+            var N = JSON.Parse(download.downloadHandler.text);
+            //Save The current Session ID
+            AvatarURL = N["data"].Value;
+            return AvatarURL;
         }
         else
         {
-            if (download.responseCode == 200)
-            {
-                var N = JSON.Parse(download.downloadHandler.text);
-                //Save The current Session ID
-                AvatarURL = N["data"].Value;
-                yield return AvatarURL;
-            }
-            else
-            {
-                yield return null;
-            }
+            return null;
         }
     }
 }

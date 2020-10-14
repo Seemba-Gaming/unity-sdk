@@ -1,8 +1,11 @@
-﻿using SimpleJSON;
-using System.Globalization;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using SimpleJSON;
+using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.Globalization;
 using static PopupsViewPresenter;
 
 public class TournamentController : MonoBehaviour
@@ -43,8 +46,6 @@ public class TournamentController : MonoBehaviour
             ChallengeController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_BRACKET;
             //Needs Change
             EventsController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
-
-
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
                 StartCashTournament(entry_fee, gain, gain_type);
@@ -78,17 +79,17 @@ public class TournamentController : MonoBehaviour
             return;
         }
 
-        if (isProhibitedLocation(UserManager.CurrentCountryCode))
-        {
-            ShowPopup(PopupsController.PopupType.PROHIBITED_LOCATION, PopupsText.getInstance().prohibited_location());
-            return;
-        }
+        /* if (isProhibitedLocation(UserManager.CurrentCountryCode))
+         {
+             ShowPopup(PopupsController.PopupType.PROHIBITED_LOCATION, PopupsText.getInstance().prohibited_location());
+             return;
+         }
 
-        if (isVPNEnabled())
-        {
-            ShowPopup(PopupsController.PopupType.VPN, PopupsText.getInstance().vpn());
-            return;
-        }
+         if (isVPNEnabled())
+         {
+             ShowPopup(PopupsController.PopupType.VPN, PopupsText.getInstance().vpn());
+             return;
+         }*/
 
         JoinTournament(entry_fee, gain, gain_type);
     }
@@ -107,7 +108,7 @@ public class TournamentController : MonoBehaviour
 
                 if (tournamentId != null)
                 {
-                    //UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) - entry_fee).ToString();
+                    
                     setCurrentTournamentID(tournamentId);
                     SceneManager.LoadScene("Bracket", LoadSceneMode.Additive);
                 }
@@ -159,11 +160,11 @@ public class TournamentController : MonoBehaviour
     private bool isCreditSuffisant(float entry_fee, string win_type)
     {
 
-        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && (float.Parse(UserManager.CurrentMoney, CultureInfo.InvariantCulture.NumberFormat) >= entry_fee))
+        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && (UserManager.CurrentUser.money_credit >= entry_fee))
         {
             return true;
         }
-        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES) && (float.Parse(UserManager.CurrentWater) >= entry_fee))
+        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES) && (UserManager.CurrentUser.bubble_credit >= entry_fee))
         {
             return true;
         }

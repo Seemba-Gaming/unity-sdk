@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 //using GoogleMobileAds;
 //using GoogleMobileAds.Api;
+using UnityEngine.UI;
 // Example script showing how to invoke the Google Mobile Ads Unity plugin.
 public class AdsPresenter : MonoBehaviour
 {
-    /* private BannerView bannerView;
+	/* private BannerView bannerView;
 	private InterstitialAd interstitial;
 	private RewardBasedVideoAd rewardBasedVideo;
 	private float deltaTime = 0.0f;
@@ -306,4 +308,4 @@ public class AdsPresenter : MonoBehaviour
 		}
 		#endregion
 		*/
-}
+		}

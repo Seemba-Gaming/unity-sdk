@@ -1,21 +1,23 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class BankingTranslationController : MonoBehaviour
 {
     [SerializeField]
-    private Text cardholder_full_name,
-        wrong_cardholder_name,
-        card_number,
-        wrong_card_number,
-        expiry_date,
-        wrong_expiry_date,
-        security_code,
-        wrong_security_code,
-        i_agree_to_Seemba,
-        and,
-        terms_conditions,
-        privacy_policy,
-        credit,
+    private Text cardholder_full_name, 
+        wrong_cardholder_name, 
+        card_number, 
+        wrong_card_number, 
+        expiry_date, 
+        wrong_expiry_date, 
+        security_code, 
+        wrong_security_code, 
+        i_agree_to_Seemba, 
+        and, 
+        terms_conditions, 
+        privacy_policy, 
+        credit, 
         secured_payment;
     void Start()
     {

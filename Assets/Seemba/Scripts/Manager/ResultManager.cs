@@ -1,12 +1,13 @@
-﻿using SimpleJSON;
-using System;
-using System.Globalization;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
+using SimpleJSON;
+using System;
+using UnityEngine.SceneManagement;
+using System.Globalization;
 public class ResultManager : MonoBehaviour
 {
-    ChallengeManager challengeManager;
+    ChallengeManager cm;
     Text Gain;
     public static bool AddGain, resultWaiting = false;
     public GameObject bubbles, triangle;
@@ -15,20 +16,15 @@ public class ResultManager : MonoBehaviour
     void Start()
     {
 
-        if (AddGain)
-        {
-        }
-        challengeManager = new ChallengeManager();
-        UserManager manager = new UserManager();
+        cm = new ChallengeManager();
+        UserManager um = new UserManager();
         Texture2D CurrentUserTxt = new Texture2D(1, 1);
         Texture2D AdvTxt = new Texture2D(1, 1);
         Texture2D txtDrapeauAdv = new Texture2D(1, 1);
         Texture2D txtDrapeauCurrent = new Texture2D(1, 1);
-        Sprite newSprite;
-        string UserId = manager.getCurrentUserId();
-        string token = manager.getCurrentSessionToken();
+        string UserId = um.getCurrentUserId();
+        string token = um.getCurrentSessionToken();
         HistoryListController hc = new HistoryListController();
-        UnityThreading.ActionThread thread;
         String CurrentScene = SceneManager.GetActiveScene().name;
         SceneManager.LoadSceneAsync("Loader", LoadSceneMode.Additive);
         try
@@ -42,17 +38,17 @@ public class ResultManager : MonoBehaviour
         }
         UnityThreadHelper.CreateThread(() =>
         {
-            Challenge challengeResult = challengeManager.getChallenge(ChallengeManager.CurrentChallengeId, token);
+            Challenge challengeResult = cm.getChallenge(ChallengeManager.CurrentChallengeId, token);
             User adversaire = null;
             Byte[] lnByte = null;
             if (!resultWaiting)
             {
-                adversaire = manager.getUser(
+                adversaire = um.getUser(
                     challengeResult.matched_user_1._id == UserId ?
                     challengeResult.matched_user_2._id :
                     challengeResult.matched_user_1._id, token
                 );
-                lnByte = manager.getAvatar(adversaire.avatar);
+                lnByte = um.getAvatar(adversaire.avatar);
             }
             else
             {
@@ -64,30 +60,24 @@ public class ResultManager : MonoBehaviour
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 Image CurrentUserImage = GameObject.Find("ImageCurrentUser").GetComponent<Image>();
-                CurrentUserImage.sprite = UserManager.CurrentAvatarBytesString;
-                Text NomGagnant = GameObject.Find("NomCurrentUser").GetComponent<Text>();
-                Text ScoreGagnant = GameObject.Find("ScoreCurrentUser").GetComponent<Text>();
-                Text NomPerdant = GameObject.Find("NomAdv").GetComponent<Text>();
-                Text ScorePerdant = GameObject.Find("ScoreAdv").GetComponent<Text>();
+                Text Username = GameObject.Find("NomCurrentUser").GetComponent<Text>();
+                Text OpponentName = GameObject.Find("NomAdv").GetComponent<Text>();
+                Text ScoreCurrentUser = GameObject.Find("ScoreCurrentUser").GetComponent<Text>();
+                Text ScoreOpponent = GameObject.Find("ScoreAdv").GetComponent<Text>();
                 Text Date = GameObject.Find("DateValeur").GetComponent<Text>();
                 Text ChallengeId = GameObject.Find("ID").GetComponent<Text>();
-                Text Fee = GameObject.Find("Frais d'entréeValeur").GetComponent<Text>();
-                try
+                Text Fee = GameObject.Find("Fee").GetComponent<Text>();
+
+                CurrentUserImage.sprite = UserManager.CurrentAvatarBytesString;
+                if (resultWaiting != true)
                 {
-                    Gain = GameObject.Find("MontantGagnant").GetComponent<Text>();
-                    if (resultWaiting != true)
-                    {
-                        Image AdvImage = GameObject.Find("ImageAdv").GetComponent<Image>();
-                        AdvImage.sprite = ImagesManager.getSpriteFromBytes(lnByte);
-                    };
-                }
-                catch (Exception ex)
-                {
+                    Image AdvImage = GameObject.Find("ImageAdv").GetComponent<Image>();
+                    AdvImage.sprite = ImagesManager.getSpriteFromBytes(lnByte);
                 }
                 try
                 {
                     Image advDrapeau = GameObject.Find("DrapeauPerdant").GetComponent<Image>();
-                    Byte[] img1 = Convert.FromBase64String(manager.GetFlagByte(adversaire.country_code));
+                    Byte[] img1 = Convert.FromBase64String(um.GetFlagByte(adversaire.country_code));
                     txtDrapeauAdv.LoadImage(img1);
                     Sprite newSpriteDrapeau = Sprite.Create(txtDrapeauAdv as Texture2D, new Rect(0f, 0f, txtDrapeauAdv.width, txtDrapeauAdv.height), Vector2.zero);
                     advDrapeau.sprite = newSpriteDrapeau;
@@ -106,229 +96,89 @@ public class ResultManager : MonoBehaviour
                 catch (Exception ex)
                 {
                 }
-                float? score1 = null;
-                float? score2 = null;
-                if (challengeResult.user_1_score != null)
+                string challengeId = challengeResult._id;
+                if (!string.IsNullOrEmpty(UserManager.CurrentUsername))
                 {
-                    score1 = challengeResult.user_1_score;
+                    Username.text = UserManager.CurrentUsername;
                 }
+                else
+                {
+                    Username.text = PlayerPrefs.GetString("CurrentUsername");
+                }
+
                 if (challengeResult.user_2_score != null)
                 {
-                    score2 = challengeResult.user_2_score;
-                }
-                string gagnantId = null;
-                string scoreG = null;
-                string scoreP = null;
-                string challengeId = challengeResult._id;
-                try
-                {
-                    if (score1 > score2)
+                    OpponentName.text = adversaire.username;
+
+                    if (challengeResult.matched_user_1._id.Equals(um.getCurrentUserId()))
                     {
-                        gagnantId = challengeResult.matched_user_1._id;
-                        scoreG = score1.ToString();
-                        scoreP = score2.ToString();
+                        ScoreCurrentUser.text = challengeResult.user_1_score.ToString();
+                        ScoreOpponent.text = challengeResult.user_2_score.ToString();
                     }
-                    else
+                    else if (challengeResult.matched_user_2._id.Equals(um.getCurrentUserId()))
                     {
-                        gagnantId = challengeResult.matched_user_2._id;
-                        scoreG = score2.ToString();
-                        scoreP = score1.ToString();
-                    }
-                }
-                catch (FormatException e) { }//Debug.Log(e);}
-                if (gagnantId == manager.getCurrentUserId())
-                {
-                    // user est gagnant
-                    ScoreGagnant.text = scoreG;
-                    if (String.IsNullOrEmpty(scoreP))
-                    {
-                        ScorePerdant.text = "-";
-                    }
-                    else
-                    {
-                        ScorePerdant.text = scoreP;
-                    }
-                    if (!string.IsNullOrEmpty(UserManager.CurrentUsername))
-                    {
-                        NomGagnant.text = UserManager.CurrentUsername;
-                    }
-                    else
-                    {
-                        NomGagnant.text = PlayerPrefs.GetString("CurrentUsername");
-                    }
-                    try
-                    {
-                        NomPerdant.text = adversaire.username;
-                    }
-                    catch (NullReferenceException ex)
-                    {
-                    }
-                    if (challengeResult.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
-                    {
-                        try
-                        {
-                            Gain.text = challengeResult.gain + ",00 " + CurrencyManager.CURRENT_CURRENCY;
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                        try
-                        {
-                            triangle.gameObject.SetActive(true);
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                        switch (challengeResult.gain.ToString())
-                        {
-                            case "2":
-                                if (AddGain)
-                                {
-                                    if (challengeResult.matched_user_1._id != "")
-                                    {
-                                        UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) + 4).ToString();
-                                    }
-                                }
-                                Fee.text = "entry fee 1,20 " + CurrencyManager.CURRENT_CURRENCY;
-                                break;
-                            case "5":
-                                if (AddGain)
-                                {
-                                    if (challengeResult.matched_user_1._id != "")
-                                    {
-                                        UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) + 6).ToString();
-                                    }
-                                }
-                                Fee.text = "entry fee 3,00 " + CurrencyManager.CURRENT_CURRENCY;
-                                break;
-                            case "10":
-                                if (AddGain)
-                                {
-                                    if (challengeResult.matched_user_1._id != "")
-                                    {
-                                        UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney, CultureInfo.InvariantCulture.NumberFormat) + 10).ToString("N2").Replace(",", ".");
-                                    }
-                                }
-                                Fee.text = "entry fee 6,00 " + CurrencyManager.CURRENT_CURRENCY;
-                                break;
-                        }
-                    }
-                    else if (challengeResult.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
-                    {
-                        try
-                        {
-                            Gain.text = challengeResult.gain + " bubbles";
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                        try
-                        {
-                            bubbles.gameObject.SetActive(true);
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                        switch (challengeResult.gain)
-                        {
-                            case "2":
-                                if (AddGain)
-                                {
-                                    if (challengeResult.matched_user_2._id != "")
-                                    {
-                                        UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) + 2).ToString();
-                                    }
-                                }
-                                Fee.text = "entry fee 1 bubble";
-                                break;
-                            case "6":
-                                if (AddGain)
-                                {
-                                    if (challengeResult.matched_user_2._id != "")
-                                    {
-                                        UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) + 6).ToString();
-                                    }
-                                }
-                                Fee.text = "entry fee 3 bubbles";
-                                break;
-                            case "10":
-                                if (AddGain)
-                                {
-                                    if (challengeResult.matched_user_2._id != "")
-                                    {
-                                        UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) + 10).ToString();
-                                    }
-                                }
-                                Fee.text = "entry fee 5 bubbles";
-                                break;
-                        }
+                        ScoreCurrentUser.text = challengeResult.user_2_score.ToString();
+                        ScoreOpponent.text = challengeResult.user_1_score.ToString();
                     }
                 }
                 else
                 {
-                    // user lost
-                    ScoreGagnant.text = scoreP;
-                    if (scoreP == "-1")
-                    {
-                        ScorePerdant.text = "-";
-                    }
-                    else
-                    {
-                        ScorePerdant.text = scoreG;
-                    }
-                    NomGagnant.text = UserManager.CurrentUsername;
-                    //ca******
-                    try
-                    {
-                        NomPerdant.text = adversaire.username;
-                    }
-                    catch (NullReferenceException ex)
-                    {
-                    }
-                  ;
+                    ScoreCurrentUser.text = challengeResult.user_1_score.ToString();
+                }
+
+                if (challengeResult.winner_user.Equals(um.getCurrentUserId()))
+                {
+                    Debug.Log("here");
+                    Gain = GameObject.Find("Gain").GetComponent<Text>();
+                    triangle.gameObject.SetActive(true);
                     if (challengeResult.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
                     {
-                        if (challengeResult.matched_user_2._id != "")
-                        {
-                            switch (challengeResult.gain.ToString())
-                            {
-                                case "2":
-                                    Fee.text = "entry fee 1,20 " + CurrencyManager.CURRENT_CURRENCY;
-                                    break;
-                                case "5":
-                                    Fee.text = "entry fee 3,00 " + CurrencyManager.CURRENT_CURRENCY;
-                                    break;
-                                case "10":
-                                    Fee.text = "entry fee 6,00 " + CurrencyManager.CURRENT_CURRENCY;
-                                    break;
-                            }
-                        }
+                        Gain.text = float.Parse(challengeResult.gain).ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                     }
-                    else
+                    else if (challengeResult.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
                     {
-                        if (challengeResult.matched_user_2._id != "")
-                        {
-                            switch (challengeResult.gain.ToString())
-                            {
-                                case "2":
-                                    Fee.text = "entry fee 1 bubble";
-                                    break;
-                                case "6":
-                                    Fee.text = "entry fee 3 bubbles";
-                                    break;
-                                case "10":
-                                    Fee.text = "entry fee 5 bubbles";
-                                    break;
-                            }
-                        }
+                        Gain.text = challengeResult.gain + " bubbles";
+                    }
+                    Debug.Log("here");
+                }
+                if (challengeResult.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
+                {
+                    switch (float.Parse(challengeResult.gain))
+                    {
+                        case ChallengeManager.WIN_1V1_CASH_CONFIDENT:
+                            Fee.text = "Fee: " + ChallengeManager.FEE_1V1_CASH_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
+                            break;
+                        case ChallengeManager.WIN_1V1_CASH_CHAMPION:
+                            Fee.text = "Fee: " + ChallengeManager.FEE_1V1_CASH_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
+                            break;
+                        case ChallengeManager.WIN_1V1_CASH_LEGEND:
+                            Fee.text = "Fee: " + ChallengeManager.FEE_1V1_CASH_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
+                            break;
                     }
                 }
-                if (scoreP == "-1")
+                else if (challengeResult.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
                 {
-                    ScoreGagnant.text = scoreG;
-                    ScorePerdant.text = "-";
+                    switch (float.Parse(challengeResult.gain))
+                    {
+                        case ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT:
+                            Fee.text = "Fee: " + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubbles";
+                            break;
+                        case ChallengeManager.WIN_1V1_BUBBLES_CHAMPION:
+                            Fee.text = "Fee: " + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubbles";
+                            break;
+                        case ChallengeManager.WIN_1V1_BUBBLES_LEGEND:
+                            Fee.text = "Fee: " + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubbles";
+                            break;
+                    }
                 }
-                Date.text = (challengeResult.CreatedAt.ToString()).Remove(challengeResult.CreatedAt.ToString().LastIndexOf("-") + 3);
+
+                Debug.Log("here");
+
+                var seperator_index = challengeResult.CreatedAt.ToString().Contains("T") ? challengeResult.CreatedAt.ToString().IndexOf("T") : challengeResult.CreatedAt.ToString().IndexOf(" ");
+                string date = challengeResult.CreatedAt.ToString().Substring(0, seperator_index).Replace("/", "-");
+                string hour = challengeResult.CreatedAt.ToString().Substring(seperator_index + 1, 5).Replace(":", "H") + "MIN";
+                Date.text = date + " " + "AT" + " " + hour;
+
                 ChallengeId.text = challengeResult._id.ToString();
                 try
                 {
@@ -354,9 +204,6 @@ public class ResultManager : MonoBehaviour
             {
             }
         }
-    }
-    void OnApplicationQuit()
-    {
     }
     void checkGameFinished()
     {

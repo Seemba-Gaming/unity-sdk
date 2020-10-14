@@ -1,9 +1,17 @@
-﻿using SimpleJSON;
-using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using SimpleJSON;
 using UnityEngine.UI;
+using System.Text;
+using System.IO;
+using System.Linq;
+using UnityEngine.SceneManagement;
+using System;
+using System.Net;
+using System.Globalization;
+using System.Net.NetworkInformation;
+using System.Timers;
 public class TournamentPresenter : MonoBehaviour
 {
     UserManager um;
@@ -119,7 +127,6 @@ public class TournamentPresenter : MonoBehaviour
         TournamentController.CURRENT_TOURNAMENT_GAIN = tournamentJson["tournament"]["gain"].AsFloat;
         TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE = tournamentJson["tournament"]["gain_type"].Value;
     }
-
     public JSONArray getChallenges(JSONArray rounds)
     {
         JSONArray challenges = new JSONArray();
@@ -132,7 +139,6 @@ public class TournamentPresenter : MonoBehaviour
         }
         return challenges;
     }
-
     public void initUI(JSONArray challenges, JSONArray participants)
     {
         //Show Loaders
@@ -161,12 +167,13 @@ public class TournamentPresenter : MonoBehaviour
         catch (NullReferenceException ex) { }
         try
         {
-
+             
             user_2_score = match["user_2_score"].AsFloat;
             //Set Score
             GameObject.Find("Challenge (" + pos + ")/Player2/Score").GetComponent<Text>().text = ((float)Math.Round(match["user_2_score"].AsFloat * 100f) / 100f).ToString();
         }
         catch (NullReferenceException ex) { }
+        
         if (pos == TournamentController.CURRENT_TOURNAMENT_NB_PLAYER - 1)
         {
             try
@@ -181,8 +188,6 @@ public class TournamentPresenter : MonoBehaviour
                     {
                         GameObject.Find("Challenge (" + (pos + 1) + ")/Player1/Pro").transform.localScale = Vector3.one;
                     }
-                    if (match["matched_user_1"].Value == um.getCurrentUserId())
-                        ShowWinPopup(user);
                 }
                 else if (user_1_score < user_2_score)
                 {
@@ -194,33 +199,9 @@ public class TournamentPresenter : MonoBehaviour
                     {
                         GameObject.Find("Challenge (" + (pos + 1) + ")/Player1/Pro").transform.localScale = Vector3.one;
                     }
-                    if (match["matched_user_2"].Value == um.getCurrentUserId())
-                        ShowWinPopup(user);
                 }
             }
             catch (NullReferenceException ex) { }
-        }
-    }
-    void ShowWinPopup(JSONNode user)
-    {
-        EventsController eventsController = new EventsController();
-        eventsController.ShowPopup("popupWin");
-        if (TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE == TournamentManager.GAIN_TYPE_BUBBLE)
-        {
-            GameObject.Find("popup_gain").GetComponent<Text>().text = TournamentController.CURRENT_TOURNAMENT_GAIN.ToString();
-            if (float.Parse(UserManager.CurrentWater) != user["bubble_credit"].AsFloat)
-            {
-                UserManager.CurrentWater = user["bubble_credit"].Value;
-            }
-        }
-        else
-        {
-            GameObject.Find("popup_gain").GetComponent<Text>().text = TournamentController.CURRENT_TOURNAMENT_GAIN + CurrencyManager.CURRENT_CURRENCY;
-            GameObject.Find("popup_gain_type").transform.localScale = Vector3.zero;
-            if (float.Parse(UserManager.CurrentMoney) != user["money_credit"].AsFloat)
-            {
-                UserManager.CurrentMoney = user["money_credit"].Value;
-            }
         }
     }
     JSONNode getUserFromParticipants(string id, JSONArray participants)

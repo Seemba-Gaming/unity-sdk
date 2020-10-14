@@ -1,19 +1,17 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using System;
+using SimpleJSON;
 using UnityEngine.SceneManagement;
+using System.IO;
+using static PopupsViewPresenter;
+
 public class Seemba : MonoBehaviour
 {
     UserManager userManager = new UserManager();
-    public static bool gameOver = false;
-    //public GoogleAnalyticsV4 googleAnalytics;	
-    public void setGameOver(bool GameOver)
-    {
-        gameOver = GameOver;
-    }
-    public bool isGameOver()
-    {
-        return gameOver;
-    }
+
+    public static bool isFromSeembaStore = false;
+   
     private void Awake()
     {
         //Set The FPS target in the Awake function to avoid all changes from outsides.
@@ -22,86 +20,37 @@ public class Seemba : MonoBehaviour
     public void Enter()
     {
         //PlayerPrefs.DeleteAll();
+#if (UNITY_ANDROID)
+        if (!isFromSeembaStore) OpenSeemba();
+        else
+        {
+            PopupsController.getInstance().ShowPopup(PopupsController.PopupType.DOWNLOAD_FROM_STORE, PopupsText.getInstance().download_from_store());
+        }
+#else
+        OpenSeemba();   
+#endif
 
-        ConnectivityController.CURRENT_ACTION = ConnectivityController.ENTER_ESPORT_TOURNAMENT_ACTION;
-        GamesManager gamesManager = new GamesManager();
+    }
+
+    #region OPEN_SEEMBA
+    private void OpenSeemba()
+    {
+        CheckConnection();
+    }
+    private void CheckConnection()
+    {
         EventsController nbs = new EventsController();
-        UserManager um = new UserManager();
+        ConnectivityController.CURRENT_ACTION = ConnectivityController.ENTER_ESPORT_TOURNAMENT_ACTION;
+
         StartCoroutine(nbs.checkInternetConnection((isConnected) =>
         {
             // handle connection status here
             if (isConnected == true)
             {
+
                 SceneManager.UnloadSceneAsync("Loader");
                 SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-                UnityThreadHelper.CreateThread(() =>
-                {
-                    if (string.IsNullOrEmpty(GamesManager.GAME_ID))
-                    {
-                        Debug.LogError("Please Insert game id in GamesManager Class(gameId)");
-                    }
-                    else
-                    {
-                        string res = gamesManager.getGamebyId(GamesManager.GAME_ID);
-                        if (!string.IsNullOrEmpty(res))
-                        {
-                            UnityThreadHelper.Dispatcher.Dispatch(() =>
-                            {
-                                StartCoroutine(BackgroundController.SaveBackgroundImage(BackgroundController.backgroundURL));
-                                StartCoroutine(GamesManager.SaveIcon(GamesManager.ICON_URL));
-                                StartCoroutine(TranslationManager.SavePreferedLaguage());
-                            });
-                            while (GamesManager.backgroundSaved == null || TranslationManager.isDownloaded == null)
-                            {
-                            }
-                            if (GamesManager.backgroundSaved == true && TranslationManager.isDownloaded == true)
-                            {
-                                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                                {
-                                    if (string.IsNullOrEmpty(GamesManager.GAME_ID))
-                                    {
-                                        Debug.LogError("Please Insert the correct game id in GamesManager Class(gameId)");
-                                    }
-                                    else
-                                    {
-                                        try
-                                        {
-                                            if (um.getCurrentUserId() != null)
-                                            {
-
-                                                SceneManager.LoadSceneAsync("Home");
-                                            }
-                                            else
-                                            {
-                                                SceneManager.LoadSceneAsync("Intro");
-                                            }
-                                        }
-                                        catch (NullReferenceException ex)
-                                        {
-                                            //Catch
-                                        }
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                                {
-                                    SceneManager.UnloadSceneAsync("Loader");
-                                    SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                                });
-                            }
-                        }
-                        else
-                        {
-                            Debug.LogError("Please Insert game id in GamesManager Class(gameId)");
-                            UnityThreadHelper.Dispatcher.Dispatch(() =>
-                            {
-                                SceneManager.UnloadSceneAsync("Loader");
-                            });
-                        }
-                    }
-                });
+                LoadSeembaConfig();
             }
             else
             {
@@ -115,13 +64,91 @@ public class Seemba : MonoBehaviour
             }
         }));
     }
+    private void LoadSeembaConfig()
+    {
+        try
+        {
+            var jsonTextFile = Resources.Load<TextAsset>("seemba-services");
+            Game Game = JsonUtility.FromJson<Game>(jsonTextFile.ToString());
+            GamesManager.GAME_ID = Game._id;
+            GamesManager.GAME_NAME = Game.name;
+            GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
+            DownloadAssets();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Please complete the game integration before starting");
+            Debug.Break();
+        }
+    }
+    private void DownloadAssets()
+    {
+        GamesManager gamesManager = new GamesManager();
+
+        UnityThreadHelper.CreateThread(() =>
+        {
+            string res = gamesManager.getGamebyId(GamesManager.GAME_ID);
+            if (!string.IsNullOrEmpty(res))
+            {
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                {
+                    StartCoroutine(BackgroundController.SaveBackgroundImage(GamesManager.BACKGROUND_IMAGE_URL));
+                    StartCoroutine(GamesManager.SaveIcon(GamesManager.ICON_URL));
+                    StartCoroutine(TranslationManager.SavePreferedLaguage());
+                });
+                while (GamesManager.backgroundSaved == null || TranslationManager.isDownloaded == null)
+                {
+                }
+                if (GamesManager.backgroundSaved == true && TranslationManager.isDownloaded == true)
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        
+                        //instantiate sentry for catching crashes...
+                        InstantiateSentry();
+                        if (userManager.getCurrentUserId() != null)
+                        {
+                            SceneManager.LoadSceneAsync("Home");
+                        }
+                        else
+                        {
+                            SceneManager.LoadSceneAsync("Intro");
+                        }
+                    });
+                }
+                else
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        SceneManager.UnloadSceneAsync("Loader");
+                        SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
+                    });
+                }
+            }
+            else
+            {
+                Debug.LogError("Please verify your game ID");
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        Debug.Break();
+                        SceneManager.UnloadSceneAsync("Loader");
+                    });
+            }
+
+        });
+    }
+    private void InstantiateSentry()
+    {
+        SentryController.Instance.instantiate();
+    }
+    #endregion
     public void Quit()
     {
         BackgroundController.CurrentBackground = null;
         EventsController.ChallengeType = null;
         SceneManager.LoadScene(0);
     }
-    public void setResult(int score)
+    public void SetResult(int score)
     {
         //1vs1
         if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)
@@ -139,7 +166,7 @@ public class Seemba : MonoBehaviour
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
                         SceneManager.UnloadScene("Loader");
-                        challengeManager.waitAdversaryFinishGame1();
+                        challengeManager.ShowResults();
                     });
                 });
             }
@@ -164,11 +191,7 @@ public class Seemba : MonoBehaviour
                 });
             });
         }
+
     }
-    public void On_ApplicationQuit()
-    {
-        if (!isGameOver())
-        {
-        }
-    }
+    
 }

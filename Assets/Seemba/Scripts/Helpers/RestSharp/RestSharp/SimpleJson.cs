@@ -532,7 +532,7 @@ namespace RestSharp
             }
             StringBuilder sb = new StringBuilder();
             char c;
-            for (int i = 0; i < jsonString.Length;)
+            for (int i = 0; i < jsonString.Length; )
             {
                 c = jsonString[i++];
                 if (c == '\\')
@@ -1173,8 +1173,8 @@ namespace RestSharp
             if (value is string)
             {
                 string str = value as string;
-                if (!string.IsNullOrEmpty(str) && (type == typeof(DateTime) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTime))))
-                    obj = DateTime.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
+                if(!string.IsNullOrEmpty(str) && (type == typeof(DateTime) || (ReflectionUtils.IsNullableType(type) && Nullable.GetUnderlyingType(type) == typeof(DateTime)) ))
+                     obj = DateTime.ParseExact(str, Iso8601Format, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
                 else
                     obj = str;
             }
@@ -1198,7 +1198,7 @@ namespace RestSharp
             {
                 if (value is IDictionary<string, object>)
                 {
-                    IDictionary<string, object> jsonObject = (IDictionary<string, object>)value;
+                    IDictionary<string, object> jsonObject = (IDictionary<string, object>) value;
                     if (ReflectionUtils.IsTypeDictionary(type))
                     {
                         // if dictionary then
@@ -1209,11 +1209,11 @@ namespace RestSharp
                         Type keyType = type.GetGenericArguments()[0];
                         Type valueType = type.GetGenericArguments()[1];
 #endif
-                        Type genericType = typeof(Dictionary<,>).MakeGenericType(keyType, valueType);
+                        Type genericType = typeof (Dictionary<,>).MakeGenericType(keyType, valueType);
 #if NETFX_CORE
                     dynamic dict = CacheResolver.GetNewInstance(genericType);
 #else
-                        IDictionary dict = (IDictionary)CacheResolver.GetNewInstance(genericType);
+                        IDictionary dict = (IDictionary) CacheResolver.GetNewInstance(genericType);
 #endif
                         foreach (KeyValuePair<string, object> kvp in jsonObject)
                         {
@@ -1248,11 +1248,11 @@ namespace RestSharp
                 }
                 else if (value is IList<object>)
                 {
-                    IList<object> jsonObject = (IList<object>)value;
+                    IList<object> jsonObject = (IList<object>) value;
                     IList list = null;
                     if (type.IsArray)
                     {
-                        list = (IList)Activator.CreateInstance(type, jsonObject.Count);
+                        list = (IList) Activator.CreateInstance(type, jsonObject.Count);
                         int i = 0;
                         foreach (object o in jsonObject)
                             list[i++] = DeserializeObject(o, type.GetElementType());
@@ -1261,7 +1261,7 @@ namespace RestSharp
 #if NETFX_CORE
  typeof(IList).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo())
 #else
-                             typeof(IList).IsAssignableFrom(type)
+                             typeof (IList).IsAssignableFrom(type)
 #endif
                         )
                     {
@@ -1270,8 +1270,8 @@ namespace RestSharp
 #else
                         Type innerType = type.GetGenericArguments()[0];
 #endif
-                        Type genericType = typeof(List<>).MakeGenericType(innerType);
-                        list = (IList)CacheResolver.GetNewInstance(genericType);
+                        Type genericType = typeof (List<>).MakeGenericType(innerType);
+                        list = (IList) CacheResolver.GetNewInstance(genericType);
                         foreach (object o in jsonObject)
                             list.Add(DeserializeObject(o, innerType));
                     }
@@ -1382,7 +1382,7 @@ namespace RestSharp
     namespace Reflection
     {
 #if SIMPLE_JSON_INTERNAL
-        internal
+    internal
 #else
         public
 #endif
@@ -1455,25 +1455,25 @@ namespace RestSharp
             }
         }
 #if SIMPLE_JSON_INTERNAL
-        internal
+    internal
 #else
         public
 #endif
  delegate object GetHandler(object source);
 #if SIMPLE_JSON_INTERNAL
-        internal
+    internal
 #else
         public
 #endif
  delegate void SetHandler(object source, object value);
 #if SIMPLE_JSON_INTERNAL
-        internal
+    internal
 #else
         public
 #endif
  delegate void MemberMapLoader(Type type, SafeDictionary<string, CacheResolver.MemberMap> memberMaps);
 #if SIMPLE_JSON_INTERNAL
-        internal
+    internal
 #else
         public
 #endif
@@ -1568,7 +1568,7 @@ namespace RestSharp
                 getGenerator.Emit(OpCodes.Ret);
                 return (GetHandler)dynamicGet.CreateDelegate(typeof(GetHandler));
 #else
-                return delegate (object instance) { return fieldInfo.GetValue(instance); };
+                return delegate(object instance) { return fieldInfo.GetValue(instance); };
 #endif
             }
             static SetHandler CreateSetHandler(FieldInfo fieldInfo)
@@ -1587,7 +1587,7 @@ namespace RestSharp
                 setGenerator.Emit(OpCodes.Ret);
                 return (SetHandler)dynamicSet.CreateDelegate(typeof(SetHandler));
 #else
-                return delegate (object instance, object value) { fieldInfo.SetValue(instance, value); };
+                return delegate(object instance, object value) { fieldInfo.SetValue(instance, value); };
 #endif
             }
             static GetHandler CreateGetHandler(PropertyInfo propertyInfo)
@@ -1613,7 +1613,7 @@ namespace RestSharp
 #if NETFX_CORE
                 return delegate(object instance) { return getMethodInfo.Invoke(instance, new Type[] { }); };
 #else
-                return delegate (object instance) { return getMethodInfo.Invoke(instance, Type.EmptyTypes); };
+                return delegate(object instance) { return getMethodInfo.Invoke(instance, Type.EmptyTypes); };
 #endif
 #endif
             }
@@ -1638,11 +1638,11 @@ namespace RestSharp
                 setGenerator.Emit(OpCodes.Ret);
                 return (SetHandler)dynamicSet.CreateDelegate(typeof(SetHandler));
 #else
-                return delegate (object instance, object value) { setMethodInfo.Invoke(instance, new[] { value }); };
+                return delegate(object instance, object value) { setMethodInfo.Invoke(instance, new[] { value }); };
 #endif
             }
 #if SIMPLE_JSON_INTERNAL
-            internal
+    internal
 #else
             public
 #endif
@@ -1669,7 +1669,7 @@ namespace RestSharp
             }
         }
 #if SIMPLE_JSON_INTERNAL
-        internal
+    internal
 #else
         public
 #endif

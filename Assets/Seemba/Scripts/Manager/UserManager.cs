@@ -1,25 +1,29 @@
-using RestSharp;
-using SimpleJSON;
-using System;
+using UnityEngine;
 using System.Collections;
-using System.IO;
 //using System.Threading.Tasks;
 //using System.Net.Http;
 //using Parse.Common.Internal;
 using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
+using System;
+using System.IO;
 using System.Text;
-using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.Networking;
+using SimpleJSON;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
+using System.Threading;
+using UnityEngine.UI;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
+using RestSharp;
+using UnityEngine.Networking;
+using System.Threading.Tasks;
+
 public class UserManager : MonoBehaviour
 {
     public static string CurrentUsername, UserId, userToken, UserEmail;
     string longLat;
-    public static string CurrentMoney;
-    public static string CurrentWater;
     public static User CurrentUser;
     public static string CurrentCountryCode;
     public static string CurrentCountryRegion;
@@ -42,7 +46,7 @@ public class UserManager : MonoBehaviour
     }
     IEnumerator checkUser()
     {
-        if (string.IsNullOrEmpty(CurrentMoney))
+        if (CurrentUser == null)
         {
             try
             {
@@ -121,7 +125,7 @@ public class UserManager : MonoBehaviour
                 using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
                 {
                     var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log (jsonResponse);
+                    Debug.Log(jsonResponse);
                 }
             }
         }
@@ -134,7 +138,7 @@ public class UserManager : MonoBehaviour
                     using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                     {
                         string error = reader.ReadToEnd();
-                        //Debug.Log (error);
+                        Debug.Log(error);
                     }
                 }
             }
@@ -164,6 +168,26 @@ public class UserManager : MonoBehaviour
                 }
             }
         }
+    }
+    public async Task<string> GetFlagByteAsync(string country_code)
+    {
+        if (!string.IsNullOrEmpty(PlayerPrefs.GetString(country_code)))
+        {
+            return PlayerPrefs.GetString(country_code);
+        }
+        else
+        {
+
+            string url = "https://seemba-api.herokuapp.com/flags/" + country_code + ".png";
+            var www = UnityWebRequestTexture.GetTexture(url);
+            await www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError || www.isNetworkError) return null;
+
+            var texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            return System.Convert.ToBase64String(texture.EncodeToPNG());
+        }
+
     }
     public string GetGeoLoc()
     {
@@ -211,63 +235,12 @@ public class UserManager : MonoBehaviour
             return null;
         }
     }
-    public void updateAvatar(string userId, string token, byte[] avatar)
+
+
+    public async Task<JSONNode> signingUp(string username, string email, string password, string avatar)
     {
-        var client = new RestClient(Endpoint.classesURL + "/users/" + userId);
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        var request = new RestRequest(Method.PUT);
-        request.AddHeader("x-access-token", token);
-        request.AddFile("avatar", avatar, "avatar");
-        bool cmp = false;
-        string res = null;
-        client.ExecuteAsync(request, response =>
-        {
-            //Debug.Log(response.Content);
-            res = response.Content;
-            cmp = true;
-        });
-        if (!string.IsNullOrEmpty(res))
-        {
-            var N = JSON.Parse(res);
-            if (N["success"].AsBool == true)
-            {
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(avatar);
-                });
-            }
-        }
-    }
-    public IEnumerator SaveDataAfterSignup()
-    {
-        //Debug.Log (UserService._Username);
-        CoroutineWithData cd = new CoroutineWithData(this, signingUp(UserService._Username, UserService._Email, UserService._Password, UserService._Avatar));
-        yield return cd.coroutine;
-        if (int.Parse(cd.result.ToString()) == 0)
-        {
-            UserService.statusCode = 0;
-            yield return 0;
-        }
-        else
-        {
-            UserService.statusCode = 400;
-            yield return 400;
-        }
-        //Debug.Log (cd.result);
-    }
-    //signup with the new api
-    public IEnumerator signingUp(string username, string email, string password, string avatar)
-    {
-        WithdrawManager wm = new WithdrawManager();
-        Debug.Log("username: " + username);
-        Debug.Log("email: " + email);
-        Debug.Log("password: " + password);
-        Debug.Log("country_code: " + GetGeoLoc());
-        Debug.Log("longLat: " + longLat);
-        Debug.Log("avatar: " + avatar);
-        Debug.Log("game_id: " + GamesManager.GAME_ID);
         WWWForm form = new WWWForm();
+
         form.AddField("username", username);
         form.AddField("email", email);
         form.AddField("password", password);
@@ -275,49 +248,25 @@ public class UserManager : MonoBehaviour
         form.AddField("long_lat", longLat);
         form.AddField("game_id", GamesManager.GAME_ID);
         form.AddField("avatar", avatar);
-        var download = UnityWebRequest.Post(Endpoint.classesURL + "/users", form);
-        download.timeout = 4000;
-        yield return download.Send();
-        //Debug.Log (download.downloadHandler.text);
-        if (download.isNetworkError)
+
+        var url = Endpoint.classesURL + "/users";
+        var download = UnityWebRequest.Post(url, form);
+        download.uploadHandler.contentType = "application/x-www-form-urlencoded";
+
+        await download.SendWebRequest();
+        Debug.Log(download.downloadHandler.text);
+        if (download.isNetworkError || download.isHttpError || download.isNetworkError)
         {
             print("Error downloading: " + download.error);
-            UserService.statusCode = 400;
-            try
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-            }
-            catch (ArgumentException ex)
-            {
-            }
-            yield return 400;
+            return null;
+
         }
-        else
-        {
-            if (download.responseCode == 200)
-            {
-                Debug.Log(download.downloadHandler.text);
-                var N = JSON.Parse(download.downloadHandler.text);
-                //Attach Info to Stripe Account
-                wm.attachBusinessProfileToAccount(N["token"].Value);
-                wm.attachInfoToAccount(N["token"].Value, N["data"]["email"].Value, "email");
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    Debug.Log(download.downloadHandler.text);
-                    //Save The current Session ID
-                    saveUserId(N["data"]["_id"].Value);
-                    //Save Session Token
-                    saveSessionToken(N["token"].Value);
-                    UserService.statusCode = 0;
-                });
-                yield return 0;
-            }
-            else
-            {
-                UserService.statusCode = 400;
-                yield return 400;
-            }
-        }
+        var N = JSON.Parse(download.downloadHandler.text);
+        //Save The current Session ID
+        saveUserId(N["data"]["_id"].Value);
+        //Save Session Token
+        saveSessionToken(N["token"].Value);
+        return N;
     }
     public Byte[] getAvatar(string url)
     {
@@ -355,54 +304,47 @@ public class UserManager : MonoBehaviour
             }
         }
     }
-    public Byte[] OldGetAvatar(string url)
+    public async Task<bool> winFreeBubble(string token)
     {
-        Byte[] lnByte = null;
-        HttpWebRequest lxRequest = (HttpWebRequest)WebRequest.Create(url);
-        // returned values are returned as a stream, then read into a string
-        String lsResponse = string.Empty;
-        using (HttpWebResponse lxResponse = (HttpWebResponse)lxRequest.GetResponse())
+        var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/bubbles/free", new WWWForm());
+        download.SetRequestHeader("x-access-token", token);
+        download.uploadHandler.contentType = "application/x-www-form-urlencoded";
+        await download.SendWebRequest();
+        Debug.Log(download.downloadHandler.text);
+        if (download.isNetworkError || download.isHttpError || download.isNetworkError)
         {
-            using (BinaryReader reader = new BinaryReader(lxResponse.GetResponseStream()))
-            {
-                lnByte = reader.ReadBytes(1 * 1024 * 1024 * 10);
-                //return ImagesManager.getSpriteFromBytes (lnByte);
-                return lnByte;
-            }
+            print("Error downloading: " + download.error);
+            return false;
+
         }
+        return true;
     }
-    public string getData(string url, string username, string password)
+    public void updateAvatar(string userId, string token, byte[] avatar)
     {
-        try
+        var client = new RestClient(Endpoint.classesURL + "/users/" + userId);
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+        var request = new RestRequest(Method.PUT);
+        request.AddHeader("x-access-token", token);
+        request.AddFile("avatar", avatar, "avatar");
+        bool cmp = false;
+        string res = null;
+        client.ExecuteAsync(request, response =>
         {
-            var request = System.Net.WebRequest.Create(url);
-            if (request != null)
+            //Debug.Log(response.Content);
+            res = response.Content;
+            cmp = true;
+        });
+        if (!string.IsNullOrEmpty(res))
+        {
+            var N = JSON.Parse(res);
+            if (N["success"].AsBool == true)
             {
-                request.Method = "GET";
-                request.Timeout = 12000;
-                request.ContentType = @"application/json";
-                string authInfo = username + ":" + password;
-                authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
-                //like this:
-                request.Headers["Authorization"] = "Basic " + authInfo;
-                request.Headers["X-Parse-Application-Id"] = "seembaapi";
-                using (System.IO.Stream s = request.GetResponse().GetResponseStream())
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
                 {
-                    using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                    {
-                        var jsonResponse = sr.ReadToEnd();
-                        //Console.WriteLine(String.Format("Response: {0}", jsonResponse));
-                        //return String.Format("Response: {0}", jsonResponse);
-                        return jsonResponse;
-                    }
-                }
+                    UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(avatar);
+                });
             }
-            return null;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            return (ex.ToString());
         }
     }
     public void saveUserId(string user)
@@ -479,29 +421,30 @@ public class UserManager : MonoBehaviour
                 using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
                 {
                     var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
+                    Debug.Log("login: " + jsonResponse);
                     N = JSON.Parse(jsonResponse);
                     if (N["success"].AsBool == true)
                     {
                         saveSessionToken(N["token"].Value);
-                        saveUserId(N["user"]["_id"].Value);
-                        UserManager.CurrentUsername = N["user"]["username"].Value;
-                        UserService.updateCredit(N["user"]["money_credit"].Value, N["user"]["bubble_credit"].Value);
-                        Byte[] lnByte = um.getAvatar(N["user"]["avatar"].Value);
+                        saveUserId(N["data"]["_id"].Value);
+                        UserManager.CurrentUsername = N["data"]["username"].Value;
+                        UserManager.CurrentUser = new User();
+                        UserManager.UpdateUserCredit(N["data"]["money_credit"].Value, N["data"]["bubble_credit"].Value);
+                        Byte[] lnByte = um.getAvatar(N["data"]["avatar"].Value);
 
                         UnityThreadHelper.Dispatcher.Dispatch(() =>
                         {
-                            UserManager.CurrentFlagBytesString = um.GetFlagByte(N["user"]["country_code"].Value);
+                            UserManager.CurrentFlagBytesString = um.GetFlagByte(N["data"]["country_code"].Value);
                             PlayerPrefs.SetString("CurrentFlagBytesString", UserManager.CurrentFlagBytesString);
-                            UserManager.CurrentCountryCode = N["user"]["country_code"].Value;
+                            UserManager.CurrentCountryCode = N["data"]["country_code"].Value;
                             UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(lnByte);
                         });
-                        //Debug.Log("login success");
+                        Debug.Log("login success");
                         return "success";
                     }
                     else
                     {
-                        //Debug.Log("login failed");
+                        Debug.Log("login failed");
                         return "failed";
                     }
                 }
@@ -516,6 +459,7 @@ public class UserManager : MonoBehaviour
                     using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                     {
                         string error = reader.ReadToEnd();
+                        Debug.Log(error);
                         N = JSON.Parse(error);
                         if (N["success"].AsBool == false)
                         {
@@ -525,7 +469,6 @@ public class UserManager : MonoBehaviour
                         {
                             return "error";
                         }
-                        //Debug.Log (error);
                     }
                 }
             }
@@ -541,174 +484,180 @@ public class UserManager : MonoBehaviour
         deleteFile("Token.dat");
         deleteFile("User.dat");
         deleteFile("Msg.dat");
+        UserManager.CurrentUser = null;
         PlayerPrefs.DeleteAll();
     }
     public User getUser(string id, string token)
     {
-        string lastname, firstname, bubble_click, account_id, city, country_code, state, birthday, adress, country, personal_id_number;
+        string lastname, firstname, bubble_click, payment_account_id, city, country_code, state, birthday, adress, country, personal_id_number;
         float max_withdraw;
         string zipcode;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         string url = Endpoint.classesURL + "/users/" + id;
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
         request.Method = "GET";
         request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        try
-        {
-            using (System.IO.Stream s = request.GetResponse().GetResponseStream())
-            {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
 
-                    var N = JSON.Parse(jsonResponse);
-                    if (N["success"].AsBool == true)
+        using (System.IO.Stream s = request.GetResponse().GetResponseStream())
+        {
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+            {
+                var jsonResponse = sr.ReadToEnd();
+                Debug.Log(jsonResponse);
+                var N = JSON.Parse(jsonResponse);
+                if (N["success"].AsBool == true)
+                {
+                    try
                     {
-                        try
-                        {
-                            lastname = N["data"]["lastname"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            lastname = null;
-                        }
-                        try
-                        {
-                            firstname = N["data"]["firstname"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            firstname = null;
-                        }
-                        try
-                        {
-                            bubble_click = N["data"]["last_bubble_click"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            bubble_click = null;
-                        }
-                        try
-                        {
-                            account_id = N["data"]["payment_account_id"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            account_id = null;
-                        }
-                        try
-                        {
-                            city = N["data"]["city"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            city = null;
-                        }
-                        try
-                        {
-                            country_code = N["data"]["country_code"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            country_code = null;
-                        }
-                        try
-                        {
-                            state = N["data"]["state"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            state = null;
-                        }
-                        try
-                        {
-                            max_withdraw = N["data"]["max_withdraw"].AsFloat;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            max_withdraw = 0;
-                        }
-                        try
-                        {
-                            zipcode = N["data"]["zipcode"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            zipcode = "";
-                        }
-                        try
-                        {
-                            birthday = N["data"]["birthdate"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            birthday = null;
-                        }
-                        try
-                        {
-                            adress = N["data"]["address"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            adress = null;
-                        }
-                        try
-                        {
-                            country = N["data"]["country"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            country = null;
-                        }
-                        try
-                        {
-                            personal_id_number = N["data"]["personal_id_number"].Value;
-                        }
-                        catch (NullReferenceException nre)
-                        {
-                            personal_id_number = null;
-                        }
-                        User user = new User(N["data"]["_id"].Value, N["data"]["username"].Value, N["data"]["avatar"].Value,
-                            N["data"]["username_changed"].AsBool, personal_id_number, lastname, firstname, N["data"]["money_credit"].AsFloat,
-                                        N["data"]["bubble_credit"].AsFloat, N["data"]["email"].Value, N["data"]["password"].Value,
-                                        N["data"]["amateur_bubble"].AsInt, N["data"]["novice_bubble"].AsInt, N["data"]["legend_bubble"].AsInt,
-                                        N["data"]["confident_bubble"].AsInt, N["data"]["confirmed_bubble"].AsInt, N["data"]["champion_bubble"].AsInt,
-                                        N["data"]["amateur_money"].AsInt, N["data"]["novice_money"].AsInt, N["data"]["legend_money"].AsInt,
-                                        N["data"]["confident_money"].AsInt, N["data"]["confirmed_money"].AsInt, N["data"]["champion_money"].AsInt,
-                                        N["data"]["losses_streak"].AsInt, N["data"]["victories_streak"].AsInt, N["data"]["long_lat"].Value,
-                                        bubble_click, N["data"]["email_verified"].AsBool, N["data"]["iban_uploaded"].AsBool,
-                                        N["data"]["level"].AsInt, account_id, N["data"]["id_proof_1_uploaded"].AsBool,
-                                        N["data"]["id_proof_2_uploaded"].AsBool, city, country_code,
-                                        state, max_withdraw, zipcode,
-                                        N["data"]["passport_uploaded"].AsBool, N["data"]["last_result"].Value, birthday,
-                                        adress, country, N["data"]["residency_proof_uploaded"].AsBool,
-                                        N["data"]["victories_count"].AsInt, N["data"]["phone"].Value);
-                        CurrentUser = user;
-                        return user;
+                        lastname = N["data"]["lastname"].Value;
                     }
-                    else
+                    catch (NullReferenceException nre)
                     {
-                        if (N["message"].Value == "Failed to authenticate token.")
+                        lastname = null;
+                    }
+                    try
+                    {
+                        firstname = N["data"]["firstname"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        firstname = null;
+                    }
+                    try
+                    {
+                        bubble_click = N["data"]["last_bubble_click"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        bubble_click = null;
+                    }
+                    try
+                    {
+                        payment_account_id = N["data"]["payment_account_id"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        payment_account_id = null;
+                    }
+                    try
+                    {
+                        city = N["data"]["city"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        city = null;
+                    }
+                    try
+                    {
+                        country_code = N["data"]["country_code"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        country_code = null;
+                    }
+                    try
+                    {
+                        state = N["data"]["state"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        state = null;
+                    }
+                    try
+                    {
+                        max_withdraw = N["data"]["max_withdraw"].AsFloat;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        max_withdraw = 0;
+                    }
+                    try
+                    {
+                        zipcode = N["data"]["zipcode"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        zipcode = "";
+                    }
+                    try
+                    {
+                        birthday = N["data"]["birthdate"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        birthday = null;
+                    }
+                    try
+                    {
+                        adress = N["data"]["address"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        adress = null;
+                    }
+                    try
+                    {
+                        country = N["data"]["country"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        country = null;
+                    }
+                    try
+                    {
+                        personal_id_number = N["data"]["personal_id_number"].Value;
+                    }
+                    catch (NullReferenceException nre)
+                    {
+                        personal_id_number = null;
+                    }
+                    User user = new User(N["data"]["_id"].Value, N["data"]["username"].Value, N["data"]["avatar"].Value,
+                        N["data"]["username_changed"].AsBool, personal_id_number, lastname, firstname, N["data"]["money_credit"].AsFloat,
+                                    N["data"]["bubble_credit"].AsFloat, N["data"]["email"].Value, N["data"]["password"].Value,
+                                    N["data"]["amateur_bubble"].AsInt, N["data"]["novice_bubble"].AsInt, N["data"]["legend_bubble"].AsInt,
+                                    N["data"]["confident_bubble"].AsInt, N["data"]["confirmed_bubble"].AsInt, N["data"]["champion_bubble"].AsInt,
+                                    N["data"]["amateur_money"].AsInt, N["data"]["novice_money"].AsInt, N["data"]["legend_money"].AsInt,
+                                    N["data"]["confident_money"].AsInt, N["data"]["confirmed_money"].AsInt, N["data"]["champion_money"].AsInt,
+                                    N["data"]["losses_streak"].AsInt, N["data"]["victories_streak"].AsInt, N["data"]["long_lat"].Value,
+                                    bubble_click, N["data"]["email_verified"].AsBool, N["data"]["iban_uploaded"].AsBool,
+                                    N["data"]["level"].AsInt, payment_account_id, N["data"]["id_proof_1_uploaded"].AsBool,
+                                    N["data"]["id_proof_2_uploaded"].AsBool, city, country_code,
+                                    state, max_withdraw, zipcode,
+                                    N["data"]["passport_uploaded"].AsBool, N["data"]["last_result"].Value, birthday,
+                                    adress, country, N["data"]["residency_proof_uploaded"].AsBool,
+                                    N["data"]["victories_count"].AsInt, N["data"]["phone"].Value);
+                    Debug.Log("get user 614");
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
+                    {
+                        Debug.Log("getUser Dispatcher");
+
+                        Debug.Log("id: " + id + " getUserID: " + getCurrentUserId());
+                        if (id.Equals(getCurrentUserId()))
                         {
-                            ShowExpiredSession();
-                            return new User();
+                            Debug.Log("getUser Before Updating user");
+                            UpdateUserCredit(user.money_credit.ToString(), user.bubble_credit.ToString());
+                            CurrentUser = user;
                         }
-                        else if (N["message"].Value == "Could not find user")
-                        {
-                            SceneManager.LoadSceneAsync("Signup");
-                            return new User();
-                        }
+
+                    });
+                    return user;
+                }
+                else
+                {
+                    if (N["message"].Value == "Failed to authenticate token.")
+                    {
+                        ShowExpiredSession();
                         return null;
                     }
+                    else if (N["message"].Value == "Could not find user")
+                    {
+                        SceneManager.LoadSceneAsync("Signup");
+                        return null;
+                    }
+                    return null;
                 }
             }
         }
-        catch (WebException ex)
-        {
-            Debug.Log(ex);
-            return null;
-        }
+
     }
     void ShowExpiredSession()
     {
@@ -806,7 +755,7 @@ public class UserManager : MonoBehaviour
     }
     public void addUserDeviceToken(string user_id, string gameId, string deviceToken, string platform)
     {
-        Debug.Log("addUserDeviceToken BEGIN");
+
         UserManager um = new UserManager();
         string url = Endpoint.classesURL + "/users/devices";
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -842,6 +791,7 @@ public class UserManager : MonoBehaviour
                     using (var reader = new StreamReader(errorResponse.GetResponseStream()))
                     {
                         string error = reader.ReadToEnd();
+                        Debug.Log(error);
                     }
                 }
             }
@@ -1162,10 +1112,11 @@ public class UserManager : MonoBehaviour
         }
         return isOk;
     }
-
-    public static void updateUserCredit(String money_credit, String bubble_credit)
+    public static void UpdateUserCredit(String money_credit, String bubble_credit)
     {
-        UserManager.CurrentMoney = money_credit;
-        UserManager.CurrentWater = bubble_credit;
+        Debug.Log("UpdateUserCredit- money_credit: " + money_credit);
+        Debug.Log("UpdateUserCredit- bubble_credit: " + bubble_credit);
+        UserManager.CurrentUser.money_credit = float.Parse(money_credit);
+        UserManager.CurrentUser.bubble_credit = float.Parse(bubble_credit);
     }
 }

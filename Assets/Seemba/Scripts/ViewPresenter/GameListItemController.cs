@@ -1,18 +1,20 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class GameListItemController : MonoBehaviour
 {
-    ArrayList Items;
-    GamesManager GamesManager;
-    public GameObject ContentPanel;
-    // Use this for initialization
-    public Text title;
-    public Image icon;
-    public Button Download;
-    void Start()
-    {
-        /* EventsController nbs =new EventsController();
+	ArrayList Items;
+	GamesManager GamesManager;
+	public GameObject ContentPanel;
+	// Use this for initialization
+	public Text title;
+	public Image icon;
+	public Button Download; 
+	void Start ()
+	{
+	    /* EventsController nbs =new EventsController();
 		 //nbs.ShowPopup("Popup");
 		Items = new ArrayList (); 
 		GamesManager = new GamesManager ();
@@ -81,17 +83,16 @@ public class GameListItemController : MonoBehaviour
 				}
 			});
 		}); */
-    }
-    public IEnumerator ShowIcon(string url)
-    {
-        var www = new WWW(url);
-        yield return www;
-        var texture = www.texture;
-        icon.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-        GameObject.Find("PanelWaiting").transform.localScale = new Vector3(0, 0, 0);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-    }
+	}
+	public IEnumerator ShowIcon(string url){
+		var www = new WWW (url);
+			yield return www;
+			var texture = www.texture;
+			icon.sprite = Sprite.Create (texture, new Rect (0, 0, texture.width, texture.height), new Vector2 (0, 0));
+			GameObject.Find("PanelWaiting").transform.localScale=new Vector3(0,0,0);
+	}
+	// Update is called once per frame
+	void Update ()
+	{
+	}
 }

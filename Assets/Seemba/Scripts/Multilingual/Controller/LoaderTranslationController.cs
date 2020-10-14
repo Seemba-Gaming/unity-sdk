@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class LoaderTranslationController : MonoBehaviour
 {
@@ -6,7 +8,7 @@ public class LoaderTranslationController : MonoBehaviour
     [SerializeField]
     private Text downloading;
     [SerializeField]
-    private Text reconnect, check_connection, setting_language;
+    private Text reconnect,check_connection,setting_language;
     void Start()
     {
         TranslationManager.scene = "Loader";

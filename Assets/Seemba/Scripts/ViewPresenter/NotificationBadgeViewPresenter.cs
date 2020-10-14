@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class NotificationBadgeViewPresenter : MonoBehaviour
 {
@@ -9,16 +11,14 @@ public class NotificationBadgeViewPresenter : MonoBehaviour
     {
         _Instance = this;
     }
-    public static NotificationBadgeViewPresenter getInstance()
-    {
+    public static NotificationBadgeViewPresenter getInstance() {
         return _Instance;
     }
     // Update is called once per frame
     void Update()
     {
     }
-    public void showNotificationBadge()
-    {
+    public void showNotificationBadge() {
         foreach (Image dot in dots)
             dot.gameObject.SetActive(false); //turn into true if u want Notification badge works for docs verification..
     }

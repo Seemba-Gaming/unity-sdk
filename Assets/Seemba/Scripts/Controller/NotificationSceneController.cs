@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class NotificationSceneController : MonoBehaviour
 {
     private static NotificationSceneController _instance;
@@ -40,7 +42,7 @@ public class NotificationSceneController : MonoBehaviour
     }
     IEnumerator LoadSceneFromFCM()
     {
-#if UNITY_ANDROID
+    #if UNITY_ANDROID
         AndroidJavaClass UnityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject curActivity = UnityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject curIntent = curActivity.Call<AndroidJavaObject>("getIntent");
@@ -58,8 +60,8 @@ public class NotificationSceneController : MonoBehaviour
             yield return new WaitForSeconds(0f);
             SceneManager.LoadScene(sceneToLoad);
         }
-#else
-        yield return null;
-#endif
+    #else
+         yield return null;
+    #endif
     }
 }

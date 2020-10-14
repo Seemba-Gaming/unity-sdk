@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class HaveFunEventsController : MonoBehaviour
@@ -22,10 +24,16 @@ public class HaveFunEventsController : MonoBehaviour
         free_bubbles,
         extra_bubbles;
 
-
+    const string SHOW_LESS = "Less";
+    const string SHOW_MORE="More";
 
     void Start()
     {
+        //Show Available challenges and tournaments
+        ShowAvailableChallenges(SHOW_LESS);
+        ShowAvailableTournaments(SHOW_LESS);
+
+        //Controle Events
         more_duels.onClick.AddListener(() =>
         {
             MoreDuels();
@@ -72,43 +80,92 @@ public class HaveFunEventsController : MonoBehaviour
             object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_LEGEND, TournamentManager.WIN_BRACKET_BUBBLE_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupsController.getInstance().ShowPopup(PopupsController.PopupType.DUELS, _params);
         });
-        /*free_bubbles.onClick.AddListener(() =>
-        {
-
-        });
-        extra_bubbles.onClick.AddListener(() =>
-        {
-
-        });*/
     }
     void MoreDuels()
     {
-        _1v1_bubbles_champion.gameObject.SetActive(true);
-        _1v1_bubbles_legend.gameObject.SetActive(true);
+        ShowAvailableChallenges(SHOW_MORE);
         less_duels.gameObject.SetActive(true);
         more_duels.gameObject.SetActive(false);
     }
     void LessDuels()
     {
-        _1v1_bubbles_champion.gameObject.SetActive(false);
-        _1v1_bubbles_legend.gameObject.SetActive(false);
+        ShowAvailableChallenges(SHOW_LESS);
         less_duels.gameObject.SetActive(false);
         more_duels.gameObject.SetActive(true);
     }
     void MoreTournaments()
     {
-        _bracket_bubbles_champion.gameObject.SetActive(true);
-        _bracket_bubbles_legend.gameObject.SetActive(true);
+        ShowAvailableTournaments(SHOW_MORE);
         less_tournaments.gameObject.SetActive(true);
         more_tournaments.gameObject.SetActive(false);
 
     }
     void LessTournaments()
     {
-        _bracket_bubbles_champion.gameObject.SetActive(false);
-        _bracket_bubbles_legend.gameObject.SetActive(false);
+        ShowAvailableTournaments(SHOW_LESS);
         less_tournaments.gameObject.SetActive(false);
         more_tournaments.gameObject.SetActive(true);
+    }
+
+    void ShowAvailableChallenges(string show_state)
+    {
+        if (ChallengeManager.AVALAIBLE_CHALLENGE.Count.Equals(1))
+        {
+            less_duels.gameObject.SetActive(false);
+            more_duels.gameObject.SetActive(false);
+        }
+        _1v1_bubbles_confident.gameObject.SetActive(false);
+        _1v1_bubbles_champion.gameObject.SetActive(false);
+        _1v1_bubbles_legend.gameObject.SetActive(false);
+
+        foreach (string challenge_type in ChallengeManager.AVALAIBLE_CHALLENGE)
+        {
+            switch (challenge_type)
+            {
+                case ChallengeManager.CHALLENGE_TYPE_NOVICE:
+                    _1v1_bubbles_confident.gameObject.SetActive(true);
+                    break;
+                case ChallengeManager.CHALLENGE_TYPE_AMATEUR:
+                    _1v1_bubbles_champion.gameObject.SetActive(true);
+                    break;
+                case ChallengeManager.CHALLENGE_TYPE_CONFIRMED:
+                    _1v1_bubbles_legend.gameObject.SetActive(true);
+                    break;
+            }
+            if (show_state.Equals(SHOW_LESS)){
+                return;
+            }
+        }
+    }
+    void ShowAvailableTournaments(string show_state)
+    {
+        if (TournamentManager.AVALAIBLE_TOURNAMENTS.Count.Equals(1))
+        {
+            less_tournaments.gameObject.SetActive(false);
+            more_tournaments.gameObject.SetActive(false);
+        }
+        _bracket_bubbles_confident.gameObject.SetActive(false);
+        _bracket_bubbles_champion.gameObject.SetActive(false);
+        _bracket_bubbles_legend.gameObject.SetActive(false);
+
+        foreach (string tournament_type in TournamentManager.AVALAIBLE_TOURNAMENTS)
+        {
+            switch (tournament_type)
+            {
+                case TournamentManager.BRACKET_TYPE_CONFIDENT:
+                    _bracket_bubbles_confident.gameObject.SetActive(true);
+                    break;
+                case TournamentManager.BRACKET_TYPE_CHAMPION:
+                    _bracket_bubbles_champion.gameObject.SetActive(true);
+                    break;
+                case TournamentManager.BRACKET_TYPE_LEGEND:
+                    _bracket_bubbles_legend.gameObject.SetActive(true);
+                    break;
+            }
+            if (show_state.Equals(SHOW_LESS)){
+                return;
+            }
+        }
     }
 
 }

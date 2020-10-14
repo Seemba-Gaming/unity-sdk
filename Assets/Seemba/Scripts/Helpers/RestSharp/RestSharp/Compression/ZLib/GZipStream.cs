@@ -260,7 +260,7 @@ namespace RestSharp.Compression.ZLib
 		{
 			_baseStream = new ZlibBaseStream(stream, ZlibStreamFlavor.GZIP, false);
 		}
-#region Zlib properties
+		#region Zlib properties
 		/// <summary>
 		/// This property sets the flush behavior on the stream.  
 		/// </summary>
@@ -321,8 +321,8 @@ namespace RestSharp.Compression.ZLib
 				return this._baseStream._z.TotalBytesOut;
 			}
 		}
-#endregion
-#region Stream methods
+		#endregion
+		#region Stream methods
 		/// <summary>
 		/// Dispose the stream.  
 		/// </summary>
@@ -482,7 +482,7 @@ namespace RestSharp.Compression.ZLib
 		{
 			throw new NotImplementedException();
 		}
-#endregion
+		#endregion
 		internal static System.DateTime _unixEpoch = new System.DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 		internal static System.Text.Encoding iso8859dash1 = System.Text.Encoding.GetEncoding("iso-8859-1");
 		private int EmitHeader()

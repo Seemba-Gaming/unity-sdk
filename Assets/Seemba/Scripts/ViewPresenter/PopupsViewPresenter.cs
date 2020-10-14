@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -9,7 +13,7 @@ public class PopupsViewPresenter : MonoBehaviour
     public class PopupsText
     {
         static PopupsText _Instance;
-
+       
 
 
         // Add some elements to the dictionary. There are no
@@ -51,6 +55,10 @@ public class PopupsViewPresenter : MonoBehaviour
         public object[] vpn()
         {
             return new object[] { "DESACTIVATE", "YOUR VPN", "You can't play real money tournament with a vpn.", "GOT IT!" };
+        }
+        public object[] download_from_store()
+        {
+            return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };
         }
     }
 
@@ -128,7 +136,6 @@ public class PopupsViewPresenter : MonoBehaviour
 
     public static PopupsViewPresenter getInstance()
     {
-
         return _Instance;
     }
 
@@ -142,7 +149,7 @@ public class PopupsViewPresenter : MonoBehaviour
         confirm_duels.onClick.AddListener(async () =>
         {
             await HideSuccessPopupAsync(popup_duels_animator);
-            if (_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_1V1))
+            if(_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_1V1))
                 StartDuels();
             if (_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_BRACKET))
                 StartTournament();
@@ -155,8 +162,16 @@ public class PopupsViewPresenter : MonoBehaviour
                 case PopupType.INSUFFICIENT_BALANCE:
                     OpenWallet("WinMoney");
                     break;
+                case PopupType.DOWNLOAD_FROM_STORE:
+                    DownloadFromStore();
+                    break;
             }
         });
+    }
+
+    private void DownloadFromStore()
+    {
+        Application.OpenURL("https://seemba-game-store.herokuapp.com/");
     }
 
     private void OpenWallet(string last_view)

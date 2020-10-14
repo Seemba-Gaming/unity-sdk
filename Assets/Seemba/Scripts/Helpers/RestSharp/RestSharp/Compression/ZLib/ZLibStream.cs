@@ -74,7 +74,7 @@ namespace RestSharp.Compression.ZLib
 		{
 			_baseStream = new ZlibBaseStream(stream, ZlibStreamFlavor.ZLIB, false);
 		}
-#region Zlib properties
+		#region Zlib properties
 		/// <summary>
 		/// This property sets the flush behavior on the stream.  
 		/// Sorry, though, not sure exactly how to describe all the various settings.
@@ -130,8 +130,8 @@ namespace RestSharp.Compression.ZLib
 		{
 			get { return this._baseStream._z.TotalBytesOut; }
 		}
-#endregion
-#region System.IO.Stream methods
+		#endregion
+		#region System.IO.Stream methods
 		/// <summary>
 		/// Dispose the stream.  
 		/// </summary>
@@ -299,7 +299,7 @@ namespace RestSharp.Compression.ZLib
 			if (_disposed) throw new ObjectDisposedException("ZlibStream");
 			_baseStream.Write(buffer, offset, count);
 		}
-#endregion
+		#endregion
 		/// <summary>
 		/// Uncompress a byte array into a single string.
 		/// </summary>

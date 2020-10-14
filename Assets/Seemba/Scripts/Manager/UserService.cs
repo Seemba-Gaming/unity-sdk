@@ -1,10 +1,10 @@
-﻿using System;
+﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
 using System.Text.RegularExpressions;
 using System.Timers;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 public class UserService : MonoBehaviour
 {
     public static string Seemba_Email = "noreply@seemba.com,djo@seemba.com,slim@seemba.com,geoffrey@seemba.com,jean-philippe@seemba.com,mohamed@seemba.com";
@@ -12,7 +12,6 @@ public class UserService : MonoBehaviour
     public static string _Username, _Password, _Email, _Avatar;
     private int code;
     AndroidJavaObject currentActivity;
-    public static int? statusCode;
     string toastString;
     public Button Signin, signup, SendEmail, Done, submitCode;
     public InputField digits, Email, newPassword, confirmPassword;
@@ -172,18 +171,13 @@ public class UserService : MonoBehaviour
         var userId = um.getCurrentUserId();
         var deviceToken = PlayerPrefs.GetString("DeviceToken");
         var platform = "";
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
         UnityThreadHelper.CreateThread(() =>
         {
             //remove Device Token
             um.removeUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-                um.logingOut();
-                SceneManager.LoadSceneAsync("Signup");
-            });
         });
+        um.logingOut();
+        SceneManager.LoadSceneAsync("Signup");
     }
     void showLoginFailedAnimation()
     {
@@ -224,8 +218,8 @@ public class UserService : MonoBehaviour
                     {
                         digits.ActivateInputField();
                         code = res;
-                        //Debug.Log(code);
-                        dt.AddMinutes(2).ToString("mm:ss");
+                    //Debug.Log(code);
+                    dt.AddMinutes(2).ToString("mm:ss");
                         chrono.text = "02:00";
                         sec = 59;
                         min = 1;
@@ -365,11 +359,11 @@ public class UserService : MonoBehaviour
             }
         }
     }
-    public void Signup()
+    public async void Signup()
     {
-        EventsController nbs = new EventsController();
+        EventsController eventController = new EventsController();
         UserManager um = new UserManager();
-        StartCoroutine(checkInternetConnection((isConnected) =>
+        StartCoroutine(checkInternetConnection(async (isConnected) =>
         {
             if (isConnected == true)
             {
@@ -380,99 +374,77 @@ public class UserService : MonoBehaviour
                 Texture2D mytexture = Avatar.sprite.texture;
                 byte[] bytes;
                 bytes = mytexture.EncodeToPNG();
-                GameObject.Find("Loader").transform.localScale = Vector3.one;
-                string userID = null;
-                statusCode = null;
-                _Username = Username.text.ToUpper();
-                _Email = Email.text;
-                _Password = Password.text;
-                //_Avatar = bytes;
-                UnityThreadHelper.CreateThread(() =>
+                SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+
+                if (string.IsNullOrEmpty(ImagesManager.AvatarURL))
                 {
-                    if (string.IsNullOrEmpty(ImagesManager.AvatarURL))
+                    await ImagesManager.FixImage(bytes);
+                }
+                if (ImagesManager.AvatarURL != "error")
+                {
+                    _Avatar = ImagesManager.AvatarURL;
+
+                    var res = await um.signingUp(Username.text.ToUpper(), Email.text, Password.text, ImagesManager.AvatarURL);
+
+
+
+                    if (res["success"].AsBool)
                     {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
+                        var deviceToken = PlayerPrefs.GetString("DeviceToken");
+                        Debug.Log(deviceToken);
+                        var userid = um.getCurrentUserId();
+                        var platform = "";
+                        if (Application.platform == RuntimePlatform.Android)
+                            platform = "android";
+                        else platform = "ios";
+                        UnityThreadHelper.CreateThread(() =>
                         {
-                            StartCoroutine(ImagesManager.FixImage(bytes));
+                        //Add Device Token To Receive notification on current device
+                        um.addUserDeviceToken(userid, GamesManager.GAME_ID, deviceToken, platform);
                         });
-                        while (string.IsNullOrEmpty(ImagesManager.AvatarURL)) {/*Waiting Callback*/}
+
+                        UserManager.CurrentUsername = Username.text;
+                        UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(bytes);
+                        UserManager.CurrentFlagBytesString = um.GetFlagByte(um.GetGeoLoc());
+                        UserManager.CurrentUser = new User();
+                        UserManager.CurrentUser.money_credit = 0.00f;
+                        UserManager.CurrentUser.bubble_credit = 25f;
+                    //Save Flag Byte
+                    PlayerPrefs.SetString("CurrentFlagBytesString", UserManager.CurrentFlagBytesString);
+
+
+
+                        eventController.StartFirstChallenge(res["token"].Value);
                     }
-                    if (ImagesManager.AvatarURL != "error")
+                    else if (!res["success"].AsBool)
                     {
-                        _Avatar = ImagesManager.AvatarURL;
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            StartCoroutine(um.signingUp(Username.text.ToUpper(), Email.text, Password.text, ImagesManager.AvatarURL));
-                        });
-                        while (statusCode == null) { }
-                        Debug.Log(statusCode);
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                            if (statusCode == 0)
-                            {
-                                var deviceToken = PlayerPrefs.GetString("DeviceToken");
-                                Debug.Log(deviceToken);
-                                var userid = um.getCurrentUserId();
-                                var platform = "";
-                                if (Application.platform == RuntimePlatform.Android)
-                                    platform = "android";
-                                else platform = "ios";
-                                UnityThreadHelper.CreateThread(() =>
-                                {
-                                    //Add Device Token To Receive notification on current device
-                                    um.addUserDeviceToken(userid, GamesManager.GAME_ID, deviceToken, platform);
-                                });
-                                userID = um.getCurrentUserId();
-                                //um.UpdateUserAvatar (userID,Convert.ToBase64String(bytes));
-                                UserManager.CurrentUsername = Username.text;
-                                UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(bytes);
-                                UserManager.CurrentFlagBytesString = um.GetFlagByte(um.GetGeoLoc());
-                                UserManager.CurrentMoney = "0.00";
-                                UserManager.CurrentWater = "25";
-                                //Save Flag Byte
-                                PlayerPrefs.SetString("CurrentFlagBytesString", UserManager.CurrentFlagBytesString);
-                                //SceneManager.LoadScene ("Home");
-                                ChallengeManager.CurrentChallengeGain = "2";
-                                ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
-                                nbs.startFirstChallenge();
-                            }
-                            else if (statusCode == 400)
-                            {
-                                //Text ErrorMessage = GameObject.Find ("ErrorMessage").GetComponent<Text> ();
-                                //SceneManager.LoadScene ("ConnectionFailed", LoadSceneMode.Additive);
-                                ConnectivityController.CURRENT_ACTION = "";
-                                SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                                GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                            }
-                        });
+                        ConnectivityController.CURRENT_ACTION = "";
+                        SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
+                        GameObject.Find("Loader").transform.localScale = Vector3.zero;
                     }
-                    else
+
+                }
+                else
+                {
+                    UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            ConnectivityController.CURRENT_ACTION = "";
-                            GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                            SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                        });
-                    }
-                });
-            }
-            else
+                        ConnectivityController.CURRENT_ACTION = "";
+                        GameObject.Find("Loader").transform.localScale = Vector3.zero;
+                        SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
+                    });
+                }
+
+            //}
+            /*else
             {
                 ConnectivityController.CURRENT_ACTION = "";
                 GameObject.Find("Loader").transform.localScale = Vector3.zero;
                 SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
+            }*/
             }
         }));
     }
-    public static void updateCredit(string money_credit, string bubblesCredit)
-    {
-        if (!string.IsNullOrEmpty(money_credit))
-            UserManager.CurrentMoney = money_credit;
-        if (!string.IsNullOrEmpty(bubblesCredit))
-            UserManager.CurrentWater = bubblesCredit;
-    }
+
     public void Login()
     {
         UserManager um = new UserManager();
@@ -489,8 +461,8 @@ public class UserService : MonoBehaviour
         SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
 
         var deviceToken = PlayerPrefs.GetString("DeviceToken");
-        Debug.Log(deviceToken);
-        thread = UnityThreadHelper.CreateThread(() =>
+
+        UnityThreadHelper.CreateThread(() =>
         {
             string res = um.logingIn(username.text, password.text);
             if (res == "success")
@@ -502,11 +474,11 @@ public class UserService : MonoBehaviour
                     var platform = "";
                     UnityThreadHelper.CreateThread(() =>
                     {
-                        if (Application.platform == RuntimePlatform.Android)
-                            platform = "android";
-                        else platform = "ios";
-                        //Add Device Token To Receive notification on current device
-                        um.addUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken, platform);
+                        if (Application.platform == RuntimePlatform.Android) platform = "android";
+                        else if (Application.platform == RuntimePlatform.IPhonePlayer) platform = "ios";
+                    //Add Device Token To Receive notification on current device
+
+                    um.addUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken, platform);
                         UnityThreadHelper.Dispatcher.Dispatch(() =>
                         {
                             SceneManager.LoadSceneAsync("Home");
@@ -518,15 +490,11 @@ public class UserService : MonoBehaviour
             {
                 UnityThreadHelper.Dispatcher.Dispatch(() =>
                 {
-                    // track Signin Failed
-                    print("auth failed");
-                    //					mail.GetComponent<Image>().color=new Color(1f,122/255f,122/255f);
-                    //					password.GetComponent<Image>().color=new Color(1f,122/255f,122/255f);
-                    //	GameAnalytics.NewErrorEvent (GAErrorSeverity.Error, "SignINFailed:InvalidUsername/EmailOrPassword");
+                // track Signin Failed
+                print("auth failed");
                     GameObject.Find("Loader").transform.localScale = Vector3.zero;
                     showLoginFailedAnimation();
                 });
-                //}
             }
             else
             {

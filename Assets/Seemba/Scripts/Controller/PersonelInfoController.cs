@@ -1,9 +1,11 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using System;
+using UnityEngine.SceneManagement;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 public class PersonelInfoController : MonoBehaviour
 {
     public InputField LastName, FirstName, Address, City, ZipCode, Country, Personel_id_number, Phone;
@@ -11,7 +13,6 @@ public class PersonelInfoController : MonoBehaviour
     public Text country_phone_prefix, country_code;
     public Image country_flag;
     private UserManager um = new UserManager();
-    private InfoPersonelManager ipm = new InfoPersonelManager();
     public Button Age;
     private string _selectedDateString2 = "1995-09-15";
     string userId = null; string token = null;
@@ -34,11 +35,9 @@ public class PersonelInfoController : MonoBehaviour
         userId = um.getCurrentUserId();
         token = um.getCurrentSessionToken();
         SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(() =>
-        {
+        UnityThreadHelper.CreateThread(() => {
             usr = um.getUser(userId, token);
-            UnityThreadHelper.Dispatcher.Dispatch(async () =>
-            {
+            UnityThreadHelper.Dispatcher.Dispatch(async () =>{
                 SceneManager.UnloadSceneAsync("Loader");
                 if (usr != null)
                 {
@@ -59,6 +58,7 @@ public class PersonelInfoController : MonoBehaviour
                     catch (ArgumentNullException ex) { }
                     if (!string.IsNullOrEmpty(usr.birthday))
                     {
+                        Age_Containter.SetActive(true);
                         Birthdate.text = DateTime.Parse(usr.birthday).ToString("yyyy-MM-dd");
                         PlaceHolderAge.transform.localScale = Vector3.zero;
                         Age.interactable = false;
@@ -72,6 +72,7 @@ public class PersonelInfoController : MonoBehaviour
                     {
                         Personel_id_number.gameObject.SetActive(true);
                     }
+
                     if (!string.IsNullOrEmpty(usr.personal_id_number))
                     {
                         Personel_id_number.text = usr.personal_id_number;
@@ -120,6 +121,8 @@ public class PersonelInfoController : MonoBehaviour
                         GameObject.Find("editable phone").transform.localScale = Vector3.zero;
                         Phone.readOnly = true;
                     }
+                    
+                    
                     Phone.onEndEdit.AddListener(async delegate
                     {
                         if (Phone.text != "" && Phone.text != usr.phone)
@@ -132,20 +135,9 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             formatedPhone
                             };
-                            show("Button_Phone", "Loader");
-                            if (await updateStripeAccount("phone", formatedPhone))
-                            {
-                                updateUser(attrib, value);
-                                show("Button_Phone", "Accepted");
-                            }
-                            else
-                            {
-                                show("Button_Phone", "Declined");
-                                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                                {
-                                    Phone_Containter.GetComponent<Animator>().SetBool("invalid", true);
-                                });
-                            }
+
+                            updateUser(attrib, value);
+                            show("Button_Phone", "Accepted");
                         }
                     });
                     Phone.onValueChanged.AddListener(delegate
@@ -155,6 +147,7 @@ public class PersonelInfoController : MonoBehaviour
                             Phone_Containter.GetComponent<Animator>().SetBool("invalid", false);
                         }
                     });
+                    
                     LastName.onEndEdit.AddListener(async delegate
                     {
                         if (LastName.text != "" && LastName.text != usr.lastname)
@@ -165,16 +158,8 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             LastName.text
                         };
-                            show("Button_LastName", "Loader");
-                            if (await updateStripeAccount("lastname", LastName.text))
-                            {
-                                updateUser(attrib, value);
-                                show("Button_LastName", "Accepted");
-                            }
-                            else
-                            {
-                                show("Button_LastName", "Declined");
-                            }
+                            updateUser(attrib, value);
+                            show("Button_LastName", "Accepted");
                         }
                         else
                         {
@@ -191,16 +176,10 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             FirstName.text
                         };
-                            show("Button_FirstName", "Loader");
-                            if (await updateStripeAccount("firstname", FirstName.text))
-                            {
-                                updateUser(attrib, value);
-                                show("Button_FirstName", "Accepted");
-                            }
-                            else
-                            {
-                                show("Button_FirstName", "Declined");
-                            }
+
+                            updateUser(attrib, value);
+                            show("Button_FirstName", "Accepted");
+
                         }
                         else
                         {
@@ -217,16 +196,10 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             Address.text
                         };
-                            show("Button_Adress", "Loader");
-                            if (await updateStripeAccount("address", Address.text))
-                            {
-                                updateUser(attrib, value);
-                                show("Button_Adress", "Accepted");
-                            }
-                            else
-                            {
-                                show("Button_Adress", "Declined");
-                            }
+
+                            updateUser(attrib, value);
+                            show("Button_Adress", "Accepted");
+
                         }
                         else
                         {
@@ -243,16 +216,10 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             City.text
                         };
-                            show("Button_City", "Loader");
-                            if (await updateStripeAccount("city", City.text))
-                            {
-                                updateUser(attrib, value);
-                                show("Button_City", "Accepted");
-                            }
-                            else
-                            {
-                                show("Button_City", "Declined");
-                            }
+
+                            updateUser(attrib, value);
+                            show("Button_City", "Accepted");
+
                         }
                         else
                         {
@@ -269,16 +236,9 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             ZipCode.text
                         };
-                            show("Button_ZipCode", "Loader");
-                            if (await updateStripeAccount("zipcode", ZipCode.text))
-                            {
-                                updateUser(attrib, value);
-                                show("Button_ZipCode", "Accepted");
-                            }
-                            else
-                            {
-                                show("Button_ZipCode", "Declined");
-                            }
+                            updateUser(attrib, value);
+                            show("Button_ZipCode", "Accepted");
+
                         }
                         else
                         {
@@ -296,15 +256,11 @@ public class PersonelInfoController : MonoBehaviour
                             string[] value = {
                             Country.text
                         };
-                            show("Button_Country", "Loader");
-                            UnityThreadHelper.CreateThread(() =>
-                            {
-                                updateUser(attrib, value);
-                                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                                {
-                                    show("Button_Country", "Accepted");
-                                });
-                            });
+
+                            updateUser(attrib, value);
+
+                            show("Button_Country", "Accepted");
+
                         }
                         else
                         {
@@ -397,41 +353,7 @@ public class PersonelInfoController : MonoBehaviour
     {
         um.UpdateUserByField(userId, token, attrib, values);
     }
-    public async Task<bool> updateStripeAccount(string key, string value)
-    {
-        bool success = false;
-        WithdrawManager wm = new WithdrawManager();
-        Debug.Log("Key:" + key);
-        switch (key)
-        {
-            case "firstname":
-                return await wm.attachInfoToAccount(token, value, "first_name");
-                break;
-            case "lastname":
-                return await wm.attachInfoToAccount(token, value, "last_name");
-                break;
-            case "address":
-                return await wm.attachInfoToAccount(token, value, "address", "line1");
-                break;
-            case "zipcode":
-                return await wm.attachInfoToAccount(token, value, "address", "postal_code");
-                break;
-            case "city":
-                return await wm.attachInfoToAccount(token, value, "address", "city");
-                break;
-            case "phone":
-                return await wm.attachInfoToAccount(token, value, "phone");
-                break;
-            case "birthdate":
-                Debug.Log("case birthdate");
-                char[] spearator = { '-' };
-                String[] birth = value.Split(spearator);
-                return wm.attachDOBToAccount(token, int.Parse(birth[2]), int.Parse(birth[1]), int.Parse(birth[0]));
-                break;
-            default: return false;
-        }
-    }
-    // Update is called once per frame
+
     void Update()
     {
         country_flag.rectTransform.sizeDelta = new Vector2(25f, country_flag.rectTransform.sizeDelta.y);
@@ -473,8 +395,8 @@ public class PersonelInfoController : MonoBehaviour
             {
                 UnityThreadHelper.CreateThread(async () =>
                 {
-                    if (await updateStripeAccount("birthdate", Birthdate.text))
-                        updateUser(attrib, values);
+
+                    updateUser(attrib, values);
                 });
             }
             else

@@ -1,11 +1,18 @@
-using System;
 using UnityEngine;
+using System.Collections;
+using System.IO;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
+using System.Net;
+using System.Globalization;
+using System.Net.NetworkInformation;
+using System.Timers;
+using System.Linq;
 public class EncartPlayerPresenter : MonoBehaviour
 {
-    public static Text PlayerUsername, PlayerMoney, PlayerWater;
-    public static Image PlayerAvatar, PlayerAvatarDialog, PlayerFlag;
-    public Image avatar;
+    public static Text username, money_credit, bubble_credit;
+    public static Image avatar, PlayerAvatarDialog, flag;
     public Image EncartMoney;
     private static string usernameBackup;
     // Use this for initialization
@@ -43,7 +50,7 @@ public class EncartPlayerPresenter : MonoBehaviour
         try
         {
             GameObject.Find("Pro").transform.localScale = Vector3.zero;
-            if (float.Parse(UserManager.CurrentMoney) > 0)
+            if (UserManager.CurrentUser.money_credit > 0)
             {
                 GameObject.Find("Pro").transform.localScale = Vector3.one;
                 try
@@ -64,18 +71,14 @@ public class EncartPlayerPresenter : MonoBehaviour
                 }
             }
         }
-        catch (NullReferenceException ex)
-        {
-        }
-        catch (ArgumentNullException ex)
-        {
-        }
+        catch (Exception ex) { }
+
         try
         {
             try
             {
-                PlayerAvatar = GameObject.Find("Avatar").GetComponent<Image>();
-                PlayerAvatar.sprite = UserManager.CurrentAvatarBytesString;
+                avatar = GameObject.Find("Avatar").GetComponent<Image>();
+                avatar.sprite = UserManager.CurrentAvatarBytesString;
             }
             catch (NullReferenceException ex)
             {
@@ -94,9 +97,9 @@ public class EncartPlayerPresenter : MonoBehaviour
                 newSprite1 = Sprite.Create(txt1 as Texture2D, new Rect(0f, 0f, txt1.width, txt1.height), Vector2.zero);
                 try
                 {
-                    PlayerFlag = GameObject.Find("Drapeau").GetComponent<Image>();
-                    PlayerFlag.sprite = newSprite1;
-                    PlayerFlag.transform.localScale = Vector3.one;
+                    flag = GameObject.Find("Drapeau").GetComponent<Image>();
+                    flag.sprite = newSprite1;
+                    flag.transform.localScale = Vector3.one;
                 }
                 catch (NullReferenceException ex)
                 {
@@ -127,16 +130,16 @@ public class EncartPlayerPresenter : MonoBehaviour
         }
         try
         {
-            PlayerUsername = GameObject.Find("Text_name").GetComponent<Text>();
+            username = GameObject.Find("Text_name").GetComponent<Text>();
             if (!PullToRefresh.pullActivated)
             {
                 if (!string.IsNullOrEmpty(UserManager.CurrentUsername))
                 {
-                    PlayerUsername.text = UserManager.CurrentUsername;
+                    username.text = UserManager.CurrentUsername;
                 }
                 else
                 {
-                    PlayerUsername.text = PlayerPrefs.GetString("CurrentUsername");
+                    username.text = PlayerPrefs.GetString("CurrentUsername");
                 }
             }
         }
@@ -145,19 +148,15 @@ public class EncartPlayerPresenter : MonoBehaviour
         }
         try
         {
-            PlayerWater = GameObject.Find("virtual_money").GetComponent<Text>();
-            PlayerWater.text = int.Parse(UserManager.CurrentWater).ToString();
+            bubble_credit = GameObject.Find("virtual_money").GetComponent<Text>();
+            bubble_credit.text = UserManager.CurrentUser.bubble_credit.ToString();
         }
         catch (NullReferenceException ex) { }
         catch (ArgumentNullException ex) { }
         try
         {
-            PlayerMoney = GameObject.Find("solde_euro").GetComponent<Text>();
-            if (float.Parse(UserManager.CurrentMoney) == 0)
-            {
-                PlayerMoney.text = "0.00 " + CurrencyManager.CURRENT_CURRENCY;
-            }
-            else PlayerMoney.text = float.Parse(UserManager.CurrentMoney).ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+            money_credit = GameObject.Find("solde_euro").GetComponent<Text>();
+            money_credit.text = UserManager.CurrentUser.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
         }
         catch (NullReferenceException ex)
         {
@@ -165,12 +164,7 @@ public class EncartPlayerPresenter : MonoBehaviour
         catch (ArgumentNullException ex)
         {
         }
-        try
-        {
-            GameObject.Find("PanelLoader").SetActive(false);
-        }
-        catch (NullReferenceException ex)
-        {
-        }
+
     }
+
 }

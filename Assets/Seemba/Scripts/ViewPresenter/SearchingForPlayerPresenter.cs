@@ -1,23 +1,24 @@
-﻿using System;
-using System.Threading;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 using UnityEngine.UI;
+using System;
+using SimpleJSON;
+using System.Threading;
 public class SearchingForPlayerPresenter : MonoBehaviour
 {
 
     public Text fee, username, gain, nb_players;
     public Text counter;
     public Image user_flag, user_avatar;
-    public Text looking_for_opponent, start_now, same_game;
+    public Text looking_for_opponent,start_now,same_game;
     public Button Continue;
     public static string nbPlayer, GameMontant;
 
     public static bool isTrainingGame = false;
     void Start()
     {
-        InvokeRepeating("CheckOpponent", 5f, 3f);
+        InvokeRepeating("CheckOpponent", 0.5f, 3f);
 
-        Challenge challenge = new Challenge();
         UserManager manager = new UserManager();
         string UserId = manager.getCurrentUserId();
         string token = manager.getCurrentSessionToken();
@@ -32,7 +33,8 @@ public class SearchingForPlayerPresenter : MonoBehaviour
         newSprite = Sprite.Create(txt as Texture2D, new Rect(0f, 0f, txt.width, txt.height), Vector2.zero);
         user_flag.sprite = newSprite;
         user_avatar.sprite = UserManager.CurrentAvatarBytesString;
-
+        gain.text = ChallengeManager.CurrentChallenge.gain.ToString();
+        gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ? " bubbles" : " €";
         try
         {
 
@@ -76,7 +78,7 @@ public class SearchingForPlayerPresenter : MonoBehaviour
         {
         }
     }
-
+   
     void CheckOpponent()
     {
         UserManager um = new UserManager();
@@ -103,6 +105,7 @@ public class SearchingForPlayerPresenter : MonoBehaviour
                         OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
                     }
                     EventsController.advFound = true;
+                    CancelInvoke("CheckOpponent");
                 }
             });
         });

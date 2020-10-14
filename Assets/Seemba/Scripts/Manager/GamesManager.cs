@@ -1,33 +1,35 @@
+using UnityEngine;
+using System.Collections;
+using System.Net;
 using SimpleJSON;
 using System;
-using System.Collections;
-using System.IO;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using UnityEngine;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
+using UnityEngine.UI;
+using System.Collections.Generic;
+
 public class GamesManager : MonoBehaviour
 {
 
-    //Set The Game Name*
-    public static string GAME_NAME = "";
-    //
-    public static string GAME_ANDROID_URL = "";
-    public static string GAME_IOS_URL = "";
+    #region INTEGRATION_PARAMETERS
+    //Set The Game Name
+    public static string GAME_NAME;			//"Desert Dash";
+    //Stores URLS
+    public static string GAME_ANDROID_URL = "https://play.google.com/store/apps/details?id=com.seemba.desertdashmexico";
+    public static string GAME_IOS_URL = "Desert Dash";
     //Set Scene name of game , Entry point to the game
-    public static string GAME_SCENE_NAME = "";
+    public static string GAME_SCENE_NAME;		//"main";
     public static string EDITOR_ID;
     //The game level number used for your matchmaking. Otherwise, keep it null.
     public static int? GAME_LEVEL = null;
-
     //Set The Game Id shown in your Dashboard ,you can't start without setting the correct id
-    internal static string GAME_ID = "";
-
-
-
+    public static string GAME_ID;           //"5aa62f71e7c48800057cab19";
+    #endregion
 
     public static string ICON_URL;
+    public static string BACKGROUND_IMAGE_URL;
 
 
     public static bool? backgroundSaved = null;
@@ -61,7 +63,6 @@ public class GamesManager : MonoBehaviour
     }
     static IEnumerator waitBackground()
     {
-
         yield return new WaitWhile(() => backgroundSaved != null);
     }
     public static void LoadIcon()
@@ -73,14 +74,7 @@ public class GamesManager : MonoBehaviour
         txt.Apply();
         CurrentIcon = Sprite.Create(txt, new Rect(0, 0, txt.width, txt.height), new Vector2(0, 0));
     }
-    private static HttpWebRequest CreateWebRequest(Uri uri)
-    {
-        //Webrequest creation does fail on MONO randomly when using WebRequest.Create
-        //the issue occurs in the GetCreator method here: http://www.oschina.net/code/explore/mono-2.8.1/mcs/class/System/System.Net/WebRequest.cs
-        var type = Type.GetType("System.Net.HttpRequestCreator, System, Version=4.0.0.0,Culture=neutral, PublicKeyToken=b77a5c561934e089");
-        var creator = Activator.CreateInstance(type, nonPublic: true) as IWebRequestCreate;
-        return creator.Create(uri) as HttpWebRequest;
-    }
+   
     public ArrayList getPromotions(string id)
     {
         UserManager um = new UserManager();
@@ -88,7 +82,6 @@ public class GamesManager : MonoBehaviour
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
         request.Method = "GET";
-        request.ContentType = "application/x-www-form-urlencoded";
         try
         {
             HttpWebResponse response;
@@ -104,7 +97,7 @@ public class GamesManager : MonoBehaviour
                     ArrayList listGames = new ArrayList();
                     foreach (JSONNode N in array)
                     {
-                        Game game = new Game(N["_id"].Value, N["name"].Value, N["editorId"].Value, N["bundle_id"].Value, N["appstore_id"].Value, N["icon"].Value);
+                        Game game = new Game(N["_id"].Value, N["name"].Value, N["editorId"].Value, N["bundle_id"].Value, N["appstore_id"].Value, N["icon"].Value, N["background_image"].Value);
                         listGames.Add(game);
                     }
                     return listGames;
@@ -124,7 +117,6 @@ public class GamesManager : MonoBehaviour
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
         request.Method = "GET";
-        request.ContentType = "application/x-www-form-urlencoded";
         try
         {
             HttpWebResponse response;
@@ -135,7 +127,7 @@ public class GamesManager : MonoBehaviour
                 {
                     var jsonResponse = sr.ReadToEnd();
                     if (string.IsNullOrEmpty(jsonResponse)) { return null; }
-
+                    print(jsonResponse);
                     var N = JSON.Parse(jsonResponse);
                     if (N["success"].AsBool == true)
                     {
@@ -143,9 +135,19 @@ public class GamesManager : MonoBehaviour
                         gameId = N["data"]["_id"].Value;
                         GAME_NAME = N["data"]["name"].Value;
                         EDITOR_ID = N["data"]["editor"].Value;
+
+                        foreach (JSONNode bracket_type in N["data"]["brackets"].AsArray)
+                        {
+                            TournamentManager.AVALAIBLE_TOURNAMENTS.Add(bracket_type.Value);
+                        }
+                        foreach (JSONNode tournament_type in N["data"]["tournaments"].AsArray)
+                        {
+                            ChallengeManager.AVALAIBLE_CHALLENGE.Add(tournament_type.Value);
+                        }
+
                         if (!string.IsNullOrEmpty(N["data"]["background_image"].Value))
                         {
-                            BackgroundController.backgroundURL = N["data"]["background_image"].Value;
+                            BACKGROUND_IMAGE_URL = N["data"]["background_image"].Value;
                         }
                         else
                         {
@@ -163,7 +165,6 @@ public class GamesManager : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError("verify the game's id ...");
                         return null;
                     }
                 }
@@ -208,7 +209,7 @@ public class GamesManager : MonoBehaviour
                         EDITOR_ID = N["data"]["editor"].Value;
                         if (!string.IsNullOrEmpty(N["data"]["background_image"].Value))
                         {
-                            BackgroundController.backgroundURL = N["data"]["background_image"].Value;
+                            BACKGROUND_IMAGE_URL = N["data"]["background_image"].Value;
                         }
                         else
                         {

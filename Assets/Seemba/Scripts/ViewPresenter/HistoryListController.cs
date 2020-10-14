@@ -1,8 +1,11 @@
-﻿using System;
+﻿using UnityEngine;
 using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Data;
+using System;
+using UnityEngine.SceneManagement;
+using SimpleJSON;
+using System.IO;
 public class HistoryListController : MonoBehaviour
 {
     public GameObject ContentPanelPro, ContentPro, ContentTraining;
@@ -78,7 +81,7 @@ public class HistoryListController : MonoBehaviour
         string UserId = usermanager.getCurrentUserId();
         string token = usermanager.getCurrentSessionToken();
         UnityThreading.ActionThread thread;
-        StartCoroutine(CheckItems());
+        //StartCoroutine(CheckItems());
         thread = UnityThreadHelper.CreateThread(() =>
         {
             User user = usermanager.getUser(UserId, token);
@@ -116,77 +119,7 @@ public class HistoryListController : MonoBehaviour
                                 controller.Date.text = DateTime.Parse(item.CreatedAt).ToString("yyyy/MM/dd HH:mm:ss");
                                 controller.ChallengeID.text = "ID: " + item._id;
                                 controller.Icon.sprite = GamesManager.CurrentIcon;
-                                controller.showResult.onClick.AddListener(() =>
-                                {
-                                    float? scoreUser1 = null;
-                                    float? scoreUser2 = null;
-                                    SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-                                    ChallengeManager.CurrentChallengeId = newItem.transform.GetChild(4).gameObject.GetComponent<Text>().text.Substring(4);
-                                    UnityThreadHelper.CreateThread(() =>
-                                    {
-                                        ChallengeManager cm = new ChallengeManager();
-                                        var challengeResult = cm.getChallengebyId(ChallengeManager.CurrentChallengeId, token);
-                                        try
-                                        {
-                                            if (String.IsNullOrEmpty(challengeResult["data"]["user_1_score"].Value))
-                                            {
-                                                scoreUser1 = null;
-                                            }
-                                            else scoreUser1 = challengeResult["data"]["user_1_score"].AsFloat;
-                                        }
-                                        catch (NullReferenceException ex)
-                                        {
-                                            scoreUser1 = null;
-                                        }
-                                        try
-                                        {
-                                            if (String.IsNullOrEmpty(challengeResult["data"]["user_2_score"].Value))
-                                            {
-                                                scoreUser2 = null;
-                                            }
-                                            else scoreUser2 = challengeResult["data"]["user_2_score"].AsFloat;
-                                        }
-                                        catch (NullReferenceException ex)
-                                        {
-                                            scoreUser2 = null;
-                                        }
-                                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                                        {
-                                            SceneManager.UnloadScene("Loader");
-                                            //TODO
-                                            if (scoreUser2 == null || scoreUser1 == null)
-                                            {
-                                                SceneManager.LoadScene("ResultWaiting", LoadSceneMode.Additive);
-                                            }
-                                            else
-                                            {
-                                                //matched_user_1 is the Current user
-                                                if (challengeResult["data"]["matched_user_1"]["_id"].Value == UserId && scoreUser1 > scoreUser2)
-                                                {
-                                                    SceneManager.LoadScene("ResultWin", LoadSceneMode.Additive);
-                                                }
-                                                else if (challengeResult["data"]["matched_user_1"]["_id"].Value == UserId && scoreUser1 < scoreUser2)
-                                                {
-                                                    SceneManager.LoadScene("ResultLose", LoadSceneMode.Additive);
-                                                }
-                                                //matched_user_2 is the Current user
-                                                else if (challengeResult["data"]["matched_user_2"]["_id"].Value == UserId && scoreUser1 < scoreUser2)
-                                                {
-                                                    SceneManager.LoadScene("ResultWin", LoadSceneMode.Additive);
-                                                }
-                                                else if (challengeResult["data"]["matched_user_2"]["_id"].Value == UserId && scoreUser1 > scoreUser2)
-                                                {
-                                                    SceneManager.LoadScene("ResultLose", LoadSceneMode.Additive);
-                                                }
-                                                //equality Result
-                                                else if (scoreUser1 == scoreUser2)
-                                                {
-                                                    SceneManager.LoadScene("ResultEquality", LoadSceneMode.Additive);
-                                                }
-                                            }
-                                        });
-                                    });
-                                });
+
                                 if (item.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
                                 {
                                     if (item.status == "results pending")
@@ -194,18 +127,18 @@ public class HistoryListController : MonoBehaviour
                                         switch (item.gain)
                                         {
                                             case "2":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                             case "5":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                             case "10":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                         }
                                         controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
                                     }
-                                    else if (item.matched_user_1._id == usermanager.getCurrentUserId() && adv1score > adv2score)
+                                    else if (item.winner_user == usermanager.getCurrentUserId())
                                     {
                                         controller.Gain.text = "+" + float.Parse(item.gain).ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                         GameObject newItem1 = Instantiate(ListItemPrefab) as GameObject;
@@ -213,17 +146,15 @@ public class HistoryListController : MonoBehaviour
                                         switch (item.gain)
                                         {
                                             case "2":
-                                                controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                             case "5":
-                                                controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                             case "10":
-                                                controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                         }
-                                        //TODO
-                                        //controller1.Icon.sprite = newSprite1;
                                         controller1.GameName.text = item.game.name;
                                         controller1.Icon.sprite = GamesManager.CurrentIcon;
                                         controller1.Date.text = DateTime.Parse(item.CreatedAt).ToString("yyyy/MM/dd HH:mm:ss");
@@ -234,47 +165,18 @@ public class HistoryListController : MonoBehaviour
                                         myLayoutElement1.sizeDelta = new Vector2(391, 60);
                                         myLayoutElement1.transform.localScale = Vector3.one;
                                     }
-                                    else if (item.matched_user_2._id == usermanager.getCurrentUserId() && adv2score > adv1score)
-                                    {
-                                        controller.Gain.text = "+" + float.Parse(item.gain).ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
-                                        GameObject newItem2 = Instantiate(ListItemPrefab) as GameObject;
-                                        HistoryListItemController controller2 = newItem2.GetComponent<HistoryListItemController>();
-                                        switch (item.gain)
-                                        {
-                                            case "2":
-                                                controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
-                                                break;
-                                            case "5":
-                                                controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
-                                                break;
-                                            case "10":
-                                                controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
-                                                break;
-                                        }
-                                        //TODO
-                                        //controller2.Icon.sprite = newSprite1;
-                                        controller2.GameName.text = item.game.name;
-                                        controller2.Icon.sprite = GamesManager.CurrentIcon;
-                                        controller2.Date.text = DateTime.Parse(item.CreatedAt).ToString("yyyy/MM/dd HH:mm:ss");
-                                        controller2.ChallengeID.text = "ID: " + item._id;
-                                        controller2.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
-                                        newItem2.transform.parent = ContentPanelPro.transform;
-                                        RectTransform myLayoutElement2 = newItem2.GetComponent<RectTransform>();
-                                        myLayoutElement2.sizeDelta = new Vector2(391, 60);
-                                        myLayoutElement2.transform.localScale = Vector3.one;
-                                    }
                                     else
                                     {
                                         switch (item.gain)
                                         {
                                             case "2":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                             case "5":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                             case "10":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_PRO_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                                                 break;
                                         }
                                         controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
@@ -300,7 +202,7 @@ public class HistoryListController : MonoBehaviour
                                     }
                                     else
                                     {
-                                        if (item.matched_user_1._id == usermanager.getCurrentUserId() && adv1score > adv2score)
+                                        if (item.winner_user == usermanager.getCurrentUserId())
                                         {
                                             controller.Gain.text = "+" + item.gain + " Bubbles";
                                             GameObject newItem3 = Instantiate(ListItemPrefab) as GameObject;
@@ -328,35 +230,6 @@ public class HistoryListController : MonoBehaviour
                                             RectTransform myLayoutElement3 = newItem3.GetComponent<RectTransform>();
                                             myLayoutElement3.sizeDelta = new Vector2(391, 60);
                                             myLayoutElement3.transform.localScale = Vector3.one;
-                                        }
-                                        else if (item.matched_user_2._id == usermanager.getCurrentUserId() && adv2score > adv1score)
-                                        {
-                                            controller.Gain.text = "+" + item.gain + " Bubbles";
-                                            GameObject newItem4 = Instantiate(ListItemPrefab) as GameObject;
-                                            HistoryListItemController controller4 = newItem4.GetComponent<HistoryListItemController>();
-                                            switch (item.gain)
-                                            {
-                                                case "2":
-                                                    controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubble";
-                                                    break;
-                                                case "6":
-                                                    controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " Bubbles";
-                                                    break;
-                                                case "10":
-                                                    controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " Bubbles";
-                                                    break;
-                                            }
-                                            //TODO
-                                            //controller4.Icon.sprite = newSprite1;
-                                            controller4.GameName.text = item.game.name;
-                                            controller4.Date.text = DateTime.Parse(item.CreatedAt).ToString("yyyy/MM/dd HH:mm:ss");
-                                            controller4.ChallengeID.text = "ID: " + item._id;
-                                            controller4.Icon.sprite = GamesManager.CurrentIcon;
-                                            controller4.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
-                                            newItem4.transform.parent = ContentPanelPro.transform;
-                                            RectTransform myLayoutElement4 = newItem4.GetComponent<RectTransform>();
-                                            myLayoutElement4.sizeDelta = new Vector2(391, 60);
-                                            myLayoutElement4.transform.localScale = Vector3.one;
                                         }
                                         else
                                         {

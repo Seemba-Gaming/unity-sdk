@@ -1,10 +1,12 @@
-﻿using SimpleJSON;
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using SimpleJSON;
+using System;
+using UnityEngine.SceneManagement;
+using System.Threading;
+using System.Linq;
 public class ChargePresenter : MonoBehaviour
 {
     UserManager um = new UserManager();
@@ -16,8 +18,8 @@ public class ChargePresenter : MonoBehaviour
     Button Credit;
     Toggle TermsToggel;
     public string _paymentIntentID;
-    public string userId;
-    public string userToken;
+    public string user_id;
+    public string token;
     private static bool isBackAfterPayment;
     private string current_client_secret;
     [SerializeField] private GameObject Card;
@@ -44,8 +46,8 @@ public class ChargePresenter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        userId = um.getCurrentUserId();
-        userToken = um.getCurrentSessionToken();
+        user_id = um.getCurrentUserId();
+        token = um.getCurrentSessionToken();
 
 
         CardColors.Add(Orca);
@@ -77,7 +79,7 @@ public class ChargePresenter : MonoBehaviour
         Credit = GameObject.Find("Credit").GetComponent<Button>();
         Credit.onClick.AddListener(() =>
         {
-            confirmCredit();
+            Charge();
         });
         try
         {
@@ -199,20 +201,18 @@ public class ChargePresenter : MonoBehaviour
         string res = "";
         for (int i = 0; i < content.Length; i++)
         {
-            Debug.Log("i:" + i);
+
             if (i != 1 && i != 0 && i % 4 == 0)
             {
                 res += " ";
             }
             res += content.ElementAt(i);
         }
-        Debug.Log("res:" + res);
         return res;
     }
-    public void confirmCredit()
+    public void Charge()
     {
-        string token = um.getCurrentSessionToken();
-        string userId = um.getCurrentUserId();
+
         //If the credit is directly accepted
         const string Chargeable = "chargeable";
         //If the credit is directly accepted
@@ -252,34 +252,35 @@ public class ChargePresenter : MonoBehaviour
         }
         if (confirmData == true)
         {
-            // a changer pour mettre la popup
-
             SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
 
             thread = UnityThreadHelper.CreateThread(() =>
             {
                 try
                 {
-                    string _paymentMethodID = charge.createPaymentMethod(cardNumber.text, CVV.text, int.Parse(valueMonths), int.Parse(valueYears));
+                    string _paymentMethodID = charge.CreatePaymentMethod(cardNumber.text, CVV.text, int.Parse(valueMonths), int.Parse(valueYears));
+                    
                     if (!String.IsNullOrEmpty(_paymentMethodID))
                     {
-                        JSONNode _paymentIntent = charge.createPaymentIntent(_paymentMethodID, WalletScript.LastCredit, token);
+                        JSONNode _paymentIntent = charge.CreatePaymentIntent(_paymentMethodID, WalletScript.LastCredit, token);
                         _paymentIntentID = _paymentIntent["data"]["id"].Value;
-                        Debug.Log("_paymentIntentID: " + _paymentIntentID);
+
                         // Response of Seemba API
                         if (_paymentIntent["success"].AsBool)
                         {
                             //check if 3D Secure needed from Stripe
-                            if (is3DSecure(_paymentIntent))
+                            if (Is3DSecure(_paymentIntent))
                             {
-                                confirm3DSecure(_paymentIntent);
+                                Debug.Log("Confirm3DSecure");
+                                Confirm3DSecure(_paymentIntent);
                             }
                             else
                             {   // 3D Secure not required, directly check payment intent status
-                                if (_paymentIntent["status"].Value == ChargeManager.PAYMENT_STATUS_SUCCEEDED)
-                                    chargeSucceeded();
-                                else
-                                    chargeCanceled();
+                                Debug.Log("3D Secure not required, directly check payment intent status");
+                                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                                {
+                                    InvokeRepeating("IsChargeCompleted", 0.0f, 1f);
+                                });
                             }
                             //extract URL and open browser
                             UnityThreadHelper.Dispatcher.Dispatch(() =>
@@ -291,7 +292,7 @@ public class ChargePresenter : MonoBehaviour
                         else
                         {
                             //Charge Refused : not confirmed
-                            chargeCanceled();
+                            ChargeCanceled();
                         }
 
                     }
@@ -300,7 +301,7 @@ public class ChargePresenter : MonoBehaviour
                         UnityThreadHelper.Dispatcher.Dispatch(() =>
                         {
                             //turn back to trophy with Ouups popup
-                            TurnBackToTrophy();
+                            UnloadBankingInfo();
                         });
                     }
                 }
@@ -311,26 +312,26 @@ public class ChargePresenter : MonoBehaviour
             });
         }
     }
-    private bool is3DSecure(JSONNode json)
+    private bool Is3DSecure(JSONNode json)
     {
         Debug.Log("status:" + json["status"].Value);
         return json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_ACTION || json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_SOURCE_ACTION;
     }
-    private void confirm3DSecure(JSONNode json)
+    private void Confirm3DSecure(JSONNode json)
     {
         var _3DSecureURL = json["redirect_url"].Value;
         Debug.Log("_3DSecureURL: " + json["redirect_url"].Value);
-        openBrowserFor3dSecure(_3DSecureURL);
+        OpenBrowserFor3dSecure(_3DSecureURL);
     }
-    private void openBrowserFor3dSecure(string url)
+    private void OpenBrowserFor3dSecure(string url)
     {
         UnityThreadHelper.Dispatcher.Dispatch(() =>
         {
             Application.OpenURL(url);
-            InvokeRepeating("chargeCompleted", 0.0f, 1f);
+            InvokeRepeating("IsChargeCompleted", 0.0f, 1f);
         });
     }
-    void selectWinMoney()
+    void SelectWinMoney()
     {
         ViewsEvents viewEvents = new ViewsEvents();
         viewEvents.WinMoneyClick();
@@ -340,72 +341,74 @@ public class ChargePresenter : MonoBehaviour
         bottomMenu.unselectHome();
         bottomMenu.unselectHaveFun();
     }
-    void chargeCompleted()
+    void IsChargeCompleted()
     {
         string token = um.getCurrentSessionToken();
+        Debug.Log("chargeConfirmed:");
         UnityThreadHelper.CreateThread(() =>
         {
             string chargeConfirmed = charge.isChargeConfirmed(_paymentIntentID, token);
-            Debug.Log("chargeConfirmed: " + chargeConfirmed);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 if (chargeConfirmed.Equals(ChargeManager.PAYMENT_STATUS_SUCCEEDED))
                 {
                     CancelInvoke();
-                    chargeSucceeded();
+                    ChargeSucceeded();
                 }
                 else if (chargeConfirmed.Equals(ChargeManager.PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD))
                 {
                     CancelInvoke();
-                    chargeCanceled();
+                    ChargeCanceled();
                 }
             });
         });
     }
-    private void chargeSucceeded()
+    private void ChargeSucceeded()
     {
-        float credit = float.Parse(UserManager.CurrentMoney) + WalletScript.LastCredit;
 
-        UnityThreadHelper.Dispatcher.Dispatch(() =>
+        UnityThreadHelper.CreateThread(() =>
         {
-            // Payment Completed 
-            isBackAfterPayment = false;
-            selectWinMoney();
-            EventsController nbs = new EventsController();
-            nbs.ShowPopup("popupCongrat");
-            UserManager.CurrentMoney = credit.ToString();
-            EncartPlayerPresenter.Init();
-            Text TextMain = GameObject.Find("TextMain").GetComponent<Text>();
-            TextMain.text = credit + CurrencyManager.CURRENT_CURRENCY;
-            Text lastCreditValue = GameObject.Find("lastCreditValue").GetComponent<Text>();
-            lastCreditValue.text = "(+" + WalletScript.LastCredit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY + ")";
+            User user = um.getUser(user_id, token);
+            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            {
+                Debug.Log("-------- User Credit:" + user.money_credit);
 
-            try
-            {
-                SceneManager.UnloadScene("Loader");
-            }
-            catch (Exception ex)
-            {
-            }
-            SceneManager.UnloadScene("BankingInformation");
+                // Payment Completed 
+                isBackAfterPayment = false;
+                SelectWinMoney();
+                EventsController nbs = new EventsController();
+                nbs.ShowPopup("popupCongrat");
+                UserManager.CurrentUser.money_credit = user.money_credit;
+                EncartPlayerPresenter.Init();
+                Text TextMain = GameObject.Find("TextMain").GetComponent<Text>();
+                TextMain.text = user.money_credit.ToString() + CurrencyManager.CURRENT_CURRENCY;
+                Text lastCreditValue = GameObject.Find("lastCreditValue").GetComponent<Text>();
+                lastCreditValue.text = "(+" + WalletScript.LastCredit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY + ")";
+
+                try
+                {
+                    SceneManager.UnloadScene("Loader");
+                }
+                catch (Exception ex)
+                {
+                }
+                SceneManager.UnloadScene("BankingInformation");
+            });
         });
     }
-    private void chargeCanceled()
+    private void ChargeCanceled()
     {
         UnityThreadHelper.Dispatcher.Dispatch(() =>
         {
-            //turn back to trophy with Ouups popup
-            TurnBackToTrophy();
+            UnloadBankingInfo();
         });
     }
-    private void TurnBackToTrophy()
+    private void UnloadBankingInfo()
     {
         SceneManager.UnloadScene("Loader");
-        selectWinMoney();
+        SelectWinMoney();
         SceneManager.UnloadScene("BankingInformation");
-        EventsController nbs = new EventsController();
-        nbs.ShowPopupError("popupOups");
-        //Debug.Log("turn back to trophy with Ouups popup");
+        new EventsController().ShowPopupError("popupOups");
     }
     // Update is called once per frame
     void Update()

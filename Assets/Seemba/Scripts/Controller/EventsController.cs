@@ -1,12 +1,12 @@
-﻿using SimpleJSON;
-using System;
+﻿using UnityEngine;
 using System.Collections;
-using System.Globalization;
-using System.Text.RegularExpressions;
-using System.Threading;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Threading;
+using SimpleJSON;
+using System;
+using System.Text.RegularExpressions;
+using System.Globalization;
 public class EventsController : MonoBehaviour
 {
     //public string currentScene;
@@ -35,7 +35,6 @@ public class EventsController : MonoBehaviour
     private Text _textDatePredefined;
     private string _selectedDateString2 = "1995-09-15";
     public static string last_view;
-    //public GoogleAnalyticsV4 googleAnalytics;
     private String SelectedDateString2
     {
         get
@@ -46,7 +45,6 @@ public class EventsController : MonoBehaviour
         {
             _selectedDateString2 = value;
             UserManager.currentBirthdate = value;
-            //UpdateLabels();
             try
             {
                 //Debug.Log("NBS:69");
@@ -267,7 +265,7 @@ public class EventsController : MonoBehaviour
                     {
                         GameObject.Find("Calque").transform.localScale = Vector3.zero;
                     }
-
+                    
                 }
             });
         });
@@ -316,7 +314,7 @@ public class EventsController : MonoBehaviour
             Thread.Sleep(300);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
-                SceneManager.LoadScene("IDProof", LoadSceneMode.Additive);
+                SceneManager.LoadScene("WithdrawalInfo", LoadSceneMode.Additive);
             });
         });
     }
@@ -335,9 +333,9 @@ public class EventsController : MonoBehaviour
             if (!string.IsNullOrEmpty(uploadRes) && uploadRes != "error")
             {
                 InfoPersonnelWithdraw.currentIdProof = uploadRes;
-                switch (filename)
+                switch (filename.ToUpper())
                 {
-                    case "Passport":
+                    case "PASSPORT":
                         string[] attrib = { "passport_uploaded" };
                         string[] value = { "true" };
                         um.UpdateUserByField(userId, userToken, attrib, value);
@@ -347,7 +345,7 @@ public class EventsController : MonoBehaviour
                         GameObject.Find("IDBack").GetComponent<Button>().interactable = false;
                         InfoPersonnelWithdraw.currentDocUploaded = "passport_uploaded";
                         break;
-                    case "IDFront":
+                    case "IDFRONT":
                         string[] attrib1 = { "id_proof_1_uploaded" };
                         string[] value1 = { "true" };
                         um.UpdateUserByField(userId, userToken, attrib1, value1);
@@ -356,7 +354,7 @@ public class EventsController : MonoBehaviour
                         InfoPersonnelWithdraw.idProof1Uploaded = true;
                         GameObject.Find("IDPassport").GetComponent<Button>().interactable = false;
                         break;
-                    case "IDBack":
+                    case "IDBACK":
                         string[] attrib2 = { "id_proof_2_uploaded" };
                         string[] value2 = { "true" };
                         um.UpdateUserByField(userId, userToken, attrib2, value2);
@@ -365,7 +363,7 @@ public class EventsController : MonoBehaviour
                         InfoPersonnelWithdraw.idProof2Uploaded = true;
                         GameObject.Find("IDPassport").GetComponent<Button>().interactable = false;
                         break;
-                    case "Address":
+                    case "ADDRESS":
                         string[] attrib3 = { "residency_proof_uploaded" };
                         string[] value3 = { "true" };
                         um.UpdateUserByField(userId, userToken, attrib3, value3);
@@ -376,8 +374,6 @@ public class EventsController : MonoBehaviour
                 UnityThreadHelper.Dispatcher.Dispatch(() =>
                 {
                     SceneManager.UnloadScene("Loader");
-                    //GameObject.Find (filename + "Success").GetComponent<Image> ().transform.localScale = Vector3.one;
-                    //GameObject.Find (filename).GetComponent<Image> ().transform.localScale = Vector3.zero;
                 });
             }
             else
@@ -413,7 +409,6 @@ public class EventsController : MonoBehaviour
             try
             {
                 SceneManager.UnloadScene("Loader");
-                SceneManager.UnloadScene("WithdrawalInfo");
             }
             catch (ArgumentException ex) { }
             if (!string.IsNullOrEmpty(msg))
@@ -522,7 +517,7 @@ public class EventsController : MonoBehaviour
     public void openCurrentProfile()
     {
         SceneManager.LoadScene("Profile", LoadSceneMode.Additive);
-        Profile.PlayerId = um.getCurrentUserId();
+        ProfileViewPresenter.PlayerId = um.getCurrentUserId();
         ShowPopupProfile();
     }
     public void closeCurrentProfile()
@@ -543,8 +538,8 @@ public class EventsController : MonoBehaviour
     {
         Debug.Log("CurrentChallenge:" + ChallengeManager.CurrentChallenge.gain);
         Debug.Log("CurrentChallenge:" + ChallengeManager.CurrentChallenge.gain_type);
-
-
+        
+        
         OpponentFound.adversaireName = null; //usr.username
         OpponentFound.Avatar = null;
         OpponentFound.AdvCountryCode = null; //.country_code;
@@ -556,35 +551,35 @@ public class EventsController : MonoBehaviour
         switch (ChallengeManager.CurrentChallenge.gain_type)
         {
             case ChallengeManager.CHALLENGE_WIN_TYPE_CASH:
-                if (float.Parse(ChallengeManager.CurrentChallenge.gain) == ChallengeManager.WIN_1V1_PRO_CONFIDENT)
+                if (float.Parse(ChallengeManager.CurrentChallenge.gain) == ChallengeManager.WIN_1V1_CASH_CONFIDENT)
                 {
-                    gain = ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString();
+                    gain = ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString();
                     gainType = ChallengeManager.CHALLENGE_WIN_TYPE_CASH;
                     ChallengeName = "NoviceArgent";
                     entry_fee = GameObject.Find("Entry fee").GetComponent<Text>();
-                    entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                    entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                     Gain = GameObject.Find("gain").GetComponent<Text>();
-                    Gain.text = ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+                    Gain.text = ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
                 }
-                else if (float.Parse(ChallengeManager.CurrentChallenge.gain) == ChallengeManager.WIN_1V1_PRO_CHAMPION)
+                else if (float.Parse(ChallengeManager.CurrentChallenge.gain) == ChallengeManager.WIN_1V1_CASH_CHAMPION)
                 {
-                    gain = ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString();
+                    gain = ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString();
                     gainType = ChallengeManager.CHALLENGE_WIN_TYPE_CASH;
                     ChallengeName = "AmateurArgent";
                     entry_fee = GameObject.Find("Entry fee").GetComponent<Text>();
-                    entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                    entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                     Gain = GameObject.Find("gain").GetComponent<Text>();
-                    Gain.text = ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+                    Gain.text = ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
                 }
-                else if (float.Parse(ChallengeManager.CurrentChallenge.gain) == ChallengeManager.WIN_1V1_PRO_LEGEND)
+                else if (float.Parse(ChallengeManager.CurrentChallenge.gain) == ChallengeManager.WIN_1V1_CASH_LEGEND)
                 {
-                    gain = ChallengeManager.WIN_1V1_PRO_LEGEND.ToString();
+                    gain = ChallengeManager.WIN_1V1_CASH_LEGEND.ToString();
                     gainType = ChallengeManager.CHALLENGE_WIN_TYPE_CASH;
                     ChallengeName = "AmateurArgent";
                     entry_fee = GameObject.Find("Entry fee").GetComponent<Text>();
                     entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_BUBBLES_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                     Gain = GameObject.Find("gain").GetComponent<Text>();
-                    Gain.text = ChallengeManager.WIN_1V1_PRO_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                    Gain.text = ChallengeManager.WIN_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
                 }
                 break;
             case ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES:
@@ -639,7 +634,7 @@ public class EventsController : MonoBehaviour
     }
     public void Play()
     {
-
+        
         BackgroundController.CurrentBackground = null;
         EventsController.advFound = false;
         SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
@@ -656,7 +651,7 @@ public class EventsController : MonoBehaviour
 
         }
         AO.allowSceneActivation = true;
-
+        
     }
     public void CreatePassword()
     {
@@ -1306,7 +1301,7 @@ public class EventsController : MonoBehaviour
         {
             Thread.Sleep(500);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
+            {   
                 ViewsEvents v = new ViewsEvents();
                 BottomMenuController bottomMenu = BottomMenuController.getInstance();
                 bottomMenu.unselectWinMoney();
@@ -1316,7 +1311,7 @@ public class EventsController : MonoBehaviour
                 v.WalletClick(last_view);
             });
         });
-
+        
     }
 
     public void WalletBack()
@@ -1438,7 +1433,7 @@ public class EventsController : MonoBehaviour
     {
 
         return false;
-#if UNITY_ANDROID
+    #if UNITY_ANDROID
         if (gainType == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
         {
             using (var actClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
@@ -1464,7 +1459,7 @@ public class EventsController : MonoBehaviour
             return false;
         }
 #else
-        return false;
+		return false;
 #endif
     }
     public bool checkVPNBeforePlaying(string gainType)
@@ -1502,29 +1497,7 @@ public class EventsController : MonoBehaviour
     }
     void configBeforePlaying(string FeeGame, string GameMontant, string gain_type, string attrib, int value)
     {
-        string userId = um.getCurrentUserId();
-        string token = um.getCurrentSessionToken();
-
-        SearchingForPlayerPresenter.GameMontant = GameMontant;
-        if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
-        {
-
-            UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) - int.Parse(FeeGame)).ToString();
-        }
-        else if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
-        {
-            Debug.Log(ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
-            SearchingForPlayerPresenter.GameMontant = GameMontant + CurrencyManager.CURRENT_CURRENCY;
-            UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney) - float.Parse(FeeGame)).ToString("N2");
-        }
-        SearchingForPlayerPresenter.isTrainingGame = false;
-        UnityThreading.ActionThread thread;
-        thread = UnityThreadHelper.CreateThread(() =>
-        {
-            string[] attribute = { attrib };
-            string[] Att_value = { (value + 1).ToString() };
-            um.UpdateUserByField(userId, token, attribute, Att_value);
-        });
+        
     }
     public bool checkCountryBeforePlaying(string code, string gainType)
     {
@@ -1537,20 +1510,21 @@ public class EventsController : MonoBehaviour
             return true;
         }
     }
-    public void startFirstChallenge()
+    public void StartFirstChallenge(string token)
     {
-        string userId = um.getCurrentUserId();
-        string token = um.getCurrentSessionToken();
         ChallengeManager.CurrentChallengeGain = "2";
         ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
+
         SearchingForPlayerPresenter.nbPlayer = "duel";
         ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
+
         UnityThreadHelper.CreateThread(() =>
-        {
+        {   
             ChallengeManager.CurrentChallenge = cm.AddChallenge(token, "headTohead", ChallengeManager.CurrentChallengeGain, ChallengeManager.CurrentChallengeGainType, 0);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 configBeforePlaying(ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT.ToString(), "2", ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, "novice_bubble", 0);
+                SceneManager.UnloadScene("Loader");
                 SceneManager.LoadSceneAsync("SearchingPlayer", LoadSceneMode.Additive);
             });
         });
@@ -1625,17 +1599,17 @@ public class EventsController : MonoBehaviour
                                             }
                                             else if (gainType == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
                                             {
-                                                if (gain == ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString())
+                                                if (gain == ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString())
                                                 {
-                                                    configBeforePlaying(ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString(), ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, "novice_money", user.novice_money);
+                                                    configBeforePlaying(ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString(), ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, "novice_money", user.novice_money);
                                                 }
-                                                if (gain == ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString())
+                                                if (gain == ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString())
                                                 {
-                                                    configBeforePlaying(ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString(), ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, "amateur_money", user.amateur_money);
+                                                    configBeforePlaying(ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString(), ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, "amateur_money", user.amateur_money);
                                                 }
-                                                if (gain == ChallengeManager.WIN_1V1_PRO_LEGEND.ToString())
+                                                if (gain == ChallengeManager.WIN_1V1_CASH_LEGEND.ToString())
                                                 {
-                                                    configBeforePlaying(ChallengeManager.FEE_1V1_PRO_LEGEND.ToString(), ChallengeManager.WIN_1V1_PRO_LEGEND.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, "confirmed_money", user.confirmed_money);
+                                                    configBeforePlaying(ChallengeManager.FEE_1V1_CASH_LEGEND.ToString(), ChallengeManager.WIN_1V1_CASH_LEGEND.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, "confirmed_money", user.confirmed_money);
                                                 }
                                             }
                                             SceneManager.LoadSceneAsync("SearchingPlayer", LoadSceneMode.Additive);
@@ -1721,27 +1695,27 @@ public class EventsController : MonoBehaviour
     {
         ChallengeName = "NoviceArgent";
         Text entry_fee = GameObject.Find("Entry fee").GetComponent<Text>();
-        entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_PRO_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+        entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
         Text Gain = GameObject.Find("gain").GetComponent<Text>();
-        Gain.text = ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+        Gain.text = ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
         ShowPopup("popup");
     }
     public void ShowAmateurArgentpopUp()
     {
         ChallengeName = "AmateurArgent";
         Text entry_fee = GameObject.Find("Entry fee").GetComponent<Text>();
-        entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_PRO_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+        entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
         Text Gain = GameObject.Find("gain").GetComponent<Text>();
-        Gain.text = ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+        Gain.text = ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
         ShowPopup("popup");
     }
     public void ShowConfirmedArgentpopUp()
     {
         ChallengeName = "ConfirmedArgent";
         Text entry_fee = GameObject.Find("Entry fee").GetComponent<Text>();
-        entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_PRO_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+        entry_fee.text = "Entry fee: " + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
         Text Gain = GameObject.Find("gain").GetComponent<Text>();
-        Gain.text = ChallengeManager.WIN_1V1_PRO_LEGEND.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+        Gain.text = ChallengeManager.WIN_1V1_CASH_LEGEND.ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
         ShowPopup("popup");
     }
     public void ShowNoviceGouttepopUp()
@@ -1771,215 +1745,7 @@ public class EventsController : MonoBehaviour
         Gain.text = ChallengeManager.WIN_1V1_BUBBLES_LEGEND.ToString();
         ShowPopup("popup");
     }
-    public void ConfirmButtonpopupChallenge()
-    {
-
-        //HidePopup ("popup",false);
-        switch (ChallengeName)
-        {
-            case "NoviceArgent":
-
-
-                noviceButton();
-                break;
-            case "AmateurArgent":
-
-
-                AmateurButton();
-                break;
-            case "ConfirmedArgent":
-
-
-                ConfirmedButton();
-                break;
-            case "NoviceGoutte":
-
-
-                noviceGoutteButton();
-                break;
-            case "AmateurGoutte":
-
-
-                AmateurGoutteButton();
-                break;
-            case "ConfirmedGoutte":
-
-
-                ConfirmedGoutteButton();
-                break;
-            case "TournamentBubbleConfident":
-
-
-                ConfirmJoiningBubbleTournament(TournamentManager.FEE_BRACKET_BUBBLE_CONFIDENT, TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT, TournamentManager.GAIN_TYPE_BUBBLE);
-                break;
-            case "TournamentBubbleChampion":
-
-
-                ConfirmJoiningBubbleTournament(TournamentManager.FEE_BRACKET_BUBBLE_CHAMPION, TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION, TournamentManager.GAIN_TYPE_BUBBLE);
-                break;
-            case "TournamentBubbleLegend":
-
-
-                ConfirmJoiningBubbleTournament(TournamentManager.FEE_BRACKET_BUBBLE_LEGEND, TournamentManager.WIN_BRACKET_BUBBLE_LEGEND, TournamentManager.GAIN_TYPE_BUBBLE);
-                break;
-            case "TournamentCashConfident":
-
-
-                ConfirmJoiningCashTournament(TournamentManager.FEE_BRACKET_CASH_CONFIDENT, TournamentManager.WIN_BRACKET_CASH_CONFIDENT, TournamentManager.GAIN_TYPE_CASH);
-                break;
-            case "TournamentCashChampion":
-
-
-                ConfirmJoiningCashTournament(TournamentManager.FEE_BRACKET_CASH_CHAMPION, TournamentManager.WIN_BRACKET_CASH_CHAMPION, TournamentManager.GAIN_TYPE_CASH);
-                break;
-            case "TournamentCashLegend":
-
-
-                ConfirmJoiningCashTournament(TournamentManager.FEE_BRACKET_CASH_LEGEND, TournamentManager.WIN_BRACKET_CASH_LEGEND, TournamentManager.GAIN_TYPE_CASH);
-                break;
-        }
-    }
-    public void ConfirmJoiningBubbleTournament(float fee, float gain, string gain_type)
-    {
-        if (float.Parse(UserManager.CurrentWater) < fee)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("insufficientBubbles");
-                });
-            });
-        }
-        else
-        {
-            HidePopup("popup", true);
-            UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(300);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    joinBubbleTournament(gain, gain_type, fee);
-                });
-            });
-        }
-    }
-    public void ConfirmJoiningCashTournament(float fee, float gain, string gain_type)
-    {
-        HidePopup("popup", false);
-        if (float.Parse(UserManager.CurrentMoney) < fee)
-        {
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("popupSoldeInsuffisant");
-                });
-            });
-        }
-        else
-        {
-            HidePopup("popup", true);
-            UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(300);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    joinCashTournament(gain, gain_type, fee);
-                });
-            });
-        }
-    }
-    public void joinBubbleTournament(float gain, string gain_type, float fee)
-    {
-        UserManager um = new UserManager();
-        string userId = um.getCurrentUserId();
-        string token = um.getCurrentSessionToken();
-        UnityThreadHelper.CreateThread(() =>
-        {
-            TournamentManager tm = new TournamentManager();
-            string tournamentId = tm.JoinOrCreateTournament(TournamentManager.TOURNAMENT_8, gain, gain_type, userId, token);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                if (tournamentId != null)
-                {
-                    UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) - fee).ToString();
-                    TournamentController.setCurrentTournamentID(tournamentId);
-                    SceneManager.LoadScene("Bracket", LoadSceneMode.Additive);
-                }
-            });
-        });
-    }
-    public void joinCashTournament(float gain, string gain_type, float fee)
-    {
-        string code = null;
-        try
-        {
-            code = UserManager.CurrentCountryCode;
-        }
-        catch (NullReferenceException ex)
-        {
-        }
-        if (checkCountryBeforePlaying(code, gain_type) == true)
-        {
-            //Check Mode developer 
-            if (checkDeveleperMode(gain_type) == false)
-            {
-                //Check Internet Connexion
-                StartCoroutine(checkInternetConnection((isConnected) =>
-                {
-                    if (isConnected == true)
-                    {
-                        // Check if user is using an VPN
-                        SceneManager.UnloadSceneAsync("Loader");
-                        if (checkVPNBeforePlaying(gain_type) == false)
-                        {
-                            UserManager um = new UserManager();
-                            string userId = um.getCurrentUserId();
-                            string token = um.getCurrentSessionToken();
-                            UnityThreadHelper.CreateThread(() =>
-                            {
-                                TournamentManager tm = new TournamentManager();
-                                string tournamentId = tm.JoinOrCreateTournament(TournamentManager.TOURNAMENT_8, gain, gain_type, userId, token);
-                                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                                {
-                                    if (tournamentId != null)
-                                    {
-                                        UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney) - fee).ToString("N2");
-                                        TournamentController.setCurrentTournamentID(tournamentId);
-                                        SceneManager.LoadScene("Bracket", LoadSceneMode.Additive);
-                                    }
-                                });
-                            });
-                        }
-                    }
-                    else
-                    {
-                        HidePopup("popup", true);
-                        SceneManager.UnloadSceneAsync("Loader");
-                        UnityThreadHelper.CreateThread(() =>
-                        {
-                            Thread.Sleep(300);
-                            UnityThreadHelper.Dispatcher.Dispatch(() =>
-                            {
-                                try
-                                {
-                                    SceneManager.UnloadSceneAsync("ConnectionFailed");
-                                }
-                                catch (ArgumentException ex) { }
-                                SceneManager.LoadSceneAsync("ConnectionFailed", LoadSceneMode.Additive);
-                            });
-                        });
-                    }
-                }));
-            }
-        }
-    }
+  
     public void ShowTournamentBubbleConfidentpopUp()
     {
         ChallengeName = "TournamentBubbleConfident";
@@ -2042,125 +1808,19 @@ public class EventsController : MonoBehaviour
     {
         HidePopupError("insufficientBubbles", true);
     }
-    public void noviceButton()
-    {
-        if (float.Parse(UserManager.CurrentMoney, CultureInfo.InvariantCulture.NumberFormat) < ChallengeManager.FEE_1V1_PRO_CONFIDENT)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("popupSoldeInsuffisant");
-                });
-            });
-        }
-        else
-        {
-            BeginPlaying(ChallengeManager.WIN_1V1_PRO_CONFIDENT.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
-        }
-    }
-    public void AmateurButton()
-    {
-        if (float.Parse(UserManager.CurrentMoney, CultureInfo.InvariantCulture.NumberFormat) < ChallengeManager.FEE_1V1_PRO_CHAMPION)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("popupSoldeInsuffisant");
-                });
-            });
-        }
-        else
-        {
-            BeginPlaying(ChallengeManager.WIN_1V1_PRO_CHAMPION.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
-        }
-    }
-    public void ConfirmedButton()
-    {
-        if (float.Parse(UserManager.CurrentMoney, CultureInfo.InvariantCulture.NumberFormat) < ChallengeManager.FEE_1V1_PRO_LEGEND)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("popupSoldeInsuffisant");
-                });
-            });
-        }
-        else
-        {
-            BeginPlaying(ChallengeManager.WIN_1V1_PRO_LEGEND.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
-        }
-    }
+    
+   
     public void noviceGoutteButton()
     {
-        if (float.Parse(UserManager.CurrentWater) < ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("insufficientBubbles");
-                });
-            });
-        }
-        else
-        {
-            BeginPlaying(ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
-        }
+        
     }
     public void AmateurGoutteButton()
     {
-        if (float.Parse(UserManager.CurrentWater) < ChallengeManager.FEE_1V1_BUBBLES_CHAMPION)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("insufficientBubbles");
-                });
-            });
-        }
-        else
-        {
-            BeginPlaying(ChallengeManager.WIN_1V1_BUBBLES_CHAMPION.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
-        }
+        
     }
     public void ConfirmedGoutteButton()
     {
-        if (float.Parse(UserManager.CurrentWater) < ChallengeManager.FEE_1V1_BUBBLES_LEGEND)
-        {
-            HidePopup("popup", false);
-            UnityThreading.ActionThread thread1;
-            thread1 = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ShowPopupError("insufficientBubbles");
-                });
-            });
-        }
-        else
-        {
-            BeginPlaying(ChallengeManager.WIN_1V1_BUBBLES_LEGEND.ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
-        }
+        
     }
     public bool IsValidEmailAddress(string s)
     {
@@ -2235,7 +1895,7 @@ public class EventsController : MonoBehaviour
     {
         SceneManager.LoadScene("TournamentDetails");
     }
-
+    
     public void backBankingInformations()
     {
         SceneManager.UnloadScene("BankingInformation");

@@ -1,6 +1,10 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static ChallengeTypePresenter;
 using static PopupsViewPresenter;
 
 public class ChallengeController : MonoBehaviour
@@ -39,8 +43,8 @@ public class ChallengeController : MonoBehaviour
             ChallengeManager.CurrentChallengeGain = gain.ToString();
             ChallengeManager.CurrentChallengeGainType = gain_type.ToString();
 
-
-
+            
+            
 
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
@@ -79,7 +83,7 @@ public class ChallengeController : MonoBehaviour
             return;
         }
 
-        if (isProhibitedLocation(UserManager.CurrentCountryCode))
+        /*if (isProhibitedLocation(UserManager.CurrentCountryCode))
         {
             ShowPopup(PopupsController.PopupType.PROHIBITED_LOCATION, PopupsText.getInstance().prohibited_location());
             return;
@@ -89,7 +93,7 @@ public class ChallengeController : MonoBehaviour
         {
             ShowPopup(PopupsController.PopupType.VPN, PopupsText.getInstance().vpn());
             return;
-        }
+        }*/
 
         JoinChallenge(entry_fee, gain, gain_type);
     }
@@ -102,15 +106,16 @@ public class ChallengeController : MonoBehaviour
         UnityThreadHelper.CreateThread(() =>
         {
 
-            ChallengeManager.CurrentChallenge = challengeManager.AddChallenge(token, "headTohead", gain.ToString(), gain_type.ToString(), 0);
-
+            ChallengeManager.CurrentChallenge = challengeManager.AddChallenge(token, "headTohead", gain.ToString(), gain_type.ToString(),0);
+            
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 SceneManager.UnloadSceneAsync("Loader");
-
+                
                 if (ChallengeManager.CurrentChallenge != null)
                 {
-                    SceneManager.LoadSceneAsync("SearchingPlayer", LoadSceneMode.Additive);
+                    //remove_fee_and_search( entry_fee,  gain,  gain_type);
+                    search();
                 }
             });
 
@@ -147,7 +152,7 @@ public class ChallengeController : MonoBehaviour
 #endif
     }
     private bool isProhibitedLocation(string code)
-    {
+    {   
         return CountryController.checkCountry(code);
     }
     private bool isVPNEnabled()
@@ -156,40 +161,31 @@ public class ChallengeController : MonoBehaviour
         return vpn.isVpnConnected();
     }
 
-    void update(float entry_fee, float gain, string gain_type, string attrib, int value)
-    {
-
-
-
-        /*if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
+    void remove_fee_and_search(float entry_fee, float gain, string gain_type)
         {
-            UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) - int.Parse(entry_fee.ToString())).ToString();
+           
+        if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
+        {   
+           
+            TopWalletPresenter.getInstance().remove_fees(entry_fee);
         }
-        else if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
-        {
-            Debug.Log(ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
-            SearchingForPlayerPresenter.GameMontant = GameMontant + CurrencyManager.CURRENT_CURRENCY;
-            UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney) - float.Parse(FeeGame)).ToString("N2");
-        }
-        SearchingForPlayerPresenter.isTrainingGame = false;
-        UnityThreading.ActionThread thread;
-        thread = UnityThreadHelper.CreateThread(() =>
-        {
-            string[] attribute = { attrib };
-            string[] Att_value = { (value + 1).ToString() };
-            userManager.UpdateUserByField(userId, token, attribute, Att_value);
-        });*/
+       search();
+    }
+
+    void search(){
+        Debug.Log("search..");
+        SceneManager.LoadScene("SearchingPlayer", LoadSceneMode.Additive);
     }
 
 
     private bool isCreditSuffisant(float entry_fee, string win_type)
     {
 
-        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && (float.Parse(UserManager.CurrentMoney, CultureInfo.InvariantCulture.NumberFormat) >= entry_fee))
+        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && (UserManager.CurrentUser.money_credit >= entry_fee))
         {
             return true;
         }
-        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES) && (float.Parse(UserManager.CurrentWater) >= entry_fee))
+        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES) && (UserManager.CurrentUser.bubble_credit >= entry_fee))
         {
             return true;
         }

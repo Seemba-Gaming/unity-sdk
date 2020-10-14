@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 namespace Kakera
 {
     public class Unimgpicker : MonoBehaviour
@@ -7,21 +8,21 @@ namespace Kakera
         public delegate void ErrorDelegate(string message);
         public event ImageDelegate Completed;
         public event ErrorDelegate Failed;
-        private IPicker picker =
-#if UNITY_IOS && !UNITY_EDITOR
+        private IPicker picker = 
+        #if UNITY_IOS && !UNITY_EDITOR
             new PickeriOS();
-#elif UNITY_ANDROID && !UNITY_EDITOR
+        #elif UNITY_ANDROID && !UNITY_EDITOR
             new PickerAndroid();
-#else
+        #else
             new PickerUnsupported();
-#endif
+        #endif
         public void Show(string title, string outputFileName, int maxSize)
         {
-            //Debug.Log ("L27 outputFileName : "+outputFileName);
+			//Debug.Log ("L27 outputFileName : "+outputFileName);
             picker.Show(title, outputFileName, maxSize);
         }
         private void OnComplete(string path)
-        {    //Debug.Log ("OnComplete : "+path);
+		{    //Debug.Log ("OnComplete : "+path);
             var handler = Completed;
             if (handler != null)
             {

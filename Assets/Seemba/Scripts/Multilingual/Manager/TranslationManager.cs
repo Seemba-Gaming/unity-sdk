@@ -1,8 +1,10 @@
-﻿using SimpleJSON;
+﻿using UnityEngine;
+using System.Collections.Generic;
 using System;
-using System.Collections;
 using System.IO;
-using UnityEngine;
+using SimpleJSON;
+using UnityEditor;
+using System.Collections;
 using UnityEngine.Networking;
 public sealed class TranslationManager : MonoBehaviour
 {
@@ -12,9 +14,10 @@ public sealed class TranslationManager : MonoBehaviour
     private static JSONNode Translations = null;
     static string systemLanguage = Application.systemLanguage.ToString();
 #if UNITY_EDITOR
-    private static bool d_OverrideLanguage = false;
-    private static SystemLanguage d_Language = SystemLanguage.English;
+    private static bool d_OverrideLanguage = true;
+    private static SystemLanguage d_Language = SystemLanguage.French;
 #endif
+    private static SystemLanguage current_language;
     private static void CheckInstance()
     {
         if (Translations == null)
@@ -32,13 +35,12 @@ public sealed class TranslationManager : MonoBehaviour
             if (Array.IndexOf<SystemLanguage>(Languages, lang) == -1)
                 lang = Languages[0];
 
+            current_language = lang;
 
             if (getTranslationFile() != null)
             {
-
                 ParseFile(getTranslationFile());
             }
-
         }
     }
     // Returns the translation for this key.
@@ -47,8 +49,6 @@ public sealed class TranslationManager : MonoBehaviour
         CheckInstance();
         try
         {
-
-
             return Translations[scene][key].Value;
         }
         catch (NullReferenceException ex) { return string.Empty; }

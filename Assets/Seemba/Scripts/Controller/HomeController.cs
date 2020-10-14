@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
+using System.Text;
+using System.Threading;
 using UnityEngine.UI;
 public class HomeController : MonoBehaviour
 {
@@ -10,19 +13,17 @@ public class HomeController : MonoBehaviour
     public static bool NoLastResult, NoOngoing;
     string UserId, userToken;
     UserManager userManager;
-    WithdrawManager withdrawManager;
     // Use this for initialization
     void OnEnable()
     {
         userManager = new UserManager();
-        withdrawManager = new WithdrawManager();
         UserId = userManager.getCurrentUserId();
         userToken = userManager.getCurrentSessionToken();
         User user;
 
         StartCoroutine(SelectHome());
 
-        if (string.IsNullOrEmpty(UserManager.CurrentMoney))
+        if (UserManager.CurrentUser==null)
         {
             StartCoroutine(CheckHeader());
         }
@@ -30,11 +31,10 @@ public class HomeController : MonoBehaviour
 
         if (UserManager.CurrentUsername == null && !PullToRefresh.pullActivated)
         {
-
             UnityThreadHelper.CreateThread(() =>
             {
+
                 user = userManager.getUser(UserId, userToken);
-                string accountStatus = withdrawManager.accountVerificationStatus(userToken);
                 UserManager.CurrentUser = user;
                 Byte[] lnByte = null;
                 if (user != null)
@@ -52,7 +52,6 @@ public class HomeController : MonoBehaviour
                     {
                         UserManager.CurrentUser = user;
                         PlayerPrefs.SetString("CurrentUsername", user.username);
-                        //Check if user change his location , if true update the new country_code
                         string country_code = userManager.GetGeoLoc();
                         UserManager.CurrentCountryCode = country_code;
                         try
@@ -89,8 +88,8 @@ public class HomeController : MonoBehaviour
                         }
                         try
                         {
-                            UserManager.CurrentWater = int.Parse(user.bubble_credit.ToString()).ToString();
-                            UserManager.CurrentMoney = user.money_credit.ToString("N2");
+                            UserManager.CurrentUser.bubble_credit = user.bubble_credit;
+                            UserManager.CurrentUser.money_credit = user.money_credit;
                         }
                         catch (NullReferenceException ex)
                         {
@@ -101,10 +100,10 @@ public class HomeController : MonoBehaviour
                         }
                         else
                         {
-                            UserManager.CurrentMoney = "0,00";
+                            UserManager.CurrentUser.money_credit = 0.00f;
                         }
                         Text PlayerWater = GameObject.Find("virtual_money").GetComponent<Text>();
-                        PlayerWater.text = int.Parse(UserManager.CurrentWater).ToString();
+                        PlayerWater.text = UserManager.CurrentUser.bubble_credit.ToString();
                         UserManager.CurrentUsername = user.username;
                         UserManager.CurrentAvatarURL = user.avatar;
                         UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(lnByte);
@@ -119,19 +118,11 @@ public class HomeController : MonoBehaviour
             EncartPlayerPresenter.Init();
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
-
-
     IEnumerator CheckHeader()
     {
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
         float timer = 0;
         bool failed = false;
-        while (string.IsNullOrEmpty(UserManager.CurrentMoney))
+        while (UserManager.CurrentUser==null)
         {
             if (timer > 12) { failed = true; break; }
             timer += Time.deltaTime;
@@ -141,13 +132,6 @@ public class HomeController : MonoBehaviour
         {
             ConnectivityController.CURRENT_ACTION = ConnectivityController.HOME_ACTION;
             SceneManager.LoadSceneAsync("ConnectionFailed", LoadSceneMode.Additive);
-        }
-        try
-        {
-            SceneManager.UnloadScene("Loader");
-        }
-        catch (ArgumentException ex)
-        {
         }
     }
     IEnumerator SelectHome()
@@ -169,7 +153,6 @@ public class HomeController : MonoBehaviour
         bottomMenu.unselectWinMoney();
         bottomMenu.selectHome();
         v.HomeClick();
-
     }
     IEnumerator CheckOngoingAndLastResult()
     {
@@ -216,9 +199,6 @@ public class HomeController : MonoBehaviour
                 CancelInvoke();
                 GameObject.Find("reconnectMessage").transform.localScale = Vector3.zero;
                 InvokeRepeating("unloadLoader", 0f, 0.5f);
-            }
-            else
-            {
             }
         }
     }

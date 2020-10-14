@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class ProfileTranslationController : MonoBehaviour
 {
     [SerializeField]
     private Text favourite,
                  verified,
-                 pending,
+                 pending, 
                  unverified,
-                 history,
-                 games_won,
+                 history, 
+                 games_won, 
                  in_a_row;
     // Start is called before the first frame update
     void Start()

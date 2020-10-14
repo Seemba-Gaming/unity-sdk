@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-
 [ExecuteInEditMode]
 public class ImageWithRoundedCorners : MonoBehaviour {
 	private static readonly int Props = Shader.PropertyToID("_WidthHeightRadius");

@@ -93,6 +93,7 @@ public class WithdrawPresenter : MonoBehaviour
 
             if (accountStatus["payouts_enabled"].AsBool)
             {
+
                 //Withdraw
                 controller.Withdraw(float.Parse(amount.text, CultureInfo.InvariantCulture));
             }

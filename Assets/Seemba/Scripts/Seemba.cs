@@ -103,7 +103,6 @@ public class Seemba : MonoBehaviour
                 {
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        
                         //instantiate sentry for catching crashes...
                         InstantiateSentry();
                         if (userManager.getCurrentUserId() != null)

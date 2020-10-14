@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Game
 {
-	public string _id, name, editorId, bundle_id, appstore_id, game_scene_name,game_level;
+	public string _id, name, editorId, bundle_id, appstore_id, game_scene_name;
 	public string icon,background_image;
 	public Game (string _id, string name, string editorId, string bundle_id, string appstore_id)
 	{
@@ -29,12 +29,11 @@ public class Game
         this._id = _id;
         this.name = name;
     }
-	public Game(string _id, string name, string game_scene_name,string game_level)
+	public Game(string _id, string name, string game_scene_name)
 	{
 		this._id = _id;
 		this.name = name;
 		this.game_scene_name = game_scene_name;
-		this.game_level = game_level;
 	}
 }
 

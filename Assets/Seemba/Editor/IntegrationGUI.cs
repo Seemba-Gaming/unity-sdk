@@ -7,15 +7,14 @@ public class IntegrationGUI : EditorWindow
 {
     private const string CONFIG_FILE_NAME = "seemba-services";
     private const string FIILE_PATH = "Assets/Seemba/Resources/"+ CONFIG_FILE_NAME +".json";
-     
+
     private Texture2D m_Logo = null;
     
     string GAME_ID = "";
-    string GAME_NAME = "";
     string GAME_SCENE_NAME = "";
-    string GAME_LEVEL = "";
+    string GAME_NAME = "";
 
-
+    [MenuItem("Seemba/Integration Parameters")]
     #region UNITY_METHOD
     private void OnGUI()
     {
@@ -45,16 +44,11 @@ public class IntegrationGUI : EditorWindow
             {
                 GAME_SCENE_NAME = SavedGame.game_scene_name;
             }
-            if (!string.IsNullOrEmpty(SavedGame.game_level))
-            {
-                GAME_LEVEL = SavedGame.game_level;
-            }
         }
         catch (Exception ex) { }
     }
     #endregion
     #region METHOD
-    [MenuItem("Seemba/Integration Parameters")]
     public static void ShowWindow()
     {
         EditorWindow.GetWindow<IntegrationGUI>("Integration Parameters");
@@ -72,12 +66,11 @@ public class IntegrationGUI : EditorWindow
     void SetFields()
     {
         /****************** SET SEEMBA FIELDS *********************/
+        GUILayout.Label("Please Fill the Infos bellow to start using Seemba: ", EditorStyles.boldLabel);
         GUILayout.Label("");
-        GUILayout.Label("Please fill in all information below and click on apply : ", EditorStyles.boldLabel);
         GAME_ID = EditorGUILayout.TextField("GAME_ID: ", GAME_ID, GUILayout.Width(800), GUILayout.Height(20));
         GAME_NAME = EditorGUILayout.TextField("GAME_NAME: ", GAME_NAME, GUILayout.Width(800), GUILayout.Height(20));
         GAME_SCENE_NAME = EditorGUILayout.TextField("GAME_SCENE_NAME: ", GAME_SCENE_NAME, GUILayout.Width(800), GUILayout.Height(20));
-        GAME_LEVEL = EditorGUILayout.TextField("GAME_LEVEL: ", GAME_LEVEL, GUILayout.Width(800), GUILayout.Height(20));
         GUILayout.Label("");
         /**********************************************************/
     }
@@ -92,7 +85,7 @@ public class IntegrationGUI : EditorWindow
 
         if (GUILayout.Button("Apply", GUILayout.Width(400), GUILayout.Height(50)))
         {
-            SaveConfig(new Game(GAME_ID, GAME_NAME, GAME_SCENE_NAME, GAME_LEVEL));
+            SaveConfig(new Game(GAME_ID, GAME_NAME, GAME_SCENE_NAME));
         }
         GUILayout.FlexibleSpace();
         EditorGUILayout.EndHorizontal();
@@ -118,22 +111,15 @@ public class IntegrationGUI : EditorWindow
         catch (Exception ex) { }
         if (!string.IsNullOrEmpty(game._id) || !string.IsNullOrEmpty(game.name) || !string.IsNullOrEmpty(game.game_scene_name))
         {
-            if (!string.IsNullOrEmpty(game.game_level) && int.TryParse(game.game_level,out int level))
+            string str = JsonUtility.ToJson(game);
+            using (FileStream fs = new FileStream(FIILE_PATH, FileMode.Create))
             {
-                string str = JsonUtility.ToJson(game);
-                using (FileStream fs = new FileStream(FIILE_PATH, FileMode.Create))
+                using (StreamWriter writer = new StreamWriter(fs))
                 {
-                    using (StreamWriter writer = new StreamWriter(fs))
-                    {
-                        writer.Write(str);
-                    }
+                    writer.Write(str);
                 }
-                UnityEditor.AssetDatabase.Refresh();
             }
-            else
-            {
-                Debug.LogError("GAME_LEVEL should be a decimal number");
-            }
+            UnityEditor.AssetDatabase.Refresh();
         }
         else
         {

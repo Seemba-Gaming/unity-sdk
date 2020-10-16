@@ -8,7 +8,7 @@ using System.Net.Security;
 using System.Text;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
-using System.Security.Policy;
+using System.Security;
 
 public class WithdrawManager
 {
@@ -27,54 +27,6 @@ public class WithdrawManager
     public const string WITHDRAW_ERROR_BALANCE_INSUFFICIENT = "balance_insufficient";
     public const string WITHDRAW_ERROR_AMOUNT_INSUFFICIENT = "amount_insufficient";
     public const string WITHDRAW_BUSINESS_PROFILE_URL = "www.seemba.com";
-    public string uploadImage(string fullPath)
-    {
-        UserManager um = new UserManager();
-        string url = Endpoint.cloudURL + "uploadImage";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["X-Parse-Application-Id"] = "seembaapi";
-        request.Headers["Access-Control-Request-Headers"] = "Content-Type";
-        request.Headers["Access-Control-Request-Headers"] = "Authorization";
-        request.ContentType = @"application/json";
-        using (var stream = request.GetRequestStream())
-        {
-            //Debug.Log (Convert.ToBase64String (File.ReadAllBytes (fullPath)));
-            byte[] jsonAsBytes = encoding.GetBytes("{\"bytes\":\"" + Convert.ToBase64String(File.ReadAllBytes(fullPath)) + "\"}");
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log (jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["result"].Value;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-            return null;
-        }
-    }
 
     public async Task<string> TokenizeAccount()
     {

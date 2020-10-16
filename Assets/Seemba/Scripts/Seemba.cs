@@ -90,8 +90,6 @@ public class Seemba : MonoBehaviour
         UnityThreadHelper.CreateThread(() =>
         {
             string res = gamesManager.getGamebyId(GamesManager.GAME_ID);
-            UnityEngine.Debug.LogWarning(res);
-            UnityEngine.Debug.LogWarning(GamesManager.GAME_ID);
             if (!string.IsNullOrEmpty(res))
             {
                 UnityThreadHelper.Dispatcher.Dispatch(() =>

@@ -4,6 +4,7 @@ using System.IO;
 using System;
 
 public class IntegrationGUI : EditorWindow
+{
     private Texture2D m_Logo = null;
 
     string GAME_ID = "";
@@ -141,4 +142,3 @@ public class IntegrationGUI : EditorWindow
     }
     #endregion
 }
-

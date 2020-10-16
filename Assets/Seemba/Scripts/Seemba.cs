@@ -5,13 +5,15 @@ using SimpleJSON;
 using UnityEngine.SceneManagement;
 using System.IO;
 using static PopupsViewPresenter;
+using System.Diagnostics;
+using UnityEditor;
 
 public class Seemba : MonoBehaviour
 {
     UserManager userManager = new UserManager();
 
     public static bool isFromSeembaStore = false;
-   
+
     private void Awake()
     {
         //Set The FPS target in the Awake function to avoid all changes from outsides.
@@ -68,8 +70,8 @@ public class Seemba : MonoBehaviour
     {
         try
         {
-            var jsonTextFile = Resources.Load<TextAsset>("seemba-services");
-            Game Game = JsonUtility.FromJson<Game>(jsonTextFile.ToString());
+            TextAsset mConfigFile = (TextAsset)AssetDatabase.LoadAssetAtPath(ConfigFileHelper.RELATIVE_FILE_PATH, typeof(TextAsset));
+            Game Game = JsonUtility.FromJson<Game>(mConfigFile.ToString());
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
@@ -77,8 +79,8 @@ public class Seemba : MonoBehaviour
         }
         catch (Exception ex)
         {
-            Debug.LogError("Please complete the game integration before starting");
-            Debug.Break();
+            UnityEngine.Debug.LogError("Please complete the game integration before starting");
+            UnityEngine.Debug.Break();
         }
     }
     private void DownloadAssets()
@@ -88,6 +90,8 @@ public class Seemba : MonoBehaviour
         UnityThreadHelper.CreateThread(() =>
         {
             string res = gamesManager.getGamebyId(GamesManager.GAME_ID);
+            UnityEngine.Debug.LogWarning(res);
+            UnityEngine.Debug.LogWarning(GamesManager.GAME_ID);
             if (!string.IsNullOrEmpty(res))
             {
                 UnityThreadHelper.Dispatcher.Dispatch(() =>
@@ -126,10 +130,10 @@ public class Seemba : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Please verify your game ID");
+                UnityEngine.Debug.LogError("Please verify your game ID");
                 UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        Debug.Break();
+                        UnityEngine.Debug.Break();
                         SceneManager.UnloadSceneAsync("Loader");
                     });
             }

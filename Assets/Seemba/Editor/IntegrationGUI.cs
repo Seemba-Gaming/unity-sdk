@@ -4,11 +4,6 @@ using System.IO;
 using System;
 
 public class IntegrationGUI : EditorWindow
-{
-    private const string CONFIG_FILE_NAME = "seemba-services";
-    private const string PATH = "Assets/Seemba/Resources/";
-    private const string FILE_PATH = PATH + CONFIG_FILE_NAME + ".json";
-
     private Texture2D m_Logo = null;
 
     string GAME_ID = "";
@@ -123,12 +118,12 @@ public class IntegrationGUI : EditorWindow
             Debug.LogError("GAME_LEVEL should be a decimal number");
             return;
         }
-        if (!Directory.Exists(PATH))
+        if (!Directory.Exists(ConfigFileHelper.PATH))
         {
-            Directory.CreateDirectory(PATH);
+            Directory.CreateDirectory(ConfigFileHelper.PATH);
         }
         string str = JsonUtility.ToJson(game);
-        using (FileStream fs = new FileStream(FILE_PATH, FileMode.Create))
+        using (FileStream fs = new FileStream(ConfigFileHelper.FILE_PATH, FileMode.Create))
         {
             using (StreamWriter writer = new StreamWriter(fs))
             {
@@ -139,9 +134,9 @@ public class IntegrationGUI : EditorWindow
     }
     Game GetSavedGame()
     {
-        if (File.Exists(FILE_PATH)) { Debug.Log("Exist"); }
-        var jsonTextFile = Resources.Load<TextAsset>(CONFIG_FILE_NAME);
-        Game SavedGame = JsonUtility.FromJson<Game>(jsonTextFile.ToString());
+        if (File.Exists(ConfigFileHelper.FILE_PATH)) { Debug.Log("Exist"); }
+        TextAsset mConfigFile = (TextAsset)AssetDatabase.LoadAssetAtPath(ConfigFileHelper.RELATIVE_FILE_PATH, typeof(TextAsset));
+        Game SavedGame = JsonUtility.FromJson<Game>(mConfigFile.ToString());
         return SavedGame;
     }
     #endregion

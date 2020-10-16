@@ -25,15 +25,15 @@ public class ShareController : MonoBehaviour
         // To avoid memory leaks
         Destroy(ss);
         Debug.Log(text);
-        new NativeShare().AddFile(filePath).SetText(text).Share();
+        // new NativeShare().AddFile(filePath).SetText(text).Share();
         // Share on WhatsApp only, if installed (Android only)
-        //if( NativeShare.TargetExists( "com.whatsapp" ) )
+        // if( NativeShare.TargetExists( "com.whatsapp" ) )
         //	new NativeShare().AddFile( filePath ).SetText( "Hello world!" ).SetTarget( "com.whatsapp" ).Share();
     }
     private IEnumerator ShareTextInBG()
     {
         yield return new WaitForEndOfFrame();
-        new NativeShare().SetText(text).Share();
+        // new NativeShare().SetText(text).Share();
         Debug.Log(text);
     }
 }

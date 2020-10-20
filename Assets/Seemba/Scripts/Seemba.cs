@@ -11,6 +11,7 @@ using UnityEditor;
 public class Seemba : MonoBehaviour
 {
     UserManager userManager = new UserManager();
+    public TextAsset mConfigFile;
 
     public static bool isFromSeembaStore = false;
 
@@ -70,8 +71,7 @@ public class Seemba : MonoBehaviour
     {
         try
         {
-            TextAsset mConfigFile = (TextAsset)AssetDatabase.LoadAssetAtPath(ConfigFileHelper.RELATIVE_FILE_PATH, typeof(TextAsset));
-            Game Game = JsonUtility.FromJson<Game>(mConfigFile.ToString());
+            Game Game = JsonUtility.FromJson<Game>(this.mConfigFile.ToString());
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;

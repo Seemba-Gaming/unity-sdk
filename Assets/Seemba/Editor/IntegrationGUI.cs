@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System;
@@ -142,3 +143,4 @@ public class IntegrationGUI : EditorWindow
     }
     #endregion
 }
+#endif

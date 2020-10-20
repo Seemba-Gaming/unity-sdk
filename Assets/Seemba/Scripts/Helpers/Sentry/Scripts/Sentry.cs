@@ -360,7 +360,7 @@ namespace Sentry
     // Unity doesn't serialize Dictionary
     [Serializable]
     public class Tags
-    {   
+    {
         public string deviceUniqueIdentifier;
     }
 
@@ -376,9 +376,10 @@ namespace Sentry
         public string _id;
         public string name;
 
-        public Game(string _id,string name){
-        this.name=name;
-        this._id=_id;
+        public Game(string _id, string name)
+        {
+            this.name = name;
+            this._id = _id;
         }
     }
 
@@ -388,9 +389,10 @@ namespace Sentry
         public string email;
         public string _id;
 
-        public User(string _id,string email){
-        this.email=email;
-        this._id=_id;
+        public User(string _id, string email)
+        {
+            this.email = email;
+            this._id = _id;
         }
     }
 
@@ -406,11 +408,11 @@ namespace Sentry
         public string release;
         public Context contexts;
         public SdkVersion sdk = new SdkVersion();
-        public List<Breadcrumb> breadcrumbs = null;
-        public User user = new User(UserManager.CurrentUser._id,UserManager.CurrentUser.email);
+        public List<Breadcrumb> breadcrumbs = new List<Breadcrumb>();
         public Tags tags;
         public Extra extra;
         public Game game;
+        public User user;
 
         public SentryEvent(string message, List<Breadcrumb> breadcrumbs = null)
         {
@@ -423,8 +425,8 @@ namespace Sentry
             this.release = Application.version;
             this.tags = new Tags();
             this.extra = new Extra();
-            this.game=new Game(GamesManager.GAME_ID,GamesManager.GAME_NAME);
-            
+            this.game = new Game(GamesManager.GAME_ID, GamesManager.GAME_NAME);
+            this.user = new User(UserManager.CurrentUser._id, UserManager.CurrentUser.email);
         }
     }
 

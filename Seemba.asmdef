@@ -1,6 +1,8 @@
 {
     "name": "Seemba",
-    "references": [],
+    "references": [
+        "NativeShare.Runtime"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "LinuxStandalone64",

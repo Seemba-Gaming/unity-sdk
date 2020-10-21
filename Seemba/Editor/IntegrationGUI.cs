@@ -1,8 +1,10 @@
-﻿#if UNITY_EDITOR
+﻿//#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System;
+using System.Diagnostics;
+using System.Linq;
 
 public class IntegrationGUI : EditorWindow
 {
@@ -43,6 +45,7 @@ public class IntegrationGUI : EditorWindow
             }
         }
         catch (Exception ex) { }
+        GetScenes();
     }
     #endregion
     #region METHOD
@@ -111,13 +114,13 @@ public class IntegrationGUI : EditorWindow
 
         if (string.IsNullOrEmpty(game._id) && string.IsNullOrEmpty(game.name) && string.IsNullOrEmpty(game.game_scene_name))
         {
-            Debug.LogError("Cannot save empty content");
+            UnityEngine.Debug.LogError("Cannot save empty content");
             return;
 
         }
         if (!string.IsNullOrEmpty(game.game_level) && !int.TryParse(game.game_level, out int val))
         {
-            Debug.LogError("GAME_LEVEL should be a decimal number");
+            UnityEngine.Debug.LogError("GAME_LEVEL should be a decimal number");
             return;
         }
         if (!Directory.Exists(ConfigFileHelper.PATH))
@@ -136,11 +139,67 @@ public class IntegrationGUI : EditorWindow
     }
     Game GetSavedGame()
     {
-        if (File.Exists(ConfigFileHelper.FILE_PATH)) { Debug.Log("Exist"); }
+        if (File.Exists(ConfigFileHelper.FILE_PATH)) { UnityEngine.Debug.Log("Exist"); }
         TextAsset mConfigFile = (TextAsset)AssetDatabase.LoadAssetAtPath(ConfigFileHelper.RELATIVE_FILE_PATH, typeof(TextAsset));
         Game SavedGame = JsonUtility.FromJson<Game>(mConfigFile.ToString());
         return SavedGame;
     }
+    void GetScenes()
+    {
+        string absolute = Path.GetFullPath("Packages/com.seemba.unitysdk/Seemba/Scenes");
+        string[] filePaths = Directory.GetFiles(@absolute, "*.unity").Select(Path.GetFileName)
+                            .ToArray();
+
+        foreach (var file in filePaths)
+        {
+
+            AddSceneToBuildSettings("Packages/com.seemba.unitysdk/Seemba/Scenes/" + file);
+        }
+    }
+    void AddSceneToBuildSettings(string pathOfSceneToAdd)
+    {
+        //Loop through and see if the scene already exist in the build settings
+        int indexOfSceneIfExist = -1;
+
+        for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
+        {
+            if (EditorBuildSettings.scenes[i].path == pathOfSceneToAdd)
+            {
+                indexOfSceneIfExist = i;
+                break;
+            }
+        }
+
+        EditorBuildSettingsScene[] newScenes;
+
+        if (indexOfSceneIfExist == -1)
+        {
+            newScenes = new EditorBuildSettingsScene[EditorBuildSettings.scenes.Length + 1];
+
+            //Seems inefficent to add scene to build settings after creating each scene (rather than doing it all at once
+            //after they are all created, however, it's necessary to avoid memory issues.
+            int i = 0;
+            for (; i < EditorBuildSettings.scenes.Length; i++)
+                newScenes[i] = EditorBuildSettings.scenes[i];
+
+            newScenes[i] = new EditorBuildSettingsScene(pathOfSceneToAdd, true);
+        }
+        else
+        {
+            newScenes = new EditorBuildSettingsScene[EditorBuildSettings.scenes.Length];
+
+            int i = 0, j = 0;
+            for (; i < EditorBuildSettings.scenes.Length; i++)
+            {
+                //skip over the scene that is a duplicate
+                //this will effectively delete it from the build settings
+                if (i != indexOfSceneIfExist)
+                    newScenes[j++] = EditorBuildSettings.scenes[i];
+            }
+            newScenes[j] = new EditorBuildSettingsScene(pathOfSceneToAdd, true);
+        }
+        EditorBuildSettings.scenes = newScenes;
+    }
     #endregion
 }
-#endif
+//#endif

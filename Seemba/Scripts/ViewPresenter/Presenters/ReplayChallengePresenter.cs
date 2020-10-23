@@ -31,7 +31,7 @@ public class ReplayChallengePresenter : MonoBehaviour
         isReplay = true;
         old_game_level = GamesManager.GAME_LEVEL;
         GamesManager.GAME_LEVEL = ChallengeToReplay.game_level;
-
+        ViewsEvents.Get.GetCurrentMenu().SetActive(false);
         SceneManager.LoadSceneAsync(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
         LoaderManager.Get.LoaderController.HideLoader();
     }

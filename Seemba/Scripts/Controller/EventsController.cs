@@ -246,7 +246,7 @@ public class EventsController : MonoBehaviour
         BackgroundController.CurrentBackground = null;
         advFound = false;
         LoaderManager.Get.LoaderController.ShowLoader(null);
-        //StartCoroutine(LoadGameScene(GamesManager.GAME_SCENE_NAME));
+        ViewsEvents.Get.GetCurrentMenu().SetActive(false);
         SceneManager.LoadSceneAsync(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
     }
     public bool checkUserBirthday(User user)

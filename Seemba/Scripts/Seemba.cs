@@ -38,7 +38,6 @@ public class Seemba : MonoBehaviour
         {
             IsSeemba = true;
         }
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
     public void Enter()
     {
@@ -170,8 +169,6 @@ public class Seemba : MonoBehaviour
     }
     public async void setResult(float score)
     {
-        //1vs1
-
         if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)
         {
             LoaderManager.Get.LoaderController.ShowLoader(null);
@@ -188,6 +185,7 @@ public class Seemba : MonoBehaviour
             ViewsEvents.Get.Brackets.OnEnable();
         }
         SceneManager.UnloadSceneAsync(GamesManager.GAME_SCENE_NAME);
+        LoaderManager.Get.LoaderController.HideLoader();
     }
     public void setGameOver(bool GameOver)
     {
@@ -202,14 +200,5 @@ public class Seemba : MonoBehaviour
         if (!isGameOver())
         {
         }
-    }
-    private void OnSceneUnloaded(Scene current)
-    {
-        LoaderManager.Get.LoaderController.HideLoader();
-    }
-
-    public void MakeObjectDestoyable()
-    {
-        SceneManager.MoveGameObjectToScene(this.gameObject, SceneManager.GetSceneByName("SeembaEsports"));
     }
 }

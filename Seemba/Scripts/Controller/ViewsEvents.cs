@@ -129,12 +129,11 @@ public class ViewsEvents : MonoBehaviour
     public void GoBack()
     {
         var current = mHistory.Pop();
-        //Debug.LogWarning("Back from " + current + "to " + mHistory.First());
         Show(current, mHistory.First(), false);
+        mCurrentMenu = mHistory.First();
     }
     public void GoToMenu(GameObject menu, bool popBeforeGoing = false)
     {
-        //Debug.LogWarning("Going from " + mHistory.First().name + "to " + menu);
         if (menu == mHistory.First() && menu != Intro.gameObject)
         {
             return;
@@ -144,6 +143,7 @@ public class ViewsEvents : MonoBehaviour
             mHistory.Pop().SetActive(false);
         }
         Show(mHistory.First(), menu);
+        mCurrentMenu = menu;
     }
     public GameObject GetCurrentMenu()
     {

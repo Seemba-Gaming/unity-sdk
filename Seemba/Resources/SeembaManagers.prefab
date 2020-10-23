@@ -114,7 +114,7 @@ MonoBehaviour:
     confirmed_money: 0
     champion_money: 0
     losses_streak: 0
-    victories_streak: 0
+    current_victories_count: 0
     long_lat: 
     last_bubble_click: 
     email_verified: 0
@@ -148,7 +148,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3815232973937849937}
-  - component: {fileID: 3815232973937849902}
   m_Layer: 0
   m_Name: SeembaManagers
   m_TagString: Untagged
@@ -177,20 +176,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3815232973937849902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3815232973937849900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41308e5a8acdc4a67b358d8ce7e94523, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  IsSeemba: 0
-  SeembaServices: {fileID: 4900000, guid: 350b9d544e948484da9fe270ec239df2, type: 3}
 --- !u!1 &5049766487562588007
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,9 @@ public class Seemba : MonoBehaviour
     public bool IsSeemba = false;
     #endregion
 
+    #region Fields
+    private GameObject mSeembaManagers;
+    #endregion
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -25,6 +28,16 @@ public class Seemba : MonoBehaviour
     }
     private void Start()
     {
+        if (UserManager.Get == null)
+        {
+            mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
+            DontDestroyOnLoad(mSeembaManagers);
+        }
+
+        if (EventsController.Get != null)
+        {
+            IsSeemba = true;
+        }
         SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
     public void Enter()
@@ -133,8 +146,7 @@ public class Seemba : MonoBehaviour
                 else
                 {
                     IsSeemba = true;
-                    InstantiateSentry();
-                    DontDestroyOnLoad(gameObject);
+                   // InstantiateSentry();
                     DontDestroyOnLoad(PopupManager.Get.PopupController.gameObject);
                     DontDestroyOnLoad(LoaderManager.Get.LoaderController.gameObject);
                     SceneManager.LoadSceneAsync("SeembaEsports");
@@ -150,11 +162,11 @@ public class Seemba : MonoBehaviour
     public void Quit()
     {
 
-        IsSeemba = false;
-        BackgroundController.CurrentBackground = null;
-        EventsController.ChallengeType = null;
-        Destroy(gameObject);
-        SceneManager.LoadScene(0);
+        //IsSeemba = false;
+        //BackgroundController.CurrentBackground = null;
+        //EventsController.ChallengeType = null;
+        //Destroy(gameObject);
+        //SceneManager.LoadScene(0);
     }
     public async void setResult(float score)
     {
@@ -163,17 +175,13 @@ public class Seemba : MonoBehaviour
         if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)
         {
             LoaderManager.Get.LoaderController.ShowLoader(null);
-            Debug.LogWarning(score);
             var resAddScore = await ChallengeManager.Get.addScore(ChallengeManager.CurrentChallengeId, score);
-            Debug.LogWarning(resAddScore);
             ChallengeManager.Get.ShowResult();
             LoaderManager.Get.LoaderController.HideLoader();
         }
         else if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_BRACKET)
         {
             LoaderManager.Get.LoaderController.ShowLoader(null);
-            Debug.LogWarning(TournamentController.getCurrentTournamentID());
-            Debug.LogWarning(score);
             await TournamentManager.Get.addScore(TournamentController.getCurrentTournamentID(), score);
             //StartCoroutine(TournamentManager.Get.AddScoreIEnum(TournamentController.getCurrentTournamentID(), score));
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);

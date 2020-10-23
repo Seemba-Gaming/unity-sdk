@@ -1,5 +1,4 @@
-﻿using GameAnalyticsSDK;
-using SimpleJSON;
+﻿using SimpleJSON;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -51,7 +50,7 @@ public class EventsController : MonoBehaviour
     private void Awake()
     {
         sInstance = this;
-        GameAnalytics.Initialize();
+        //GameAnalytics.Initialize();
     }
 
     private void Start()
@@ -392,7 +391,8 @@ public class EventsController : MonoBehaviour
     }
     public void QuitSeemba()
     {
-        Seemba.Get.Quit();
+        SceneManager.LoadScene(0);
+        //Seemba.Get.Quit();
     }
     public void TCs()
     {

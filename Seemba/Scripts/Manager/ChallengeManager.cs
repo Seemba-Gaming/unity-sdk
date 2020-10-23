@@ -265,7 +265,6 @@ public class ChallengeManager : MonoBehaviour
     public async Task<bool> addScore(string challengeId, float score)
     {
         string url = Endpoint.classesURL + "/challenges";
-        Debug.LogWarning(url);
 
         string json = "challenge_id=" + challengeId + "&score=" + score;
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
@@ -273,10 +272,7 @@ public class ChallengeManager : MonoBehaviour
         var www = UnityWebRequest.Put(url, jsonAsBytes);
         www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
         www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        Debug.LogWarning("add score request sent");
-
         await www.SendWebRequest();
-        Debug.LogWarning("add score request sent " + www.error);
         if (www.isNetworkError || www.isHttpError)
         {
             return false;
@@ -377,11 +373,8 @@ public class ChallengeManager : MonoBehaviour
         }
 
         await www.SendWebRequest();
-        Debug.LogWarning(www.error);
         if (www.isNetworkError ||  www.isHttpError) return null;
-        Debug.LogWarning(www.downloadHandler.text);
         ChallengeData challengeData = JsonConvert.DeserializeObject<ChallengeData>(www.downloadHandler.text);
-        Debug.LogWarning(challengeData.data);
         if (challengeData.success)
         {
             CurrentChallengeId = challengeData.data._id;

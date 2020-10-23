@@ -82,80 +82,60 @@ public class PopupsController : MonoBehaviour
     {
         //LoadPopup();
         CURRENT_POPUP = popupType;
-        Debug.LogWarning("ShowPopup " + popupType.ToString());
-
         switch (popupType)
         {
             case PopupType.DUELS:
-                Debug.LogWarning("DUELS");
                 PopupManager.Get.PopupViewPresenter.ShowDuelsPopup(_params, note);
                 break;
             case PopupType.AGE_VERIFICATION:
-                Debug.LogWarning("AGE_VERIFICATION");
                 PopupManager.Get.PopupViewPresenter.ShowAgeVerificationPopup(_params);
                 break;
             case PopupType.INFO_INSUFFICIENT_BALANCE:
-                Debug.LogWarning("INSUFFICIENT_BALANCE");
                 PopupManager.Get.PopupViewPresenter.ShowInsufficientBalancePopup(_params);
                 break;
             case PopupType.INFO_INSUFFICIENT_BUBBLES:
-                Debug.LogWarning("INSUFFICIENT_BUBBLES");
                 PopupManager.Get.PopupViewPresenter.ShowInsufficientBubblesPopup(_params);
                 break;
             case PopupType.DOWNLOAD_FROM_STORE:
-                Debug.LogWarning("DOWNLOAD_FROM_STORE");
                 PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                 break;
             case PopupType.PROHIBITED_LOCATION:
-                Debug.LogWarning("PROHIBITED_LOCATION");
                 PopupManager.Get.PopupViewPresenter.ShowProhibitedLocationWalletPopup(_params);
                 break;
             case PopupType.INFO_POPUP_CONNECTION_FAILED:
-                Debug.LogWarning("INFO_POPUP_CONNECTION_FAILED");
                 PopupManager.Get.PopupViewPresenter.ShowConnectionFailedPopup(_params);
                 break;
             case PopupType.POPUP_CURRENT_PASSWORD:
-                Debug.LogWarning("POPUP_CURRENT_PASSWORD");
                 PopupManager.Get.PopupViewPresenter.ShowCurrentPasswordPopup(_params);
                 break;
             case PopupType.POPUP_UPDATE_PASSWORD:
-                Debug.LogWarning("POPUP_UPDATE_PASSWORD");
                 PopupManager.Get.PopupViewPresenter.ShowNewPasswordPopup(_params);
                 break;
             case PopupType.POPUP_FORGET_PASSWORD:
-                Debug.LogWarning("POPUP_FORGET_PASSWORD");
                 PopupManager.Get.PopupViewPresenter.ShowForgetPasswordPopup(_params);
                 break;
             case PopupType.POPUP_PAYMENT:
-                Debug.LogWarning("POPUP_PAYMENT");
                 PopupManager.Get.PopupViewPresenter.ShowPaymentPopup(_params);
                 break;
             case PopupType.INFO_POPUP_TOO_YOUNG:
-                Debug.LogWarning("INFO_POPUP_TOO_YOUNG");
                 PopupManager.Get.PopupViewPresenter.ShowTooyoungPopup(_params);
                 break;
             case PopupType.INFO_POPUP_MISSING_INFO:
-                Debug.LogWarning("INFO_POPUP_MISSING_INFO");
                 PopupManager.Get.PopupViewPresenter.ShowMissingInfoPopup(_params, note);
                 break;
             case PopupType.POPUP_CONGRATS:
-                Debug.LogWarning("POPUP_CONGRATS");
                 PopupManager.Get.PopupViewPresenter.ShowCongratsPopup(_params);
                 break;
             case PopupType.POPUP_CHOOSE_CHARACTER:
-                Debug.LogWarning("POPUP_CHOOSE_CHARACTER");
                 PopupManager.Get.PopupViewPresenter.ShowChooseCharacter(_params);
                 break;
             case PopupType.POPUP_WIN:
-                Debug.LogWarning("POPUP_WIN");
                 PopupManager.Get.PopupViewPresenter.ShowWinPopup(_params, note);
                 break;
             case PopupType.POPUP_PAYMENT_FAILED:
-                Debug.LogWarning("POPUP_PAYMENT_FAILED");
                 PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                 break;
             case PopupType.INFO_POPUP_PASSWORD_UPDATED:
-                Debug.LogWarning("INFO_POPUP_PASSWORD_UPDATED");
                 PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                 break;
             default:

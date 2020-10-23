@@ -1,37 +1,41 @@
-using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 public class ProfilLastResultListController : MonoBehaviour
 {
     public GameObject ContentPanel;
     public GameObject ItemPrefab;
-    ArrayList Items, lastResultItem;
-    ChallengeManager challengeManager = new ChallengeManager();
-    UserManager userManager = new UserManager();
-    string UserId, token;
+    private ArrayList Items, lastResultItem;
+    private string UserId, token;
     public static bool profileSceneOpened;
-    // Use this for initialization
-    void OnEnable()
+
+    private void OnDisable()
+    {
+        foreach (Transform child in ContentPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private void OnEnable()
     {
         try
         {
-            token = userManager.getCurrentSessionToken();
             Items = new ArrayList();
             if (profileSceneOpened == true)
             {
                 profileSceneOpened = false;
-                UserId = ProfileViewPresenter.PlayerId;
+                UserId = ViewsEvents.Get.Profile.PlayerId;
             }
             else
             {
-                UserId = userManager.getCurrentUserId();
+                UserId = UserManager.Get.getCurrentUserId();
             }
             UnityThreading.ActionThread thread;
-            thread = UnityThreadHelper.CreateThread(() =>
+            thread = UnityThreadHelper.CreateThread(async () =>
             {
-                lastResultItem = challengeManager.getFinishedChallenges(token);
+                lastResultItem = await ChallengeManager.Get.listChallenges();
                 foreach (Challenge item in lastResultItem)
                 {
                     if (item.status == ChallengeManager.CHALLENGE_STATUS_FINISHED || (item.status == ChallengeManager.CHALLENGE_STATUS_SEE_RESULT_FOR_USER1 && item.matched_user_2._id == UserId) || (item.status == ChallengeManager.CHALLENGE_STATUS_SEE_RESULT_FOR_USER2 && item.matched_user_1._id == UserId))
@@ -51,27 +55,46 @@ public class ProfilLastResultListController : MonoBehaviour
                                 GameObject newItem = null;
                                 try
                                 {
-                                    newItem = Instantiate(ItemPrefab) as GameObject;
+                                    newItem = Instantiate(ItemPrefab);
                                     if (item.user_1_score == item.user_2_score)
                                     {
-                                        //DRAW
                                         newItem.transform.GetChild(4).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
                                     }
-                                    else if (item.winner_user.Equals(UserId))
+                                    if (UserId == item.matched_user_1._id)
                                     {
-                                        //Win
-                                        newItem.transform.GetChild(2).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
+                                        string UserToken = UserManager.Get.getCurrentSessionToken();
+                                        if (item.user_1_score > item.user_2_score)
+                                        {
+                                            //Win
+                                            newItem.transform.GetChild(2).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
+                                        }
+                                        else if (item.user_1_score < item.user_2_score)
+                                        {
+                                            //Lose
+                                            newItem.transform.GetChild(3).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
+                                        }
                                     }
                                     else
                                     {
-                                        //Lose
-                                        newItem.transform.GetChild(3).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
+                                        string UserToken = UserManager.Get.getCurrentSessionToken();
+                                        if (item.user_1_score > item.user_2_score)
+                                        {
+                                            //LOSE
+                                            newItem.transform.GetChild(3).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
+                                        }
+                                        else if (item.user_1_score < item.user_2_score)
+                                        {
+                                            //Win
+                                            newItem.transform.GetChild(2).gameObject.GetComponent<Image>().transform.localScale = Vector3.one;
+                                        }
                                     }
-                                    newItem.transform.parent = ContentPanel.transform;
+
+                                    newItem.transform.SetParent(ContentPanel.transform);
                                     RectTransform myLayoutElement = newItem.GetComponent<RectTransform>();
                                     myLayoutElement.transform.localScale = Vector3.one;
+
                                 }
-                                catch (FormatException e)
+                                catch (FormatException)
                                 {
                                     Destroy(newItem);
                                 }
@@ -81,9 +104,13 @@ public class ProfilLastResultListController : MonoBehaviour
                 });
             });
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
         }
     }
 
+    // Update is called once per frame
+    private void Update()
+    {
+    }
 }

@@ -1,152 +1,90 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using SimpleJSON;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.Threading;
-using Kakera;
-using System;
-using SimpleJSON;
 public class InfoPersonnelWithdraw : MonoBehaviour
 {
-    public InputField LastName, FirstName, Adress, city, zip, state, country, personal_id_number, IBAN, Swift, Phone;
-    public Text Birthday, WithdrawButtonText, placeholderAge;
-    public Button ContinueButton, ContinueButtonIBAN, WithdrawButton, Id1, Passport, Residency;
-    bool validIban;
-    public static bool ibanUploaded, idProof1Uploaded, idProof2Uploaded, passportUploaded, proofResidency;
+    public static bool ibanUploaded, idProof1Uploaded, idProof2Uploaded, passportUploaded;
     public static string currentIBAN, currentIdProof, currentDocUploaded;
-    UserManager um = new UserManager();
-    WithdrawManager wm = new WithdrawManager();
-    string user_id, user_token;
-    Image AcceptedIban;
+
+    public InputField LastName;
+    public InputField FirstName;
+    public InputField Adress;
+    public InputField city;
+    public InputField zip;
+    public InputField country;
+    public InputField personal_id_number;
+    public InputField IBAN;
+    public InputField Swift;
+    public InputField Phone;
+    public Text Birthday;
+    public Text WithdrawButtonText;
+    public Text placeholderAge;
+    public Button ContinueButton;
+    public Button ContinueButtonIBAN;
+    public Button WithdrawButton;
+
+    private bool validIban;
+
+    private WithdrawManager wm = new WithdrawManager();
+    private string token;
+
     // Use this for initialization
-    void OnEnable()
+    private async void OnEnable()
     {
-        user_id = um.getCurrentUserId();
-        user_token = um.getCurrentSessionToken();
+        var IBANInputState = IBAN.GetComponent<InputfieldStateController>();
+        token = UserManager.Get.getCurrentSessionToken();
         WithdrawButton.interactable = false;
-        AcceptedIban = GameObject.Find("AcceptedIBAN").GetComponent<Image>();
         IBAN.onValueChanged.AddListener(delegate
         {
-            Image DeclinedIban = GameObject.Find("DeclinedIBAN").GetComponent<Image>();
-            Image LoaderIban = GameObject.Find("LoaderIBAN").GetComponent<Image>();
-            LoaderIban.transform.localScale = Vector3.one;
+            IBANInputState.ShowLoading();
             validIban = wm.validateIBAN(IBAN.text);
-            LoaderIban.transform.localScale = Vector3.zero;
             if (validIban)
             {
-                AcceptedIban.transform.localScale = Vector3.one;
-                DeclinedIban.transform.localScale = Vector3.zero;
+                IBANInputState.ShowAccepted();
             }
             else
             {
-                AcceptedIban.transform.localScale = Vector3.zero;
-                DeclinedIban.transform.localScale = Vector3.one;
+                IBANInputState.ShowDeclined();
             }
         });
         WithdrawButtonText.text = WithdrawPresenter.WithdrawMoney.ToString() + CurrencyManager.CURRENT_CURRENCY;
-        string Id = um.getCurrentUserId();
-        string Token = um.getCurrentSessionToken();
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(async() =>
+        string Id = UserManager.Get.getCurrentUserId();
+        string Token = UserManager.Get.getCurrentSessionToken();
+        LoaderManager.Get.LoaderController.ShowLoader(null);
+
+        User user = await UserManager.Get.getUser();
+        var account = wm.accountVerificationJSON(Token);
+
+        LoaderManager.Get.LoaderController.HideLoader();
+        if (user != null)
         {
-            User user = um.getUser(Id, Token);
-            var account =await wm.accountVerificationStatus(Token);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            personelInfoVerification(user);
+            ibanVerification(user);
+            WithdrawButton.onClick.AddListener(() =>
             {
-                SceneManager.UnloadScene("Loader");
-                if (user != null)
-                {
-                    //Check Personel Info (Individual)
-                    personelInfoVerification(user);
-                    //Check Docs Verification (Document + additional document)
-                    docsVerification(account);
-                    //check Iban Upload 
-                    ibanVerification(user);
-                    WithdrawButton.onClick.AddListener(() =>
-                    {
-                        Withdraw();
-                    });
-                    ContinueButtonIBAN.onClick.AddListener(() =>
-                    {
-                        InfoPersonnelWithdraw.currentIBAN = IBAN.text;
-                        //TokenizeAndCreate();
-                    });
-                }
-                else
-                {
-                    try
-                    {
-                        SceneManager.UnloadSceneAsync("ConnectionFailed");
-                    }
-                    catch (ArgumentException ex) { }
-                    ConnectivityController.CURRENT_ACTION = ConnectivityController.PERSONNEL_INFO_WITHDRAW_ACTION;
-                    SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                    try
-                    {
-                        SceneManager.UnloadSceneAsync("Loader");
-                    }
-                    catch (ArgumentException ex) { }
-                }
+                Withdraw();
             });
-        });
+            ContinueButtonIBAN.onClick.AddListener(() =>
+            {
+                currentIBAN = IBAN.text;
+                tokenizeAndAttach();
+            });
+        }
+        else
+        {
+            ConnectivityController.CURRENT_ACTION = ConnectivityController.PERSONNEL_INFO_WITHDRAW_ACTION;
+            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+
+            try
+            {
+                LoaderManager.Get.LoaderController.HideLoader();
+            }
+            catch (ArgumentException) { }
+        }
+
     }
-    void docsVerification(JSONNode account)
-    {
-        string documentFrontID = null; string documentBackID = null;
-        var accountStatus = account["account"]["individual"]["verification"]["status"].Value;
-        Debug.Log(accountStatus);
-        try
-        {
-            documentFrontID = account["account"]["individual"]["verification"]["document"]["front"].Value;
-        }
-        catch (NullReferenceException ex) { }
-        try
-        {
-            documentBackID = account["account"]["individual"]["verification"]["document"]["back"].Value;
-        }
-        catch (NullReferenceException ex) { }
-        if (accountStatus.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING))
-        {
-            GameObject.Find("IDAddressWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
-            if (!string.IsNullOrEmpty(documentBackID))
-            {
-                GameObject.Find("IDFrontWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
-                GameObject.Find("IDBackWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
-                GameObject.Find("IDPassport").GetComponent<Button>().interactable = false;
-                disable("IDPassport");
-            }
-            else
-            {
-                GameObject.Find("IDPassportWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
-                GameObject.Find("IDFront").GetComponent<Button>().interactable = false;
-                GameObject.Find("IDBack").GetComponent<Button>().interactable = false;
-                disable("IDFront");
-                disable("IDBack");
-            }
-        }
-        else if (accountStatus.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED))
-        {
-            WithdrawButton.interactable = true;
-            GameObject.Find("IDAddressSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
-            if (!string.IsNullOrEmpty(documentBackID))
-            {
-                GameObject.Find("IDFrontSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
-                GameObject.Find("IDBackSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
-                GameObject.Find("IDPassport").GetComponent<Button>().interactable = false;
-                disable("IDPassport");
-            }
-            else
-            {
-                GameObject.Find("IDPassportSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
-                GameObject.Find("IDFront").GetComponent<Button>().interactable = false;
-                GameObject.Find("IDBack").GetComponent<Button>().interactable = false;
-                disable("IDFront");
-                disable("IDBack");
-            }
-        }
-    }
-    void personelInfoVerification(User user)
+    private void personelInfoVerification(User user)
     {
         if (!string.IsNullOrEmpty(user.lastname))
         {
@@ -186,8 +124,13 @@ public class InfoPersonnelWithdraw : MonoBehaviour
             string tmp = user.phone.Trim(charsToTrim);
             Debug.Log(tmp);
             if (tmp.StartsWith("+"))
+            {
                 Phone.text = tmp;
-            else Phone.text = "+" + tmp;
+            }
+            else
+            {
+                Phone.text = "+" + tmp;
+            }
         }
         if (!string.IsNullOrEmpty(user.birthday))
         {
@@ -203,12 +146,12 @@ public class InfoPersonnelWithdraw : MonoBehaviour
             ContinueButton.interactable = true;
         }
     }
-    void ibanVerification(User user)
+    private void ibanVerification(User user)
     {
         if (user.iban_uploaded == true)
         {
             ContinueButtonIBAN.interactable = true;
-            AcceptedIban.transform.localScale = Vector3.one;
+            IBAN.GetComponent<InputfieldStateController>().ShowAccepted();
             IBAN.interactable = false;
             IBAN.placeholder.GetComponent<Text>().text = "Already uploaded";
             Swift.interactable = false;
@@ -223,71 +166,60 @@ public class InfoPersonnelWithdraw : MonoBehaviour
             return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthday) && !string.IsNullOrEmpty(user.adress) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country) && !string.IsNullOrEmpty(user.personal_id_number);
         }
         else
+        {
             return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthday) && !string.IsNullOrEmpty(user.adress) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country);
-    }
-    void disable(string doc)
-    {
-        Image DocDisableimg = GameObject.Find(doc + "/disable").GetComponent<Image>();
-        var tempColor = DocDisableimg.color;
-        tempColor.a = 0.50f;
-        DocDisableimg.color = tempColor;
+        }
     }
     public void Withdraw()
     {
-        EventsController behaviourScript = new EventsController();
-        behaviourScript.StepAnimation("circleEmpty3");
         WithdrawManager wm = new WithdrawManager();
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+        LoaderManager.Get.LoaderController.ShowLoader(null);
         string DocId = PlayerPrefs.GetString("DocId");
-        UnityThreadHelper.CreateThread(() =>
+        UnityThreadHelper.CreateThread(async () =>
         {
             string withdrawResult = null;
-            //withdrawResult = wm.payout(user_token, WithdrawPresenter.WithdrawMoney);
+            withdrawResult = await wm.Payout(token, WithdrawPresenter.WithdrawMoney);
             Debug.Log("withdrawResult: " + withdrawResult);
-            InfoPersonnelWithdraw.currentIdProof = null;
-            InfoPersonnelWithdraw.currentIBAN = null;
+            currentIdProof = null;
+            currentIBAN = null;
             if (!string.IsNullOrEmpty(withdrawResult))
             {
                 if (withdrawResult == "ProhibitedLocation")
                 {
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        SceneManager.UnloadSceneAsync("Loader");
-                        GameObject.Find("CalqueWidhraw").transform.localScale = Vector3.one;
-                        var animator = GameObject.Find("popupProhibitedLocation").GetComponent<Animator>();
-                        animator.SetBool("Show Error", true);
+                        LoaderManager.Get.LoaderController.HideLoader();
+                        EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
                     });
                 }
                 else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_AMOUNT_INSUFFICIENT)
                 {
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        behaviourScript.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
+                        EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
                     });
                 }
                 else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_BALANCE_INSUFFICIENT)
                 {
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        behaviourScript.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
+                        EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
                     });
                 }
                 else if (withdrawResult == "error")
                 {
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        behaviourScript.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
+                        EventsController.Get.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
                     });
                 }
                 else if (withdrawResult == WithdrawManager.WITHDRAW_SUCCEEDED_STATUS)
                 {
                     UnityThreadHelper.Dispatcher.Dispatch(() =>
                     {
-                        SceneManager.UnloadSceneAsync("Loader");
-                        SceneManager.UnloadSceneAsync("WithdrawalInfo");
-                        UserManager.CurrentUser.money_credit = UserManager.CurrentUser.money_credit - WithdrawPresenter.WithdrawMoney;
-                        behaviourScript.backToWinMoney();
-                        behaviourScript.ShowPopup("popupCongratWithdraw");
+                        LoaderManager.Get.LoaderController.HideLoader();
+                        UserManager.Get.UpdateUserMoneyCredit((float.Parse(UserManager.Get.GetCurrentMoneyCredit()) - WithdrawPresenter.WithdrawMoney).ToString("N2").Replace(",", "."));
+                        EventsController.Get.backToWinMoney();
                     });
                 }
             }
@@ -295,14 +227,33 @@ public class InfoPersonnelWithdraw : MonoBehaviour
             {
                 UnityThreadHelper.Dispatcher.Dispatch(() =>
                 {
-                    behaviourScript.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
+                    EventsController.Get.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
                 });
             }
         });
     }
-    
+    private async void tokenizeAndAttach()
+    {
+        if (!String.IsNullOrEmpty(InfoPersonnelWithdraw.currentIBAN))
+        {
+            LoaderManager.Get.LoaderController.ShowLoader(null);
+            string accounttoken = await wm.TokenizeAccountAsync();
+            if (!String.IsNullOrEmpty(accounttoken))
+            {
+                if (wm.attachTokenToAccount(accounttoken, token))
+                {
+                    string[] attrib = { "iban_uploaded" };
+                    string[] value5 = { "true" };
+                    UserManager.Get.UpdateUserByField(attrib, value5);
+                }
+            }
+
+            LoaderManager.Get.LoaderController.HideLoader();
+        }
+    }
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (string.IsNullOrEmpty(LastName.text) || string.IsNullOrEmpty(FirstName.text) || string.IsNullOrEmpty(Adress.text) || string.IsNullOrEmpty(city.text) || string.IsNullOrEmpty(zip.text) || string.IsNullOrEmpty(country.text) || string.IsNullOrEmpty(Birthday.text))
         {
@@ -310,18 +261,97 @@ public class InfoPersonnelWithdraw : MonoBehaviour
         }
         else
         {
-            if (UserManager.CurrentCountryCode.ToLower().Equals("us"))
+            if (UserManager.Get.CurrentUser.country_code.ToLower().Equals("us"))
             {
                 if (!string.IsNullOrEmpty(personal_id_number.text))
+                {
                     ContinueButton.interactable = true;
-                else ContinueButton.interactable = false;
+                }
+                else
+                {
+                    ContinueButton.interactable = false;
+                }
             }
-            else ContinueButton.interactable = true;
+            else
+            {
+                ContinueButton.interactable = true;
+            }
         }
         if (validIban == true)
         {
             ContinueButtonIBAN.interactable = true;
         }
-        else ContinueButtonIBAN.interactable = false;
+        else
+        {
+            ContinueButtonIBAN.interactable = false;
+        }
     }
+
+    #region Deadcode
+
+    //private void disable(string doc)
+    //{
+    //    Image DocDisableimg = GameObject.Find(doc + "/disable").GetComponent<Image>();
+    //    var tempColor = DocDisableimg.color;
+    //    tempColor.a = 0.50f;
+    //    DocDisableimg.color = tempColor;
+    //}
+
+    //private void docsVerification(JSONNode account)
+    //{
+    //    string documentFrontID = null; string documentBackID = null;
+    //    var accountStatus = account["account"]["individual"]["verification"]["status"].Value;
+    //    Debug.Log(accountStatus);
+    //    try
+    //    {
+    //        documentFrontID = account["account"]["individual"]["verification"]["document"]["front"].Value;
+    //    }
+    //    catch (NullReferenceException) { }
+    //    try
+    //    {
+    //        documentBackID = account["account"]["individual"]["verification"]["document"]["back"].Value;
+    //    }
+    //    catch (NullReferenceException) { }
+    //    if (accountStatus.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING))
+    //    {
+    //        GameObject.Find("IDAddressWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
+    //        if (!string.IsNullOrEmpty(documentBackID))
+    //        {
+    //            GameObject.Find("IDFrontWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
+    //            GameObject.Find("IDBackWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
+    //            GameObject.Find("IDPassport").GetComponent<Button>().interactable = false;
+    //            disable("IDPassport");
+    //        }
+    //        else
+    //        {
+    //            GameObject.Find("IDPassportWaiting").GetComponent<Image>().transform.localScale = Vector3.one;
+    //            GameObject.Find("IDFront").GetComponent<Button>().interactable = false;
+    //            GameObject.Find("IDBack").GetComponent<Button>().interactable = false;
+    //            disable("IDFront");
+    //            disable("IDBack");
+    //        }
+    //    }
+    //    else if (accountStatus.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED))
+    //    {
+    //        WithdrawButton.interactable = true;
+    //        GameObject.Find("IDAddressSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
+    //        if (!string.IsNullOrEmpty(documentBackID))
+    //        {
+    //            GameObject.Find("IDFrontSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
+    //            GameObject.Find("IDBackSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
+    //            GameObject.Find("IDPassport").GetComponent<Button>().interactable = false;
+    //            disable("IDPassport");
+    //        }
+    //        else
+    //        {
+    //            GameObject.Find("IDPassportSuccess").GetComponent<Image>().transform.localScale = Vector3.one;
+    //            GameObject.Find("IDFront").GetComponent<Button>().interactable = false;
+    //            GameObject.Find("IDBack").GetComponent<Button>().interactable = false;
+    //            disable("IDFront");
+    //            disable("IDBack");
+    //        }
+    //    }
+    //}
+
+    #endregion
 }

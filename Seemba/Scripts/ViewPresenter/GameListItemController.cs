@@ -89,7 +89,6 @@ public class GameListItemController : MonoBehaviour
 			yield return www;
 			var texture = www.texture;
 			icon.sprite = Sprite.Create (texture, new Rect (0, 0, texture.width, texture.height), new Vector2 (0, 0));
-			GameObject.Find("PanelWaiting").transform.localScale=new Vector3(0,0,0);
 	}
 	// Update is called once per frame
 	void Update ()

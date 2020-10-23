@@ -10,6 +10,14 @@ using System.Net.Security;
 using System;
 using UnityEngine.UI;
 public class ChargeManager : MonoBehaviour {
+
+
+    #region Static
+    public static ChargeManager Get { get { return sInstance; } }
+
+    private static ChargeManager sInstance;
+    #endregion
+
     public const string PAYMENT_TYPE = "card";
     public const string PAYMENT_STATUS_REQUIRES_SOURCE_ACTION = "requires_source_action";
     public const string PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD = "requires_payment_method";
@@ -18,11 +26,13 @@ public class ChargeManager : MonoBehaviour {
     public const string PAYMENT_STATUS_CANCELED = "canceled";
     public const string PAYMENT_STATUS_PROCESSING = "processing";
     public const string PAYMENT_NEXT_ACTION_TYPE_USE_STRIPE_SDK = "use_stripe_sdk";
-    public const string PAYMENT_NEXT_ACTION_TYPE_REDIRECT_TO_URL = "redirect_to_url"; 
-   
+    public const string PAYMENT_NEXT_ACTION_TYPE_REDIRECT_TO_URL = "redirect_to_url";
+    private void Awake()
+    {
+        sInstance = this;
+    }
     public string CreatePaymentMethod(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
     {
-        UserManager um = new UserManager();
         string url = Endpoint.stripeURL + "/payment_methods";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -52,14 +62,6 @@ public class ChargeManager : MonoBehaviour {
                     res = JSON.Parse(jsonResponse);
                     Debug.Log("id:"+res["id"].Value);
                     return res["id"].Value;
-                    /*if (res["success"].AsBool == false)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        return res;
-                    }*/
                 }
             }
         }
@@ -76,13 +78,11 @@ public class ChargeManager : MonoBehaviour {
                     }
                 }
             }
-            return null;
+            return "-1";
         }
     }
-    public JSONNode CreatePaymentIntent(string _paymentMethod,float amount,string token)
+    public JSONNode CreatePaymentIntent(string _paymentMethod, float amount, string token)
     {
-        Debug.Log("createPaymentIntent");
-        UserManager um = new UserManager();
         string url = Endpoint.classesURL + "/payments/charge/";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -126,11 +126,11 @@ public class ChargeManager : MonoBehaviour {
                     }
                 }
             }
-            return null;
+            return "-1";
         }
     }
     public string isChargeConfirmed(string _paymentIntent,string token) {
-		UserManager um = new UserManager();
+		//UserManager um = new UserManager();
 		string url = Endpoint.classesURL +"/payments/charge/" + _paymentIntent;
 		HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
 		request.Method = "GET";

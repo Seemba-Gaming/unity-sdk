@@ -5,10 +5,10 @@ public class HaveFunBottomBarController : MonoBehaviour
 {
     void OnEnable()
     {
-        BottomMenuController menuController = BottomMenuController.getInstance();
-        menuController.unselectHome();
-        menuController.unselectWinMoney();
-        menuController.unselectSettings();
-        menuController.selectHaveFun();
+        BottomMenuController.Show();
+        BottomMenuController.Get.unselectHome();
+        BottomMenuController.Get.unselectWinMoney();
+        BottomMenuController.Get.unselectSettings();
+        BottomMenuController.Get.selectHaveFun();
     }
 }

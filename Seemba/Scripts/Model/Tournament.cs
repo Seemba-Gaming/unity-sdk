@@ -18,3 +18,10 @@ public class Tournament {
 		this.users=users; 
 	}	
 }
+
+public class TournamentData
+{
+	public bool success;
+	public string message;
+	public Tournament data;
+}

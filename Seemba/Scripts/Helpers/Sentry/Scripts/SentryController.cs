@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Sentry;
 using UnityEngine;
 
-class SentryController: MonoBehaviour
+class SentryController
 {
     private static SentryController _Instance = null;
     private bool isInstantiated = false;

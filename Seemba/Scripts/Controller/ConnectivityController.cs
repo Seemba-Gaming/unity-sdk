@@ -5,9 +5,6 @@ using System.Net;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class ConnectivityController : MonoBehaviour {
-	public Text checkConnection;
-	public Animator ErrorConnection;
-	AsyncOperation async_operation;
 	public static string CURRENT_ACTION;
 	public const string  CHALLENGE_ACTION="challenge";
 	public const string  HOME_ACTION="home";

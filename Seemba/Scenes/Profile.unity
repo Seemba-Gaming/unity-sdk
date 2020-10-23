@@ -408,21 +408,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &78500917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,21 +648,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &128025765
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,21 +721,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &132216358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,21 +874,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &193111032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1179,7 +1139,6 @@ GameObject:
   - component: {fileID: 259487297}
   - component: {fileID: 259487296}
   - component: {fileID: 259487295}
-  - component: {fileID: 259487294}
   - component: {fileID: 259487298}
   m_Layer: 5
   m_Name: Viewport
@@ -1208,18 +1167,6 @@ RectTransform:
   m_AnchoredPosition: {x: 25.999985, y: 0}
   m_SizeDelta: {x: -52.9, y: 0}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &259487294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 259487292}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c52b729b79f764e0a9c8c88a591d7bb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &259487295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2126,21 +2073,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &518533933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2389,7 +2326,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 587917609}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -3074,21 +3011,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1009397224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3829,21 +3756,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1109346582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3937,21 +3854,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1114105749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4420,21 +4327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1188530721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4901,21 +4798,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1308374730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5709,21 +5596,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1502568151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6893,21 +6770,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1720520564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7277,21 +7144,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1831924162
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7915,21 +7772,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1955241357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8406,21 +8253,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &2065677476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8727,21 +8564,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &2137402059
 MonoBehaviour:
   m_ObjectHideFlags: 0

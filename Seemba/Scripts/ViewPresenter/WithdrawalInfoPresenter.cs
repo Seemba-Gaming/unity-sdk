@@ -11,18 +11,13 @@ using UnityEngine.UI;
 
 public class WithdrawalInfoPresenter : MonoBehaviour
 {
-
     public InputField Iban;
-    public Image AcceptedIban;
-    public Image DeclinedIban;
     public Image CountryFlag;
     public Button Continue;
 
-    UserManager userManager = new UserManager();
     WithdrawManager withdrawManager = new WithdrawManager();
     WithdrawController controller;
 
-    string user_id, token;
     private string country_code;
     private string currency;
     public bool isPaused = false;
@@ -31,13 +26,9 @@ public class WithdrawalInfoPresenter : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        user_id = userManager.getCurrentUserId();
-        token = userManager.getCurrentSessionToken();
         controller = new WithdrawController();
         init();
     }
-    
-
     async void init()
     {
         Continue.interactable = false;
@@ -46,49 +37,39 @@ public class WithdrawalInfoPresenter : MonoBehaviour
             await CreateConnectAccount();
         });
 
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(() =>
+        LoaderManager.Get.LoaderController.ShowLoader();
+        User user = await UserManager.Get.getUser();
+        LoaderManager.Get.LoaderController.HideLoader();
+
+        init_iban(user);
+
+        if (!string.IsNullOrEmpty(user.payment_account_id))
         {
-            User user = userManager.getUser(user_id, token);
-
-            UnityThreadHelper.Dispatcher.Dispatch(async () =>
-            {
-                SceneManager.UnloadScene("Loader");
-                init_iban(user);
-
-                if (!string.IsNullOrEmpty(user.payment_account_id))
-                {
-                    var account = await controller.GetAccountStatus();
-                    CheckAccountStatus(account);
-                }
-
-            });
-        });
-    }
-
-    private void CheckAccountStatus(JSONNode account)
-    {
-        Debug.Log("verification_status: " + account["verification_status"].Value);
-        if (account["verification_status"].Value.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
-        {
-            Unverified(account["verification_link"].Value);
+            var account = await controller.GetAccountStatus();
+            CheckAccountStatus(account);
         }
-        if (account["verification_status"].Value.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING))
+    }
+    private void CheckAccountStatus(AccountStatus account)
+    {
+        Debug.Log("verification_status: " + account.verification_status);
+        if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
+        {
+            Unverified(account.verification_link);
+        }
+        if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING))
         {
             Pending();
         }
-        if (account["verification_status"].Value.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED))
+        if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED))
         {
             Verified();
         }
     }
     private void Unverified(string verification_link)
     {
-        Debug.Log("verification_link: " + verification_link);
-
         if (!string.IsNullOrEmpty(verification_link))
         {
-            SceneManager.UnloadScene("WithdrawalInfo");
+            ViewsEvents.Get.GoBack();
             Application.OpenURL(verification_link);
         }
     }
@@ -96,32 +77,26 @@ public class WithdrawalInfoPresenter : MonoBehaviour
     {
         Iban.placeholder.GetComponent<Text>().text = "Already Uploaded! Waiting for verification...";
     }
-
     private void Verified()
     {
-        SceneManager.UnloadScene("WithdrawalInfo");
+        ViewsEvents.Get.GoBack();
     }
     private async Task CreateConnectAccount()
     {
         bool res = await controller.TokenizeAndCreate(country_code, currency, Iban.text);
         if (res) Iban.interactable = false;
         var account = await controller.GetAccountStatus();
-        if (account["verification_status"].Value.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
+        if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
         {
-            if (!string.IsNullOrEmpty(account["verification_link"].Value))
+            if (!string.IsNullOrEmpty(account.verification_link))
             {
-                Application.OpenURL(account["verification_link"].Value);
+                Application.OpenURL(account.verification_link);
             }
         }
-        SceneManager.UnloadScene("WithdrawalInfo");
-
-
+        ViewsEvents.Get.GoBack();
     }
-
     void init_iban(User user)
     {
-
-        //if (!string.IsNullOrEmpty(user.payment_account_id) && !user.payment_account_id.ToLower().Equals("unsupported")) { Iban.interactable = false; }
         Iban.onValueChanged.AddListener(delegate
         {
             CountryFlag.gameObject.SetActive(false);
@@ -133,13 +108,11 @@ public class WithdrawalInfoPresenter : MonoBehaviour
             {
                 Continue.interactable = true;
                 SetCountryCurrency();
-                AcceptedIban.gameObject.SetActive(true);
-                DeclinedIban.gameObject.SetActive(false);
+                Iban.GetComponent<InputfieldStateController>().ShowAccepted();
             }
             else
             {
-                AcceptedIban.gameObject.SetActive(false);
-                DeclinedIban.gameObject.SetActive(true);
+                Iban.GetComponent<InputfieldStateController>().ShowDeclined();
             }
         });
     }
@@ -157,13 +130,9 @@ public class WithdrawalInfoPresenter : MonoBehaviour
     }
     private async void SetSelectedCountryFlag(string country_code)
     {
-        string flagBytesString = await userManager.GetFlagByteAsync(country_code);
-        if (string.IsNullOrEmpty(flagBytesString)) return;
-        Byte[] img = Convert.FromBase64String(flagBytesString);
-        Texture2D txt = new Texture2D(1, 1);
-        txt.LoadImage(img);
-        CountryFlag.sprite = Sprite.Create(txt as Texture2D, new Rect(0f, 0f, txt.width, txt.height), Vector2.zero);
+        var mTexture = await UserManager.Get.GetFlagBytes(country_code);
+        if (mTexture == null) return;
+        CountryFlag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
         CountryFlag.gameObject.SetActive(true);
     }
-
 }

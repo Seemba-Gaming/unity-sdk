@@ -8,48 +8,35 @@ using UnityEngine.SceneManagement;
 
 public class WithdrawController
 {
-    // Start is called before the first frame update
     public async Task<bool> TokenizeAndCreate(string country_code, string currency, string iban)
     {
         WithdrawManager wm = new WithdrawManager();
-        UserManager um = new UserManager();
-        var user_token = um.getCurrentSessionToken();
-        var user_id = um.getCurrentUserId();
-
+        var user_token = UserManager.Get.getCurrentSessionToken();
 
         if (string.IsNullOrEmpty(iban) || string.IsNullOrEmpty(country_code) || string.IsNullOrEmpty(currency)) return false;
 
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-
-        string account_token = await wm.TokenizeAccount();
-        string bank_account_token = await wm.TokenizeBankAccount(country_code, currency, iban);
+        LoaderManager.Get.LoaderController.ShowLoader();
+        string account_token = await wm.TokenizeAccountAsync();
+        string bank_account_token = await wm.TokenizeAccountAsync();
 
         if (!string.IsNullOrEmpty(bank_account_token) && !string.IsNullOrEmpty(account_token))
         {
             bool res = await wm.CreateConnectAccount(account_token, bank_account_token, currency, country_code, user_token);
-            SceneManager.UnloadScene("Loader");
+            LoaderManager.Get.LoaderController.HideLoader();
             return res;
         }
-
         return false;
-
     }
-    public async Task<JSONNode> GetAccountStatus()
+    public async Task<AccountStatus> GetAccountStatus()
     {
-        UserManager um = new UserManager();
         WithdrawManager wm = new WithdrawManager();
-        var user_token = um.getCurrentSessionToken();
+        var user_token = UserManager.Get.getCurrentSessionToken();
         return await wm.accountVerificationStatus(user_token);
     }
     public async void Withdraw(float amount)
     {
-        EventsController eventsController = new EventsController();
         WithdrawManager wm = new WithdrawManager();
-        UserManager um = new UserManager();
-        var user_token = um.getCurrentSessionToken();
-        var user_id = um.getCurrentUserId();
-
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+        var user_token = UserManager.Get.getCurrentSessionToken();
 
         string withdrawResult = null;
         withdrawResult = await wm.Payout(user_token, amount);
@@ -58,46 +45,38 @@ public class WithdrawController
         Debug.Log("withdrawResult: " + withdrawResult);
         if (withdrawResult == "ProhibitedLocation")
         {
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-                GameObject.Find("CalqueWidhraw").transform.localScale = Vector3.one;
-                var animator = GameObject.Find("popupProhibitedLocation").GetComponent<Animator>();
-                animator.SetBool("Show Error", true);
-            });
+            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_PROHIBITED_LOCATION_WITHDRAW, PopupsText.Get.ProhibitedLocationWithdraw());
         }
         else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_AMOUNT_INSUFFICIENT)
         {
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
-                eventsController.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
+                EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
             });
         }
         else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_BALANCE_INSUFFICIENT)
         {
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
-                eventsController.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
+                EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
             });
         }
         else if (withdrawResult == "error")
         {
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
-                eventsController.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
+                EventsController.Get.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
             });
         }
         else if (withdrawResult == WithdrawManager.WITHDRAW_SUCCEEDED_STATUS)
         {
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
-                SceneManager.UnloadSceneAsync("Loader");
-                UserManager.CurrentUser.money_credit = UserManager.CurrentUser.money_credit - WithdrawPresenter.WithdrawMoney;
-                eventsController.backToWinMoney();
-                eventsController.ShowPopup("popupCongratWithdraw");
+                LoaderManager.Get.LoaderController.HideLoader();
+                UserManager.Get.CurrentUser.money_credit = float.Parse((UserManager.Get.CurrentUser.money_credit - WithdrawPresenter.WithdrawMoney).ToString().Replace(",", "."));
+                EventsController.Get.backToWinMoney();
+                PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS_WITHDRAW, PopupsText.Get.CongratsWithdraw());
             });
         }
-
-
     }
 }

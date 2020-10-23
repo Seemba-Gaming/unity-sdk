@@ -25,17 +25,17 @@ public class BracketTranslationController : MonoBehaviour
         /*foreach (Text _text in to_be_determined) {
             _text.text = TranslationManager.Get("to_be_determined") != string.Empty ? TranslationManager.Get("to_be_determined") : _text.text;
         }*/
-        for (int pos = 1; pos <= 8; pos++)
-        {
-            for (int player = 1; player <= 2; player++)
-            {
-                try { 
-                Debug.Log("Challenge (" + (pos) + ")/Player" + player + "/Username");
-                    Text to_be_determined = GameObject.Find("Challenge (" + (pos) + ")/Player"+ player + "/Username").GetComponent<Text>();
-                to_be_determined.text = TranslationManager.Get("to_be_determined") != string.Empty ? TranslationManager.Get("to_be_determined") : to_be_determined.text;
-                }
-                catch (System.NullReferenceException ex) { }
-            }
-        }
+        //for (int pos = 1; pos <= 8; pos++)
+        //{
+        //    for (int player = 1; player <= 2; player++)
+        //    {
+        //        try { 
+        //        Debug.Log("Challenge (" + (pos) + ")/Player" + player + "/Username");
+        //            Text to_be_determined = GameObject.Find("Challenge (" + (pos) + ")/Player"+ player + "/Username").GetComponent<Text>();
+        //        to_be_determined.text = TranslationManager.Get("to_be_determined") != string.Empty ? TranslationManager.Get("to_be_determined") : to_be_determined.text;
+        //        }
+        //        catch (System.NullReferenceException ex) { }
+        //    }
+        //}
     }
 }

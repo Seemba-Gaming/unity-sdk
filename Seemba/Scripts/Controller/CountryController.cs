@@ -14,7 +14,7 @@ public class CountryController{
 				}
 				return true;
 			} else {
-				return checkRegion (UserManager.CurrentCountryRegion);
+				return checkRegion (UserManager.Get.CurrentUser.country);
 			}
 	}
 	public static bool checkRegion(string region){

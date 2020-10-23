@@ -3,9 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 public class PhonePrefix 
 {
+    static Dictionary<string, string>  dictionary = new Dictionary<string, string>();
+
     public static string getPhonePrefix(string country_code)
     {
-        var dictionary = new Dictionary<string, string>();
+        if(dictionary.Count == 0)
+        {
+            FillDictionary();
+        }
+
+        if (dictionary.ContainsKey(country_code))
+        {
+            return dictionary[country_code];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    static void FillDictionary()
+    {
         dictionary.Add("AC", "+247");
         dictionary.Add("AD", "+376");
         dictionary.Add("AE", "+971");
@@ -246,13 +263,5 @@ public class PhonePrefix
         dictionary.Add("ZA", "+27");
         dictionary.Add("ZM", "+260");
         dictionary.Add("ZW", "+263");
-        if (dictionary.ContainsKey(country_code))
-        {
-            return dictionary[country_code];
-        }
-        else
-        {
-            return null;
-        }
     }
 }

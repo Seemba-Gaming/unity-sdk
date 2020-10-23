@@ -1621,12 +1621,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2142639772}
-  m_RootOrder: 8
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -9.91, y: -35.33}
-  m_SizeDelta: {x: 211.42, y: 17.109}
+  m_AnchoredPosition: {x: -49.5, y: -41.79}
+  m_SizeDelta: {x: 116, y: 19.620998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &411709531
 MonoBehaviour:
@@ -1650,10 +1650,10 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 12
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 1
-    m_MaxSize: 12
-    m_Alignment: 3
+    m_MaxSize: 40
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2301,12 +2301,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2142639772}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -137.82, y: -35.437008}
-  m_SizeDelta: {x: 44.4, y: 17}
+  m_AnchoredPosition: {x: -128.5, y: -40.302002}
+  m_SizeDelta: {x: 51, y: 17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &592768207
 MonoBehaviour:
@@ -2333,7 +2333,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -4664,8 +4664,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -143.8, y: -56.292}
-  m_SizeDelta: {x: 29.4, y: 24.815}
+  m_AnchoredPosition: {x: -139.26599, y: -62.75067}
+  m_SizeDelta: {x: 29.402405, y: 28}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1021657706
 MonoBehaviour:
@@ -4692,7 +4692,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -5040,8 +5040,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -82.03402, y: -56.319}
-  m_SizeDelta: {x: 95, y: 24.763}
+  m_AnchoredPosition: {x: -77.5, y: -62.53705}
+  m_SizeDelta: {x: 95, y: 27}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1054408860
 MonoBehaviour:
@@ -5068,13 +5068,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: --
+  m_Text: '-'
 --- !u!222 &1054408861
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7229,41 +7229,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1882146687}
   m_CullTransparentMesh: 0
---- !u!1 &1972628182
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1972628183}
-  m_Layer: 5
-  m_Name: Container
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1972628183
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972628182}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 2142639772}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 145.80003, y: -45.600006}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2027938472
 GameObject:
   m_ObjectHideFlags: 0
@@ -7693,7 +7658,7 @@ GameObject:
   - component: {fileID: 2088206064}
   - component: {fileID: 2088206063}
   m_Layer: 5
-  m_Name: Fee
+  m_Name: "Frais d'entr\xE9eValeur"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7946,10 +7911,9 @@ RectTransform:
   - {fileID: 1306140393}
   - {fileID: 901153219}
   - {fileID: 482120962}
-  - {fileID: 1972628183}
+  - {fileID: 411709530}
   - {fileID: 1054408859}
   - {fileID: 1021657705}
-  - {fileID: 411709530}
   - {fileID: 592768206}
   m_Father: {fileID: 681059308}
   m_RootOrder: 6

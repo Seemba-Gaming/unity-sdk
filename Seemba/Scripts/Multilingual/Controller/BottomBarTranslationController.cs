@@ -11,10 +11,6 @@ public class BottomBarTranslationController : MonoBehaviour
     void Start()
     {
         TranslationManager.scene = "BottomBar";
-        Debug.Log("BottomBar translation");
-
-        Debug.Log(TranslationManager.Get("home"));
-
         home.text = TranslationManager.Get("home") != string.Empty ? TranslationManager.Get("home") : home.text;
         have_fun.text = TranslationManager.Get("have_fun") != string.Empty ? TranslationManager.Get("have_fun") : have_fun.text;
         win_money.text = TranslationManager.Get("win_money") != string.Empty ? TranslationManager.Get("win_money") : win_money.text;

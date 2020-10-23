@@ -211,7 +211,6 @@ GameObject:
   - component: {fileID: 123009191}
   - component: {fileID: 123009190}
   - component: {fileID: 123009189}
-  - component: {fileID: 123009188}
   m_Layer: 0
   m_Name: Bubbles
   m_TagString: Untagged
@@ -235,19 +234,6 @@ Transform:
   m_Father: {fileID: 1095296459}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -77.649, y: -88.856, z: 58.901}
---- !u!114 &123009188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114991983494368972, guid: 6336b0a6bc2ea4cb1a1a3a8ad89d0b6b,
-    type: 2}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 123009186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &123009189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4991,7 +4977,7 @@ GameObject:
   - component: {fileID: 394091700}
   - component: {fileID: 394091699}
   m_Layer: 5
-  m_Name: ToolBox
+  m_Name: ToolBoxImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5106,21 +5092,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &620230370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5445,7 +5421,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Title: {fileID: 1289901798}
-  text: {fileID: 1448658328}
+  MainText: {fileID: 0}
+  Continue: {fileID: 0}
 --- !u!95 &1095296461
 Animator:
   serializedVersion: 3
@@ -5541,7 +5518,6 @@ GameObject:
   - component: {fileID: 1191550287}
   - component: {fileID: 1191550286}
   - component: {fileID: 1191550285}
-  - component: {fileID: 1191550284}
   m_Layer: 0
   m_Name: Snow
   m_TagString: Untagged
@@ -5564,19 +5540,6 @@ Transform:
   m_Father: {fileID: 1095296459}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1191550284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114991983494368972, guid: 6336b0a6bc2ea4cb1a1a3a8ad89d0b6b,
-    type: 2}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1191550282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1191550285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10784,7 +10747,6 @@ GameObject:
   - component: {fileID: 1900714260}
   - component: {fileID: 1900714259}
   - component: {fileID: 1900714258}
-  - component: {fileID: 1900714257}
   m_Layer: 0
   m_Name: Snow
   m_TagString: Untagged
@@ -10807,19 +10769,6 @@ Transform:
   m_Father: {fileID: 123009187}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -6.242, y: 10.941001, z: -0.652}
---- !u!114 &1900714257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114991983494368972, guid: 6336b0a6bc2ea4cb1a1a3a8ad89d0b6b,
-    type: 2}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1900714255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1900714258
 MonoBehaviour:
   m_ObjectHideFlags: 0

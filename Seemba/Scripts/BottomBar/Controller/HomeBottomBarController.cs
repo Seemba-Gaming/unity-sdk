@@ -7,14 +7,10 @@ public class HomeBottomBarController : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        try       {
-            BottomMenuController menuController = BottomMenuController.getInstance();
-            menuController.unselectHaveFun();
-            menuController.unselectWinMoney();
-            menuController.unselectSettings();
-            menuController.selectHome();
-        }
-        catch (NullReferenceException ex) {
-            };
+        BottomMenuController.Show();
+        BottomMenuController.Get.unselectHaveFun();
+        BottomMenuController.Get.unselectWinMoney();
+        BottomMenuController.Get.unselectSettings();
+        BottomMenuController.Get.selectHome();
     }
 }

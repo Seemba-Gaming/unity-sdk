@@ -1,143 +1,124 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
 using System.Text.RegularExpressions;
 using System.Timers;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class UserService : MonoBehaviour
 {
+    #region Static
     public static string Seemba_Email = "noreply@seemba.com,djo@seemba.com,slim@seemba.com,geoffrey@seemba.com,jean-philippe@seemba.com,mohamed@seemba.com";
-    public static InputField username, password, mail;
-    public static string _Username, _Password, _Email, _Avatar;
-    private int code;
-    AndroidJavaObject currentActivity;
-    string toastString;
-    public Button Signin, signup, SendEmail, Done, submitCode;
-    public InputField digits, Email, newPassword, confirmPassword;
-    System.Timers.Timer aTimer;
-    static int sec, min;
-    static DateTime dt = new DateTime();
-    TimeSpan ts;
+    private static int sec, min;
+    private static DateTime dt = new DateTime();
+    #endregion
+
+    #region Script Parameters
+    public InputField digits;
+    public Button SendEmail, Done, submitCode;
+    public Button ShowPassword;
+    public InputField Email, newPassword, confirmPassword;
+    public InputField Username;
+    public InputField Password;
+    public Animator LoginAnimation;
     public Text chrono;
-    bool timeout;
-    // Use this for initialization
-    void Start()
+    #endregion
+
+    #region Fields
+    private int code;
+    private Timer aTimer;
+    private bool timeout;
+    #endregion
+
+    #region Unity Methods
+    private void Start()
     {
-        try
+        Username.ActivateInputField();
+        Username.onValueChanged.AddListener(delegate
         {
-            InputField username = GameObject.Find("username").GetComponent<InputField>();
-            InputField Password = GameObject.Find("password").GetComponent<InputField>();
-            Animator LoginAnimation = GameObject.Find("SigninContent").GetComponent<Animator>();
-            username.ActivateInputField();
-            username.onValueChanged.AddListener(delegate
+            if (LoginAnimation.GetBool("loginFailed") == true)
             {
-                if (LoginAnimation.GetBool("loginFailed") == true)
-                {
-                    LoginAnimation.SetBool("loginFailed", false);
-                }
-            });
-            Password.onValueChanged.AddListener(delegate
+                LoginAnimation.SetBool("loginFailed", false);
+            }
+        });
+        Password.onValueChanged.AddListener(delegate
+        {
+            if (LoginAnimation.GetBool("loginFailed") == true)
             {
-                if (LoginAnimation.GetBool("loginFailed") == true)
+                LoginAnimation.SetBool("loginFailed", false);
+            }
+
+            if (string.IsNullOrEmpty(Password.text))
+            {
+                ShowPassword.transform.localScale = Vector3.zero;
+            }
+            else
+            {
+                ShowPassword.transform.localScale = Vector3.one;
+            }
+        });
+
+        SendEmail.onClick.AddListener(() =>
+        {
+            requestForResetPassword();
+        });
+
+        Email.onValueChanged.AddListener(delegate
+        {
+            if (IsValidEmail(Email.text))
+            {
+                SendEmail.interactable = true;
+            }
+            else
+            {
+                SendEmail.interactable = false;
+            }
+        });
+        digits.onValueChanged.AddListener(delegate
+        {
+            if (digits.text.Length == 4)
+            {
+                if (int.Parse(digits.text) == code)
                 {
-                    LoginAnimation.SetBool("loginFailed", false);
-                }
-                Button showPassword = GameObject.Find("showPassword").GetComponent<Button>();
-                if (string.IsNullOrEmpty(Password.text))
-                {
-                    showPassword.transform.localScale = Vector3.zero;
+                    submitCode.interactable = true;
                 }
                 else
                 {
-                    showPassword.transform.localScale = Vector3.one;
+                    submitCode.interactable = false;
                 }
-            });
-        }
-        catch (NullReferenceException ex)
+            }
+        });
+        confirmPassword.onValueChanged.AddListener(delegate
         {
-        }
-        try
+            if (confirmPassword.text.Equals(newPassword.text))
+            {
+                Done.interactable = true;
+            }
+        });
+        Done.onClick.AddListener(() =>
         {
-            SendEmail.onClick.AddListener(() =>
-            {
-                requestForResetPassword();
-            });
-        }
-        catch (NullReferenceException ex) { }
-        try
-        {
-            Signin.onClick.AddListener(() =>
-            {
-                Login();
-            });
-        }
-        catch (NullReferenceException ex) { }
-        try
-        {
-            signup.onClick.AddListener(() =>
-            {
-                Signup();
-            });
-        }
-        catch (NullReferenceException ex) { }
-        try
-        {
-            Email.onValueChanged.AddListener(delegate
-            {
-                if (IsValidEmail(Email.text))
-                {
-                    SendEmail.interactable = true;
-                }
-                else
-                {
-                    SendEmail.interactable = false;
-                }
-            });
-            digits.onValueChanged.AddListener(delegate
-            {
-                if (digits.text.Length == 4)
-                {
-                    if (int.Parse(digits.text) == code)
-                        submitCode.interactable = true;
-                    else
-                    {
-                        submitCode.interactable = false;
-                    }
-                }
-            });
-            confirmPassword.onValueChanged.AddListener(delegate
-            {
-                if (confirmPassword.text.Equals(newPassword.text))
-                {
-                    Done.interactable = true;
-                }
-            });
-            Done.onClick.AddListener(() =>
-            {
-                resetPassword();
-            });
-        }
-        catch (NullReferenceException ex)
-        {
-        }
+            resetPassword();
+        });
+
     }
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
         try
         {
             if (int.Parse(digits.text) == code && timeout == false)
+            {
                 submitCode.interactable = true;
+            }
             else
             {
                 submitCode.interactable = false;
             }
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
             if (string.IsNullOrEmpty(digits.text))
             {
@@ -145,7 +126,132 @@ public class UserService : MonoBehaviour
             }
         }
     }
-    bool IsValidEmail(string email)
+    #endregion
+
+    #region Methods
+    public void Logout()
+    {
+        var userId = UserManager.Get.getCurrentUserId();
+        var deviceToken = PlayerPrefs.GetString("DeviceToken");
+        LoaderManager.Get.LoaderController.ShowLoader(null);
+        UnityThreadHelper.CreateThread(() =>
+        {
+            UserManager.Get.removeUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken);
+            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            {
+                LoaderManager.Get.LoaderController.HideLoader();
+                UserManager.Get.logingOut();
+                SceneManager.LoadSceneAsync("SeembaEsports");
+            });
+        });
+    }
+    #endregion
+
+    #region Implementation
+    private void requestForResetPassword()
+    {
+        digits.text = "";
+        LoaderManager.Get.LoaderController.ShowLoader(null);
+        UnityThreadHelper.CreateThread(() =>
+        {
+            int res = UserManager.Get.send_email(Email.text);
+            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            {
+                LoaderManager.Get.LoaderController.HideLoader();
+                if (res == 0)
+                {
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_EMAI_NOT_FOUND, PopupsText.Get.EmailNotFound());
+                }
+                else
+                {
+                    if (res == -1)
+                    {
+                        PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+                    }
+                    else
+                    {
+                        digits.ActivateInputField();
+                        code = res;
+                        dt.AddMinutes(2).ToString("mm:ss");
+                        chrono.text = "02:00";
+                        sec = 59;
+                        min = 1;
+                        timeout = false;
+                        if (aTimer != null)
+                        {
+                            aTimer.Stop();
+                        }
+
+                        aTimer = null;
+                        aTimer = new System.Timers.Timer();
+                        aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                        aTimer.Interval = 1000;
+                        aTimer.Enabled = true;
+                    }
+                }
+            });
+        });
+    }
+    private void OnTimedEvent(object source, ElapsedEventArgs e)
+    {
+        UnityThreadHelper.Dispatcher.Dispatch(() =>
+        {
+            try
+            {
+                if (sec >= 0 && min >= 0)
+                {
+                    if (sec >= 10)
+                    {
+                        chrono.text = "0" + min + ":" + sec;
+                    }
+                    else
+                    {
+                        chrono.text = "0" + min + ":0" + sec;
+                    }
+
+                    sec--;
+                    if (sec < 0)
+                    {
+                        sec = 59;
+                        min--;
+                    }
+                    if (sec < 0 && min < 0)
+                    {
+                        aTimer.Stop();
+                        chrono.text = "00:00";
+                        timeout = true;
+                    }
+                }
+                else
+                {
+                    timeout = true;
+                }
+            }
+            catch (MissingReferenceException)
+            {
+            }
+        });
+    }
+    private async void resetPassword()
+    {
+        LoaderManager.Get.LoaderController.ShowLoader(null);
+        bool res = await UserManager.Get.updatePassword(Email.text, newPassword.text);
+        LoaderManager.Get.LoaderController.HideLoader();
+
+        if (res == false)
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+        }
+        else
+        {
+            if (res == null)
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+            }
+
+        }
+    }
+    private bool IsValidEmail(string email)
     {
         string expresion;
         expresion = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
@@ -165,346 +271,6 @@ public class UserService : MonoBehaviour
             return false;
         }
     }
-    public void Logout()
-    {
-        UserManager um = new UserManager();
-        var userId = um.getCurrentUserId();
-        var deviceToken = PlayerPrefs.GetString("DeviceToken");
-        var platform = "";
-        UnityThreadHelper.CreateThread(() =>
-        {
-            //remove Device Token
-            um.removeUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken);
-        });
-        um.logingOut();
-        SceneManager.LoadSceneAsync("Signup");
-    }
-    void showLoginFailedAnimation()
-    {
-        GameObject.Find("SigninContent").GetComponent<Animator>().SetBool("loginFailed", true);
-    }
-    void showEmailNotfound()
-    {
-        EventsController nbs = new EventsController();
-        nbs.ShowPopupError("popupEmailNotFound");
-    }
-    void showconnectionFailed()
-    {
-        EventsController nbs = new EventsController();
-        nbs.ShowPopupError("popupConnectionFailed");
-    }
-    private void requestForResetPassword()
-    {
-        digits.text = "";
-        UserManager um = new UserManager();
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(() =>
-        {
-            int res = um.send_email(Email.text);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-                if (res == 0)
-                {
-                    showEmailNotfound();
-                }
-                else
-                {
-                    if (res == -1)
-                    {
-                        showconnectionFailed();
-                    }
-                    else
-                    {
-                        digits.ActivateInputField();
-                        code = res;
-                    //Debug.Log(code);
-                    dt.AddMinutes(2).ToString("mm:ss");
-                        chrono.text = "02:00";
-                        sec = 59;
-                        min = 1;
-                        timeout = false;
-                        if (aTimer != null) aTimer.Stop();
-                        aTimer = null;
-                        aTimer = new System.Timers.Timer();
-                        aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                        aTimer.Interval = 1000;
-                        aTimer.Enabled = true;
-                    }
-                }
-            });
-        });
-    }
-    public void gotItEmailNotFound()
-    {
-        EventsController nbs = new EventsController();
-        nbs.HidePopupError("popupEmailNotFound", true);
-    }
-    private void OnTimedEvent(object source, ElapsedEventArgs e)
-    {
-        UnityThreadHelper.Dispatcher.Dispatch(() =>
-        {
-            try
-            {
-                if (sec >= 0 && min >= 0)
-                {
-                    if (sec >= 10)
-                        chrono.text = "0" + min + ":" + sec;
-                    else
-                        chrono.text = "0" + min + ":0" + sec;
-                    sec--;
-                    if (sec < 0)
-                    {
-                        sec = 59;
-                        min--;
-                    }
-                    if (sec < 0 && min < 0)
-                    {
-                        aTimer.Stop();
-                        chrono.text = "00:00";
-                        timeout = true;
-                    }
-                }
-                else
-                {
-                    timeout = true;
-                }
-            }
-            catch (MissingReferenceException ex)
-            {
-            }
-        });
-    }
-    private void resetPassword()
-    {
-        UserManager um = new UserManager();
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-        UnityThreadHelper.CreateThread(() =>
-        {
-            bool? res = um.updatePassword(Email.text, newPassword.text);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-                if (res == false)
-                {
-                    showconnectionFailed();
-                }
-                else
-                {
-                    if (res == null)
-                    {
-                        showconnectionFailed();
-                    }
-                    else
-                    {
-                    }
-                }
-            });
-        });
-    }
-    public IEnumerator checkInternetConnection(Action<bool?> action)
-    {
-        AsyncOperation asc = SceneManager.LoadSceneAsync("Loader", LoadSceneMode.Additive);
-        WWW www = new WWW("https://www.google.fr");
-        float timer = 0;
-        bool failed = false;
-        while (!www.isDone)
-        {
-            try
-            {
-                GameObject.Find("checkConnection").transform.localScale = Vector3.one;
-            }
-            catch (NullReferenceException ex)
-            {
-            }
-            if (timer > 5) { failed = true; break; }
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        Debug.Log("failed" + failed);
-        if (failed)
-        {
-            try
-            {
-                GameObject.Find("checkConnection").transform.localScale = Vector3.one;
-                SceneManager.UnloadSceneAsync("Loader");
-            }
-            catch (NullReferenceException ex)
-            {
-            }
-            catch (ArgumentException ex)
-            {
-            }
-            Debug.Log("failed");
-            www.Dispose();
-            action(false);
-        }
-        else
-        {
-            Debug.Log("success");
-            if (www.error == null)
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-                action(true);
-            }
-            else
-            {
-                Debug.Log("error not null");
-                if (!asc.isDone)
-                {
-                    yield return new WaitForSeconds(1f);
-                }
-                SceneManager.UnloadSceneAsync("Loader");
-                action(false);
-            }
-        }
-    }
-    public async void Signup()
-    {
-        EventsController eventController = new EventsController();
-        UserManager um = new UserManager();
-        StartCoroutine(checkInternetConnection(async (isConnected) =>
-        {
-            if (isConnected == true)
-            {
-                InputField Username = GameObject.Find("UsernameField").GetComponent<InputField>();
-                InputField Email = GameObject.Find("EmailField").GetComponent<InputField>();
-                InputField Password = GameObject.Find("PasswordField").GetComponent<InputField>();
-                Image Avatar = GameObject.Find("Avatar").GetComponent<Image>();
-                Texture2D mytexture = Avatar.sprite.texture;
-                byte[] bytes;
-                bytes = mytexture.EncodeToPNG();
-                SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
+    #endregion
 
-                if (string.IsNullOrEmpty(ImagesManager.AvatarURL))
-                {
-                    await ImagesManager.FixImage(bytes);
-                }
-                if (ImagesManager.AvatarURL != "error")
-                {
-                    _Avatar = ImagesManager.AvatarURL;
-
-                    var res = await um.signingUp(Username.text.ToUpper(), Email.text, Password.text, ImagesManager.AvatarURL);
-
-
-
-                    if (res["success"].AsBool)
-                    {
-                        var deviceToken = PlayerPrefs.GetString("DeviceToken");
-                        Debug.Log(deviceToken);
-                        var userid = um.getCurrentUserId();
-                        var platform = "";
-                        if (Application.platform == RuntimePlatform.Android)
-                            platform = "android";
-                        else platform = "ios";
-                        UnityThreadHelper.CreateThread(() =>
-                        {
-                        //Add Device Token To Receive notification on current device
-                        um.addUserDeviceToken(userid, GamesManager.GAME_ID, deviceToken, platform);
-                        });
-
-                        UserManager.CurrentUsername = Username.text;
-                        UserManager.CurrentAvatarBytesString = ImagesManager.getSpriteFromBytes(bytes);
-                        UserManager.CurrentFlagBytesString = um.GetFlagByte(um.GetGeoLoc());
-                        UserManager.CurrentUser = new User();
-                        UserManager.CurrentUser.money_credit = 0.00f;
-                        UserManager.CurrentUser.bubble_credit = 25f;
-                    //Save Flag Byte
-                    PlayerPrefs.SetString("CurrentFlagBytesString", UserManager.CurrentFlagBytesString);
-
-
-
-                        eventController.StartFirstChallenge(res["token"].Value);
-                    }
-                    else if (!res["success"].AsBool)
-                    {
-                        ConnectivityController.CURRENT_ACTION = "";
-                        SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                        GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                    }
-
-                }
-                else
-                {
-                    UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
-                        ConnectivityController.CURRENT_ACTION = "";
-                        GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                        SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                    });
-                }
-
-            //}
-            /*else
-            {
-                ConnectivityController.CURRENT_ACTION = "";
-                GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-            }*/
-            }
-        }));
-    }
-
-    public void Login()
-    {
-        UserManager um = new UserManager();
-        mail = GameObject.Find("username").GetComponent<InputField>();
-        username = GameObject.Find("username").GetComponent<InputField>();
-        password = GameObject.Find("password").GetComponent<InputField>();
-        try
-        {
-            SceneManager.UnloadSceneAsync("ConnectionFailed");
-        }
-        catch (ArgumentException ex) { }
-        UnityThreading.ActionThread thread, thread1;
-
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-
-        var deviceToken = PlayerPrefs.GetString("DeviceToken");
-
-        UnityThreadHelper.CreateThread(() =>
-        {
-            string res = um.logingIn(username.text, password.text);
-            if (res == "success")
-            {
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    string userId = um.getCurrentUserId();
-                    string userToken = um.getCurrentSessionToken();
-                    var platform = "";
-                    UnityThreadHelper.CreateThread(() =>
-                    {
-                        if (Application.platform == RuntimePlatform.Android) platform = "android";
-                        else if (Application.platform == RuntimePlatform.IPhonePlayer) platform = "ios";
-                    //Add Device Token To Receive notification on current device
-
-                    um.addUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken, platform);
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            SceneManager.LoadSceneAsync("Home");
-                        });
-                    });
-                });
-            }
-            else if (res == "failed")
-            {
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                // track Signin Failed
-                print("auth failed");
-                    GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                    showLoginFailedAnimation();
-                });
-            }
-            else
-            {
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ConnectivityController.CURRENT_ACTION = ConnectivityController.LOGIN_ACTION;
-                    GameObject.Find("Loader").transform.localScale = Vector3.zero;
-                    SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                });
-            }
-        });
-    }
 }

@@ -100,7 +100,7 @@ public class ImagesManager : MonoBehaviour
     }
     public async static Task<string> FixImage(byte[] avatar)
     {
-        WWWForm form = new WWWForm(); 
+        WWWForm form = new WWWForm();
         form.AddBinaryData("avatar", avatar);
         var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/avatars/upload", form);
         download.timeout = 4000;

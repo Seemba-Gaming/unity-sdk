@@ -1034,7 +1034,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 48.177086, y: 0}
+  m_AnchoredPosition: {x: 48.263885, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &330339674
@@ -2286,21 +2286,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &649861994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3937,7 +3927,6 @@ MonoBehaviour:
   CVV: {fileID: 0}
   Zip: {fileID: 0}
   TermsToggel: {fileID: 0}
-  usermanager: {fileID: 0}
   eventsController: {fileID: 0}
   Montant: {fileID: 0}
   TextExpDate: {fileID: 0}
@@ -4314,8 +4303,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _paymentIntentID: 
-  user_id: 
-  token: 
+  userId: 
+  userToken: 
   Card: {fileID: 1291582766}
   card_MasterCard: {fileID: 0}
   card_Visa: {fileID: 0}
@@ -5095,21 +5084,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1313245047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5656,7 +5635,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 265.11456, y: 0}
+  m_AnchoredPosition: {x: 265.02777, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1411880443
@@ -5725,21 +5704,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
   mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
   Pro1vs1More: {fileID: 0}
   Pro1BracketMore: {fileID: 0}
   Pro1vs1Less: {fileID: 0}
   Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
 --- !u!114 &1411880445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6125,7 +6094,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: ff312777ab62c0f4595b368071fb6006, type: 3}
     m_FontSize: 55
     m_FontStyle: 0
-    m_BestFit: 1
+    m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 60
     m_Alignment: 5
@@ -7638,7 +7607,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 215.97917, y: 0}
+  m_AnchoredPosition: {x: 215.80556, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1961260536

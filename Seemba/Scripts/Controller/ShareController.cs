@@ -26,6 +26,9 @@ public class ShareController : MonoBehaviour
         Destroy(ss);
         Debug.Log(text);
         new NativeShare().AddFile(filePath).SetText(text).Share();
+        // Share on WhatsApp only, if installed (Android only)
+        //if( NativeShare.TargetExists( "com.whatsapp" ) )
+        //	new NativeShare().AddFile( filePath ).SetText( "Hello world!" ).SetTarget( "com.whatsapp" ).Share();
     }
     private IEnumerator ShareTextInBG()
     {

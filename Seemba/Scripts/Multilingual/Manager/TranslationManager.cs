@@ -6,12 +6,14 @@ using SimpleJSON;
 using UnityEditor;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Threading.Tasks;
+
 public sealed class TranslationManager : MonoBehaviour
 {
     public static string scene = null;
-    public static bool? isDownloaded = null;
     public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
     private static JSONNode Translations = null;
+    public static bool? isDownloaded = null;
     static string systemLanguage = Application.systemLanguage.ToString();
 #if UNITY_EDITOR
     private static bool d_OverrideLanguage = true;
@@ -44,53 +46,56 @@ public sealed class TranslationManager : MonoBehaviour
         }
     }
     // Returns the translation for this key.
-    public static string Get(string key)
+    public static string Get(string key, string defaultString = null)
     {
         CheckInstance();
         try
         {
             return Translations[scene][key].Value;
         }
-        catch (NullReferenceException ex) { return string.Empty; }
+        catch (NullReferenceException ex) { return defaultString; }
     }
     public static void ParseFile(string data)
     {
         Translations = JSON.Parse(data);
     }
-    public static IEnumerator SavePreferedLaguage()
+    public static async Task<bool> SavePreferedLanguage()
     {
-        yield return waitIcon();
-        Debug.Log("systemLanguage: " + systemLanguage);
-        if (!isLanguageSupported()) { isDownloaded = true; }
+
+        if (!isLanguageSupported())
+        {
+            isDownloaded = true;
+            return true;
+        }
         else if ((!systemLanguage.Equals("English")) && (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage))))
         {
-            Debug.Log("Downloding " + systemLanguage + " File...");
-            string url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
-            using (UnityWebRequest www = UnityWebRequest.Get(url))
+
+            var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
+            await req.SendWebRequest();
+
+
+            if (req.isNetworkError || req.isHttpError)
             {
-                GameObject.Find("downloading").transform.localScale = Vector3.zero;
-                GameObject.Find("settingLanguage").transform.localScale = Vector3.one;
-                yield return www.Send();
-                if (www.isNetworkError || www.isHttpError)
-                {
-                    Debug.Log("File cannot Downloaded.");
-                    Debug.Log(www.error);
-                    isDownloaded = false;
-                }
-                else
-                {
-                    Debug.Log("File Downloaded.");
-                    Debug.Log(Application.persistentDataPath);
-                    string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
-                    System.IO.File.WriteAllText(savePath, www.downloadHandler.text);
-                    PlayerPrefs.SetString(systemLanguage, systemLanguage);
-                    isDownloaded = true;
-                }
+                Debug.Log("File cannot Downloaded.");
+                Debug.Log(req.error);
+                isDownloaded = false;
+                return false;
+            }
+            else
+            {
+                Debug.Log("File Downloaded.");
+                Debug.Log(Application.persistentDataPath);
+                string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
+                System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
+                PlayerPrefs.SetString(systemLanguage, systemLanguage);
+                isDownloaded = true;
+                return true;
             }
         }
         else
         {
             isDownloaded = true;
+            return true;
         }
     }
     private static bool isLanguageSupported()
@@ -102,11 +107,7 @@ public sealed class TranslationManager : MonoBehaviour
         return false;
     }
 
-    static IEnumerator waitIcon()
-    {
-
-        yield return new WaitWhile(() => GamesManager.iconSaved != null);
-    }
+  
     public static string getTranslationFile()
     {
         return readStringFromFile(systemLanguage + ".json");
@@ -118,7 +119,6 @@ public sealed class TranslationManager : MonoBehaviour
 
         if (File.Exists(path))
         {
-            Debug.Log(path);
             FileStream file = new FileStream(path, System.IO.FileMode.Open, FileAccess.Read);
             StreamReader sr = new StreamReader(file);
             string str = null;

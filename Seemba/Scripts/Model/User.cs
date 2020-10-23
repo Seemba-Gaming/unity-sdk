@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using System;
+
+[Serializable]
 public class User  {
 	public string _id;
 	public string username;
@@ -27,13 +29,13 @@ public class User  {
 	public int confirmed_money;
 	public int champion_money;
 	public int losses_streak;
-	public int victories_streak;
+	public int current_victories_count;
 	public string long_lat;
 	public string last_bubble_click;
 	public bool email_verified;
 	public bool iban_uploaded;
 	public int level;
-	public string payment_account_id;
+	public string connect_account_id;
 	public bool id_proof_1_uploaded;
 	public bool id_proof_2_uploaded;
 	public string city;
@@ -48,6 +50,10 @@ public class User  {
 	public string country;
 	public bool residency_proof_uploaded;
 	public int victories_count;
+	public string token;
+	public string flag;
+	public string payment_account_id;
+	public bool proLabel;
 	public User (string _id,string username, string avatar, bool username_changed,string personal_id_number, string lastname, string firstname, float money_credit, float bubble_credit,
 		string email,  string password, int amateur_bubble, int novice_bubble, int legend_bubble, 
 		int confident_bubble, int confirmed_bubble, int champion_bubble, int amateur_money, int novice_money,
@@ -83,13 +89,13 @@ public class User  {
 		this.confirmed_money = confirmed_money;
 		this.champion_money = champion_money;
 		this.losses_streak = losses_streak;
-		this.victories_streak = victories_streak;
+		this.current_victories_count = victories_streak;
 		this.long_lat = long_lat;
 		this.last_bubble_click = last_bubble_click;
 		this.email_verified = email_verified;
 		this.iban_uploaded = iban_uploaded;
 		this.level = level;
-		this.payment_account_id = payment_account_id;
+		this.connect_account_id = payment_account_id;
 		this.id_proof_1_uploaded = id_proof_1_uploaded;
 		this.id_proof_2_uploaded = id_proof_2_uploaded;
 		this.passport_uploaded = passport_uploaded;

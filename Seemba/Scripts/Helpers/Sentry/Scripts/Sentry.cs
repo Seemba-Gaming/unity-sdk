@@ -426,7 +426,7 @@ namespace Sentry
             this.tags = new Tags();
             this.extra = new Extra();
             this.game = new Game(GamesManager.GAME_ID, GamesManager.GAME_NAME);
-            this.user = new User(UserManager.CurrentUser._id, UserManager.CurrentUser.email);
+            this.user = new User(UserManager.Get.CurrentUser._id, UserManager.Get.CurrentUser.email);
         }
     }
 

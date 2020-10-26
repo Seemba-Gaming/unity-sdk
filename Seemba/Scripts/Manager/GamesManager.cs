@@ -25,6 +25,7 @@ public class GamesManager : MonoBehaviour
     public static string GAME_IOS_URL = "Desert Dash";
     //Set Scene name of game , Entry point to the game
     public static string GAME_SCENE_NAME = "main";
+    public static bool GAME_SCENE_SEPERATED = false;
     public static string EDITOR_ID;
     //The game level number used for your matchmaking. Otherwise, keep it null.
     public static int? GAME_LEVEL = null;
@@ -43,7 +44,7 @@ public class GamesManager : MonoBehaviour
     public static Sprite CurrentIcon;
     public const string FREE_BUBBLES_PUSH = "free_bubbles_push";
     public const string ADS_WATCHED = "ads_watched";
-
+    public bool AutoPlayActivated;
     private void Awake()
     {
         sInstance = this;

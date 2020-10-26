@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using UnityEditor.SceneManagement;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -88,7 +88,7 @@ public class Seemba : MonoBehaviour
             }
         }
     }
-    private void LoadSeembaConfig()
+    private async Task<bool> LoadSeembaConfig()
     {
         try
         {
@@ -96,15 +96,16 @@ public class Seemba : MonoBehaviour
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
-            DownloadAssets();
+            var res = await DownloadAssets();
         }
         catch (Exception)
         {
             Debug.LogError("Please complete the game integration before starting");
             Debug.Break();
         }
+        return true;
     }
-    private async void DownloadAssets()
+    private async Task<bool> DownloadAssets()
     {
         var res = await GamesManager.Get.getGamebyId(GamesManager.GAME_ID);
         if (res != null)
@@ -115,12 +116,14 @@ public class Seemba : MonoBehaviour
             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SETTING_LANGUAGE);
             await TranslationManager.SavePreferedLanguage();
             LoaderManager.Get.LoaderController.HideLoader();
+            return true;
         }
         else
         {
             Debug.LogError("Please verify your game ID");
             Debug.Break();
             LoaderManager.Get.LoaderController.HideLoader();
+            return false;
         }
     }
     private void InstantiateSentry()
@@ -136,7 +139,7 @@ public class Seemba : MonoBehaviour
             if (isConnected == true)
             {
                 LoaderManager.Get.LoaderController.ShowLoader(null);
-                LoadSeembaConfig();
+                await LoadSeembaConfig();
 
                 if (string.IsNullOrEmpty(GamesManager.GAME_ID))
                 {
@@ -145,9 +148,7 @@ public class Seemba : MonoBehaviour
                 else
                 {
                     IsSeemba = true;
-                   // InstantiateSentry();
-                    DontDestroyOnLoad(PopupManager.Get.PopupController.gameObject);
-                    DontDestroyOnLoad(LoaderManager.Get.LoaderController.gameObject);
+                    //InstantiateSentry();
                     SceneManager.LoadSceneAsync("SeembaEsports");
                 }
             }
@@ -180,7 +181,6 @@ public class Seemba : MonoBehaviour
         {
             LoaderManager.Get.LoaderController.ShowLoader(null);
             await TournamentManager.Get.addScore(TournamentController.getCurrentTournamentID(), score);
-            //StartCoroutine(TournamentManager.Get.AddScoreIEnum(TournamentController.getCurrentTournamentID(), score));
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);
             ViewsEvents.Get.Brackets.OnEnable();
         }

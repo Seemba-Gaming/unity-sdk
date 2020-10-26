@@ -73,6 +73,7 @@ public class PopupsController : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         mPopupContent = transform.GetChild(0).gameObject;
     }
     #endregion

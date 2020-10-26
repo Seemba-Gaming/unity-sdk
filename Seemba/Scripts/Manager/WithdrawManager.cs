@@ -451,7 +451,6 @@ public class WithdrawManager
             Debug.Log(www.error);
             return null;
         }
-        Debug.Log(www.downloadHandler.text);
         var V = JsonConvert.DeserializeObject<AccountStatus>(www.downloadHandler.text);
         return V;
     }

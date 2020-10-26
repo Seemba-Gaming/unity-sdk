@@ -431,7 +431,7 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupManager.Get.PopupController.PopupDuels.SetBool("Show", true);
         entry_fee.text = "Entry fee: " + _param[0];
         gain.text = _param[1].ToString();
-        if (_param[2] == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
+        if (_param[2].Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
         {
             bubbles_text.gameObject.SetActive(true);
             bubbles_image.gameObject.SetActive(true);

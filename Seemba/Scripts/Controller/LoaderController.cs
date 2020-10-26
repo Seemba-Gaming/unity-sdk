@@ -9,6 +9,7 @@ public class LoaderController : MonoBehaviour
     private GameObject mContent;
     void Start()
     {
+        DontDestroyOnLoad(this.gameObject);
         mContent = transform.GetChild(0).gameObject;
     }
     public void ShowLoader(string message = null)

@@ -302,12 +302,31 @@ public class PersonelInfoController : MonoBehaviour
     {
         UserManager.Get.UpdateUserByField(attrib, values);
     }
+
+    private void OnDateCanceled()
+    {
+        Debug.Log("OnDateCanceled ");
+        SelectedDateString2 = DateTime.Now.ToString("yyyy-MM-dd");
+        PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = false;
+        PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = "Select Date";
+    }
+    private void OnDateSelected(long val)
+    {
+        Debug.Log("OnDateSelected " + val);
+
+        SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
+        PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = SelectedDateString2;
+        PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = true;
+    }
+
     public void showExpPicker(UnityEngine.Object button)
     {
         if (Age_Containter.GetComponent<Animator>().GetBool("young") == true)
         {
             Age_Containter.GetComponent<Animator>().SetBool("young", false);
         }
+        Debug.Log("showExpPicker");
+
         NativePicker.Instance.ShowDatePicker(GetScreenRect(button as GameObject), NativePicker.DateTimeForDate(2012, 12, 23), (long val) =>
         {
             SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");

@@ -23,6 +23,12 @@ public class FavouritTournament : MonoBehaviour
     public Text                     FavTournamentText;
     #endregion
 
+    #region Feilds
+    string mCurrentGain;
+    string mCurrentGainType;
+    string mCurrentChallengeType;
+    #endregion
+
     #region Unity Methods
     private async void OnEnable()
     {
@@ -41,6 +47,7 @@ public class FavouritTournament : MonoBehaviour
         await GetFavoriteTournament(userId, token);
     }
     #endregion
+
     #region Methods
     public async Task<bool> GetFavoriteTournament(string userId, string token)
     {
@@ -55,23 +62,34 @@ public class FavouritTournament : MonoBehaviour
             {
                 return false;
             }
-            Debug.LogWarning(www.downloadHandler.text);
             var res = JSON.Parse(www.downloadHandler.text);
-            Debug.LogWarning(res["data"]["gain"].Value);
             ShowFavTournament(res["data"]["gain"].Value , res["data"]["gain_type"].Value, res["data"]["type"].Value);
         }
         return true;
     }
+
+    public void OnClickFavouriteType()
+    {
+        ViewsEvents.Get.Profile.Animator.ResetTrigger("ShowProfile");
+        EventsController.Get.closeProfil();
+        var fee = ChallengeManager.Get.GetChallengeFee(float.Parse(mCurrentGain), mCurrentGainType);
+        object[] _params = { fee, mCurrentGain, mCurrentGainType, mCurrentChallengeType };
+        PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
+    }
     #endregion
+
     #region Implementation
 
-    private void ShowFavTournament(string gain, string type, string challengeType)
+    private void ShowFavTournament(string gain, string gainType, string challengeType)
     {
-        if (challengeType.Equals("challenge"))
+        mCurrentGain = gain;
+        mCurrentGainType = gainType;
+        mCurrentChallengeType = challengeType;
+        if (challengeType.Equals("1vs1"))
         {
             Fav1V1.SetActive(true);
             FavTournament.SetActive(false);
-            if (type.Contains("cash"))
+            if (gainType.Contains("cash"))
             {
 
                 Fav1V1Text.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " €";
@@ -86,7 +104,7 @@ public class FavouritTournament : MonoBehaviour
             Fav1V1.SetActive(false);
             FavTournament.SetActive(true);
 
-            if (type.Contains("cash"))
+            if (gainType.Contains("cash"))
             {
                 FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " €";
 

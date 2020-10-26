@@ -36,7 +36,6 @@ public class ViewsEvents : MonoBehaviour
 
     private async void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
         sInstance = this;
         mCurrentMenu = Intro.gameObject;
         mHistory.Push(Intro.gameObject);
@@ -136,12 +135,17 @@ public class ViewsEvents : MonoBehaviour
     {
         if (menu == mHistory.First() && menu != Intro.gameObject)
         {
+            if(!menu.activeSelf)
+            {
+                menu.SetActive(true);
+            }
             return;
         }
         if (popBeforeGoing)
         {
             mHistory.Pop().SetActive(false);
         }
+        Debug.LogWarning("Going From " + mHistory.First() + "To " + menu);
         Show(mHistory.First(), menu);
         mCurrentMenu = menu;
     }

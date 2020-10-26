@@ -17,17 +17,14 @@ public class EventsController : MonoBehaviour
     #region Script Parameters
     public static bool advFound;
     public static string ChallengeType, ChallengeName;
-    public Image mImage;
     public static int MoneyToAdd;
-    public GameObject Pro1vs1More;
-    public GameObject Pro1BracketMore;
-    public GameObject Pro1vs1Less;
-    public GameObject Pro1BracketLess;
+    public bool AutoPlayActivated;
     #endregion
 
     #region Fields
     private Text _textDatePredefined;
     private string _selectedDateString2 = "1995-09-15";
+    private Image mImage;
     #endregion
 
     private String SelectedDateString2
@@ -392,7 +389,6 @@ public class EventsController : MonoBehaviour
     public void QuitSeemba()
     {
         SceneManager.LoadScene(0);
-        //Seemba.Get.Quit();
     }
     public void TCs()
     {
@@ -417,16 +413,29 @@ public class EventsController : MonoBehaviour
     #region DatePicker
     public void ShowDatePicker(GameObject button)
     {
-        NativePicker.Instance.ShowDatePicker(GetScreenRect(button), NativePicker.DateTimeForDate(2012, 12, 23), OnDateSelected, OnDateCanceled);
+        Debug.Log("ShowDatePicker");
+        //NativePicker.Instance.ShowDatePicker(GetScreenRect(button), NativePicker.DateTimeForDate(2012, 12, 23), OnDateSelected, OnDateCanceled);
+        NativePicker.Instance.ShowDatePicker(GetScreenRect(button), NativePicker.DateTimeForDate(2012, 12, 23), (long val) =>
+        {
+            OnDateSelected(val);
+        }
+        , () =>
+        {
+            OnDateCanceled();
+        }
+        );
     }
     private void OnDateCanceled()
     {
+        Debug.Log("OnDateCanceled ");
         SelectedDateString2 = DateTime.Now.ToString("yyyy-MM-dd");
         PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = false;
         PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = "Select Date";
     }
     private void OnDateSelected(long val)
     {
+        Debug.Log("OnDateSelected " + val);
+
         SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
         PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = SelectedDateString2;
         PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = true;

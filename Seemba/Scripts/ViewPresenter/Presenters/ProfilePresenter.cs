@@ -8,7 +8,7 @@ public class ProfilePresenter : MonoBehaviour
 {
     #region Script Parameters
     public string PlayerId;
-    public Sprite Avatar;
+    public Animator Animator;
     public Image avatar;
     public Image pro;
     public Image drapeau;
@@ -49,11 +49,9 @@ public class ProfilePresenter : MonoBehaviour
         if (PlayerId != userId)
         {
             changeAvatar.interactable = false;
-            avatar.sprite = Avatar;
         }
         else
         {
-            avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
             if (accountStatus.verification_status == WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING)
             {
                 pending.SetActive(true);

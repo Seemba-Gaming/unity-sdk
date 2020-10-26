@@ -44,25 +44,22 @@ public class NativePicker : MonoBehaviour {
 #endif
 	}
 	void ItemPicked(String message) {
-		//Debug.Log("Item picked " + message);
+		Debug.Log("Item picked " + message);
 		long val = long.Parse(message);
-		if (_currentAction != null) {
-			_currentAction(val);
-		}
-	}
+		Debug.Log("val " + val + " " + _currentAction == null);
+        _currentAction?.Invoke(val);
+    }
 	void PickerCanceled(String message) {
-		//Debug.Log("PickerCanceled");
-		if (_cancelAction != null) {
-			_cancelAction();
-		}
-	}
+		Debug.Log("PickerCanceled");
+        _cancelAction?.Invoke();
+    }
 	void makeJNICall(PickerType type, string[] items, long selectedItem)
 	{
 		if (isMobileRuntime == false) {
 			return;
 		}
 #if UNITY_ANDROID
-        //Debug.Log(String.Format("Selected item -> {0}", selectedItem));
+        Debug.Log(String.Format("Selected item -> {0}", selectedItem));
         _pluginObject.Call("showPicker", (int)type, items, selectedItem, "NativePicker");
 #else
 		return;
@@ -92,7 +89,8 @@ public class NativePicker : MonoBehaviour {
 	 * can be null
 	 */
 	public void ShowDatePicker(Rect position, Action<long> onValueSelectedAction, Action onPickerCanceled) {
-		ShowDatePicker(position, DateTime.Now, onValueSelectedAction, onPickerCanceled);
+			Debug.Log("ShowDatePicker");
+			ShowDatePicker(position, DateTime.Now, onValueSelectedAction, onPickerCanceled);
 	}
 	/**
 	 * Show date picker

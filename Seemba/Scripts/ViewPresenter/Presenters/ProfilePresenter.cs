@@ -27,10 +27,6 @@ public class ProfilePresenter : MonoBehaviour
     {
         WithdrawManager wm = new WithdrawManager();
         ProfilLastResultListController.profileSceneOpened = true;
-        Sprite newSpriteAvatar;
-        Texture2D txtDrapeau = new Texture2D(1, 1);
-        Sprite newSpriteDrapeau;
-        UnityThreading.ActionThread thread;
         Loading.SetActive(true);
         User user = await UserManager.Get.getUser();
 
@@ -86,8 +82,7 @@ public class ProfilePresenter : MonoBehaviour
             }
         }
         var mTexture = await UserManager.Get.GetFlagBytes(user.country_code);
-        newSpriteDrapeau = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
-        drapeau.sprite = newSpriteDrapeau;
+        drapeau.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
         nbGameWon.text = Vectoires;
         nbGameWonInARow.text = SerieVectoires;
     }

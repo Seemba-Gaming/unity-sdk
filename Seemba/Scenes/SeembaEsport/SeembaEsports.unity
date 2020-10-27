@@ -24943,6 +24943,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2084185650594038916, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084185650594038916, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084185650594038916, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 11.134825
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084185650594038916, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2084185651774291816, guid: 5307d99816424634c9f4bf7968fc99bb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25057,6 +25077,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ProfileCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084185651774291858, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084185651849813746, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -294.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2084185651884155969, guid: 5307d99816424634c9f4bf7968fc99bb,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 22.26965
       objectReference: {fileID: 0}
     - target: {fileID: 2084185652212610862, guid: 5307d99816424634c9f4bf7968fc99bb,
         type: 3}

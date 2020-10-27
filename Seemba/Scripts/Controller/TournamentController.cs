@@ -74,12 +74,6 @@ public class TournamentController : MonoBehaviour
     }
     public void StartCashTournament(float entry_fee, float gain, string gain_type)
     {
-        if (isDeveloperModeEnabled())
-        {
-            PopupManager.Get.PopupController.ShowPopup(PopupType.DEV_MODE, PopupsText.Get.dev_mode());
-            return;
-        }
-
         if (isProhibitedLocation(UserManager.Get.CurrentUser.country_code))
         {
             PopupManager.Get.PopupController.ShowPopup(PopupType.PROHIBITED_LOCATION, PopupsText.Get.prohibited_location());

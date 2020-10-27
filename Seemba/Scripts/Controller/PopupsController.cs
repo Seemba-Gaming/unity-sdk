@@ -139,6 +139,9 @@ public class PopupsController : MonoBehaviour
             case PopupType.INFO_POPUP_PASSWORD_UPDATED:
                 PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                 break;
+            case PopupType.VPN:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
             default:
                 Debug.LogWarning(popupType);
                 UnloadPopup();

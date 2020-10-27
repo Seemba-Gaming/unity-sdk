@@ -14,8 +14,9 @@ public class IntroPresenter : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        StartCoroutine(waitText());
         GameTitle.text = GamesManager.GAME_NAME;
+        Debug.LogWarning(GamesManager.GAME_NAME);
+        StartCoroutine(waitText());
         StartCoroutine(WriteText());
 
         Continue.onClick.AddListener(delegate

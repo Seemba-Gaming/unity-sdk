@@ -44,7 +44,8 @@ public class ViewsEvents : MonoBehaviour
         {
             await UserManager.Get.getUser();
             GoToMenu(Menu.gameObject);
-            ShowScene(Menu.Home);
+            //ShowScene(Menu.Home);
+            ShowScene(Menu.HaveFun);
         }
         else
         {

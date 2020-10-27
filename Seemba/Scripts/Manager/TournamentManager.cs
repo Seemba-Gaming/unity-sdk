@@ -124,7 +124,6 @@ public class TournamentManager : MonoBehaviour
         Debug.LogWarning(UserManager.Get.getCurrentSessionToken());
         Debug.LogWarning(UserManager.Get.getCurrentUserId());
         await www.SendWebRequest();
-        Debug.LogWarning(www.error);
 
         if (www.isNetworkError || www.isHttpError)
         {

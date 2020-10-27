@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class IntroTranslationController : MonoBehaviour
 {
-    [SerializeField]
-    private Text challenges,
-                  _continue;
+    public Text challenges;
+    public Text _continue;
     public static string
                   CHANGE_THE_WAY_YOU_PLAY,
                   DISCOVER_CASH_TOURNAMENT_POWERED_BY_SEEMBA;

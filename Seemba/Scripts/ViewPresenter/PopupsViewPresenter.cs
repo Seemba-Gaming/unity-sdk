@@ -656,7 +656,6 @@ public class PopupsViewPresenter : MonoBehaviour
     {
         popup_duels_animator.SetBool("Show", false);
         yield return new WaitForSeconds(0.5f);
-        Debug.LogWarning(_params[0].ToString());
         ViewsEvents.Get.Brackets.GetComponent<TournamentController>().Play(_params);
     }
     #endregion

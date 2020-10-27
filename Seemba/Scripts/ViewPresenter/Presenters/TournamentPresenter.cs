@@ -56,6 +56,7 @@ public class TournamentPresenter : MonoBehaviour
         {
             Destroy(mCurrentBracket);
         }
+        ViewsEvents.Get.GetCurrentMenu().SetActive(false);
         SceneManager.LoadScene(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
     }
     public JSONArray getChallenges(JSONArray rounds)

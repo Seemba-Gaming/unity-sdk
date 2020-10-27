@@ -64,6 +64,7 @@ public sealed class TranslationManager : MonoBehaviour
 
         if (!isLanguageSupported())
         {
+            Debug.Log("LanguageSupported");
             isDownloaded = true;
             return true;
         }
@@ -94,6 +95,8 @@ public sealed class TranslationManager : MonoBehaviour
         }
         else
         {
+            Debug.Log(Application.persistentDataPath);
+            Debug.Log("Downloaded");
             isDownloaded = true;
             return true;
         }

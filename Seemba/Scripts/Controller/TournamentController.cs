@@ -80,6 +80,18 @@ public class TournamentController : MonoBehaviour
             return;
         }
 
+        if (isProhibitedLocation(UserManager.Get.CurrentUser.country_code))
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.PROHIBITED_LOCATION, PopupsText.Get.prohibited_location());
+            return;
+        }
+
+        if (isVPNEnabled())
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.VPN, PopupsText.Get.vpn());
+            return;
+        }
+
         JoinTournament(entry_fee, gain, gain_type);
     }
     private async void JoinTournament(float entry_fee, float gain, string gain_type)

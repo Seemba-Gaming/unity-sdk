@@ -159,15 +159,6 @@ public class Seemba : MonoBehaviour
             }
         }));
     }
-    public void Quit()
-    {
-
-        //IsSeemba = false;
-        //BackgroundController.CurrentBackground = null;
-        //EventsController.ChallengeType = null;
-        //Destroy(gameObject);
-        //SceneManager.LoadScene(0);
-    }
     public async void setResult(float score)
     {
         if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)

@@ -149,9 +149,10 @@ public class UserManager : MonoBehaviour
         download.uploadHandler.contentType = "application/x-www-form-urlencoded";
         await download.SendWebRequest();
         Debug.Log(download.downloadHandler.text);
-        if (download.isNetworkError || download.isHttpError || download.isNetworkError)
+        if (download.isNetworkError || download.isHttpError)
         {
             print("Error downloading: " + download.error);
+            //OnSeembaError();
             return null;
         }
         var N = JSON.Parse(download.downloadHandler.text);

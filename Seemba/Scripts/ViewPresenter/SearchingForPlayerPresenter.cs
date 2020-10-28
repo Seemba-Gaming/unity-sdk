@@ -26,9 +26,11 @@ public class SearchingForPlayerPresenter : MonoBehaviour
         
         nb_players.text = nbPlayer;
         username.text = UserManager.Get.CurrentUser.username;
-
-        user_flag.sprite = ViewsEvents.Get.Menu.Header.GetComponent<HeaderController>().Flag.sprite;
-        user_avatar.sprite = ViewsEvents.Get.Menu.Header.GetComponent<HeaderController>().Avatar.sprite;
+        var mTexture = new Texture2D(1, 1);
+        var flagBytes = Convert.FromBase64String(PlayerPrefs.GetString("CurrentFlagBytesString"));
+        mTexture.LoadImage(flagBytes);
+        user_flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
+        user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
 
         gain.text = ChallengeManager.CurrentChallenge.gain.ToString();
         gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ? " bubbles" : " €";

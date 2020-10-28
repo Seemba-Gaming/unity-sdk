@@ -14,6 +14,7 @@ public sealed class TranslationManager : MonoBehaviour
     public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
     private static JSONNode Translations = null;
     public static bool? isDownloaded = null;
+    //static string systemLanguage = SystemLanguage.English.ToString();
     static string systemLanguage = Application.systemLanguage.ToString();
 #if UNITY_EDITOR
     private static bool d_OverrideLanguage = true;
@@ -64,28 +65,23 @@ public sealed class TranslationManager : MonoBehaviour
 
         if (!isLanguageSupported())
         {
-            Debug.Log("LanguageSupported");
+            await GetUserLanguage(SystemLanguage.English.ToString());
             isDownloaded = true;
             return true;
         }
         else if ((!systemLanguage.Equals("English")) && (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage))))
         {
-
             var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
             await req.SendWebRequest();
-
-
+            Debug.LogWarning(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.Log("File cannot Downloaded.");
                 Debug.Log(req.error);
                 isDownloaded = false;
                 return false;
             }
             else
             {
-                Debug.Log("File Downloaded.");
-                Debug.Log(Application.persistentDataPath);
                 string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
                 System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
                 PlayerPrefs.SetString(systemLanguage, systemLanguage);
@@ -95,12 +91,36 @@ public sealed class TranslationManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(Application.persistentDataPath);
-            Debug.Log("Downloaded");
+            await GetUserLanguage(systemLanguage);
             isDownloaded = true;
             return true;
         }
     }
+
+    public static async Task<bool> GetUserLanguage(string language)
+    {
+        var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + language + ".json");
+        await req.SendWebRequest();
+        Debug.LogWarning(Endpoint.laguagesURL + "/" + language + ".json");
+        if (req.isNetworkError || req.isHttpError)
+        {
+            Debug.Log("File cannot Downloaded.");
+            Debug.Log(req.error);
+            isDownloaded = false;
+            return false;
+        }
+        else
+        {
+            Debug.Log("File Downloaded.");
+            string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, language);
+            System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
+            PlayerPrefs.SetString(systemLanguage, systemLanguage);
+            isDownloaded = true;
+            return true;
+        }
+    }
+
+
     private static bool isLanguageSupported()
     {
         foreach (SystemLanguage lang in Languages)

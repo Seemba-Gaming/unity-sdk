@@ -148,7 +148,7 @@ public class Seemba : MonoBehaviour
                 else
                 {
                     IsSeemba = true;
-                    //InstantiateSentry();
+                    InstantiateSentry();
                     SceneManager.LoadSceneAsync("SeembaEsports");
                 }
             }

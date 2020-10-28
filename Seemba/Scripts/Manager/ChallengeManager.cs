@@ -122,6 +122,7 @@ public class ChallengeManager : MonoBehaviour
     }
     public async void ShowResult()
     {
+        EventsController.Get.AudioListener.enabled = true;
         ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ResultPresenter.gameObject);
     }
     public JSONNode getChallengebyId(string challengeId, string token)
@@ -247,6 +248,7 @@ public class ChallengeManager : MonoBehaviour
     public async Task<Challenge> getChallenge(string challenge_id)
     {
         string url = Endpoint.classesURL + "/challenges/" + challenge_id;
+        //return await SeembaWebRequest.GetJSON<Challenge>(url);
         var www = UnityWebRequest.Get(url);
         www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
         await www.SendWebRequest();

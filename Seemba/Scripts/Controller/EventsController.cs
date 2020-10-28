@@ -19,6 +19,7 @@ public class EventsController : MonoBehaviour
     public static string ChallengeType, ChallengeName;
     public static int MoneyToAdd;
     public bool AutoPlayActivated;
+    public AudioListener AudioListener;
     #endregion
 
     #region Fields
@@ -244,6 +245,7 @@ public class EventsController : MonoBehaviour
         advFound = false;
         LoaderManager.Get.LoaderController.ShowLoader(null);
         ViewsEvents.Get.GetCurrentMenu().SetActive(false);
+        AudioListener.enabled = false;
         SceneManager.LoadSceneAsync(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
     }
     public bool checkUserBirthday(User user)
@@ -342,7 +344,9 @@ public class EventsController : MonoBehaviour
         ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
         SearchingForPlayerPresenter.nbPlayer = "duel";
         ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
+        LoaderManager.Get.LoaderController.ShowLoader("Loading First Challange ..");
         ChallengeManager.CurrentChallenge = await ChallengeManager.Get.AddChallenge("headTohead", ChallengeManager.CurrentChallengeGain, ChallengeManager.CurrentChallengeGainType, 0, token);
+        LoaderManager.Get.LoaderController.HideLoader();
         ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Matchmaking.gameObject);
     }
     public void WalletBack()

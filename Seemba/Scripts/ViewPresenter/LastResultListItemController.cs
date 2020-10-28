@@ -231,6 +231,7 @@ public class LastResultListItemController : MonoBehaviour
                             LoaderManager.Get.LoaderController.ShowLoader(null);
                             Challenge challenge = await ChallengeManager.Get.getChallenge(ChallengeManager.CurrentChallengeId);
                             ChallengeManager.CurrentChallenge = challenge;
+                            EventsController.Get.AudioListener.enabled = true;
                             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ResultPresenter.gameObject);
                             LoaderManager.Get.LoaderController.HideLoader();
 

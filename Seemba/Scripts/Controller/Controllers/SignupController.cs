@@ -39,9 +39,10 @@ public class SignupController : MonoBehaviour
                     byte[] bytes;
                     bytes = mytexture.EncodeToPNG();
 
-                    LoaderManager.Get.LoaderController.ShowLoader(null);
+                    LoaderManager.Get.LoaderController.ShowLoader("Signin up");
 
                     var avatarUrl = await ImagesManager.FixImage(bytes);
+
                     JSONNode Res = null;
                     if (avatarUrl != "error")
                     {
@@ -69,15 +70,15 @@ public class SignupController : MonoBehaviour
                             Debug.LogWarning(" deviceToken is null");
                         }
                         UserManager.Get.CurrentUser.username = username;
+                        LoaderManager.Get.LoaderController.ShowLoader("Saving ..");
+
                         UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);
                         var mTexture = await UserManager.Get.GetFlagBytes(await UserManager.Get.GetGeoLoc());
                         UserManager.Get.CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
-                        UserManager.Get.CurrentUser.money_credit = 0.00f;//unhealthey to do hardcode anything
-                        UserManager.Get.CurrentUser.bubble_credit = 25f;//unhealthey to do hardcode anything
-                        //Save Flag Byte
                         PlayerPrefs.SetString("CurrentFlagBytesString", UserManager.Get.CurrentFlagBytesString);
                         ChallengeManager.CurrentChallengeGain = "2";
                         ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
+                        LoaderManager.Get.LoaderController.HideLoader();
                         EventsController.Get.startFirstChallenge(Res["token"].Value);
                     }
                     else

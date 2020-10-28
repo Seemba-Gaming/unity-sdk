@@ -15,8 +15,7 @@ public class IntroPresenter : MonoBehaviour
     private void Start()
     {
         GameTitle.text = GamesManager.GAME_NAME;
-        Debug.LogWarning(GamesManager.GAME_NAME);
-        StartCoroutine(waitText());
+        //StartCoroutine(waitText());
         StartCoroutine(WriteText());
 
         Continue.onClick.AddListener(delegate
@@ -28,6 +27,7 @@ public class IntroPresenter : MonoBehaviour
     private IEnumerator WriteText()
     {
         yield return waitText();
+
         mTitle = IntroTranslationController.CHANGE_THE_WAY_YOU_PLAY;
         mMainText = IntroTranslationController.DISCOVER_CASH_TOURNAMENT_POWERED_BY_SEEMBA;
         for (int i = 0; i < mTitle.Length; i++)
@@ -44,7 +44,7 @@ public class IntroPresenter : MonoBehaviour
 
     private IEnumerator waitText()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
     }
 
     public void writeStringToFile(string str, string filename)

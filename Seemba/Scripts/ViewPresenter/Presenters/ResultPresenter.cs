@@ -149,7 +149,7 @@ public class ResultPresenter : MonoBehaviour
         PlayAgainButton.GetComponentInChildren<Text>().text = ResultController.PLAY_AGAIN_TEXT;
         ContinueButton.GetComponentInChildren<Text>().text = ResultController.CONTINUE_TEXT;
         CurrentUserName.text = UserManager.Get.CurrentUser.username;
-        CurrentUserAvatar.sprite = await UserManager.Get.getAvatar(UserManager.Get.CurrentUser.avatar);
+        CurrentUserAvatar.sprite = UserManager.Get.CurrentAvatarBytesString;
         if (challenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
         {
             EntryFee.text += ResultController.BUBBLES;

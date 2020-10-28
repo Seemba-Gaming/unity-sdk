@@ -42,7 +42,8 @@ public class ViewsEvents : MonoBehaviour
         //Open the first view
         if (UserManager.Get.getCurrentUserId() != null)
         {
-            await UserManager.Get.getUser();
+            var user = await UserManager.Get.getUser();
+            UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(user.avatar);
             GoToMenu(Menu.gameObject);
             //ShowScene(Menu.Home);
             ShowScene(Menu.HaveFun);

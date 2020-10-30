@@ -127,14 +127,17 @@ public class GamesManager : MonoBehaviour
 
     public async Task<Game> getGamebyId(string gameId)
     {
-        var req = UnityWebRequest.Get(Endpoint.classesURL + "/games/" + gameId);
-        req.timeout = 4000;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        await req.SendWebRequest();
+        var url = Endpoint.classesURL + "/games/" + gameId;
+        var req = await SeembaWebRequest.Get.HttpsGetAnonymous(url);
 
-        if (req.responseCode == 200)
+        //var req = UnityWebRequest.Get(Endpoint.classesURL + "/games/" + gameId);
+        //req.timeout = 4000;
+        //ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+        //await req.SendWebRequest();
+
+        if (req != null)
         {
-            var N = JSON.Parse(req.downloadHandler.text);
+            var N = JSON.Parse(req);
 
             foreach (JSONNode bracket_type in N["data"]["brackets"].AsArray)
             {
@@ -162,7 +165,7 @@ public class GamesManager : MonoBehaviour
                 Debug.LogError("Please add icon for your game in the dashboard");
             }
 
-            GameData res = JsonUtility.FromJson<GameData>(req.downloadHandler.text);
+            GameData res = JsonUtility.FromJson<GameData>(req);
             gameId = res.data._id;
             GAME_NAME = res.data.name;
             EDITOR_ID = res.data.editorId;

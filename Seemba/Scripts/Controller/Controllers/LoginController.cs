@@ -35,7 +35,8 @@ public class LoginController : MonoBehaviour
             else platform = "ios";
             await UserManager.Get.addUserDeviceToken(UserManager.Get.CurrentUser._id, GamesManager.GAME_ID, deviceToken, platform);
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Menu.gameObject);
-            ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Home);
+            //ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Home);
+            ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.HaveFun);
 
             return true;
         }

@@ -71,23 +71,41 @@ public sealed class TranslationManager : MonoBehaviour
         }
         else if ((!systemLanguage.Equals("English")) && (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage))))
         {
-            var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
-            await req.SendWebRequest();
-            Debug.LogWarning(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
-            if (req.isNetworkError || req.isHttpError)
+            var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
+            var req = await SeembaWebRequest.Get.HttpsGet(url);
+
+            if (req == null)
             {
-                Debug.Log(req.error);
                 isDownloaded = false;
                 return false;
             }
             else
             {
+                Debug.Log("File Downloaded.");
                 string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
-                System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
+                System.IO.File.WriteAllText(savePath, req);
                 PlayerPrefs.SetString(systemLanguage, systemLanguage);
                 isDownloaded = true;
                 return true;
             }
+            //var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
+
+            //await req.SendWebRequest();
+            //Debug.LogWarning(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
+            //if (req.isNetworkError || req.isHttpError)
+            //{
+            //    Debug.Log(req.error);
+            //    isDownloaded = false;
+            //    return false;
+            //}
+            //else
+            //{
+            //    string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
+            //    System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
+            //    PlayerPrefs.SetString(systemLanguage, systemLanguage);
+            //    isDownloaded = true;
+            //    return true;
+            //}
         }
         else
         {
@@ -99,13 +117,11 @@ public sealed class TranslationManager : MonoBehaviour
 
     public static async Task<bool> GetUserLanguage(string language)
     {
-        var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + language + ".json");
-        await req.SendWebRequest();
-        Debug.LogWarning(Endpoint.laguagesURL + "/" + language + ".json");
-        if (req.isNetworkError || req.isHttpError)
+        var url = Endpoint.laguagesURL + "/" + language + ".json";
+        var req = await SeembaWebRequest.Get.HttpsGet(url);
+
+        if (req == null)
         {
-            Debug.Log("File cannot Downloaded.");
-            Debug.Log(req.error);
             isDownloaded = false;
             return false;
         }
@@ -113,7 +129,7 @@ public sealed class TranslationManager : MonoBehaviour
         {
             Debug.Log("File Downloaded.");
             string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, language);
-            System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
+            System.IO.File.WriteAllText(savePath, req);
             PlayerPrefs.SetString(systemLanguage, systemLanguage);
             isDownloaded = true;
             return true;

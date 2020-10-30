@@ -37,6 +37,11 @@ public class ResultPresenter : MonoBehaviour
     #region Unity Methods
     private void OnEnable()
     {
+        if(!ResultController.InitDone)
+        {
+            ResultController.InitTexts();
+        }
+
         var mCurrentChallenge = ChallengeManager.CurrentChallenge;
         if (mCurrentChallenge.user_2_score == null || mCurrentChallenge.user_1_score == null)
         {
@@ -58,6 +63,7 @@ public class ResultPresenter : MonoBehaviour
             }
         }
     }
+
     #endregion
     #region Methods
     public async void InitResultLose(Challenge challenge)

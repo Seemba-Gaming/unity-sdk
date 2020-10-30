@@ -20,8 +20,14 @@ class SeembaResponse<T>
     }
 }
 
+
 public class SeembaWebRequest : MonoBehaviour
 {
+    #region Static
+    public static SeembaWebRequest Get { get { return sInstance; } }
+
+    private static SeembaWebRequest sInstance;
+    #endregion
     //
     // Résumé :
     //     Create a UnityWebRequest for HTTP GET.
@@ -32,34 +38,53 @@ public class SeembaWebRequest : MonoBehaviour
     //
     // Retourne :
     //     An object that retrieves data from the uri.
-    public static async System.Threading.Tasks.Task<string> Get(string uri)
+    public delegate void StringResponseEventHandler(string data);
+    public delegate void TextureResponseEventHandler(int id, Texture2D data);
+    public event StringResponseEventHandler OnSeembaErrorEvent;
+
+    private void Start()
+    {
+        sInstance = this;
+    }
+    public async System.Threading.Tasks.Task<string> HttpsGet(string uri)
     {
         UnityWebRequest www = UnityWebRequest.Get(uri);
-
-        www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-
-        return await handleRequest(www);
+        var token = UserManager.Get.getCurrentSessionToken();
+        if(token != null)
+        {
+            www.SetRequestHeader("x-access-token",token );
+        }
+        return await HandleRequest(www);
     }
     
-    public static async System.Threading.Tasks.Task<string> GetAnonymous(string uri)
+    public async System.Threading.Tasks.Task<string> HttpsGetAnonymous(string uri)
     {
         UnityWebRequest www = UnityWebRequest.Get(uri);
 
-        return await handleRequest(www);
+        return await HandleRequest(www);
     }
 
-    public static async System.Threading.Tasks.Task<T> GetJSON<T>(string uri)
+    public async System.Threading.Tasks.Task<T> HttpsGetJSON<T>(string uri)
     {
-        string data = await Get(uri);
-        SeembaResponse<T> challengeData = JsonConvert.DeserializeObject<SeembaResponse<T>>(data);
-        return challengeData.data;
+        string responseText = await HttpsGet(uri);
+        SeembaResponse<T> response = JsonConvert.DeserializeObject<SeembaResponse<T>>(responseText);
+        return response.data;
     }
 
-    private static async System.Threading.Tasks.Task<string> handleRequest(UnityWebRequest www)
+    private async System.Threading.Tasks.Task<string> HandleRequest(UnityWebRequest www)
     {
         await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError) { } //EVENT;
+        if (www.isNetworkError || www.isHttpError) 
+        { 
+            OnSeembaError(www.downloadHandler.text);
+            return null;
+        } 
 
         return www.downloadHandler.text;
+    }
+
+    void OnSeembaError(string data)
+    {
+        OnSeembaErrorEvent(data);
     }
 }

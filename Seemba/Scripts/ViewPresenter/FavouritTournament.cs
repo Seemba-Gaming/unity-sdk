@@ -52,20 +52,22 @@ public class FavouritTournament : MonoBehaviour
     public async Task<bool> GetFavoriteTournament(string userId, string token)
     {
         string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
-        UnityWebRequest www = UnityWebRequest.Get(url);
+        return await SeembaWebRequest.Get.HttpsGetJSON<bool>(url);
 
-        if (token != null)
-        {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError)
-            {
-                return false;
-            }
-            var res = JSON.Parse(www.downloadHandler.text);
-            ShowFavTournament(res["data"]["gain"].Value , res["data"]["gain_type"].Value, res["data"]["type"].Value);
-        }
-        return true;
+        //UnityWebRequest www = UnityWebRequest.Get(url);
+
+        //if (token != null)
+        //{
+        //    www.SetRequestHeader("x-access-token", token);
+        //    await www.SendWebRequest();
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        return false;
+        //    }
+        //    var res = JSON.Parse(www.downloadHandler.text);
+        //    ShowFavTournament(res["data"]["gain"].Value , res["data"]["gain_type"].Value, res["data"]["type"].Value);
+        //}
+        //return true;
     }
 
     public void OnClickFavouriteType()

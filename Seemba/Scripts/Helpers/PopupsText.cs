@@ -15,16 +15,18 @@ public class PopupsText : MonoBehaviour
     }
     public object[] vpn()
     {
-        return new object[] { "DESACTIVATE", "YOUR VPN", "You can't play real money tournament with a vpn.", "GOT IT!" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("desactivate"), TranslationManager.Get("your_vpn"), TranslationManager.Get("you_cant_play_vpn"), TranslationManager.Get("got_it") };
     }
     public object[] dev_mode()
     {
-        return new object[] { "DESACTIVATE", "The development settings", "You can't play real money tournament when your development settings are enable", "GOT IT!" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("desactivate"), TranslationManager.Get("The_development_settings"), TranslationManager.Get("you_cant_play_dev_mode"), TranslationManager.Get("got_it") };
     }
     public object[] prohibited_location()
     {
-        return new object[] { "prohibited", "Location", "real money tournaments are not authorized in your territory.", "GOT IT!" };
-
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("prohibited"), TranslationManager.Get("location"), TranslationManager.Get("real_money_tournaments"), TranslationManager.Get("got_it") };
     }
     public object[] download_from_store()
     {
@@ -32,40 +34,38 @@ public class PopupsText : MonoBehaviour
     }
     public object[] insufficient_balance()
     {
-        return new object[] { "insufficient", "balance", "credit your account ?", "Credit" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("insufficient"), TranslationManager.Get("balance"), TranslationManager.Get("credit_your_account") + "?", TranslationManager.Get("credit") };
     }
     public object[] insufficient_bubbles()
     {
-        return new object[] { "insufficient", "bubbles", "get free bubbles or watch a commercial to win more bubbles", "GOT IT!" };
-
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("insufficient"), TranslationManager.Get("bubbles"), TranslationManager.Get("get_free_bubbles"), TranslationManager.Get("got_it") };
     }
     public object[] AgeVerification()
     {
-        return new object[] { "Age", "verification", "By clicking the continue button you acknowledge to have the legal age to play with real money in your country.", "confirm", "ENTER DATE" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("age"), TranslationManager.Get("verification"), TranslationManager.Get("by_clicking"), TranslationManager.Get("confirm"), TranslationManager.Get("enter_age") };
     }
     public object[] PopupPayment()
     {
-        return new object[] { "SELECT", "PAYMENT METHOD", "SELECT", "DESELECT", "CONFIRM" };
-    }
-    public object[] Logout()
-    {
-        return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("select"), TranslationManager.Get("payment_method"), TranslationManager.Get("select"), TranslationManager.Get("selected"), TranslationManager.Get("confirmed") };
     }
     public object[] UpdatePassword()
     {
-        return new object[] { "CHANGE", "PASSWORD", "NEW PASSWORD", "CONFIRM PASSWORD", "CONFIRM" };
-    }
-    public object[] Popup()
-    {
-        return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("change"), TranslationManager.Get("password"), TranslationManager.Get("new_password"), TranslationManager.Get("confirm_password"), TranslationManager.Get("confirm") };
     }
     public object[] CurrentPassword()
     {
-        return new object[] { "CHANGE", "PASSWORD", "CURRENT PASSWORD", "NEXT" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("change"), TranslationManager.Get("password"), TranslationManager.Get("current_password"), TranslationManager.Get("next") };
     }
     public object[] ForgetPassword()
     {
-        return new object[] { "FORGOTTEN", "PASSWORD", "ENTER EMAIL", "you will receive an email to define a new password", "SEND LINK" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("forgotten"), TranslationManager.Get("password"), TranslationManager.Get("email"), TranslationManager.Get("enter_your_email_below_to_reset_password"), TranslationManager.Get("submit") };
     }
     public object[] CongratsWithdraw()
     {
@@ -77,31 +77,30 @@ public class PopupsText : MonoBehaviour
     }
     public object[] Win()
     {
-        return new object[] { "BUBBLES", "GREAT"};
+        return new object[] { TranslationManager.Get("bubbles"), TranslationManager.Get("great") };
     }
-    public object[] Error()
-    {
-        return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };
-    }
+
     public object[] SecureConfirmation()
     {
         return new object[] { "3D SECURE", "CONFIRMATION", "3D Secure authentication must be completed for the payment to be successful", "GO AHEAD" };
     }
     public object[] TooYoung()
     {
-        return new object[] { "SORRY", "You are too young", "we apologize , real money tournaments are strictly regulated. keep having fun with bubbles", "Got it !" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("sorry"), TranslationManager.Get("you_are_too_young"), TranslationManager.Get("we_apologize"), TranslationManager.Get("got_it") };
     }
     public object[] ProhibitedLocationWallet()
     {
-        return new object[] { "prohibited", "Location", "Credit is not authorized in your territory.", "Got it !" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("prohibited"), TranslationManager.Get("location"), TranslationManager.Get("credit_isnot_authorized"), TranslationManager.Get("got_it") };
     }
     public object[] ProhibitedLocationWithdraw()
     {
-        return new object[] { "prohibited", "Location", "Withdrawal is not authorized in your territory.", "Got it !" };
+        return new object[] { TranslationManager.Get("prohibited"), TranslationManager.Get("location"), TranslationManager.Get("withdrawal_isnot_authorized"), TranslationManager.Get("got_it") };
     }
     public object[] PasswordUpdated()
     {
-        return new object[] { "password", "changed", "Your password has been successfully updated", "Great !" };
+        return new object[] { TranslationManager.Get("password"), TranslationManager.Get("changed"), TranslationManager.Get("your_password"), TranslationManager.Get("great") +  " !" };
     }
     public object[] MissingInfo()
     {
@@ -115,6 +114,7 @@ public class PopupsText : MonoBehaviour
     {
         return new object[] { "Weak", "Network reception", "We are trying to access internet but your connection is too weak...", "Got it !" };
     }
+    //stopped here work on missing translations
     public object[] EmailNotFound()
     {
         return new object[] { "Email", "error", "We’re sorry but no account has been created on Seemba with this email. Please try another one.", "GOT IT!" };

@@ -160,86 +160,98 @@ public class ChallengeManager : MonoBehaviour
     public async Task<ArrayList> getPendingChallenges(string token)
     {
         string url = Endpoint.classesURL + "/challenges/pending?game_id=" + GamesManager.GAME_ID;
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        if(token != null)
+        Challenge[] challengesList = await SeembaWebRequest.Get.HttpsGetJSON<Challenge[]>(url);
+        ArrayList pendingChallenges = new ArrayList();
+        foreach (Challenge challenge in challengesList)
         {
-            www.SetRequestHeader("x-access-token",token);
-            await www.SendWebRequest();
-            if(www.isNetworkError || www.isHttpError)
-            {
-                return null;
-            }
-            ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-            ArrayList pendingChallenges = new ArrayList();
-            foreach(Challenge challenge in challengesList.data)
-            {
-                pendingChallenges.Add(challenge);
-            }
-            return pendingChallenges;
+            pendingChallenges.Add(challenge);
         }
-        return null;
+        return pendingChallenges;
+        //UnityWebRequest www = UnityWebRequest.Get(url);
+        //if (token != null)
+        //{
+        //    www.SetRequestHeader("x-access-token", token);
+        //    await www.SendWebRequest();
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        return null;
+        //    }
+        //    ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
+        //    ArrayList pendingChallenges = new ArrayList();
+        //    foreach (Challenge challenge in challengesList.data)
+        //    {
+        //        pendingChallenges.Add(challenge);
+        //    }
+        //    return pendingChallenges;
+        //}
+        //return null;
     }
     public async Task<ArrayList> getSeeResultsChallenges(string token)
     {
         string url = Endpoint.classesURL + "/challenges/see_results?game_id=" + GamesManager.GAME_ID;
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        if (token != null)
+        Challenge[] challengesList = await SeembaWebRequest.Get.HttpsGetJSON<Challenge[]>(url);
+        ArrayList seeResultChallenges = new ArrayList();
+        foreach (Challenge challenge in challengesList)
         {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError)
-            {
-                return null;
-            }
-            ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-            ArrayList seeResultChallenges = new ArrayList();
-            foreach (Challenge challenge in challengesList.data)
-            {
-                seeResultChallenges.Add(challenge);
-            }
-            return seeResultChallenges;
+            seeResultChallenges.Add(challenge);
         }
-        return null;
+        return seeResultChallenges;
+        //UnityWebRequest www = UnityWebRequest.Get(url);
+        //if (token != null)
+        //{
+        //    www.SetRequestHeader("x-access-token", token);
+        //    await www.SendWebRequest();
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        return null;
+        //    }
+        //    ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
+        //    ArrayList seeResultChallenges = new ArrayList();
+        //    foreach (Challenge challenge in challengesList.data)
+        //    {
+        //        seeResultChallenges.Add(challenge);
+        //    }
+        //    return seeResultChallenges;
+        //}
+        //return null;
     }
     public async Task<ArrayList> getFinishedChallenges(string token)
     {
         string url = Endpoint.classesURL + "/challenges/finished?game_id=" + GamesManager.GAME_ID;
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        if(token != null)
+        var challengeListData = await SeembaWebRequest.Get.HttpsGetJSON<Challenge[]>(url);
+        ArrayList finishedChallenges = new ArrayList();
+        foreach (Challenge challenge in challengeListData)
         {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
-
-            if (www.isNetworkError || www.isHttpError)
-            {
-                return null;
-            }
-
-            var challengeListData = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-            ArrayList finishedChallenges = new ArrayList();
-            foreach (Challenge challenge in challengeListData.data)
-            {
-                    finishedChallenges.Add(challenge);
-            }
-            return finishedChallenges;
+            finishedChallenges.Add(challenge);
         }
-        return null;
+        return finishedChallenges;
+        //UnityWebRequest www = UnityWebRequest.Get(url);
+        //if (token != null)
+        //{
+        //    www.SetRequestHeader("x-access-token", token);
+        //    await www.SendWebRequest();
+
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        return null;
+        //    }
+
+        //    var challengeListData = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
+        //    ArrayList finishedChallenges = new ArrayList();
+        //    foreach (Challenge challenge in challengeListData.data)
+        //    {
+        //        finishedChallenges.Add(challenge);
+        //    }
+        //    return finishedChallenges;
+        //}
+        //return null;
     }
     public async Task<ArrayList> listChallenges()
     {
-
         string url = Endpoint.classesURL + "/challenges?game_id=" + GamesManager.GAME_ID;
-        var www = UnityWebRequest.Get(url);
-        www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError) return null;
-        Debug.Log(www.downloadHandler.text);
-
-        //Using JsonConvert for nullable primitive types (exp. float?)
-        ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
+        Challenge[] Challenges = await SeembaWebRequest.Get.HttpsGetJSON<Challenge[]>(url);
         ArrayList challenges = new ArrayList();
-        
-        foreach (Challenge challenge in challengesList.data)
+        foreach (Challenge challenge in Challenges)
         {
              challenges.Add(challenge);
         }
@@ -248,20 +260,8 @@ public class ChallengeManager : MonoBehaviour
     public async Task<Challenge> getChallenge(string challenge_id)
     {
         string url = Endpoint.classesURL + "/challenges/" + challenge_id;
-        //return await SeembaWebRequest.GetJSON<Challenge>(url);
-        var www = UnityWebRequest.Get(url);
-        www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return null;
-        }
-        ChallengeData challengeData = JsonConvert.DeserializeObject<ChallengeData>(www.downloadHandler.text);
-        if (challengeData.success)
-        {
-            return challengeData.data;
-        }
-        return null;
+        Debug.LogWarning("here");
+        return await SeembaWebRequest.Get.HttpsGetJSON<Challenge>(url);
     }
 
     public async Task<bool> addScore(string challengeId, float score)

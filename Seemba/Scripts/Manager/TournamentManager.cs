@@ -51,61 +51,69 @@ public class TournamentManager : MonoBehaviour
     public async Task<JSONArray> getUserPendingTournaments(string token)
     {
         string url = Endpoint.classesURL + "/tournaments/pending/" + GamesManager.GAME_ID;
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        if (token != null)
-        {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
+        var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
+        return json["data"].AsArray;
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                return null;
-            }
-            var jsonResponse = www.downloadHandler.text;
-            var json = JSON.Parse(jsonResponse);
-            return json["data"].AsArray;
-        }
-        return null;
+        //UnityWebRequest www = UnityWebRequest.Get(url);
+        //if (token != null)
+        //{
+        //    www.SetRequestHeader("x-access-token", token);
+        //    await www.SendWebRequest();
+
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        return null;
+        //    }
+        //    var jsonResponse = www.downloadHandler.text;
+        //    var json = JSON.Parse(jsonResponse);
+        //    return json["data"].AsArray;
+        //}
+        //return null;
     }
     public async Task<JSONArray> getUserFinishedTournaments()
     {
 
         string url = Endpoint.classesURL + "/tournaments/finished/" + GamesManager.GAME_ID;
+        var req = await SeembaWebRequest.Get.HttpsGet(url);
+        var json = JSON.Parse(req);
+        return json["data"].AsArray;
+        //var www = UnityWebRequest.Get(url);
+        //var token = UserManager.Get.getCurrentSessionToken();
 
-        var www = UnityWebRequest.Get(url);
-        var token = UserManager.Get.getCurrentSessionToken();
+        //if (token != null)
+        //{
+        //    www.SetRequestHeader("x-access-token", token);
+        //    await www.SendWebRequest();
 
-        if (token != null)
-        {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
-
-            if (www.isNetworkError || www.isHttpError)
-            {
-                return null;
-            }
+        //    if (www.isNetworkError || www.isHttpError)
+        //    {
+        //        return null;
+        //    }
 
 
-            var jsonResponse = www.downloadHandler.text;
-            var json = JSON.Parse(jsonResponse);
-            return json["data"].AsArray;
-        }
-        return null;
+        //    var jsonResponse = www.downloadHandler.text;
+        //    var json = JSON.Parse(jsonResponse);
+        //    return json["data"].AsArray;
+        //}
+        //return null;
     }
     public async Task<JSONNode> getTournament(string id, string token)
     {
         string url = Endpoint.classesURL + "/tournaments/" + id;
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        UnityWebRequest www = UnityWebRequest.Get(url);
-        www.SetRequestHeader("x-access-token", token);
-        await www.SendWebRequest();
-        Debug.Log(www.downloadHandler.text);
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return null;
-        }
-        var json = JSON.Parse(www.downloadHandler.text);
+        var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
         return json;
+
+        //UnityWebRequest www = UnityWebRequest.Get(url);
+        //www.SetRequestHeader("x-access-token", token);
+        //await www.SendWebRequest();
+        //Debug.Log(www.downloadHandler.text);
+        //if (www.isNetworkError || www.isHttpError)
+        //{
+        //    return null;
+        //}
+        //var json = JSON.Parse(www.downloadHandler.text);
+        //return json;
     }
     public async Task<bool> addScore(string tournamentsID, float score)
     {

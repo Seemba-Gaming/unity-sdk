@@ -116,21 +116,25 @@ public class UserManager : MonoBehaviour
     public async Task<string> GetGeoLoc()
     {
         string url = Endpoint.locationURL;
-        var www = UnityWebRequest.Get(url);
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-            return null;
-        }
-        else
-        {
-            var N = JSON.Parse(www.downloadHandler.text);
-            //CurrentUser.long_lat = N["loc"].Value;
-            //CurrentUser.country = N["country"].Value.ToLower();
-            //return CurrentUser.country.ToLower();
-            return N["country"].Value.ToLower();
-        }
+        var req = await SeembaWebRequest.Get.HttpsGet(url);
+        var N = JSON.Parse(req);
+        return N["country"].Value.ToLower();
+
+        //var www = UnityWebRequest.Get(url);
+        //await www.SendWebRequest();
+        //if (www.isNetworkError || www.isHttpError)
+        //{
+        //    Debug.Log(www.error);
+        //    return null;
+        //}
+        //else
+        //{
+        //    var N = JSON.Parse(www.downloadHandler.text);
+        //    //CurrentUser.long_lat = N["loc"].Value;
+        //    //CurrentUser.country = N["country"].Value.ToLower();
+        //    //return CurrentUser.country.ToLower();
+        //    return N["country"].Value.ToLower();
+        //}
     }
 
     //signup with the new api
@@ -249,6 +253,13 @@ public class UserManager : MonoBehaviour
         var  userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
         CurrentUser = userData.data;
         CurrentUser.token = N["token"].Value;
+        LoaderManager.Get.LoaderController.ShowLoader("Loading ..");
+
+        CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
+        var mTexture = await GetFlagBytes(await GetGeoLoc());
+        CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
+        PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
+        LoaderManager.Get.LoaderController.HideLoader();
 
         if (N["success"].AsBool == true)
         {

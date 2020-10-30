@@ -90,19 +90,21 @@ public class Seemba : MonoBehaviour
     }
     private async Task<bool> LoadSeembaConfig()
     {
-        try
-        {
+            try
+            {
             Game Game = JsonUtility.FromJson<Game>(Resources.Load<TextAsset>("seemba-services").ToString());
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
-            var res = await DownloadAssets();
-        }
-        catch (Exception)
-        {
-            Debug.LogError("Please complete the game integration before starting");
-            Debug.Break();
-        }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning(ex.Message);
+                Debug.LogError("Please complete the game integration before starting");
+                Debug.Break();
+            }
+        var res = await DownloadAssets();
+
         return true;
     }
     private async Task<bool> DownloadAssets()

@@ -121,6 +121,8 @@ public class HaveFunEventsController : MonoBehaviour
 
         foreach (string challenge_type in ChallengeManager.AVALAIBLE_CHALLENGE)
         {
+            Debug.LogWarning(challenge_type);
+            Debug.LogWarning(ChallengeManager.AVALAIBLE_CHALLENGE.Count);
             switch (challenge_type)
             {
                 case ChallengeManager.CHALLENGE_TYPE_NOVICE:

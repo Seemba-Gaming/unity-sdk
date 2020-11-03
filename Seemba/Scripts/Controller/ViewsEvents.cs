@@ -43,10 +43,12 @@ public class ViewsEvents : MonoBehaviour
         if (UserManager.Get.getCurrentUserId() != null)
         {
             var user = await UserManager.Get.getUser();
+            UserManager.Get.CurrentUser = user;
             UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(user.avatar);
             GoToMenu(Menu.gameObject);
             //ShowScene(Menu.Home);
             ShowScene(Menu.HaveFun);
+            PopupManager.Get.PopupsTranslationController.Init();
         }
         else
         {
@@ -147,7 +149,7 @@ public class ViewsEvents : MonoBehaviour
         {
             mHistory.Pop().SetActive(false);
         }
-        Debug.LogWarning("Going From " + mHistory.First() + "To " + menu);
+        Debug.LogWarning("Going From " + mHistory.First().name + "To " + menu.name);
         Show(mHistory.First(), menu);
         mCurrentMenu = menu;
     }

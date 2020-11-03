@@ -134,7 +134,6 @@ public class GamesManager : MonoBehaviour
         //req.timeout = 4000;
         //ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         //await req.SendWebRequest();
-
         if (req != null)
         {
             var N = JSON.Parse(req);

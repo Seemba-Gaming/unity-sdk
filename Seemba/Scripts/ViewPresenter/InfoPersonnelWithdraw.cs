@@ -94,9 +94,9 @@ public class InfoPersonnelWithdraw : MonoBehaviour
         {
             FirstName.text = user.firstname;
         }
-        if (!string.IsNullOrEmpty(user.adress))
+        if (!string.IsNullOrEmpty(user.address))
         {
-            Adress.text = user.adress;
+            Adress.text = user.address;
         }
         if (!string.IsNullOrEmpty(user.city))
         {
@@ -132,9 +132,9 @@ public class InfoPersonnelWithdraw : MonoBehaviour
                 Phone.text = "+" + tmp;
             }
         }
-        if (!string.IsNullOrEmpty(user.birthday))
+        if (!string.IsNullOrEmpty(user.birthdate))
         {
-            Birthday.text = DateTime.Parse(user.birthday).ToString("yyyy-MM-dd");
+            Birthday.text = DateTime.Parse(user.birthdate).ToString("yyyy-MM-dd");
             placeholderAge.transform.localScale = Vector3.zero;
         }
         else
@@ -163,11 +163,11 @@ public class InfoPersonnelWithdraw : MonoBehaviour
     {
         if (user.country_code.ToLower().Equals("us"))
         {
-            return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthday) && !string.IsNullOrEmpty(user.adress) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country) && !string.IsNullOrEmpty(user.personal_id_number);
+            return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthdate) && !string.IsNullOrEmpty(user.address) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country) && !string.IsNullOrEmpty(user.personal_id_number);
         }
         else
         {
-            return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthday) && !string.IsNullOrEmpty(user.adress) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country);
+            return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthdate) && !string.IsNullOrEmpty(user.address) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country);
         }
     }
     public void Withdraw()

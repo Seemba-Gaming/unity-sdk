@@ -204,8 +204,8 @@ public class HomeTranslationController : MonoBehaviour
         }
         
         foreach (Text title in other_amount)
-        { 
-            title.text = TranslationManager.Get("other_amount") != string.Empty ? TranslationManager.Get("creditWallet") : title.text; 
+        {
+            title.text = TranslationManager.Get("other_amount") != string.Empty ? TranslationManager.Get("other_amount") : title.text; 
         }
 
         foreach (Text title in secured_payment)

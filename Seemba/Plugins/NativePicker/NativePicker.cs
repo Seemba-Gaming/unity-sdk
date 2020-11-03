@@ -35,6 +35,7 @@ public class NativePicker : MonoBehaviour {
 	}
 	void Awake() {		
 		_instance = this;
+		DontDestroyOnLoad(this.gameObject);
 		if (isMobileRuntime == false) {
 			//Debug.LogWarning("Due to platform specific NativePicker was designed to run only on iOS/Android device. Plugin function call has no effect on other platforms.");
 			return;
@@ -43,15 +44,16 @@ public class NativePicker : MonoBehaviour {
 		_pluginObject = new AndroidJavaObject("ua.org.jeff.unity.nativepicker.AndroidPlugin");
 #endif
 	}
-	void ItemPicked(String message) {
+	void ItemPicked(string message) {
 		Debug.Log("Item picked " + message);
-		long val = long.Parse(message);
-		Debug.Log("val " + val + " " + _currentAction == null);
-        _currentAction?.Invoke(val);
-    }
-	void PickerCanceled(String message) {
+		long val;
+		bool res = long.TryParse(message.Trim(),out val);
+        //_currentAction?.Invoke(val);
+		EventsController.Get.OnDateSelected(val);
+	}
+	void PickerCanceled(string message) {
 		Debug.Log("PickerCanceled");
-        _cancelAction?.Invoke();
+       // _cancelAction?.Invoke();
     }
 	void makeJNICall(PickerType type, string[] items, long selectedItem)
 	{
@@ -109,6 +111,7 @@ public class NativePicker : MonoBehaviour {
 			return;
 		}
 		_currentAction = onValueSelectedAction;
+		Debug.Log(onValueSelectedAction.ToString());
 		_cancelAction = onPickerCanceled;
 #if UNITY_ANDROID
 		makeJNICall(PickerType.DatePicker, new string[] {}, ConvertToUnixTimestamp(date));
@@ -117,6 +120,7 @@ public class NativePicker : MonoBehaviour {
 		showPicker(PickerType.DatePicker, new string[] {}, 0, ConvertToUnixTimestamp(date), (int)position.x, (int)position.y, (int)position.width, (int)position.height, "NativePicker");
 #endif
 	}
+	
 	/**
 	 * Show time picker
 	 * position - popover pointing rect (required by iPad platform)	 

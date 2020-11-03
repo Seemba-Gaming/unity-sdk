@@ -36,7 +36,7 @@ public class DatePickerAgeVerification : MonoBehaviour
     public void showDatePickerPersoInfo(UnityEngine.Object button)
     {
         Debug.Log("showDatePickerPersoInfo");
-        NativePicker.Instance.ShowDatePicker(GetScreenRect(button as GameObject), NativePicker.DateTimeForDate(2012, 12, 23), (long val) =>
+        NativePicker.Instance.ShowDatePicker(GetScreenRect(button as GameObject), (long val) =>
         {
             SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
         }, () =>

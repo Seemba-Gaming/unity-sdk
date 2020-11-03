@@ -45,8 +45,8 @@ public class User  {
 	public string zipcode;
 	public bool passport_uploaded;
 	public string last_result;
-	public string birthday;
-	public string adress;
+	public string birthdate;
+	public string address;
 	public string country;
 	public bool residency_proof_uploaded;
 	public int victories_count;
@@ -105,8 +105,8 @@ public class User  {
 		this.max_withdraw = max_withdraw;
 		this.zipcode = zipcode;
 		this.last_result = last_result;
-		this.birthday = birthday;
-		this.adress = adress;
+		this.birthdate = birthday;
+		this.address = adress;
 		this.country = country;
 		this.residency_proof_uploaded = residency_proof_uploaded;
 		this.victories_count = victories_count;

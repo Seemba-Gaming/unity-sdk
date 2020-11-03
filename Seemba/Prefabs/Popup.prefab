@@ -38422,7 +38422,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 16322.352}
+  m_AnchoredPosition: {x: 0, y: 32357.213}
   m_SizeDelta: {x: 0, y: 647}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5761309054952936794
@@ -60754,7 +60754,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Win and get
+  m_Text: "Win and get \xE9\xE9"
 --- !u!1 &8893661471115518406
 GameObject:
   m_ObjectHideFlags: 0
@@ -61575,6 +61575,7 @@ GameObject:
   - component: {fileID: 8893661471741306188}
   - component: {fileID: 8893661471741306187}
   - component: {fileID: 7330280916968332798}
+  - component: {fileID: 4219197656791564325}
   - component: {fileID: 8893661471741306191}
   m_Layer: 5
   m_Name: Popup
@@ -61687,6 +61688,27 @@ MonoBehaviour:
   PopupCongrats: {fileID: 49350347916962669}
   PopupPayment: {fileID: 8186095286065838671}
   PopupChooseCharacter: {fileID: 8770296599215731393}
+--- !u!114 &4219197656791564325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8893661471741306186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3eb0643e952fb8e438a21119df917786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Challenge: {fileID: 8893661471514582917}
+  Selection: {fileID: 8893661470003780753}
+  WinAndGet: {fileID: 8893661471082393269}
+  EntryFee: {fileID: 8893661471575729986}
+  Bubbles: {fileID: 8893661470484229540}
+  DuelConfirmButtonText: {fileID: 8893661470104894917}
+  Select: {fileID: 321132986723121908}
+  PaymentMethod: {fileID: 2381677588312805264}
+  PaymentConfirmButtonText: {fileID: 5680168774451226152}
 --- !u!114 &8893661471741306191
 MonoBehaviour:
   m_ObjectHideFlags: 0

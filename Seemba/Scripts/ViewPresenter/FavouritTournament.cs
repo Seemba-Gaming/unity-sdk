@@ -52,8 +52,10 @@ public class FavouritTournament : MonoBehaviour
     public async Task<bool> GetFavoriteTournament(string userId, string token)
     {
         string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
-        return await SeembaWebRequest.Get.HttpsGetJSON<bool>(url);
-
+        var res = await SeembaWebRequest.Get.HttpsGet(url);
+        var json = JSON.Parse(res);
+        ShowFavTournament(json["data"]["gain"].Value , json["data"]["gain_type"].Value, json["data"]["type"].Value);
+        return true;
         //UnityWebRequest www = UnityWebRequest.Get(url);
 
         //if (token != null)

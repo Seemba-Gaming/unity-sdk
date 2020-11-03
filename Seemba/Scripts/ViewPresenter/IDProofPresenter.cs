@@ -42,7 +42,7 @@ public class IDProofPresenter : MonoBehaviour
 
         LoaderManager.Get.LoaderController.HideLoader();
 
-        if (string.IsNullOrEmpty(user.birthday) || string.IsNullOrEmpty(user.adress) || string.IsNullOrEmpty(user.firstname) || string.IsNullOrEmpty(user.lastname) || string.IsNullOrEmpty(user.zipcode) || string.IsNullOrEmpty(user.city) || string.IsNullOrEmpty(user.phone))
+        if (string.IsNullOrEmpty(user.birthdate) || string.IsNullOrEmpty(user.address) || string.IsNullOrEmpty(user.firstname) || string.IsNullOrEmpty(user.lastname) || string.IsNullOrEmpty(user.zipcode) || string.IsNullOrEmpty(user.city) || string.IsNullOrEmpty(user.phone))
         {
             showMissingInfoPopup();
         }

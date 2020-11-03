@@ -13,6 +13,7 @@ public class PopupManager : MonoBehaviour
     public GameObject PopupPrefab;
     public PopupsController PopupController;
     public PopupsViewPresenter PopupViewPresenter;
+    public PopupsTranslationController PopupsTranslationController;
     #endregion
 
     #region Unity Methods
@@ -26,6 +27,7 @@ public class PopupManager : MonoBehaviour
         var popup = Instantiate(PopupPrefab) as GameObject;
         PopupController = popup.GetComponent<PopupsController>();
         PopupViewPresenter = popup.GetComponent<PopupsViewPresenter>();
+        PopupsTranslationController = popup.GetComponent<PopupsTranslationController>();
     }
     #endregion
 

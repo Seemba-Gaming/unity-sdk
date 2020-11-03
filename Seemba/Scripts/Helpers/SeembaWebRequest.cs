@@ -67,6 +67,7 @@ public class SeembaWebRequest : MonoBehaviour
     public async System.Threading.Tasks.Task<T> HttpsGetJSON<T>(string uri)
     {
         string responseText = await HttpsGet(uri);
+        Debug.LogWarning(responseText);
         SeembaResponse<T> response = JsonConvert.DeserializeObject<SeembaResponse<T>>(responseText);
         return response.data;
     }

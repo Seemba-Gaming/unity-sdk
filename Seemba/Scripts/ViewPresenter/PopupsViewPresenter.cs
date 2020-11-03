@@ -226,7 +226,7 @@ public class PopupsViewPresenter : MonoBehaviour
 
         PopupAgeDatePicker.onClick.AddListener(() =>
         {
-            EventsController.Get.ShowDatePicker(PopupAgeDatePicker.gameObject);
+            EventsController.Get.ShowDatePicker("credit");
         });
 
     }
@@ -429,7 +429,7 @@ public class PopupsViewPresenter : MonoBehaviour
         _params = _param;
         ShowPopupContent(PopupManager.Get.PopupController.PopupDuels.gameObject);
         PopupManager.Get.PopupController.PopupDuels.SetBool("Show", true);
-        entry_fee.text = "Entry fee: " + _param[0];
+        entry_fee.text = TranslationManager.Get("entry_fee") + " " + _param[0];
         gain.text = _param[1].ToString();
         if (_param[2].Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
         {

@@ -26,6 +26,7 @@ public class EventsController : MonoBehaviour
     private Text _textDatePredefined;
     private string _selectedDateString2 = "1995-09-15";
     private Image mImage;
+    private string mCaller;
     #endregion
 
     private String SelectedDateString2
@@ -37,7 +38,7 @@ public class EventsController : MonoBehaviour
         set
         {
             _selectedDateString2 = value;
-            UserManager.Get.CurrentUser.birthday = value;
+            UserManager.Get.CurrentUser.birthdate = value;
             try
             {
                 _textDatePredefined.text = SelectedDateString2;
@@ -246,6 +247,7 @@ public class EventsController : MonoBehaviour
         LoaderManager.Get.LoaderController.ShowLoader(null);
         ViewsEvents.Get.GetCurrentMenu().SetActive(false);
         AudioListener.enabled = false;
+        ViewsEvents.Get.Matchmaking.GetComponent<OpponentFound>().ResetOpponent();
         SceneManager.LoadSceneAsync(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
     }
     public bool checkUserBirthday(User user)
@@ -254,14 +256,14 @@ public class EventsController : MonoBehaviour
         DateTime birthdate;
         try
         {
-            birthdate = DateTime.Parse(user.birthday);
+            birthdate = DateTime.Parse(user.birthdate);
         }
         catch (Exception e)
         {
             Years = "0";
             return true;
         }
-        if (!string.IsNullOrEmpty(user.birthday))
+        if (!string.IsNullOrEmpty(user.birthdate))
         {
             if (DateTime.UtcNow.Year - birthdate.Year >= 18)
                 return false;
@@ -415,16 +417,18 @@ public class EventsController : MonoBehaviour
     }
 
     #region DatePicker
-    public void ShowDatePicker(GameObject button)
+    public void ShowDatePicker(string caller)
     {
-        Debug.Log("ShowDatePicker");
-        //NativePicker.Instance.ShowDatePicker(GetScreenRect(button), NativePicker.DateTimeForDate(2012, 12, 23), OnDateSelected, OnDateCanceled);
-        NativePicker.Instance.ShowDatePicker(GetScreenRect(button), NativePicker.DateTimeForDate(2012, 12, 23), (long val) =>
+        Debug.Log("ShowDatePicker " + caller);
+        mCaller = caller;
+        NativePicker.Instance.ShowDatePicker(new Rect(0, 0, 0, 0), (long val) =>
         {
+            Debug.Log(caller);
             OnDateSelected(val);
         }
         , () =>
         {
+            Debug.Log(caller);
             OnDateCanceled();
         }
         );
@@ -432,27 +436,41 @@ public class EventsController : MonoBehaviour
     private void OnDateCanceled()
     {
         Debug.Log("OnDateCanceled ");
-        SelectedDateString2 = DateTime.Now.ToString("yyyy-MM-dd");
-        PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = false;
-        PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = "Select Date";
+        if (mCaller.Equals("PersonalInfo"))
+        {
+            Debug.Log("OnDateCanceled personal info ");
+        }
+        else
+        {
+            SelectedDateString2 = DateTime.Now.ToString("yyyy-MM-dd");
+            PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = false;
+            PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = "Select Date";
+        }
     }
-    private void OnDateSelected(long val)
+
+    public  void OnDateSelected(long val)
     {
         Debug.Log("OnDateSelected " + val);
+        if (mCaller.Equals("personalinfo"))
+        {
+            SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
+            Debug.Log("OnDateSelected personal info " + val + " " + SelectedDateString2);
+            var mBirthDate = ViewsEvents.Get.PersonalInfo.GetComponent<PersonelInfoController>().Birthdate;
+            var mBirthDatePlaceHolder = ViewsEvents.Get.PersonalInfo.GetComponent<PersonelInfoController>().PlaceHolderAge;
+            mBirthDatePlaceHolder.gameObject.SetActive(false);
+            mBirthDate.text = SelectedDateString2;
+            string[] attrib = { "birthdate" };
+            string[] values = { mBirthDate.text };
+            ViewsEvents.Get.PersonalInfo.GetComponent<PersonelInfoController>().UpdateAge(attrib, values);
+        }
+        else
+        {
+            SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
+            PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = SelectedDateString2;
+            PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = true;
+        }
+    }
 
-        SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
-        PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = SelectedDateString2;
-        PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = true;
-    }
-    private Rect GetScreenRect(GameObject gameObject)
-    {
-        RectTransform transform = gameObject.GetComponent<RectTransform>();
-        Vector2 size = Vector2.Scale(transform.rect.size, transform.lossyScale);
-        Rect rect = new Rect(transform.position.x, Screen.height - transform.position.y, size.x, size.y);
-        rect.x -= (transform.pivot.x * size.x);
-        rect.y -= ((1.0f - transform.pivot.y) * size.y);
-        return rect;
-    }
     #endregion
 
     #region ShowPopups

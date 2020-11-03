@@ -88,6 +88,8 @@ public class UserManager : MonoBehaviour
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
 
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
+        Debug.LogWarning(url);
+        Debug.LogWarning(json);
         var www = UnityWebRequest.Put(url, jsonAsBytes);
         www.uploadHandler.contentType = "application/x-www-form-urlencoded";
         www.SetRequestHeader("x-access-token", getCurrentSessionToken());
@@ -295,7 +297,6 @@ public class UserManager : MonoBehaviour
             www.SetRequestHeader("x-access-token", token);
             await www.SendWebRequest();
             if (www.isNetworkError || www.isHttpError) return null;
-
             UserData userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
 
             if (!userData.success)

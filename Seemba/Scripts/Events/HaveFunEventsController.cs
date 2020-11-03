@@ -13,9 +13,9 @@ public class HaveFunEventsController : MonoBehaviour
     public Button                               less_duels;
     public Button                               more_tournaments;
     public Button                               less_tournaments;
-    public Button                               _1v1_bubbles_confident;
-    public Button                               _1v1_bubbles_champion;
-    public Button                               _1v1_bubbles_legend;
+    public Button                               _1v1_bubbles_amateur;
+    public Button                               _1v1_bubbles_novice;
+    public Button                               _1v1_bubbles_confirmed;
     public Button                               _bracket_bubbles_confident;
     public Button                               _bracket_bubbles_champion;
     public Button                               _bracket_bubbles_legend;
@@ -42,18 +42,18 @@ public class HaveFunEventsController : MonoBehaviour
         {
             LessTournaments();
         });
-        _1v1_bubbles_confident.onClick.AddListener(() =>
+        _1v1_bubbles_amateur.onClick.AddListener(() =>
         {
             object[] _params = { ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT, ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
         });
-        _1v1_bubbles_champion.onClick.AddListener(() =>
+        _1v1_bubbles_novice.onClick.AddListener(() =>
         {
             object[] _params = { ChallengeManager.FEE_1V1_BUBBLES_CHAMPION, ChallengeManager.WIN_1V1_BUBBLES_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
         });
-        _1v1_bubbles_legend.onClick.AddListener(() =>
+        _1v1_bubbles_confirmed.onClick.AddListener(() =>
         {
             object[] _params = { ChallengeManager.FEE_1V1_BUBBLES_LEGEND, ChallengeManager.WIN_1V1_BUBBLES_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
@@ -115,24 +115,22 @@ public class HaveFunEventsController : MonoBehaviour
             less_duels.gameObject.SetActive(false);
             more_duels.gameObject.SetActive(false);
         }
-        _1v1_bubbles_confident.gameObject.SetActive(false);
-        _1v1_bubbles_champion.gameObject.SetActive(false);
-        _1v1_bubbles_legend.gameObject.SetActive(false);
+        _1v1_bubbles_novice.gameObject.SetActive(false);
+        _1v1_bubbles_amateur.gameObject.SetActive(false);
+        _1v1_bubbles_confirmed.gameObject.SetActive(false);
 
         foreach (string challenge_type in ChallengeManager.AVALAIBLE_CHALLENGE)
         {
-            Debug.LogWarning(challenge_type);
-            Debug.LogWarning(ChallengeManager.AVALAIBLE_CHALLENGE.Count);
             switch (challenge_type)
             {
                 case ChallengeManager.CHALLENGE_TYPE_NOVICE:
-                    _1v1_bubbles_confident.gameObject.SetActive(true);
+                    _1v1_bubbles_novice.gameObject.SetActive(true);
                     break;
                 case ChallengeManager.CHALLENGE_TYPE_AMATEUR:
-                    _1v1_bubbles_champion.gameObject.SetActive(true);
+                    _1v1_bubbles_amateur.gameObject.SetActive(true);
                     break;
                 case ChallengeManager.CHALLENGE_TYPE_CONFIRMED:
-                    _1v1_bubbles_legend.gameObject.SetActive(true);
+                    _1v1_bubbles_confirmed.gameObject.SetActive(true);
                     break;
             }
             if (show_state.Equals(SHOW_LESS))

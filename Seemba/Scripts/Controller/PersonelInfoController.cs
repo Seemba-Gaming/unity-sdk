@@ -26,13 +26,18 @@ public class PersonelInfoController : MonoBehaviour
 
     #region Fields
     private string _selectedDateString2 = "1995-09-15";
-    private string token = null;
     #endregion
 
     #region Unity Methods
+    void Start()
+    {
+        Age.onClick.AddListener(() =>
+        {
+            EventsController.Get.ShowDatePicker("personalinfo");
+        });
+    }
     public async void OnEnable()
     {
-        token = UserManager.Get.getCurrentSessionToken();
         var usr = UserManager.Get.CurrentUser;
         if (usr != null)
         {
@@ -48,9 +53,10 @@ public class PersonelInfoController : MonoBehaviour
                 country_flag.transform.localScale = Vector3.one;
             }
             catch (ArgumentNullException) { }
-            if (!string.IsNullOrEmpty(usr.birthday))
+            Debug.Log(usr.birthdate);
+            if (!string.IsNullOrEmpty(usr.birthdate))
             {
-                Birthdate.text = DateTime.Parse(usr.birthday).ToString("yyyy-MM-dd");
+                Birthdate.text = DateTime.Parse(usr.birthdate).ToString("yyyy-MM-dd");
                 PlaceHolderAge.transform.localScale = Vector3.zero;
                 Age.interactable = false;
                 Age.GetComponent<InputfieldStateController>().ShowEditable();
@@ -76,9 +82,9 @@ public class PersonelInfoController : MonoBehaviour
                 FirstName.GetComponent<InputfieldStateController>().ShowEditable();
                 FirstName.readOnly = true;
             }
-            if (!string.IsNullOrEmpty(usr.adress))
+            if (!string.IsNullOrEmpty(usr.address))
             {
-                Address.text = usr.adress;
+                Address.text = usr.address;
                 Address.GetComponent<InputfieldStateController>().ShowEditable();
                 Address.readOnly = true;
             }
@@ -167,7 +173,7 @@ public class PersonelInfoController : MonoBehaviour
             });
             Address.onEndEdit.AddListener(async delegate
             {
-                if (Address.text != "" && Address.text != usr.adress)
+                if (Address.text != "" && Address.text != usr.address)
                 {
                     string[] attrib = {
                             "address"
@@ -175,13 +181,14 @@ public class PersonelInfoController : MonoBehaviour
                     string[] value = {
                             Address.text
                     };
+                    Debug.Log(value);
                     Address.GetComponent<InputfieldStateController>().ShowLoading();
                     UpdateUser(attrib, value);
                     Address.GetComponent<InputfieldStateController>().ShowAccepted();
                 }
                 else
                 {
-                    Address.text = usr.adress;
+                    Address.text = usr.address;
                 }
             });
             City.onEndEdit.AddListener(async delegate
@@ -298,63 +305,30 @@ public class PersonelInfoController : MonoBehaviour
             throw;
         }
     }
-    public async void UpdateUser(string[] attrib, string[] values)
+    public void UpdateUser(string[] attrib, string[] values)
     {
         UserManager.Get.UpdateUserByField(attrib, values);
     }
 
-    private void OnDateCanceled()
+    public async void UpdateAge(string[] attrib, string[] values)
     {
-        Debug.Log("OnDateCanceled ");
-        SelectedDateString2 = DateTime.Now.ToString("yyyy-MM-dd");
-        PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = false;
-        PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = "Select Date";
-    }
-    private void OnDateSelected(long val)
-    {
-        Debug.Log("OnDateSelected " + val);
-
-        SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
-        PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder.text = SelectedDateString2;
-        PopupManager.Get.PopupViewPresenter.PopupAgeconfirmButton.interactable = true;
-    }
-
-    public void showExpPicker(UnityEngine.Object button)
-    {
-        if (Age_Containter.GetComponent<Animator>().GetBool("young") == true)
+        Debug.Log("update age");
+        string[] date = values[0].Split(new char[] { '-' }, 3);
+        string Years = date[0];
+        string Days = date[2];
+        string Months = date[1];
+        if (DateTime.UtcNow.Year - int.Parse(Years) >= 18)
         {
-            Age_Containter.GetComponent<Animator>().SetBool("young", false);
+            LoaderManager.Get.LoaderController.ShowLoader();
+            UpdateUser(attrib, values);
+            LoaderManager.Get.LoaderController.HideLoader();
         }
-        Debug.Log("showExpPicker");
-
-        NativePicker.Instance.ShowDatePicker(GetScreenRect(button as GameObject), NativePicker.DateTimeForDate(2012, 12, 23), (long val) =>
+        else
         {
-            SelectedDateString2 = NativePicker.ConvertToDateTime(val).ToString("yyyy-MM-dd");
-            Birthdate.text = SelectedDateString2;
-            string[] attrib = { "birthdate" };
-            string[] values = { Birthdate.text };
-            string[] date = Birthdate.text.Split(new char[] { '-' }, 3);
-            string Years = date[0];
-            string Days = date[2];
-            string Months = date[1];
-            Debug.Log("Years: " + Years);
-            if (DateTime.UtcNow.Year - int.Parse(Years) >= 18)
-            {
-                UnityThreadHelper.CreateThread(async () =>
-                {
-                    UpdateUser(attrib, values);
-                });
-            }
-            else
-            {
-                // Age <18 : Show Error Text
-                Age_Containter.GetComponent<Animator>().SetBool("young", true);
-            }
-        }, () =>
-        {
-            //SelectedDateString2 = DateTime.Now.ToString("yyyy-MM-dd");
-        });
+            Age_Containter.GetComponent<Animator>().SetBool("young", true);
+        }
     }
+   
     #endregion
     #region Implementations
     private Rect GetScreenRect(GameObject gameObject)

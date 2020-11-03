@@ -20,13 +20,14 @@ public class WalletTogglePresenter : MonoBehaviour
     {
         if(SelectedText != null)
         {
+            TranslationManager.scene = "Home";
             if(IsSelected)
             {
-                SelectedText.text = "Selected";
+                SelectedText.text = TranslationManager.Get("selected");
             }
             else
             {
-                SelectedText.text = "Select";
+                SelectedText.text = TranslationManager.Get("select");
             }
         }
     }
@@ -35,16 +36,17 @@ public class WalletTogglePresenter : MonoBehaviour
     #region Methods
     public void ToggleSelected(bool selected)
     {
+        TranslationManager.scene = "Home";
         if (selected)
         {
-            SelectedText.text = "Selected";
+            SelectedText.text = TranslationManager.Get("selected");
             SelectedText.color = Color.white;
             Amount.color = Color.white;
             IsSelected = true;
         }
         else
         {
-            SelectedText.text = "Select";
+            SelectedText.text = TranslationManager.Get("select"); 
             SelectedText.color = SelectedOffColor;
             Amount.color = AmountOffColor;
             IsSelected = false;

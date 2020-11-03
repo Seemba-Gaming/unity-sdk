@@ -44,6 +44,15 @@ public class OpponentFound : MonoBehaviour
 
     }
 
+    public void ResetOpponent()
+    {
+        PanelLookingForPlayer.SetActive(true);
+        Versus_container.SetActive(false);
+        opponent_username.text = string.Empty;
+        opponent_flag.sprite = null;
+        opponent_avatar.sprite = null;
+    }
+
     // Update is called once per frame
     private void Update()
     {

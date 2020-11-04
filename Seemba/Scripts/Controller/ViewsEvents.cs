@@ -78,12 +78,16 @@ public class ViewsEvents : MonoBehaviour
     public void SettingsClick()
     {
         ProfilLastResultListController.profileSceneOpened = false;
-        BottomMenuController.Show();
+        //BottomMenuController.Show();
         ShowScene(Menu.Settings);
     }
     public void SecurityClick()
     {
         ShowScene(Menu.Security);
+    }
+    public void PersonalInfoclick()
+    {
+        GoToMenu(PersonalInfo.gameObject);
     }
     public void LegalClick()
     {
@@ -128,6 +132,10 @@ public class ViewsEvents : MonoBehaviour
     public void HideOverlayMenu(GameObject gameObject)
     {
         gameObject.SetActive(false);
+    }
+    public void ShowLastView()
+    {
+        ShowScene(EventsController.last_view);
     }
     public void GoBack()
     {

@@ -260,7 +260,6 @@ public class ChallengeManager : MonoBehaviour
     public async Task<Challenge> getChallenge(string challenge_id)
     {
         string url = Endpoint.classesURL + "/challenges/" + challenge_id;
-        Debug.LogWarning("here");
         return await SeembaWebRequest.Get.HttpsGetJSON<Challenge>(url);
     }
 

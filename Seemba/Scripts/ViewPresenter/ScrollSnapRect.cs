@@ -55,7 +55,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
     private bool _lerp;
     private Vector2 _lerpTo;
     // target position of every page
-    private List<Vector2> _pagePositions = new List<Vector2>();
+    public List<Vector2> _pagePositions = new List<Vector2>();
     // in draggging, when dragging started and where it started
     private bool _dragging;
     private float _timeStamp;
@@ -149,13 +149,14 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         if (WalletButton)
             WalletButton.GetComponent<Button>().onClick.AddListener(() =>
             {
+                Debug.LogWarning("here");
                 LerpToPage(2); ShowScene("Wallet");
                 //Age.SetActive(true);
             });
         if (CompteButton)
             CompteButton.GetComponent<Button>().onClick.AddListener(() =>
             {
-
+                Debug.LogWarning("here");
                 LerpToPage(1); ShowScene("Compte");
             });
         if (HistoryButton)
@@ -352,17 +353,21 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         for (int i = 0; i < _pageCount; i++)
         {
             RectTransform child = _container.GetChild(i).GetComponent<RectTransform>();
-            Vector2 childPosition;
-            if (_horizontal)
-            {
-                childPosition = new Vector2(i * width - containerWidth / 2 + offsetX, 0f);
-            }
-            else
-            {
-                childPosition = new Vector2(0f, -(i * height - containerHeight / 2 + offsetY));
-            }
-            child.anchoredPosition = childPosition;
+            //Debug.LogWarning(_container.GetChild(i).GetComponent<RectTransform>().localPosition.x);
+            //Debug.LogWarning(_container.GetChild(i).GetComponent<RectTransform>().position.x);
+            //Debug.LogWarning(_container.GetChild(i).GetComponent<RectTransform>().rect.x);
+            Vector2 childPosition = new Vector2(child.localPosition.x - _container.GetChild(0).GetComponent<RectTransform>().localPosition.x, 0);
+            //if (_horizontal)
+            //{
+            //    childPosition = new Vector2(i * width - containerWidth / 2 + offsetX, 0f);
+            //}
+            //else
+            //{
+            //    childPosition = new Vector2(0f, -(i * height - containerHeight / 2 + offsetY));
+            //}
+            //child.anchoredPosition = childPosition;
             _pagePositions.Add(-childPosition);
+           // _pagePositions.Add(childPosition);
         }
     }
     //------------------------------------------------------------------------

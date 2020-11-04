@@ -37,7 +37,6 @@ public class ResultController : MonoBehaviour
     public static void InitTexts()
     {
         TranslationManager.scene = "ResultLose";
-        Debug.LogWarning(TranslationManager.scene);
         PLAY_AGAIN_TEXT = TranslationManager.Get("play_again");
         CONTINUE_TEXT = TranslationManager.Get("continue");
         DATE_TEXT = TranslationManager.Get("date");
@@ -65,7 +64,6 @@ public class ResultController : MonoBehaviour
         PLAYER_2 = TranslationManager.Get("player_2");
         CONTINUE_NOW = TranslationManager.Get("continue_now");
         AND_GET_RESULT_LATER = TranslationManager.Get("and_get_results_later");
-        Debug.LogWarning("CONTINUE_NOW " + CONTINUE_NOW);
         InitDone = true;
     }
 }

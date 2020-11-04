@@ -21,8 +21,6 @@ public class PopupsTranslationController : MonoBehaviour
     public void Init()
     {
         TranslationManager.scene = "Home";
-        Debug.LogWarning("here " + TranslationManager.scene);
-        Debug.LogWarning("here " + TranslationManager.Get("challenge"));
         Challenge.text = TranslationManager.Get("challenge") != string.Empty ? TranslationManager.Get("challenge") : Challenge.text;
         Selection.text = TranslationManager.Get("selection") != string.Empty ? TranslationManager.Get("selection") : Selection.text;
         WinAndGet.text = TranslationManager.Get("win_and_get") != string.Empty ? TranslationManager.Get("win_and_get") : WinAndGet.text;

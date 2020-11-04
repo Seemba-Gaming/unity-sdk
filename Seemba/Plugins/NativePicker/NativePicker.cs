@@ -35,7 +35,6 @@ public class NativePicker : MonoBehaviour {
 	}
 	void Awake() {		
 		_instance = this;
-		DontDestroyOnLoad(this.gameObject);
 		if (isMobileRuntime == false) {
 			//Debug.LogWarning("Due to platform specific NativePicker was designed to run only on iOS/Android device. Plugin function call has no effect on other platforms.");
 			return;

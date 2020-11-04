@@ -88,8 +88,6 @@ public class UserManager : MonoBehaviour
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
 
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
-        Debug.LogWarning(url);
-        Debug.LogWarning(json);
         var www = UnityWebRequest.Put(url, jsonAsBytes);
         www.uploadHandler.contentType = "application/x-www-form-urlencoded";
         www.SetRequestHeader("x-access-token", getCurrentSessionToken());

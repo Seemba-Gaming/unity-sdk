@@ -108,7 +108,6 @@ public class SecurityInfoController : MonoBehaviour
     #region Methods
     public void OnClickChangePassword()
     {
-        Debug.LogWarning(PopupsText.Get.CurrentPassword()[0]);
         PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CURRENT_PASSWORD, PopupsText.Get.CurrentPassword());
     }
 

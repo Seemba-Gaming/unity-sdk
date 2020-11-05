@@ -53,22 +53,6 @@ public class TournamentManager : MonoBehaviour
         string url = Endpoint.classesURL + "/tournaments/pending/" + GamesManager.GAME_ID;
         var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
         return json["data"].AsArray;
-
-        //UnityWebRequest www = UnityWebRequest.Get(url);
-        //if (token != null)
-        //{
-        //    www.SetRequestHeader("x-access-token", token);
-        //    await www.SendWebRequest();
-
-        //    if (www.isNetworkError || www.isHttpError)
-        //    {
-        //        return null;
-        //    }
-        //    var jsonResponse = www.downloadHandler.text;
-        //    var json = JSON.Parse(jsonResponse);
-        //    return json["data"].AsArray;
-        //}
-        //return null;
     }
     public async Task<JSONArray> getUserFinishedTournaments()
     {
@@ -77,25 +61,6 @@ public class TournamentManager : MonoBehaviour
         var req = await SeembaWebRequest.Get.HttpsGet(url);
         var json = JSON.Parse(req);
         return json["data"].AsArray;
-        //var www = UnityWebRequest.Get(url);
-        //var token = UserManager.Get.getCurrentSessionToken();
-
-        //if (token != null)
-        //{
-        //    www.SetRequestHeader("x-access-token", token);
-        //    await www.SendWebRequest();
-
-        //    if (www.isNetworkError || www.isHttpError)
-        //    {
-        //        return null;
-        //    }
-
-
-        //    var jsonResponse = www.downloadHandler.text;
-        //    var json = JSON.Parse(jsonResponse);
-        //    return json["data"].AsArray;
-        //}
-        //return null;
     }
     public async Task<JSONNode> getTournament(string id, string token)
     {
@@ -103,17 +68,6 @@ public class TournamentManager : MonoBehaviour
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
         return json;
-
-        //UnityWebRequest www = UnityWebRequest.Get(url);
-        //www.SetRequestHeader("x-access-token", token);
-        //await www.SendWebRequest();
-        //Debug.Log(www.downloadHandler.text);
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    return null;
-        //}
-        //var json = JSON.Parse(www.downloadHandler.text);
-        //return json;
     }
     public async Task<bool> addScore(string tournamentsID, float score)
     {
@@ -131,21 +85,6 @@ public class TournamentManager : MonoBehaviour
             return true;
         }
         return false;
-
-        //var www = UnityWebRequest.Put(url, jsonAsBytes);
-        //www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        //Debug.LogWarning(UserManager.Get.getCurrentSessionToken());
-        //Debug.LogWarning(UserManager.Get.getCurrentUserId());
-        //await www.SendWebRequest();
-
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    Debug.Log(www.isNetworkError);
-        //    return false;
-        //}
-        //return true;
     }
     public async Task<string> JoinOrCreateTournament(int nb_player, float gain, string gain_type, string userId, string token)
     {
@@ -162,17 +101,6 @@ public class TournamentManager : MonoBehaviour
         UserManager.Get.UpdateUserCredit((tournementdata["user"]["money_credit"].AsFloat).ToString(), tournementdata["user"]["bubble_credit"].Value);
         TournamentController.setCurrentTournamentID(tournementdata["tournament"]["_id"].Value);
         return tournementdata["tournament"]["_id"].Value;
-        //UnityWebRequest www = UnityWebRequest.Post(url, form);
-        //www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        //await www.SendWebRequest();
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    return null;
-        //}
-        //var tournementdata = JSON.Parse(www.downloadHandler.text);
-        //UserManager.Get.UpdateUserCredit((tournementdata["user"]["money_credit"].AsFloat).ToString(), tournementdata["user"]["bubble_credit"].Value);
-        //TournamentController.setCurrentTournamentID(tournementdata["tournament"]["_id"].Value);
-        //return tournementdata["tournament"]["_id"].Value;
     }
     public bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
     {

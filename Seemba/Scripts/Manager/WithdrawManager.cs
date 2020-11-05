@@ -87,18 +87,6 @@ public class WithdrawManager
         var response = await SeembaWebRequest.Get.HttpsPostBearer(url, form);
         var N = JSON.Parse(response);
         return N["id"].Value;
-        //var www = UnityWebRequest.Post(url, form);
-        //www.SetRequestHeader("Authorization", "Bearer " + Endpoint.TokenizationAccount);
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        //await www.SendWebRequest();
-
-        //if (www.isNetworkError || www.isHttpError) return null;
-
-        //var N = JSON.Parse(www.downloadHandler.text);
-        //Debug.Log(www.downloadHandler.text);
-        //return N["id"].Value;
-
     }
     public async Task<bool> CreateConnectAccount(string account_token, string bank_account_token, string currency, string country_code, string token)
     {
@@ -113,16 +101,6 @@ public class WithdrawManager
         var response = await SeembaWebRequest.Get.HttpsPost(url, form);
         var N = JSON.Parse(response);
         return N["success"].AsBool;
-        //var www = UnityWebRequest.Post(url, form);
-        //www.SetRequestHeader("x-access-token", token);
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        //await www.SendWebRequest();
-
-        //if (www.isNetworkError || www.isHttpError) return false;
-        //Debug.Log(www.downloadHandler.text);
-        //var N = JSON.Parse(www.downloadHandler.text);
-        //return N["success"].AsBool;
     }
 
     public bool attachTokenToAccount(string account_token, string token)
@@ -238,27 +216,6 @@ public class WithdrawManager
         var N = JSON.Parse(response);
         Debug.Log("Success: " + N["success"]);
         return N["success"].AsBool;
-
-        //UnityWebRequest request = UnityWebRequest.Post(Endpoint.classesURL + "/payments/updateAccount", form);
-        //request.SetRequestHeader("x-access-token", token);
-        //request.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
-        //await request.SendWebRequest();
-        //if (request.isNetworkError)
-        //{
-        //    return false;
-        //}
-        //if (request.isHttpError) // Error 
-        //{
-        //    Debug.Log(request.error);
-        //    return false;
-        //}
-        //else // Success
-        //{
-        //    Debug.Log(request.downloadHandler.text);
-        //    var N = JSON.Parse(request.downloadHandler.text);
-        //    Debug.Log("Success: " + N["success"]);
-        //    return N["success"].AsBool;
-        //}
     }
     public bool attachInfoToAccount1(string token, string value, params string[] Params)
     {
@@ -762,28 +719,6 @@ public class WithdrawManager
         {
             return (!string.IsNullOrEmpty(N["error"]["code"])) ? N["error"]["code"].Value : "error";
         }
-        //var www = UnityWebRequest.Post(url, form);
-        //www.SetRequestHeader("x-access-token", token);
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        //await www.SendWebRequest();
-
-        //if (www.isNetworkError || www.isHttpError || www.isNetworkError)
-        //{
-        //    Debug.Log(www.error);
-        //    return "error";
-        //}
-        //Debug.Log(www.downloadHandler.text);
-
-        //var N = JSON.Parse(www.downloadHandler.text);
-        //if (N["success"].AsBool == true)
-        //{
-        //    return WITHDRAW_SUCCEEDED_STATUS;
-        //}
-        //else
-        //{
-        //    return (!string.IsNullOrEmpty(N["error"]["code"])) ? N["error"]["code"].Value: "error";
-        //}
     }
     public bool MyRemoteCertificateValidationCallback(System.Object sender,
                                                       X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

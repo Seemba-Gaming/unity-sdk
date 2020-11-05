@@ -53,14 +53,8 @@ public class SeembaWebRequest : MonoBehaviour
         var token = UserManager.Get.getCurrentSessionToken();
         if(token != null)
         {
-            www.SetRequestHeader("x-access-token",token );
+            www.SetRequestHeader("x-access-token", token);
         }
-        return await HandleRequest(www);
-    }
-    public async Task<string> HttpsGetAnonymous(string uri)
-    {
-        UnityWebRequest www = UnityWebRequest.Get(uri);
-
         return await HandleRequest(www);
     }
 
@@ -119,6 +113,11 @@ public class SeembaWebRequest : MonoBehaviour
             return null;
         }
 
+        if(www.error != null)
+        {
+            OnSeembaError(www.responseCode.ToString());
+        }
+        Debug.LogWarning(www.responseCode);
         return www.downloadHandler.text;
     }
 

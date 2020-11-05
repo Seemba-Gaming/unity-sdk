@@ -54,29 +54,12 @@ public class UserManager : MonoBehaviour
         form.AddField("type", type);
         form.AddField("game", GamesManager.GAME_ID);
         await SeembaWebRequest.Get.HttpsPost(url, form);
-        //var www = UnityWebRequest.Post(url, form);
-        //www.SetRequestHeader("x-access-token", getCurrentSessionToken());
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        //await www.SendWebRequest();
-
     }
     public async Task<bool> WinFreeBubble(string token)
     {
         var url = Endpoint.classesURL + "/users/bubbles/free";
         await SeembaWebRequest.Get.HttpsPost(url, new WWWForm());
         return true;
-        //var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/bubbles/free", new WWWForm());
-        //download.SetRequestHeader("x-access-token", token);
-        //download.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        //await download.SendWebRequest();
-        //Debug.Log(download.downloadHandler.text);
-        //if (download.isNetworkError || download.isHttpError || download.isNetworkError)
-        //{
-        //    print("Error downloading: " + download.error);
-        //    return false;
-        //}
-        //return true;
     }
 
     public async void UpdateUserByField(string[] fieldName, string[] value)
@@ -93,18 +76,6 @@ public class UserManager : MonoBehaviour
 
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
         await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
-        //var www = UnityWebRequest.Put(url, jsonAsBytes);
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        //www.SetRequestHeader("x-access-token", getCurrentSessionToken());
-        //await www.SendWebRequest();
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    Debug.Log(www.error);
-        //}
-        //else
-        //{
-        //    Debug.Log(www.downloadHandler.text);
-        //}
     }
 
     public async Task<Texture2D> GetFlagBytes(string country_code)
@@ -124,22 +95,6 @@ public class UserManager : MonoBehaviour
         var req = await SeembaWebRequest.Get.HttpsGet(url);
         var N = JSON.Parse(req);
         return N["country"].Value.ToLower();
-
-        //var www = UnityWebRequest.Get(url);
-        //await www.SendWebRequest();
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    Debug.Log(www.error);
-        //    return null;
-        //}
-        //else
-        //{
-        //    var N = JSON.Parse(www.downloadHandler.text);
-        //    //CurrentUser.long_lat = N["loc"].Value;
-        //    //CurrentUser.country = N["country"].Value.ToLower();
-        //    //return CurrentUser.country.ToLower();
-        //    return N["country"].Value.ToLower();
-        //}
     }
 
     //signup with the new api
@@ -161,22 +116,6 @@ public class UserManager : MonoBehaviour
         //Save Session Token
         saveSessionToken(N["token"].Value);
         return N;
-        //var download = UnityWebRequest.Post(url, form);
-        //download.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        //await download.SendWebRequest();
-        //Debug.Log(download.downloadHandler.text);
-        //if (download.isNetworkError || download.isHttpError)
-        //{
-        //    print("Error downloading: " + download.error);
-        //    //OnSeembaError();
-        //    return null;
-        //}
-        //var N = JSON.Parse(download.downloadHandler.text);
-        ////Save The current Session ID
-        //saveUserId(N["data"]["_id"].Value);
-        ////Save Session Token
-        //saveSessionToken(N["token"].Value);
-        //return N;
     }
     public async Task<Sprite> getAvatar(string url)
     {
@@ -275,43 +214,6 @@ public class UserManager : MonoBehaviour
         {
             return "failed";
         }
-        //UnityWebRequest www = UnityWebRequest.Post(url, form);
-
-        //await www.SendWebRequest();
-
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    return "failed";
-        //}
-
-        //var jsonResponse = www.downloadHandler.text;
-        //Debug.Log(jsonResponse);
-
-        //var N = JSON.Parse(jsonResponse);
-        //var  userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
-        //CurrentUser = userData.data;
-        //CurrentUser.token = N["token"].Value;
-        //LoaderManager.Get.LoaderController.ShowLoader("Loading ..");
-
-        //CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
-        //var mTexture = await GetFlagBytes(await GetGeoLoc());
-        //CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
-        //PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
-        //LoaderManager.Get.LoaderController.HideLoader();
-
-        //if (N["success"].AsBool == true)
-        //{
-        //    saveSessionToken(N["token"].Value);
-        //    saveUserId(N["data"]["_id"].Value);
-        //    CurrentUser._id = N["data"]["_id"].Value;
-        //    CurrentUser.token = N["token"].Value;
-        //    return "success";
-        //}
-        //else
-        //{
-        //    return "failed";
-        //}
-
     }
     public void logingOut()
     {
@@ -323,35 +225,6 @@ public class UserManager : MonoBehaviour
     }
     public async Task<User> getUser()
     {
-        //ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        //string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
-        //var www = UnityWebRequest.Get(url);
-        //var token = getCurrentSessionToken();
-
-        //if (token != null)
-        //{
-        //    www.SetRequestHeader("x-access-token", token);
-        //    await www.SendWebRequest();
-        //    if (www.isNetworkError || www.isHttpError) return null;
-        //    UserData userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
-
-        //    if (!userData.success)
-        //    {
-        //        if (userData.message == "Failed to authenticate token.")
-        //        {
-        //            ShowExpiredSession();
-        //        }
-        //        else if (userData.message == "Could not find user")
-        //        {
-        //            ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
-        //        }
-        //        return null;
-        //    }
-        //    CurrentUser = userData.data;
-        //    return CurrentUser;
-        //}
-        //return null;
-
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
         var seembaResponse = await SeembaWebRequest.Get.HttpsGet(url);
@@ -450,17 +323,6 @@ public class UserManager : MonoBehaviour
         string url = Endpoint.classesURL + "/users/devices";
         await SeembaWebRequest.Get.HttpsPost(url, form);
         return true;
-
-        //var www = UnityWebRequest.Post(url, form);
-        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        //await www.SendWebRequest();
-
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    return false;
-        //}
-        //return true;
     }
     public void removeUserDeviceToken(string user_id, string gameId, string deviceToken)
     {

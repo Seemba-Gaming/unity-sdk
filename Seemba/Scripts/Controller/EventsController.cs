@@ -60,7 +60,28 @@ public class EventsController : MonoBehaviour
 
     private void OnSeembaError(string data)
     {
+        //network //500 //403 
         Debug.LogWarning(data);
+        if(data.Contains("network"))
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+        }
+        else
+        {
+            int errorCode;
+            var res = int.TryParse(data, out errorCode);
+            if(res)
+            {
+                if(errorCode >= 500)
+                {
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_SERVER_ERROR, PopupsText.Get.ServerError());
+                }
+                else if(errorCode == 403 || errorCode == 401)
+                {
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_UNAUTHORIZED, PopupsText.Get.Unauthorized());
+                }
+            }
+        }
     }
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)

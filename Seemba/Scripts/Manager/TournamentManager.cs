@@ -125,20 +125,27 @@ public class TournamentManager : MonoBehaviour
 
         string url = Endpoint.classesURL + "/tournaments/" + tournamentsID;
         Debug.LogWarning(url);
-        var www = UnityWebRequest.Put(url, jsonAsBytes);
-        www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        Debug.LogWarning(UserManager.Get.getCurrentSessionToken());
-        Debug.LogWarning(UserManager.Get.getCurrentUserId());
-        await www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
+        var response = await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
+        if(!string.IsNullOrEmpty(response))
         {
-            Debug.Log(www.isNetworkError);
-            return false;
+            return true;
         }
-        return true;
+        return false;
+
+        //var www = UnityWebRequest.Put(url, jsonAsBytes);
+        //www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
+        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+
+        //Debug.LogWarning(UserManager.Get.getCurrentSessionToken());
+        //Debug.LogWarning(UserManager.Get.getCurrentUserId());
+        //await www.SendWebRequest();
+
+        //if (www.isNetworkError || www.isHttpError)
+        //{
+        //    Debug.Log(www.isNetworkError);
+        //    return false;
+        //}
+        //return true;
     }
     public async Task<string> JoinOrCreateTournament(int nb_player, float gain, string gain_type, string userId, string token)
     {
@@ -150,18 +157,22 @@ public class TournamentManager : MonoBehaviour
         form.AddField("gain_type", gain_type);
         form.AddField("game_id", GamesManager.GAME_ID);
         form.AddField("user_id", userId);
-        UnityWebRequest www = UnityWebRequest.Post(url, form);
-
-        www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return null;
-        }
-        var tournementdata = JSON.Parse(www.downloadHandler.text);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var tournementdata = JSON.Parse(response);
         UserManager.Get.UpdateUserCredit((tournementdata["user"]["money_credit"].AsFloat).ToString(), tournementdata["user"]["bubble_credit"].Value);
         TournamentController.setCurrentTournamentID(tournementdata["tournament"]["_id"].Value);
         return tournementdata["tournament"]["_id"].Value;
+        //UnityWebRequest www = UnityWebRequest.Post(url, form);
+        //www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
+        //await www.SendWebRequest();
+        //if (www.isNetworkError || www.isHttpError)
+        //{
+        //    return null;
+        //}
+        //var tournementdata = JSON.Parse(www.downloadHandler.text);
+        //UserManager.Get.UpdateUserCredit((tournementdata["user"]["money_credit"].AsFloat).ToString(), tournementdata["user"]["bubble_credit"].Value);
+        //TournamentController.setCurrentTournamentID(tournementdata["tournament"]["_id"].Value);
+        //return tournementdata["tournament"]["_id"].Value;
     }
     public bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
     {

@@ -55,6 +55,12 @@ public class EventsController : MonoBehaviour
     private void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SeembaWebRequest.Get.OnSeembaErrorEvent += OnSeembaError;
+    }
+
+    private void OnSeembaError(string data)
+    {
+        Debug.LogWarning(data);
     }
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -342,7 +348,7 @@ public class EventsController : MonoBehaviour
     }
     public async void startFirstChallenge(string token)
     {
-        ChallengeManager.CurrentChallengeGain = "2";
+        ChallengeManager.CurrentChallengeGain = ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT.ToString();
         ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
         SearchingForPlayerPresenter.nbPlayer = "duel";
         ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;

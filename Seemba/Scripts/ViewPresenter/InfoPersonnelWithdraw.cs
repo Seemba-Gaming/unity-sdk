@@ -242,7 +242,7 @@ public class InfoPersonnelWithdraw : MonoBehaviour
             string accounttoken = await wm.TokenizeAccountAsync();
             if (!String.IsNullOrEmpty(accounttoken))
             {
-                if (wm.attachTokenToAccount(accounttoken, token))
+                if (await wm.attachTokenToAccountAsync(accounttoken, token))
                 {
                     string[] attrib = { "iban_uploaded" };
                     string[] value5 = { "true" };

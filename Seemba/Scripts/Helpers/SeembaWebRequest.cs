@@ -108,7 +108,7 @@ public class SeembaWebRequest : MonoBehaviour
     {
         await www.SendWebRequest();
 
-        if(www.error != null)
+        if (www.error != null)
         {
             OnSeembaError(www);
         }

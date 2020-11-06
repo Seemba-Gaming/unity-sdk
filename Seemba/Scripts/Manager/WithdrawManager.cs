@@ -103,51 +103,16 @@ public class WithdrawManager
         return N["success"].AsBool;
     }
 
-    public bool attachTokenToAccount(string account_token, string token)
+    public async Task<bool> attachTokenToAccountAsync(string account_token, string token)
     {
-        //UserManager um = new UserManager();
         string url = Endpoint.classesURL + "/payments/updateAccount";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "external_account=" + account_token;
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log(error);
-                    }
-                }
-            }
-            return false;
-        }
+        WWWForm form = new WWWForm();
+        form.AddField("external_account", account_token);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        Debug.Log(response);
+        var N = JSON.Parse(response);
+        return N["success"].AsBool;
     }
     //public string HttpUploadFile(string path, string token)
     //{
@@ -418,27 +383,9 @@ public class WithdrawManager
     {
         string url = Endpoint.classesURL + "/payments/retreiveAccount/";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.Headers["x-access-token"] = token;
-        try
-        {
-            using (System.IO.Stream s = request.GetResponse().GetResponseStream())
-            {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-
-                    var N = JSON.Parse(jsonResponse);
-                    return N;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            //Debug.Log (ex);
-            return null;
-        }
+        var response = await SeembaWebRequest.Get.HttpsGet(url);
+        var N = JSON.Parse(response);
+        return N;
     }
     public bool validateIBAN(string bankAccount)
     {

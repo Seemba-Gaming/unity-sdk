@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static PopupsController;
 
+[CLSCompliant(false)]
 public class PopupsViewPresenter : MonoBehaviour
 {
     #region static
@@ -128,7 +127,7 @@ public class PopupsViewPresenter : MonoBehaviour
     #endregion
 
     #region Unity Methods
-    void Start()
+    private void Start()
     {
         isActive = true;
         _Instance = this;
@@ -138,26 +137,10 @@ public class PopupsViewPresenter : MonoBehaviour
     {
         isActive = false;
     }
-    void Init()
-    {
-        switch (popup)
-        {
-            case PopupType.DUELS:
-                //ShowDuelsPopup(_params);
-                break;
-            default:
-                ShowErrorPopup();
-                break;
-        }
-    }
-    public static PopupsViewPresenter getInstance()
-    {
-        return _Instance;
-    }
     #endregion
 
     #region Methods
-    public void InitPopupInfo(string title, string subtitle, string message, string buttonText, bool isEmail = false)
+    public void InitPopupInfo(string title, string subtitle, string message, string buttonText)
     {
         PopupInfoTitle.text = title;
         PopupInfoSubtitle.text = subtitle;
@@ -182,21 +165,21 @@ public class PopupsViewPresenter : MonoBehaviour
             }
         });
 
-        popup_error_button.onClick.AddListener(() =>
-        {
-            switch (CURRENT_POPUP)
-            {
-                case PopupType.INFO_INSUFFICIENT_BALANCE:
-                    OpenWallet("WinMoney");
-                    break;
-                case PopupType.INFO_INSUFFICIENT_BUBBLES:
-                    OpenWallet("HaveFun");
-                    break;
-                case PopupType.DOWNLOAD_FROM_STORE:
-                    EventsController.Get.DownloadFromStore();
-                    break;
-            }
-        });
+        //popup_error_button.onClick.AddListener(() =>
+        //{
+        //    switch (CURRENT_POPUP)
+        //    {
+        //        case PopupType.INFO_INSUFFICIENT_BALANCE:
+        //            OpenWallet("WinMoney");
+        //            break;
+        //        case PopupType.INFO_INSUFFICIENT_BUBBLES:
+        //            OpenWallet("HaveFun");
+        //            break;
+        //        case PopupType.DOWNLOAD_FROM_STORE:
+        //            EventsController.Get.DownloadFromStore();
+        //            break;
+        //    }
+        //});
 
         PopupAgeconfirmButton.onClick.AddListener(() =>
         {
@@ -240,20 +223,15 @@ public class PopupsViewPresenter : MonoBehaviour
     public void ShowInfoPopup(object[] _params)
     {
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _params[0].ToString();
-        PopupInfoSubtitle.text = _params[1].ToString();
-        PopupInfoMessage.text = _params[2].ToString();
-        PopupInfoConfirmButtonText.text = _params[3].ToString();
+        InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
+
+
     }
     public void ShowInsufficientBalancePopup(object[] _paras)
     {
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _paras[0].ToString();
-        PopupInfoSubtitle.text = _paras[1].ToString();
-        PopupInfoMessage.text = _paras[2].ToString();
-        PopupInfoConfirmButtonText.text = _paras[3].ToString();
+        InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
+
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.onClick.AddListener(() =>
         {
@@ -266,30 +244,22 @@ public class PopupsViewPresenter : MonoBehaviour
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
     }
     public void ShowMissingInfoPopup(object[] _param, string source)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.onClick.AddListener(() =>
         {
-            if(source.Equals("Idproof"))
+            if (source.Equals("Idproof"))
             {
                 ViewsEvents.Get.IdProof.GetComponent<IDProofPresenter>().missingInfoContinue();
             }
-            else if( source.Equals("withdraw"))
+            else if (source.Equals("withdraw"))
             {
                 //PopupManager.Get.PopupController.HideCurrentPopup();
                 HidePopupContent(PopupManager.Get.PopupController.PopupInfo);
@@ -302,55 +272,54 @@ public class PopupsViewPresenter : MonoBehaviour
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
     }
     public void ShowErrorPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
     }
     public void ShowEqualityRefundPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
+    }
+    public void ShowNotAuthorizedPopup(object[] _param)
+    {
+        _params = _param;
+        PopupInfoCancelButton.gameObject.SetActive(false);
+        ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
+        PopupInfoConfirmButton.onClick.RemoveAllListeners();
+        PopupInfoConfirmButton.onClick.AddListener(() =>
+        {
+            HidePopupContent(PopupManager.Get.PopupController.PopupInfo);
+            ViewsEvents.Get.Login.GetComponent<UserService>().Logout();
+        });
     }
     public void ShowEmailNotFoundPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
     }
     public void ShowInsufficientBubblesPopup(object[] _param)
     {
         _params = _param;
         PopupInfoConfirmButton.gameObject.SetActive(true);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.onClick.AddListener(() =>
         {
@@ -362,11 +331,8 @@ public class PopupsViewPresenter : MonoBehaviour
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.gameObject.SetActive(true);
         PopupInfoConfirmButton.onClick.AddListener(() =>
@@ -379,44 +345,32 @@ public class PopupsViewPresenter : MonoBehaviour
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
     }
     public void ShowProhibitedLocationWalletPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
     }
     public void ShowProhibitedLocationWithdrawPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
     }
     public void ShowTooyoungPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.gameObject.SetActive(true);
         PopupInfoConfirmButton.onClick.AddListener(() =>
@@ -552,10 +506,11 @@ public class PopupsViewPresenter : MonoBehaviour
             StartCoroutine(CongratsButtonClick());
         });
     }
-    IEnumerator CongratsButtonClick()
+
+    private IEnumerator CongratsButtonClick()
     {
         HidePopupContent(PopupManager.Get.PopupController.PopupCongrats);
-        if(ViewsEvents.Get.GetCurrentMenu() != ViewsEvents.Get.Menu)
+        if (ViewsEvents.Get.GetCurrentMenu() != ViewsEvents.Get.Menu)
         {
             ViewsEvents.Get.GoBack();
         }
@@ -581,11 +536,7 @@ public class PopupsViewPresenter : MonoBehaviour
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        PopupManager.Get.PopupController.PopupInfo.SetBool("Show", true);
-        PopupInfoTitle.text = _param[0].ToString();
-        PopupInfoSubtitle.text = _param[1].ToString();
-        PopupInfoMessage.text = _param[2].ToString();
-        PopupInfoConfirmButtonText.text = _param[3].ToString();
+        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.gameObject.SetActive(true);
         PopupInfoConfirmButton.onClick.AddListener(() =>
@@ -628,9 +579,12 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupAgeconfirmButton.interactable = false;
         EventsController.Get.UpdateAge();
     }
-    void ShowOverlay() { overlay.gameObject.SetActive(true); }
-    void HideOverlay() { overlay.gameObject.SetActive(false); }
-    IEnumerator WaitforAnimation(Animator animator)
+
+    private void ShowOverlay() { overlay.gameObject.SetActive(true); }
+
+    private void HideOverlay() { overlay.gameObject.SetActive(false); }
+
+    private IEnumerator WaitforAnimation(Animator animator)
     {
         animator.SetBool("Show", false);
         yield return new WaitForSeconds(0.5f);

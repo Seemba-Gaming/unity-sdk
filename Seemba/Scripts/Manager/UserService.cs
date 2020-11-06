@@ -5,6 +5,7 @@ using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+[CLSCompliant(false)]
 public class UserService : MonoBehaviour
 {
     #region Static

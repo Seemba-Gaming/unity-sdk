@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.IO;
 using SimpleJSON;
+
+[CLSCompliant(false)]
 public class OnGoingGameListController : MonoBehaviour
 {
     public GameObject ContentPanel, ContentOngoing;

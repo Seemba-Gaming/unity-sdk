@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 [System.Serializable]
 public class TourPlayer : MonoBehaviour
 {

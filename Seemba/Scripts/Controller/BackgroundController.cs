@@ -6,13 +6,15 @@ using System.IO;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using UnityEditor;
+using System;
 
+[CLSCompliant(false)]
 public class BackgroundController : MonoBehaviour
 {
     public static Sprite CurrentBackground;
     public static string backgroundURL;
     public Image background;
-    // Use this for initialization
+                              // Use this for initialization
     void Start()
     {
         if (CurrentBackground == null)

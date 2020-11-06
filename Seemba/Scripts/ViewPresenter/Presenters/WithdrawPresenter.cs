@@ -1,4 +1,5 @@
 ﻿using SimpleJSON;
+using System;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,8 @@ public class AccountStatus
     public string verification_status;
     public string verification_link;
 }
+
+[CLSCompliant(false)]
 public class WithdrawPresenter : MonoBehaviour
 {
     #region Static 

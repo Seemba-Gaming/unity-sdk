@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class Seemba : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
 
     #region Static

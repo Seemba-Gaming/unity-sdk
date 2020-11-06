@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 [RequireComponent(typeof(Mask))]
 [RequireComponent(typeof(ScrollRect))]
+[CLSCompliant(false)]
 public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     [Tooltip("Set starting page index - starting from 0")]

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class HistoricTranslationController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     [SerializeField]
     private Text games_won,

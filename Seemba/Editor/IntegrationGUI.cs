@@ -6,7 +6,9 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class IntegrationGUI : EditorWindow
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     private Texture2D m_Logo = null;
 

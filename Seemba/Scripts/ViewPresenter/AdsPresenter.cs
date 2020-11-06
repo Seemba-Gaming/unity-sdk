@@ -2,7 +2,9 @@ using UnityEngine;
 //using GoogleMobileAds;
 //using GoogleMobileAds.Api;
 // Example script showing how to invoke the Google Mobile Ads Unity plugin.
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class AdsPresenter : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     /* private BannerView bannerView;
 	private InterstitialAd interstitial;

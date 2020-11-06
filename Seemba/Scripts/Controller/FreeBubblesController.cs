@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class FreeBubblesController : MonoBehaviour
 {
     private const int rewardIntervalHours = 2;

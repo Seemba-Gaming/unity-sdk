@@ -9,7 +9,9 @@ using UnityEngine.Networking;
 
 namespace Kakera
 {
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
     public class PickerController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
     {
         [SerializeField]
         private Unimgpicker imagePicker;

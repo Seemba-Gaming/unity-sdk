@@ -14,7 +14,9 @@ using UnityEngine.Networking;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class ChallengeManager : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     #region Static
     public static ChallengeManager Get { get { return sInstance; } }
@@ -267,48 +269,48 @@ public class ChallengeManager : MonoBehaviour
             return false;
         }
     }
-    public void updateChallenge(string challengeId, float score)
-    {
-        //UserManager um = new UserManager ();
-        string url = Endpoint.classesURL + "/challenges";
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "PUT";
-        request.Headers["x-access-token"] = UserManager.Get.getCurrentSessionToken();
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "challenge_id=" + challengeId + "&score=" + score + "&is_finished=" + "false";
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log(jsonResponse);
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log(error);
-                    }
-                }
-            }
-        }
-    }
+    //public void updateChallenge(string challengeId, float score)
+    //{
+    //    //UserManager um = new UserManager ();
+    //    string url = Endpoint.classesURL + "/challenges";
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "PUT";
+    //    request.Headers["x-access-token"] = UserManager.Get.getCurrentSessionToken();
+    //    request.ContentType = "application/x-www-form-urlencoded";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        string json = "challenge_id=" + challengeId + "&score=" + score + "&is_finished=" + "false";
+    //        byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                //Debug.Log(jsonResponse);
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                    //Debug.Log(error);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     public async Task<Challenge> AddChallenge(string challenge_type, string gain, string gain_type, int level, string token = null)
     {
         string url = Endpoint.classesURL + "/challenges";

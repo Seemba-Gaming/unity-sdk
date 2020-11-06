@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
+[CLSCompliant(false)]
 public class SignupPresenter : MonoBehaviour
 {
     #region Script Parameters

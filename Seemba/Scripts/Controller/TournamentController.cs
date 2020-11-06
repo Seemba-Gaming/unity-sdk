@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using System.Globalization;
 using static PopupsViewPresenter;
 
+[CLSCompliant(false)]
 public class TournamentController : MonoBehaviour
 {
     #region Static

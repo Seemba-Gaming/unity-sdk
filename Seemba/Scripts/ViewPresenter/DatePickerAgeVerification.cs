@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class DatePickerAgeVerification : MonoBehaviour
 {
     public ToggleGroup toggleGroup;

@@ -2,6 +2,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class InfoPersonnelWithdraw : MonoBehaviour
 {
     public static bool ibanUploaded, idProof1Uploaded, idProof2Uploaded, passportUploaded;

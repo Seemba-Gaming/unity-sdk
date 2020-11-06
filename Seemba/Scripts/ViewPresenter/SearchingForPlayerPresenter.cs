@@ -2,6 +2,8 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class SearchingForPlayerPresenter : MonoBehaviour
 {
     #region Static

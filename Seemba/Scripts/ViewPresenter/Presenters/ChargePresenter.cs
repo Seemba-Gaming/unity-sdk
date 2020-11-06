@@ -14,6 +14,8 @@ struct GradientColor
         this.endColor = endColor;
     }
 }
+[CLSCompliant(false)]
+
 public class ChargePresenter : MonoBehaviour
 {
     #region Script Parameters
@@ -272,7 +274,7 @@ public class ChargePresenter : MonoBehaviour
 
         if (!_paymentMethodID.Equals("-1"))
         {
-            JSONNode _paymentIntent = ChargeManager.Get.CreatePaymentIntent(_paymentMethodID, WalletScript.LastCredit, token);
+            JSONNode _paymentIntent = ChargeManager.Get.CreatePaymentIntentAsync(_paymentMethodID, WalletScript.LastCredit, token);
 
             yield return new WaitUntil(() => _paymentIntent != null);
 
@@ -346,7 +348,7 @@ public class ChargePresenter : MonoBehaviour
         string token = UserManager.Get.getCurrentSessionToken();
         UnityThreadHelper.CreateThread(() =>
         {
-            string chargeConfirmed = ChargeManager.Get.isChargeConfirmed(_paymentIntentID, token);
+            string chargeConfirmed = ChargeManager.Get.isChargeConfirmedAsync(_paymentIntentID, token);
             Debug.Log("chargeConfirmed: " + chargeConfirmed);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {

@@ -8,6 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+[CLSCompliant(false)]
 public class ImagesManager : MonoBehaviour
 {
     public static string AvatarURL;

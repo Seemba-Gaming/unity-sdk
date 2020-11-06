@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
+
+[CLSCompliant(false)]
 public class UnityWebRequestAwaiter : INotifyCompletion
 {
     private UnityWebRequestAsyncOperation asyncOp;

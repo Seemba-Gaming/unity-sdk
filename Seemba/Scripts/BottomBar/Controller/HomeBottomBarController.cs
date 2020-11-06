@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
+[CLSCompliant(false)]
 public class HomeBottomBarController : MonoBehaviour
 {
     // Start is called before the first frame update

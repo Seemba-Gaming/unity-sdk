@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+
+[CLSCompliant(false)]
 public class HomeController : MonoBehaviour
 {
     public static bool NoLastResult, NoOngoing;

@@ -11,7 +11,9 @@ using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class UserManager : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
 
     #region Static
@@ -194,7 +196,7 @@ public class UserManager : MonoBehaviour
         var userData = JsonUtility.FromJson<UserData>(response);
         CurrentUser = userData.data;
         CurrentUser.token = N["token"].Value;
-        LoaderManager.Get.LoaderController.ShowLoader("Loading ..");
+        LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
 
         CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
         var mTexture = await GetFlagBytes(await GetGeoLoc());

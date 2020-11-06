@@ -1,14 +1,10 @@
 using UnityEngine;
 using System.Collections;
 using System;
-using UnityEngine.SceneManagement;
-using System.Collections.Generic;
 using UnityEngine.UI;
-using System.Net;
-using System.Threading;
-using System.IO;
 using SimpleJSON;
-using System.Globalization;
+
+[CLSCompliant(false)]
 public class LastResultListItemController : MonoBehaviour
 {
     public GameObject ContentPanel;

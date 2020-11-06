@@ -2,7 +2,8 @@
 using System.Collections;
 using System;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+
+[CLSCompliant(false)]
 public class GameListItemController : MonoBehaviour
 {
 	ArrayList Items;

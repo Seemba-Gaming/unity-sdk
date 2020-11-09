@@ -160,7 +160,7 @@ public class UserService : MonoBehaviour
                 LoaderManager.Get.LoaderController.HideLoader();
                 if (res == 0)
                 {
-                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_EMAIL_NOT_FOUND, PopupsText.Get.EmailNotFound());
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_EMAI_NOT_FOUND, PopupsText.Get.EmailNotFound());
                 }
                 else
                 {

@@ -84,9 +84,18 @@ public class WithdrawManager
         WWWForm form = new WWWForm();
         form.AddField("account[tos_shown_and_accepted]", "true");
         form.AddField("account[business_type]", "individual");
-        var response = await SeembaWebRequest.Get.HttpsPostBearer(url, form);
-        var N = JSON.Parse(response);
+        var www = UnityWebRequest.Post(url, form);
+        www.SetRequestHeader("Authorization", "Bearer " + Endpoint.TokenizationAccount);
+        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+
+        await www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError) return null;
+
+        var N = JSON.Parse(www.downloadHandler.text);
+        Debug.Log(www.downloadHandler.text);
         return N["id"].Value;
+
     }
     public async Task<bool> CreateConnectAccount(string account_token, string bank_account_token, string currency, string country_code, string token)
     {
@@ -98,8 +107,15 @@ public class WithdrawManager
         form.AddField("external_account", bank_account_token);
         form.AddField("currency", currency);
         form.AddField("country_code", country_code);
-        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-        var N = JSON.Parse(response);
+        var www = UnityWebRequest.Post(url, form);
+        www.SetRequestHeader("x-access-token", token);
+        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+
+        await www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError) return false;
+        Debug.Log(www.downloadHandler.text);
+        var N = JSON.Parse(www.downloadHandler.text);
         return N["success"].AsBool;
     }
 
@@ -211,11 +227,26 @@ public class WithdrawManager
         Debug.Log("Fieldname: " + fieldname);
         WWWForm form = new WWWForm();
         form.AddField(fieldname, value);
-        var url = Endpoint.classesURL + "/payments/updateAccount";
-        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-        var N = JSON.Parse(response);
-        Debug.Log("Success: " + N["success"]);
-        return N["success"].AsBool;
+        UnityWebRequest request = UnityWebRequest.Post(Endpoint.classesURL + "/payments/updateAccount", form);
+        request.SetRequestHeader("x-access-token", token);
+        request.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+        await request.SendWebRequest();
+        if (request.isNetworkError)
+        {
+            return false;
+        }
+        if (request.isHttpError) // Error 
+        {
+            Debug.Log(request.error);
+            return false;
+        }
+        else // Success
+        {
+            Debug.Log(request.downloadHandler.text);
+            var N = JSON.Parse(request.downloadHandler.text);
+            Debug.Log("Success: " + N["success"]);
+            return N["success"].AsBool;
+        }
     }
     public bool attachInfoToAccount1(string token, string value, params string[] Params)
     {
@@ -410,9 +441,18 @@ public class WithdrawManager
     public async Task<AccountStatus> accountVerificationStatus(string token)
     {
         string url = Endpoint.classesURL + "/payments/retreiveAccount/";
-        var response = await SeembaWebRequest.Get.HttpsGet(url);
-        AccountStatus accountStatus = JsonConvert.DeserializeObject<AccountStatus>(response);
-        return accountStatus;
+
+        var www = UnityWebRequest.Get(url);
+        www.SetRequestHeader("x-access-token", token);
+
+        await www.SendWebRequest();
+        if (www.isNetworkError || www.isHttpError || www.isNetworkError)
+        {
+            Debug.Log(www.error);
+            return null;
+        }
+        var V = JsonConvert.DeserializeObject<AccountStatus>(www.downloadHandler.text);
+        return V;
     }
     public async Task<JSONNode> accountVerificationJSON(string token)
     {
@@ -709,15 +749,27 @@ public class WithdrawManager
         string url = Endpoint.classesURL + "/payments/payout/";
         WWWForm form = new WWWForm();
         form.AddField("amount", amount.ToString());
-        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-        var N = JSON.Parse(response);
+        var www = UnityWebRequest.Post(url, form);
+        www.SetRequestHeader("x-access-token", token);
+        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+
+        await www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError || www.isNetworkError)
+        {
+            Debug.Log(www.error);
+            return "error";
+        }
+        Debug.Log(www.downloadHandler.text);
+
+        var N = JSON.Parse(www.downloadHandler.text);
         if (N["success"].AsBool == true)
         {
             return WITHDRAW_SUCCEEDED_STATUS;
         }
         else
         {
-            return (!string.IsNullOrEmpty(N["error"]["code"])) ? N["error"]["code"].Value : "error";
+            return (!string.IsNullOrEmpty(N["error"]["code"])) ? N["error"]["code"].Value: "error";
         }
     }
     public bool MyRemoteCertificateValidationCallback(System.Object sender,

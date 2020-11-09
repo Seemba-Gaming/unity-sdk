@@ -149,12 +149,14 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         if (WalletButton)
             WalletButton.GetComponent<Button>().onClick.AddListener(() =>
             {
+                Debug.LogWarning("here");
                 LerpToPage(2); ShowScene("Wallet");
                 //Age.SetActive(true);
             });
         if (CompteButton)
             CompteButton.GetComponent<Button>().onClick.AddListener(() =>
             {
+                Debug.LogWarning("here");
                 LerpToPage(1); ShowScene("Compte");
             });
         if (HistoryButton)

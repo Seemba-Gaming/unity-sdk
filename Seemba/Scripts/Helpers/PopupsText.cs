@@ -114,14 +114,6 @@ public class PopupsText : MonoBehaviour
     {
         return new object[] { "Weak", "Network reception", "We are trying to access internet but your connection is too weak...", "Got it !" };
     }
-    public object[] Unauthorized()
-    {
-        return new object[] { "Weak", "Network reception", "We are trying to access internet but your connection is too weak...", "Got it !" };
-    }
-    public object[] ServerError()
-    {
-        return new object[] { "Weak", "Network reception", "We are trying to access internet but your connection is too weak...", "Got it !" };
-    }
     //stopped here work on missing translations
     public object[] EmailNotFound()
     {

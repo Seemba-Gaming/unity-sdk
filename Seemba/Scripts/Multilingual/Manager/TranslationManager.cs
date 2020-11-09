@@ -88,6 +88,24 @@ public sealed class TranslationManager : MonoBehaviour
                 isDownloaded = true;
                 return true;
             }
+            //var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
+
+            //await req.SendWebRequest();
+            //Debug.LogWarning(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
+            //if (req.isNetworkError || req.isHttpError)
+            //{
+            //    Debug.Log(req.error);
+            //    isDownloaded = false;
+            //    return false;
+            //}
+            //else
+            //{
+            //    string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
+            //    System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
+            //    PlayerPrefs.SetString(systemLanguage, systemLanguage);
+            //    isDownloaded = true;
+            //    return true;
+            //}
         }
         else
         {

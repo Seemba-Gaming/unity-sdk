@@ -102,26 +102,12 @@ public class ImagesManager : MonoBehaviour
     {
         WWWForm form = new WWWForm();
         form.AddBinaryData("avatar", avatar);
-        var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/avatars/upload", form);
-        download.timeout = 4000;
-        await download.SendWebRequest();
-
-        if (download.isNetworkError)
-        {
-            print("Error downloading: " + download.error);
-            AvatarURL = "error";
-            return AvatarURL;
-        }
-        if (download.responseCode == 200)
-        {
-            var N = JSON.Parse(download.downloadHandler.text);
-            //Save The current Session ID
-            AvatarURL = N["data"].Value;
-            return AvatarURL;
-        }
-        else
-        {
-            return null;
-        }
+        var url = Endpoint.classesURL + "/users/avatars/upload";
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        Debug.LogWarning(response);
+        var N = JSON.Parse(response);
+        //Save The current Session ID
+        AvatarURL = N["data"].Value;
+        return AvatarURL;
     }
 }

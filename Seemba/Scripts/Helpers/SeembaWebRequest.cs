@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -46,40 +47,77 @@ public class SeembaWebRequest : MonoBehaviour
     {
         sInstance = this;
     }
-    public async System.Threading.Tasks.Task<string> HttpsGet(string uri)
+    public async Task<string> HttpsGet(string uri)
     {
         UnityWebRequest www = UnityWebRequest.Get(uri);
         var token = UserManager.Get.getCurrentSessionToken();
         if(token != null)
         {
-            www.SetRequestHeader("x-access-token",token );
+            www.SetRequestHeader("x-access-token", token);
         }
         return await HandleRequest(www);
     }
-    
-    public async System.Threading.Tasks.Task<string> HttpsGetAnonymous(string uri)
-    {
-        UnityWebRequest www = UnityWebRequest.Get(uri);
 
-        return await HandleRequest(www);
-    }
-
-    public async System.Threading.Tasks.Task<T> HttpsGetJSON<T>(string uri)
+    public async Task<T> HttpsGetJSON<T>(string uri)
     {
         string responseText = await HttpsGet(uri);
         SeembaResponse<T> response = JsonConvert.DeserializeObject<SeembaResponse<T>>(responseText);
         return response.data;
     }
 
-    private async System.Threading.Tasks.Task<string> HandleRequest(UnityWebRequest www)
+    public async Task<string> HttpsPostBearer(string uri, WWWForm postData)
+    {
+        UnityWebRequest www = UnityWebRequest.Post(uri,postData);
+        var token = UserManager.Get.getCurrentSessionToken();
+        if (token != null)
+        {
+            www.SetRequestHeader("Authorization", "Bearer " + token);
+            www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+        }
+        return await HandleRequest(www);
+    }
+
+    public async Task<string> HttpsPost(string uri, WWWForm postData)
+    {
+        UnityWebRequest www = UnityWebRequest.Post(uri, postData);
+        var token = UserManager.Get.getCurrentSessionToken();
+        if (token != null)
+        {
+            www.SetRequestHeader("x-access-token", token);
+            www.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+        }
+        return await HandleRequest(www);
+    }
+
+
+    public async Task<string> HttpsPut(string uri, byte[] bodyData)
+    {
+        UnityWebRequest www = UnityWebRequest.Put(uri, bodyData);
+        var token = UserManager.Get.getCurrentSessionToken();
+        if (token != null)
+        {
+            www.SetRequestHeader("x-access-token", token);
+            www.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+        }
+        return await HandleRequest(www);
+    }
+
+    
+
+    private async Task<string> HandleRequest(UnityWebRequest www)
     {
         await www.SendWebRequest();
         if (www.isNetworkError || www.isHttpError) 
         { 
             OnSeembaError(www.downloadHandler.text);
             return null;
-        } 
+        }
 
+        if(www.error != null)
+        {
+            OnSeembaError(www.responseCode.ToString());
+        }
+        Debug.LogWarning(www.responseCode);
         return www.downloadHandler.text;
     }
 

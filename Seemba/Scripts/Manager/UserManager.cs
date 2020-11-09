@@ -53,25 +53,12 @@ public class UserManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("type", type);
         form.AddField("game", GamesManager.GAME_ID);
-        var www = UnityWebRequest.Post(url, form);
-        www.SetRequestHeader("x-access-token", getCurrentSessionToken());
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        await www.SendWebRequest();
-
+        await SeembaWebRequest.Get.HttpsPost(url, form);
     }
     public async Task<bool> WinFreeBubble(string token)
     {
-        var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/bubbles/free", new WWWForm());
-        download.SetRequestHeader("x-access-token", token);
-        download.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        await download.SendWebRequest();
-        Debug.Log(download.downloadHandler.text);
-        if (download.isNetworkError || download.isHttpError || download.isNetworkError)
-        {
-            print("Error downloading: " + download.error);
-            return false;
-        }
+        var url = Endpoint.classesURL + "/users/bubbles/free";
+        await SeembaWebRequest.Get.HttpsPost(url, new WWWForm());
         return true;
     }
 
@@ -88,18 +75,7 @@ public class UserManager : MonoBehaviour
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
 
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
-        var www = UnityWebRequest.Put(url, jsonAsBytes);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        www.SetRequestHeader("x-access-token", getCurrentSessionToken());
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            Debug.Log(www.downloadHandler.text);
-        }
+        await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
     }
 
     public async Task<Texture2D> GetFlagBytes(string country_code)
@@ -119,22 +95,6 @@ public class UserManager : MonoBehaviour
         var req = await SeembaWebRequest.Get.HttpsGet(url);
         var N = JSON.Parse(req);
         return N["country"].Value.ToLower();
-
-        //var www = UnityWebRequest.Get(url);
-        //await www.SendWebRequest();
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    Debug.Log(www.error);
-        //    return null;
-        //}
-        //else
-        //{
-        //    var N = JSON.Parse(www.downloadHandler.text);
-        //    //CurrentUser.long_lat = N["loc"].Value;
-        //    //CurrentUser.country = N["country"].Value.ToLower();
-        //    //return CurrentUser.country.ToLower();
-        //    return N["country"].Value.ToLower();
-        //}
     }
 
     //signup with the new api
@@ -149,17 +109,8 @@ public class UserManager : MonoBehaviour
         form.AddField("game_id", GamesManager.GAME_ID);
         form.AddField("avatar", avatar);
         var url = Endpoint.classesURL + "/users";
-        var download = UnityWebRequest.Post(url, form);
-        download.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        await download.SendWebRequest();
-        Debug.Log(download.downloadHandler.text);
-        if (download.isNetworkError || download.isHttpError)
-        {
-            print("Error downloading: " + download.error);
-            //OnSeembaError();
-            return null;
-        }
-        var N = JSON.Parse(download.downloadHandler.text);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
         //Save The current Session ID
         saveUserId(N["data"]["_id"].Value);
         //Save Session Token
@@ -238,19 +189,9 @@ public class UserManager : MonoBehaviour
             form.AddField("username", email_username.ToUpper());
         }
         string url = Endpoint.classesURL + "/authenticate";
-        UnityWebRequest www = UnityWebRequest.Post(url, form);
-        await www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return "failed";
-        }
-
-        var jsonResponse = www.downloadHandler.text;
-        Debug.Log(jsonResponse);
-
-        var N = JSON.Parse(jsonResponse);
-        var  userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
+        var userData = JsonUtility.FromJson<UserData>(response);
         CurrentUser = userData.data;
         CurrentUser.token = N["token"].Value;
         LoaderManager.Get.LoaderController.ShowLoader("Loading ..");
@@ -273,7 +214,6 @@ public class UserManager : MonoBehaviour
         {
             return "failed";
         }
-
     }
     public void logingOut()
     {
@@ -287,32 +227,23 @@ public class UserManager : MonoBehaviour
     {
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
-        var www = UnityWebRequest.Get(url);
+        var seembaResponse = await SeembaWebRequest.Get.HttpsGet(url);
+        UserData userData = JsonUtility.FromJson<UserData>(seembaResponse);
         var token = getCurrentSessionToken();
-
-        if (token != null)
+        if (!userData.success)
         {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError) return null;
-            UserData userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
-
-            if (!userData.success)
+            if (userData.message == "Failed to authenticate token.")
             {
-                if (userData.message == "Failed to authenticate token.")
-                {
-                    ShowExpiredSession();
-                }
-                else if (userData.message == "Could not find user")
-                {
-                    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
-                }
-                return null;
+                ShowExpiredSession();
             }
-            CurrentUser = userData.data;
-            return CurrentUser;
+            else if (userData.message == "Could not find user")
+            {
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
+            }
+            return null;
         }
-        return null;
+        CurrentUser = userData.data;
+        return CurrentUser;
     }
     void ShowExpiredSession()
     {
@@ -390,15 +321,7 @@ public class UserManager : MonoBehaviour
         form.AddField("platform", platform);
 
         string url = Endpoint.classesURL + "/users/devices";
-        var www = UnityWebRequest.Post(url, form);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        await www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return false;
-        }
+        await SeembaWebRequest.Get.HttpsPost(url, form);
         return true;
     }
     public void removeUserDeviceToken(string user_id, string gameId, string deviceToken)
@@ -449,17 +372,20 @@ public class UserManager : MonoBehaviour
 
         form.AddField("email", email);
         form.AddField("password", password);
-        var www = UnityWebRequest.Post(url, form);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        Debug.LogWarning(email  +" " + password);
-
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError) return false;
-        Debug.LogWarning(www.downloadHandler.text);
-        Debug.LogWarning(www.error);
-        var jsonResponse = www.downloadHandler.text;
-        var N = JSON.Parse(jsonResponse);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
         return N["success"].AsBool;
+        //var www = UnityWebRequest.Post(url, form);
+        //www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+        //Debug.LogWarning(email  +" " + password);
+
+        //await www.SendWebRequest();
+        //if (www.isNetworkError || www.isHttpError) return false;
+        //Debug.LogWarning(www.downloadHandler.text);
+        //Debug.LogWarning(www.error);
+        //var jsonResponse = www.downloadHandler.text;
+        //var N = JSON.Parse(jsonResponse);
+        //return N["success"].AsBool;
     }
     public bool checkMail(string mail)
     {

@@ -167,24 +167,6 @@ public class ChallengeManager : MonoBehaviour
             pendingChallenges.Add(challenge);
         }
         return pendingChallenges;
-        //UnityWebRequest www = UnityWebRequest.Get(url);
-        //if (token != null)
-        //{
-        //    www.SetRequestHeader("x-access-token", token);
-        //    await www.SendWebRequest();
-        //    if (www.isNetworkError || www.isHttpError)
-        //    {
-        //        return null;
-        //    }
-        //    ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-        //    ArrayList pendingChallenges = new ArrayList();
-        //    foreach (Challenge challenge in challengesList.data)
-        //    {
-        //        pendingChallenges.Add(challenge);
-        //    }
-        //    return pendingChallenges;
-        //}
-        //return null;
     }
     public async Task<ArrayList> getSeeResultsChallenges(string token)
     {
@@ -196,24 +178,6 @@ public class ChallengeManager : MonoBehaviour
             seeResultChallenges.Add(challenge);
         }
         return seeResultChallenges;
-        //UnityWebRequest www = UnityWebRequest.Get(url);
-        //if (token != null)
-        //{
-        //    www.SetRequestHeader("x-access-token", token);
-        //    await www.SendWebRequest();
-        //    if (www.isNetworkError || www.isHttpError)
-        //    {
-        //        return null;
-        //    }
-        //    ChallengeListData challengesList = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-        //    ArrayList seeResultChallenges = new ArrayList();
-        //    foreach (Challenge challenge in challengesList.data)
-        //    {
-        //        seeResultChallenges.Add(challenge);
-        //    }
-        //    return seeResultChallenges;
-        //}
-        //return null;
     }
     public async Task<ArrayList> getFinishedChallenges(string token)
     {
@@ -269,16 +233,9 @@ public class ChallengeManager : MonoBehaviour
 
         string json = "challenge_id=" + challengeId + "&score=" + score;
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
+        var response = await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
+        var challengeData = JsonConvert.DeserializeObject<ChallengeData>(response);
 
-        var www = UnityWebRequest.Put(url, jsonAsBytes);
-        www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return false;
-        }
-        var challengeData = JsonConvert.DeserializeObject<ChallengeData>(www.downloadHandler.text);
         var challenge = challengeData.data;
         CurrentChallenge = challengeData.data;
 
@@ -362,28 +319,18 @@ public class ChallengeManager : MonoBehaviour
         form.AddField("challenge_type", challenge_type);
         form.AddField("level", level);
         form.AddField("game_level", GamesManager.GAME_LEVEL.ToString());
-        var www = UnityWebRequest.Post(url, form);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        if(token == null)
-        {
-            www.SetRequestHeader("x-access-token", UserManager.Get.getCurrentSessionToken());
-        }
-        else
-        {
-            www.SetRequestHeader("x-access-token", token);
-        }
-
-        await www.SendWebRequest();
-        if (www.isNetworkError ||  www.isHttpError) return null;
-        ChallengeData challengeData = JsonConvert.DeserializeObject<ChallengeData>(www.downloadHandler.text);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        ChallengeData challengeData = JsonConvert.DeserializeObject<ChallengeData>(response);
         if (challengeData.success)
         {
             CurrentChallengeId = challengeData.data._id;
             CurrentChallengeStatus = challengeData.data.status;
             return challengeData.data;
         }
-        else return null;
-
+        else
+        {
+            return null;
+        }
     }
     public async Task<ArrayList> getUserOngoingChallenges(string token)
     {

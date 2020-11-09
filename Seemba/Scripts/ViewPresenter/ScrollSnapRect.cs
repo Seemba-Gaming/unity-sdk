@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -115,6 +116,12 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             _horizontal = true;
         }
         _lerp = false;
+        StartCoroutine(Init());
+    }
+
+    IEnumerator Init()
+    {
+        yield return new WaitForEndOfFrame();
         // init
         SetPagePositions();
         SetPage(startingPage);
@@ -214,22 +221,22 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
                 LerpToPage(0); ShowScene("Settings");
             });
         if (HelpCenterBackButton)
-            HelpCenterBackButton.GetComponent<Button>().onClick.AddListener(() => 
-            { 
+            HelpCenterBackButton.GetComponent<Button>().onClick.AddListener(() =>
+            {
                 LerpToPage(0); ShowScene("Settings");
                 BottomMenuController.Get.selectSettings();
                 ViewsEvents.Get.SettingsClick();
             });
         if (HistoryBackButton)
-            HistoryBackButton.GetComponent<Button>().onClick.AddListener(() => 
-            { 
+            HistoryBackButton.GetComponent<Button>().onClick.AddListener(() =>
+            {
                 LerpToPage(0); ShowScene("Settings");
                 BottomMenuController.Get.selectSettings();
                 ViewsEvents.Get.SettingsClick();
             });
         if (WithdrawBackButton)
-            WithdrawBackButton.GetComponent<Button>().onClick.AddListener(() => 
-            { 
+            WithdrawBackButton.GetComponent<Button>().onClick.AddListener(() =>
+            {
                 LerpToPage(0); ShowScene("Settings");
                 BottomMenuController.Get.selectSettings();
                 ViewsEvents.Get.SettingsClick();
@@ -246,7 +253,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
             });
         try
         {
-            if(Signin_Resend.Length > 0)
+            if (Signin_Resend.Length > 0)
             {
                 foreach (GameObject resend in Signin_Resend)
                 {

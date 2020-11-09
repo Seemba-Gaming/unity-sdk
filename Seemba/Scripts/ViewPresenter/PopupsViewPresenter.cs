@@ -230,7 +230,7 @@ public class PopupsViewPresenter : MonoBehaviour
     public void ShowInsufficientBalancePopup(object[] _paras)
     {
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
+        InitPopupInfo(_paras[0].ToString(), _paras[1].ToString(), _paras[2].ToString(), _paras[3].ToString());
 
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.onClick.AddListener(() =>

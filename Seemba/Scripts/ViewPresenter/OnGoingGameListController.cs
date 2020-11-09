@@ -174,7 +174,7 @@ public class OnGoingGameListController : MonoBehaviour
                             ChallengeManager.CurrentChallengeId = newItem.transform.GetChild(8).gameObject.GetComponent<Text>().text;
                             LoaderManager.Get.LoaderController.ShowLoader(null);
 
-                            Challenge challenge = ChallengeManager.Get.UpdateChallengeStatusToFinished(token, ChallengeManager.CurrentChallengeId);
+                            Challenge challenge = await ChallengeManager.Get.UpdateChallengeStatusToFinishedAsync(token, ChallengeManager.CurrentChallengeId);
                             Challenge Selectedchallenge = await ChallengeManager.Get.getChallenge(ChallengeManager.CurrentChallengeId);
 
                             ChallengeManager.CurrentChallenge = Selectedchallenge;

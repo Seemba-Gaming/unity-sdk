@@ -33,55 +33,21 @@ public class ChargeManager : MonoBehaviour {
     {
         sInstance = this;
     }
-    public string CreatePaymentMethod(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
+    public async System.Threading.Tasks.Task<string> CreatePaymentMethodAsync(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
     {
         string url = Endpoint.stripeURL + "/payment_methods";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        JSONNode res;
-        request.Method = "POST";
-        request.Headers["Authorization"] = "Bearer " + Endpoint.TokenizationAccount;
-        request.ContentType = "application/x-www-form-urlencoded";
-        string json;
-        using (var stream = request.GetRequestStream())
-        {
-            Debug.Log("card[exp_month]:" + card_expiry_month + " card[exp_year]:" + card_expiry_year);
-            //Amount en Cent
-            json = "card[number]=" + card_number + "&card[exp_month]=" + card_expiry_month + "&card[exp_year]=" + card_expiry_year + "&card[cvc]=" + cvc + "&type=" + PAYMENT_TYPE;
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    res = JSON.Parse(jsonResponse);
-                    Debug.Log("id:"+res["id"].Value);
-                    return res["id"].Value;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log (error);
-                    }
-                }
-            }
-            return "-1";
-        }
+        WWWForm form = new WWWForm();
+        form.AddField("card[number]=", card_number);
+        form.AddField("card[exp_month]=", card_expiry_month);
+        form.AddField("card[exp_year]=", card_expiry_year);
+        form.AddField("card[cvc]=", cvc);
+        form.AddField("type", PAYMENT_TYPE);
+        var response  = await SeembaWebRequest.Get.HttpsPostBearer(url, form);
+        Debug.Log(response);
+        var res = JSON.Parse(response);
+        Debug.Log("id:" + res["id"].Value);
+        return res["id"].Value;
     }
     public async System.Threading.Tasks.Task<JSONNode> CreatePaymentIntentAsync(string _paymentMethod, float amount, string token)
     {

@@ -80,7 +80,6 @@ public class TournamentManager : MonoBehaviour
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
 
         string url = Endpoint.classesURL + "/tournaments/" + tournamentsID;
-        Debug.LogWarning(url);
         var response = await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
         if(!string.IsNullOrEmpty(response))
         {

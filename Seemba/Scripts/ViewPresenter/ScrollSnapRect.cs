@@ -95,7 +95,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
         SetPageSelection(0);
         //LerpToPage(1);
     }
-    void OnEnable()
+    void Start()
     {
         _scrollRectComponent = GetComponent<ScrollRect>();
         _scrollRectRect = GetComponent<RectTransform>();

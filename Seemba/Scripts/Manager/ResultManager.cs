@@ -5,7 +5,9 @@ using SimpleJSON;
 using System;
 using UnityEngine.SceneManagement;
 using System.Globalization;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class ResultManager : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     //Text Gain;
     //public static bool AddGain, resultWaiting = false;

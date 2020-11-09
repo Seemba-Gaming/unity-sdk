@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 using SimpleJSON;
 using System;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class FavouritTournament : MonoBehaviour
 {
     #region Static
@@ -56,20 +54,6 @@ public class FavouritTournament : MonoBehaviour
         var json = JSON.Parse(res);
         ShowFavTournament(json["data"]["gain"].Value , json["data"]["gain_type"].Value, json["data"]["type"].Value);
         return true;
-        //UnityWebRequest www = UnityWebRequest.Get(url);
-
-        //if (token != null)
-        //{
-        //    www.SetRequestHeader("x-access-token", token);
-        //    await www.SendWebRequest();
-        //    if (www.isNetworkError || www.isHttpError)
-        //    {
-        //        return false;
-        //    }
-        //    var res = JSON.Parse(www.downloadHandler.text);
-        //    ShowFavTournament(res["data"]["gain"].Value , res["data"]["gain_type"].Value, res["data"]["type"].Value);
-        //}
-        //return true;
     }
 
     public void OnClickFavouriteType()

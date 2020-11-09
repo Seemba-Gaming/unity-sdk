@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+[CLSCompliant(false)]
 public class CountryListController : MonoBehaviour
 {
     public static string[] Countries = new string[]

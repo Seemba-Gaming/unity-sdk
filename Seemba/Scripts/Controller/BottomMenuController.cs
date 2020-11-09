@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Reflection;
+
+[CLSCompliant(false)]
 public class BottomMenuController : MonoBehaviour 
 {
     #region Static

@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+[CLSCompliant(false)]
 public class PersonelInfoController : MonoBehaviour
 {
     #region Script Parameters
@@ -112,7 +113,7 @@ public class PersonelInfoController : MonoBehaviour
                 Phone.GetComponent<InputfieldStateController>().ShowEditable();
                 Phone.readOnly = true;
             }
-            Phone.onEndEdit.AddListener(async delegate
+            Phone.onEndEdit.AddListener(delegate
             {
                 if (Phone.text != "" && Phone.text != usr.phone)
                 {
@@ -137,7 +138,7 @@ public class PersonelInfoController : MonoBehaviour
                     Phone_Containter.GetComponent<Animator>().SetBool("invalid", false);
                 }
             });
-            LastName.onEndEdit.AddListener(async delegate
+            LastName.onEndEdit.AddListener(delegate
             {
                 if (LastName.text != "" && LastName.text != usr.lastname)
                 {
@@ -156,11 +157,11 @@ public class PersonelInfoController : MonoBehaviour
                     LastName.text = usr.lastname;
                 }
             });
-            FirstName.onEndEdit.AddListener(async delegate
+            FirstName.onEndEdit.AddListener(delegate
             {
                 if (FirstName.text != "" && FirstName.text != usr.firstname)
                 {
-                    string[] attrib = {"firstname"};
+                    string[] attrib = { "firstname" };
                     string[] value = { FirstName.text };
                     FirstName.GetComponent<InputfieldStateController>().ShowLoading();
                     UpdateUser(attrib, value);
@@ -171,7 +172,7 @@ public class PersonelInfoController : MonoBehaviour
                     FirstName.text = usr.firstname;
                 }
             });
-            Address.onEndEdit.AddListener(async delegate
+            Address.onEndEdit.AddListener(delegate
             {
                 if (Address.text != "" && Address.text != usr.address)
                 {
@@ -191,7 +192,7 @@ public class PersonelInfoController : MonoBehaviour
                     Address.text = usr.address;
                 }
             });
-            City.onEndEdit.AddListener(async delegate
+            City.onEndEdit.AddListener(delegate
             {
                 if (City.text != "" && City.text != usr.city)
                 {
@@ -210,7 +211,7 @@ public class PersonelInfoController : MonoBehaviour
                     City.text = usr.city;
                 }
             });
-            ZipCod.onEndEdit.AddListener(async delegate
+            ZipCod.onEndEdit.AddListener(delegate
             {
                 if (!ZipCod.text.Equals("0") && !ZipCod.text.Equals(usr.zipcode))
                 {
@@ -232,7 +233,7 @@ public class PersonelInfoController : MonoBehaviour
                     }
                 }
             });
-            Country.onEndEdit.AddListener(async delegate
+            Country.onEndEdit.AddListener(delegate
             {
                 if (Country.text != "" && Country.text != usr.country)
                 {

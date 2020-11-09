@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class LoginTranslationController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     [Header("--------------Signin------------")]
     [SerializeField]
@@ -62,7 +64,7 @@ public class LoginTranslationController : MonoBehaviour
         magic_code.text = TranslationManager.Get("magic_code") != string.Empty ? TranslationManager.Get("magic_code") : magic_code.text;
         new_player.text = TranslationManager.Get("new_player") != string.Empty ? TranslationManager.Get("new_player") : new_player.text;
         create_account.text = TranslationManager.Get("create_account") != string.Empty ? TranslationManager.Get("create_account") : create_account.text;
-        _continue.text = TranslationManager.Get("_continue") != string.Empty ? TranslationManager.Get("_continue") : _continue.text;
+        _continue.text = TranslationManager.Get("continue") != string.Empty ? TranslationManager.Get("continue") : _continue.text;
         //--------------Email------------
         reset_password.text = TranslationManager.Get("reset_password") != string.Empty ? TranslationManager.Get("reset_password") : reset_password.text;
         enter_your_email_below_to_reset_password.text = TranslationManager.Get("enter_your_email_below_to_reset_password") != string.Empty ? TranslationManager.Get("enter_your_email_below_to_reset_password") : enter_your_email_below_to_reset_password.text;

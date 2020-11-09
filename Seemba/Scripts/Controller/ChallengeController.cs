@@ -2,7 +2,9 @@
 using System.Globalization;
 using UnityEngine;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class ChallengeController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     #region Static
     public static ChallengeController Get => sInstance;
@@ -35,7 +37,7 @@ public class ChallengeController : MonoBehaviour
 
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
-                StartCashChallenge(entry_fee, gain, gain_type);
+                StartCashChallengeAsync(entry_fee, gain, gain_type);
             }
             else
             {
@@ -58,15 +60,15 @@ public class ChallengeController : MonoBehaviour
     {
         JoinChallenge(entry_fee, gain, gain_type);
     }
-    public void StartCashChallenge(float entry_fee, float gain, string gain_type)
+    public async System.Threading.Tasks.Task StartCashChallengeAsync(float entry_fee, float gain, string gain_type)
     {
         if (isProhibitedLocation(UserManager.Get.CurrentUser.country_code))
         {
             PopupManager.Get.PopupController.ShowPopup(PopupType.PROHIBITED_LOCATION, PopupsText.Get.prohibited_location());
             return;
         }
-
-        if (isVPNEnabled())
+        var mIsVpnEnabled = await isVPNEnabledAsync();
+        if (mIsVpnEnabled)
         {
             PopupManager.Get.PopupController.ShowPopup(PopupType.VPN, PopupsText.Get.vpn());
             return;
@@ -121,10 +123,10 @@ public class ChallengeController : MonoBehaviour
     {
         return CountryController.checkCountry(code);
     }
-    private bool isVPNEnabled()
+    private async System.Threading.Tasks.Task<bool> isVPNEnabledAsync()
     {
         VPNManager vpn = new VPNManager();
-        return vpn.isVpnConnected();
+        return await vpn.isVpnConnectedAsync();
     }
 
     private void update(float entry_fee, float gain, string gain_type, string attrib, int value)

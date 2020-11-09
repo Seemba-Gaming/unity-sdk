@@ -10,6 +10,7 @@ using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
+[CLSCompliant(false)]
 public class GamesManager : MonoBehaviour
 {
     #region Static
@@ -89,51 +90,47 @@ public class GamesManager : MonoBehaviour
         var creator = Activator.CreateInstance(type, nonPublic: true) as IWebRequestCreate;
         return creator.Create(uri) as HttpWebRequest;
     }
-    public ArrayList getPromotions(string id)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/promotions/promote/" + id;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var json = JSON.Parse(jsonResponse);
-                    var array = json["data"].AsArray;
-                    ArrayList listGames = new ArrayList();
-                    foreach (JSONNode N in array)
-                    {
-                        Game game = new Game(N["_id"].Value, N["name"].Value, N["editorId"].Value, N["bundle_id"].Value, N["appstore_id"].Value, N["icon"].Value);
-                        listGames.Add(game);
-                    }
-                    return listGames;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            Debug.Log(ex);
-            return null;
-        }
-    }
+    //public ArrayList getPromotions(string id)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/promotions/promote/" + id;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "GET";
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                Debug.Log(jsonResponse);
+    //                var json = JSON.Parse(jsonResponse);
+    //                var array = json["data"].AsArray;
+    //                ArrayList listGames = new ArrayList();
+    //                foreach (JSONNode N in array)
+    //                {
+    //                    Game game = new Game(N["_id"].Value, N["name"].Value, N["editorId"].Value, N["bundle_id"].Value, N["appstore_id"].Value, N["icon"].Value);
+    //                    listGames.Add(game);
+    //                }
+    //                return listGames;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        Debug.Log(ex);
+    //        return null;
+    //    }
+    //}
 
     public async Task<Game> getGamebyId(string gameId)
     {
         var url = Endpoint.classesURL + "/games/" + gameId;
-        var req = await SeembaWebRequest.Get.HttpsGetAnonymous(url);
+        var req = await SeembaWebRequest.Get.HttpsGet(url);
 
-        //var req = UnityWebRequest.Get(Endpoint.classesURL + "/games/" + gameId);
-        //req.timeout = 4000;
-        //ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        //await req.SendWebRequest();
         if (req != null)
         {
             var N = JSON.Parse(req);
@@ -175,74 +172,6 @@ public class GamesManager : MonoBehaviour
             return null;
         }
     }
-    /*public string getGamebyId(string gameId)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/games/" + gameId;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.ContentType = "application/x-www-form-urlencoded";
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    if (string.IsNullOrEmpty(jsonResponse)) { return null; }
-                    print(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    if (N["success"].AsBool == true)
-                    {
-
-                        gameId = N["data"]["_id"].Value;
-                        GAME_NAME = N["data"]["name"].Value;
-                        EDITOR_ID = N["data"]["editor"].Value;
-
-                        foreach (JSONNode bracket_type in N["data"]["brackets"].AsArray)
-                        {
-                            TournamentManager.AVALAIBLE_TOURNAMENTS.Add(bracket_type.Value);
-                        }
-                        foreach (JSONNode tournament_type in N["data"]["tournaments"].AsArray)
-                        {
-                            ChallengeManager.AVALAIBLE_CHALLENGE.Add(tournament_type.Value);
-                        }
-
-                        if (!string.IsNullOrEmpty(N["data"]["background_image"].Value))
-                        {
-                            BackgroundController.backgroundURL = N["data"]["background_image"].Value;
-                        }
-                        else
-                        {
-                            Debug.LogError("Please add background-image for your game in the dashboard");
-                        }
-                        if (!string.IsNullOrEmpty(N["data"]["icon"].Value))
-                        {
-                            ICON_URL = N["data"]["icon"].Value;
-                        }
-                        else
-                        {
-                            Debug.LogError("Please add icon for your game in the dashboard");
-                        }
-                        return gameId;
-                    }
-                    else
-                    {
-                        Debug.LogError("verify the game's id ...");
-                        return null;
-                    }
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            Debug.Log(ex);
-            return null;
-        }
-    }*/
 
     public bool MyRemoteCertificateValidationCallback(System.Object sender,
         X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class HistoryListController : MonoBehaviour
 {
     #region Script Parameters
@@ -86,6 +87,7 @@ public class HistoryListController : MonoBehaviour
                     }
                 }
             }
+            TranslationManager.scene = "Home";
             foreach (Challenge item in proItems)
             {
                 //JSONNode Result = ChallengeManager.Get.getChallengeResult (item.ChallengeId);
@@ -205,13 +207,13 @@ public class HistoryListController : MonoBehaviour
                                     switch (item.gain)
                                     {
                                         case "2":
-                                            controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubble";
+                                            controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
                                             break;
                                         case "6":
-                                            controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " Bubbles";
+                                            controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
                                             break;
                                         case "10":
-                                            controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " Bubbles";
+                                            controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
                                             break;
                                     }
                                     controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
@@ -220,19 +222,19 @@ public class HistoryListController : MonoBehaviour
                                 {
                                     if (item.matched_user_1._id == UserManager.Get.getCurrentUserId() && adv1score > adv2score)
                                     {
-                                        controller.Gain.text = "+" + item.gain + " Bubbles";
+                                        controller.Gain.text = "+" + item.gain + " " + TranslationManager.Get("bubbles");
                                         GameObject newItem3 = Instantiate(ListItemPrefab);
                                         HistoryListItemController controller3 = newItem3.GetComponent<HistoryListItemController>();
                                         switch (item.gain)
                                         {
                                             case "2":
-                                                controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubble";
+                                                controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
                                                 break;
                                             case "6":
-                                                controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " Bubbles";
+                                                controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
                                                 break;
                                             case "10":
-                                                controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " Bubbles";
+                                                controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
                                                 break;
                                         }
                                         //TODO
@@ -249,19 +251,19 @@ public class HistoryListController : MonoBehaviour
                                     }
                                     else if (item.matched_user_2 != null && item.matched_user_2._id == UserManager.Get.getCurrentUserId() && adv2score > adv1score)
                                     {
-                                        controller.Gain.text = "+" + item.gain + " Bubbles";
+                                        controller.Gain.text = "+" + item.gain + " " + TranslationManager.Get("bubbles");
                                         GameObject newItem4 = Instantiate(ListItemPrefab);
                                         HistoryListItemController controller4 = newItem4.GetComponent<HistoryListItemController>();
                                         switch (item.gain)
                                         {
                                             case "2":
-                                                controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubble";
+                                                controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
                                                 break;
                                             case "6":
-                                                controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " Bubbles";
+                                                controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
                                                 break;
                                             case "10":
-                                                controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " Bubbles";
+                                                controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
                                                 break;
                                         }
                                         //TODO
@@ -281,13 +283,13 @@ public class HistoryListController : MonoBehaviour
                                         switch (item.gain)
                                         {
                                             case "2":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " Bubble";
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
                                                 break;
                                             case "6":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " Bubbles";
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
                                                 break;
                                             case "10":
-                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " Bubbles";
+                                                controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
                                                 break;
                                         }
                                         controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);

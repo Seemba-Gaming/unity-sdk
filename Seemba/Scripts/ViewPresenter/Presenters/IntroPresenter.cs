@@ -2,7 +2,9 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class IntroPresenter : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
 
     public Text Title;

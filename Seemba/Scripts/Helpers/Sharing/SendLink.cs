@@ -1,7 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-public class SendLink : MonoBehaviour {
+
+[CLSCompliant(false)]
+public class SendLink : MonoBehaviour
+{
 	public Button sendLink;
 	// Use this for initialization
 	void Start () {

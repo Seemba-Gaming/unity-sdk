@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Net;
 using UnityEngine;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class ConnectivityPresenter : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public static bool beginPing;
 
@@ -35,66 +37,5 @@ public class ConnectivityPresenter : MonoBehaviour
         LoaderManager.Get.LoaderController.ShowLoader(null);
         isLoader = true;
         InvokeRepeating("ping", 0f, 1f);
-    }
-    public void ping()
-    {
-        string url = "https://www.google.fr";
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.Timeout = 3000;
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    try
-                    {
-                        LoaderManager.Get.LoaderController.HideLoader();
-                        isLoader = false;
-                        beginPing = false;
-                        CancelInvoke();
-                        Home.SetActive(false);
-                        Home.SetActive(true);
-                    }
-                    catch (NullReferenceException)
-                    {
-                    }
-                }
-            }
-        }
-        catch (WebException)
-        {
-            if (!isLoader)
-            {
-                LoaderManager.Get.LoaderController.ShowLoader(null);
-                isLoader = true;
-            }
-        }
-    }
-    public static bool isConnected()
-    {
-        string url = "http://clients3.google.com/generate_204";
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.Timeout = 200;
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    return true;
-                }
-            }
-        }
-        catch (WebException)
-        {
-            return false;
-        }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class SignupController : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -39,7 +40,7 @@ public class SignupController : MonoBehaviour
                     byte[] bytes;
                     bytes = mytexture.EncodeToPNG();
 
-                    LoaderManager.Get.LoaderController.ShowLoader("Signin up");
+                    LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.ACCOUNT_CREATING);
 
                     var avatarUrl = await ImagesManager.FixImage(bytes);
 
@@ -70,8 +71,8 @@ public class SignupController : MonoBehaviour
                             Debug.LogWarning(" deviceToken is null");
                         }
                         UserManager.Get.CurrentUser.username = username;
-                        LoaderManager.Get.LoaderController.ShowLoader("Saving ..");
-
+                        LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SAVING);
+                        Debug.LogWarning(avatarUrl);
                         UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);
                         var mTexture = await UserManager.Get.GetFlagBytes(await UserManager.Get.GetGeoLoc());
                         UserManager.Get.CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());

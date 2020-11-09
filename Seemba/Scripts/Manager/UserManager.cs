@@ -11,7 +11,9 @@ using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class UserManager : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
 
     #region Static
@@ -53,25 +55,12 @@ public class UserManager : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("type", type);
         form.AddField("game", GamesManager.GAME_ID);
-        var www = UnityWebRequest.Post(url, form);
-        www.SetRequestHeader("x-access-token", getCurrentSessionToken());
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        await www.SendWebRequest();
-
+        await SeembaWebRequest.Get.HttpsPost(url, form);
     }
     public async Task<bool> WinFreeBubble(string token)
     {
-        var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/bubbles/free", new WWWForm());
-        download.SetRequestHeader("x-access-token", token);
-        download.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        await download.SendWebRequest();
-        Debug.Log(download.downloadHandler.text);
-        if (download.isNetworkError || download.isHttpError || download.isNetworkError)
-        {
-            print("Error downloading: " + download.error);
-            return false;
-        }
+        var url = Endpoint.classesURL + "/users/bubbles/free";
+        await SeembaWebRequest.Get.HttpsPost(url, new WWWForm());
         return true;
     }
 
@@ -88,18 +77,7 @@ public class UserManager : MonoBehaviour
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
 
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
-        var www = UnityWebRequest.Put(url, jsonAsBytes);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        www.SetRequestHeader("x-access-token", getCurrentSessionToken());
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            Debug.Log(www.downloadHandler.text);
-        }
+        await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
     }
 
     public async Task<Texture2D> GetFlagBytes(string country_code)
@@ -119,22 +97,6 @@ public class UserManager : MonoBehaviour
         var req = await SeembaWebRequest.Get.HttpsGet(url);
         var N = JSON.Parse(req);
         return N["country"].Value.ToLower();
-
-        //var www = UnityWebRequest.Get(url);
-        //await www.SendWebRequest();
-        //if (www.isNetworkError || www.isHttpError)
-        //{
-        //    Debug.Log(www.error);
-        //    return null;
-        //}
-        //else
-        //{
-        //    var N = JSON.Parse(www.downloadHandler.text);
-        //    //CurrentUser.long_lat = N["loc"].Value;
-        //    //CurrentUser.country = N["country"].Value.ToLower();
-        //    //return CurrentUser.country.ToLower();
-        //    return N["country"].Value.ToLower();
-        //}
     }
 
     //signup with the new api
@@ -149,17 +111,8 @@ public class UserManager : MonoBehaviour
         form.AddField("game_id", GamesManager.GAME_ID);
         form.AddField("avatar", avatar);
         var url = Endpoint.classesURL + "/users";
-        var download = UnityWebRequest.Post(url, form);
-        download.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        await download.SendWebRequest();
-        Debug.Log(download.downloadHandler.text);
-        if (download.isNetworkError || download.isHttpError)
-        {
-            print("Error downloading: " + download.error);
-            //OnSeembaError();
-            return null;
-        }
-        var N = JSON.Parse(download.downloadHandler.text);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
         //Save The current Session ID
         saveUserId(N["data"]["_id"].Value);
         //Save Session Token
@@ -238,22 +191,12 @@ public class UserManager : MonoBehaviour
             form.AddField("username", email_username.ToUpper());
         }
         string url = Endpoint.classesURL + "/authenticate";
-        UnityWebRequest www = UnityWebRequest.Post(url, form);
-        await www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return "failed";
-        }
-
-        var jsonResponse = www.downloadHandler.text;
-        Debug.Log(jsonResponse);
-
-        var N = JSON.Parse(jsonResponse);
-        var  userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
+        var userData = JsonUtility.FromJson<UserData>(response);
         CurrentUser = userData.data;
         CurrentUser.token = N["token"].Value;
-        LoaderManager.Get.LoaderController.ShowLoader("Loading ..");
+        LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
 
         CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
         var mTexture = await GetFlagBytes(await GetGeoLoc());
@@ -273,7 +216,6 @@ public class UserManager : MonoBehaviour
         {
             return "failed";
         }
-
     }
     public void logingOut()
     {
@@ -287,98 +229,45 @@ public class UserManager : MonoBehaviour
     {
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
-        var www = UnityWebRequest.Get(url);
+        var seembaResponse = await SeembaWebRequest.Get.HttpsGet(url);
+        UserData userData = JsonUtility.FromJson<UserData>(seembaResponse);
         var token = getCurrentSessionToken();
-
-        if (token != null)
+        if (!userData.success)
         {
-            www.SetRequestHeader("x-access-token", token);
-            await www.SendWebRequest();
-            if (www.isNetworkError || www.isHttpError) return null;
-            UserData userData = JsonUtility.FromJson<UserData>(www.downloadHandler.text);
-
-            if (!userData.success)
+            if (userData.message == "Failed to authenticate token.")
             {
-                if (userData.message == "Failed to authenticate token.")
-                {
-                    ShowExpiredSession();
-                }
-                else if (userData.message == "Could not find user")
-                {
-                    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
-                }
-                return null;
+                ShowExpiredSession();
             }
-            CurrentUser = userData.data;
-            return CurrentUser;
+            else if (userData.message == "Could not find user")
+            {
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
+            }
+            return null;
         }
-        return null;
+        CurrentUser = userData.data;
+        return CurrentUser;
     }
     void ShowExpiredSession()
     {
         LoaderManager.Get.LoaderController.HideLoader();
         PopupManager.Get.PopupController.ShowPopup(PopupType.SESSION_EXPIRED, PopupsText.Get.SessionExpired());
     }
-    public int send_email(string mail)
+    public async Task<int> send_emailAsync(string mail)
     {
         string url = Endpoint.classesURL + "/users/reset/password";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Timeout = 5000;
-        request.ContentType = "application/x-www-form-urlencoded";
-        try
+        WWWForm form = new WWWForm();
+        form.AddField("email", mail);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
+        Debug.Log(response);
+        if (N["success"].AsBool == true)
         {
-            using (var stream = request.GetRequestStream())
-            {
-                string json = "email=" + mail;
-                byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-                stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-            }
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    var N = JSON.Parse(jsonResponse);
-                    Debug.Log(jsonResponse);
-                    if (N["success"].AsBool == true)
-                    {
-                        return N["code"].AsInt;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-            }
+            return N["code"].AsInt;
         }
-        catch (WebException ex)
+        else
         {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log(error);
-                        var N = JSON.Parse(error);
-                        if (N["success"].AsBool == false)
-                        {
-                            return 0;
-                        }
-                        else
-                        {
-                            return -1;
-                        }
-                    }
-                }
-            }
-            else
-                return -1;
+            return 0;
         }
     }
     public async Task<bool> addUserDeviceToken(string user_id, string game_id, string device_id, string platform)
@@ -390,56 +279,16 @@ public class UserManager : MonoBehaviour
         form.AddField("platform", platform);
 
         string url = Endpoint.classesURL + "/users/devices";
-        var www = UnityWebRequest.Post(url, form);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-
-        await www.SendWebRequest();
-
-        if (www.isNetworkError || www.isHttpError)
-        {
-            return false;
-        }
+        await SeembaWebRequest.Get.HttpsPost(url, form);
         return true;
     }
-    public void removeUserDeviceToken(string user_id, string gameId, string deviceToken)
+    public async Task removeUserDeviceTokenAsync(string user_id, string gameId, string deviceToken)
     {
         string url = Endpoint.classesURL + "/users/devices";
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "PUT";
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "user_id=" + user_id + "&game_id=" + gameId + "&device_id=" + deviceToken;
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log(error);
-                    }
-                }
-            }
-        }
+        string json = "user_id=" + user_id + "&game_id=" + gameId + "&device_id=" + deviceToken;
+        byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
+        var response = await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
+        Debug.Log(response);
     }
     public async Task<bool> updatePassword(string email, string password)
     {
@@ -449,103 +298,28 @@ public class UserManager : MonoBehaviour
 
         form.AddField("email", email);
         form.AddField("password", password);
-        var www = UnityWebRequest.Post(url, form);
-        www.uploadHandler.contentType = "application/x-www-form-urlencoded";
-        Debug.LogWarning(email  +" " + password);
-
-        await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError) return false;
-        Debug.LogWarning(www.downloadHandler.text);
-        Debug.LogWarning(www.error);
-        var jsonResponse = www.downloadHandler.text;
-        var N = JSON.Parse(jsonResponse);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
         return N["success"].AsBool;
     }
-    public bool checkMail(string mail)
+    public async Task<bool> checkMailAsync(string mail)
     {
         string url = Endpoint.classesURL + "/users/check/email";
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "email=" + mail;
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-            return false;
-        }
+        WWWForm form = new WWWForm();
+        form.AddField("email", mail);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
+        return N["success"].AsBool;
     }
-    public bool checkUsername(string username)
+    public async Task<bool> checkUsernameAsync(string username)
     {
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        //UserManager UserManager.Get = new UserManager();
         string url = Endpoint.classesURL + "/users/check/username";
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "username=" + username;
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-            return false;
-        }
+        WWWForm form = new WWWForm();
+        form.AddField("username", username);
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
+        return N["success"].AsBool;
     }
     string getDataPath()
     {

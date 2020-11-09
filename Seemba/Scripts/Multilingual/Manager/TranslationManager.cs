@@ -8,7 +8,9 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public sealed class TranslationManager : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public static string scene = null;
     public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
@@ -88,24 +90,6 @@ public sealed class TranslationManager : MonoBehaviour
                 isDownloaded = true;
                 return true;
             }
-            //var req = UnityWebRequest.Get(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
-
-            //await req.SendWebRequest();
-            //Debug.LogWarning(Endpoint.laguagesURL + "/" + systemLanguage + ".json");
-            //if (req.isNetworkError || req.isHttpError)
-            //{
-            //    Debug.Log(req.error);
-            //    isDownloaded = false;
-            //    return false;
-            //}
-            //else
-            //{
-            //    string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
-            //    System.IO.File.WriteAllText(savePath, req.downloadHandler.text);
-            //    PlayerPrefs.SetString(systemLanguage, systemLanguage);
-            //    isDownloaded = true;
-            //    return true;
-            //}
         }
         else
         {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CLSCompliant(false)]
 public class PopupsText : MonoBehaviour
 {
     public static PopupsText Get { get { return sInstance; } }
@@ -112,16 +113,28 @@ public class PopupsText : MonoBehaviour
     }
     public object[] ConnectionFailed()
     {
-        return new object[] { "Weak", "Network reception", "We are trying to access internet but your connection is too weak...", "Got it !" };
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("weak"), TranslationManager.Get("network_reception"), TranslationManager.Get("weak_internet_desc"), TranslationManager.Get("i_understand") };
+    }
+    public object[] Unauthorized()
+    {
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("sorry"), TranslationManager.Get("not_authorized"), TranslationManager.Get("not_authorized_desc"), TranslationManager.Get("i_understand") };
+    }
+    public object[] ServerError()
+    {
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("error"), TranslationManager.Get("server_error"), TranslationManager.Get("server_error_desc"), TranslationManager.Get("i_understand") };
     }
     //stopped here work on missing translations
     public object[] EmailNotFound()
     {
-        return new object[] { "Email", "error", "We’re sorry but no account has been created on Seemba with this email. Please try another one.", "GOT IT!" };
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("email"), TranslationManager.Get("error"), TranslationManager.Get("email_not_found_desc"), TranslationManager.Get("i_understand") };
     }
     public object[] EmailSent()
     {
-        return new object[] { "Email", "sent", "follow the instructions received on your email account", "GOT IT!", "BUTTON_SEND_AGAIN" };
+        return new object[] { TranslationManager.Get("email"), TranslationManager.Get("sent"), TranslationManager.Get("email_instructions"), TranslationManager.Get("ok"), "BUTTON_SEND_AGAIN" };
     }
     public object[] PaymentNotConfirmed()
     {

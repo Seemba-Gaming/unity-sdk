@@ -14,6 +14,8 @@ struct GradientColor
         this.endColor = endColor;
     }
 }
+[CLSCompliant(false)]
+
 public class ChargePresenter : MonoBehaviour
 {
     #region Script Parameters
@@ -61,9 +63,9 @@ public class ChargePresenter : MonoBehaviour
         string content = "";
         AddColorsSet();
         setCardColor(new System.Random().Next(0, 5));
-        Credit.onClick.AddListener(() =>
+        Credit.onClick.AddListener(async () =>
         {
-            Charge();
+            await ChargeAsync();
         });
         TermsToggel.onValueChanged.AddListener(delegate
         {
@@ -185,7 +187,7 @@ public class ChargePresenter : MonoBehaviour
         Array.Reverse(charArray);
         return new string(charArray);
     }
-    public void Charge()
+    public async System.Threading.Tasks.Task ChargeAsync()
     {
         bool confirmData = true;
         int _yearIndex = Years.value;
@@ -215,7 +217,7 @@ public class ChargePresenter : MonoBehaviour
         if (confirmData == true)
         {
             LoaderManager.Get.LoaderController.ShowLoader(null);
-            StartCoroutine(CreatePaymentMethod(CardNumber.text, CVV.text, int.Parse(valueMonths), int.Parse(valueYears)));
+            await CreatePaymentMethodAsync(CardNumber.text, CVV.text, int.Parse(valueMonths), int.Parse(valueYears));
         }
     }
     #endregion
@@ -261,20 +263,17 @@ public class ChargePresenter : MonoBehaviour
         Debug.Log("res:" + res);
         return res;
     }
-    private IEnumerator CreatePaymentMethod(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
+    private async System.Threading.Tasks.Task<bool> CreatePaymentMethodAsync(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
     {
         string token = UserManager.Get.getCurrentSessionToken();
-        yield return new WaitForSeconds(1f);
 
-        string _paymentMethodID = ChargeManager.Get.CreatePaymentMethod(CardNumber.text, CVV.text, card_expiry_month, card_expiry_year);
+        string _paymentMethodID = await ChargeManager.Get.CreatePaymentMethodAsync(CardNumber.text, CVV.text, card_expiry_month, card_expiry_year);
 
-        yield return new WaitUntil(() => _paymentMethodID != null);
 
         if (!_paymentMethodID.Equals("-1"))
         {
-            JSONNode _paymentIntent = ChargeManager.Get.CreatePaymentIntent(_paymentMethodID, WalletScript.LastCredit, token);
+            JSONNode _paymentIntent = await ChargeManager.Get.CreatePaymentIntentAsync(_paymentMethodID, WalletScript.LastCredit, token);
 
-            yield return new WaitUntil(() => _paymentIntent != null);
 
             if (!_paymentIntent.Equals("-1"))
             {
@@ -313,6 +312,7 @@ public class ChargePresenter : MonoBehaviour
         {
             UnloadBankingInfo();
         }
+        return true;
     }
 
     private bool Is3DSecure(JSONNode json)
@@ -344,9 +344,9 @@ public class ChargePresenter : MonoBehaviour
     private void IsChargeCompleted()
     {
         string token = UserManager.Get.getCurrentSessionToken();
-        UnityThreadHelper.CreateThread(() =>
+        UnityThreadHelper.CreateThread(async () =>
         {
-            string chargeConfirmed = ChargeManager.Get.isChargeConfirmed(_paymentIntentID, token);
+            string chargeConfirmed = await ChargeManager.Get.isChargeConfirmedAsync(_paymentIntentID, token);
             Debug.Log("chargeConfirmed: " + chargeConfirmed);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {

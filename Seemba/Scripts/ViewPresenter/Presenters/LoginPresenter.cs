@@ -1,6 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
+
+[CLSCompliant(false)]
 public class LoginPresenter : MonoBehaviour
 {
     [Header("Login")]

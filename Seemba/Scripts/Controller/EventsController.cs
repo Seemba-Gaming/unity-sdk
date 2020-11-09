@@ -4,8 +4,12 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+
+[CLSCompliant(false)]
 public class EventsController : MonoBehaviour
 {
     #region Static
@@ -55,6 +59,27 @@ public class EventsController : MonoBehaviour
     private void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SeembaWebRequest.Get.OnSeembaErrorEvent += OnSeembaError;
+    }
+
+    private void OnSeembaError(UnityWebRequest www)
+    {
+        if(www.isNetworkError)
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+        }
+        else
+        {
+            var errorCode = www.responseCode;
+            if(errorCode >= 500)
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_SERVER_ERROR, PopupsText.Get.ServerError());
+            }
+            else if(errorCode == 403 || errorCode == 401)
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_UNAUTHORIZED, PopupsText.Get.Unauthorized());
+            }
+        }
     }
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -342,11 +367,11 @@ public class EventsController : MonoBehaviour
     }
     public async void startFirstChallenge(string token)
     {
-        ChallengeManager.CurrentChallengeGain = "2";
+        ChallengeManager.CurrentChallengeGain = ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT.ToString();
         ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
         SearchingForPlayerPresenter.nbPlayer = "duel";
         ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
-        LoaderManager.Get.LoaderController.ShowLoader("Loading First Challange ..");
+        LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.FIRST_CHALLENGE);
         ChallengeManager.CurrentChallenge = await ChallengeManager.Get.AddChallenge("headTohead", ChallengeManager.CurrentChallengeGain, ChallengeManager.CurrentChallengeGainType, 0, token);
         LoaderManager.Get.LoaderController.HideLoader();
         ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Matchmaking.gameObject);

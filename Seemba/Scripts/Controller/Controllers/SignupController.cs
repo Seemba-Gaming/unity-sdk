@@ -71,7 +71,7 @@ public class SignupController : MonoBehaviour
                         }
                         UserManager.Get.CurrentUser.username = username;
                         LoaderManager.Get.LoaderController.ShowLoader("Saving ..");
-                        Debug.LogWarning(avatarUrl);
+
                         UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);
                         var mTexture = await UserManager.Get.GetFlagBytes(await UserManager.Get.GetGeoLoc());
                         UserManager.Get.CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());

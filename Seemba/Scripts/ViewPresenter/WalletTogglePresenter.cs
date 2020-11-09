@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class WalletTogglePresenter : MonoBehaviour
 {
     #region Script Parameters

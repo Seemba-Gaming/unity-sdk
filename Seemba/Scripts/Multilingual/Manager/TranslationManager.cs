@@ -8,7 +8,9 @@ using System.Collections;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public sealed class TranslationManager : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public static string scene = null;
     public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };

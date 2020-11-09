@@ -4,13 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[CLSCompliant(false)]
 public class LoaderManager : MonoBehaviour
 {
     #region Static
-    public const string SETTING_LANGUAGE = "Setting up your language...";
-    public const string CHECKING_CONNECTION = "Checking your internet connection...";
-    public const string RECONNECTING = "Trying to reconnect...";
-    public const string DONWLOADING = "Downloading assets...";
+    public static string SETTING_LANGUAGE;
+    public static string CHECKING_CONNECTION;
+    public static string RECONNECTING;
+    public static string DONWLOADING;
+    public static string ACCOUNT_CREATING;
+    public static string SAVING;
+    public static string FIRST_CHALLENGE;
+    public static string LOADING;
     public static LoaderManager Get { get { return sInstance; } }
     private static LoaderManager sInstance;
     #endregion
@@ -29,6 +34,7 @@ public class LoaderManager : MonoBehaviour
     void Start()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SetLoadingTexts();
         LoaderController = (Instantiate(LoaderPrefab) as GameObject).GetComponent<LoaderController>();
     }
 
@@ -37,6 +43,21 @@ public class LoaderManager : MonoBehaviour
     void Update()
     {
         
+    }
+    #endregion
+
+    #region Methods
+    void SetLoadingTexts()
+    {
+        TranslationManager.scene = "Loader";
+        SETTING_LANGUAGE = TranslationManager.Get("setting_language");
+        CHECKING_CONNECTION = TranslationManager.Get("checking_connection");
+        RECONNECTING = TranslationManager.Get("reconnecting");
+        DONWLOADING = TranslationManager.Get("downloading");
+        LOADING = TranslationManager.Get("loading");
+        FIRST_CHALLENGE = TranslationManager.Get("first_challenge_load");
+        SAVING = TranslationManager.Get("saving");
+        ACCOUNT_CREATING = TranslationManager.Get("account_creating");
     }
     #endregion
 

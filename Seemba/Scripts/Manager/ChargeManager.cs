@@ -9,7 +9,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System;
 using UnityEngine.UI;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class ChargeManager : MonoBehaviour {
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 
 
     #region Static
@@ -31,136 +33,39 @@ public class ChargeManager : MonoBehaviour {
     {
         sInstance = this;
     }
-    public string CreatePaymentMethod(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
+    public async System.Threading.Tasks.Task<string> CreatePaymentMethodAsync(string card_number, string cvc, int card_expiry_month, int card_expiry_year)
     {
         string url = Endpoint.stripeURL + "/payment_methods";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        JSONNode res;
-        request.Method = "POST";
-        request.Headers["Authorization"] = "Bearer " + Endpoint.TokenizationAccount;
-        request.ContentType = "application/x-www-form-urlencoded";
-        string json;
-        using (var stream = request.GetRequestStream())
-        {
-            Debug.Log("card[exp_month]:" + card_expiry_month + " card[exp_year]:" + card_expiry_year);
-            //Amount en Cent
-            json = "card[number]=" + card_number + "&card[exp_month]=" + card_expiry_month + "&card[exp_year]=" + card_expiry_year + "&card[cvc]=" + cvc + "&type=" + PAYMENT_TYPE;
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    res = JSON.Parse(jsonResponse);
-                    Debug.Log("id:"+res["id"].Value);
-                    return res["id"].Value;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log (error);
-                    }
-                }
-            }
-            return "-1";
-        }
+        WWWForm form = new WWWForm();
+        form.AddField("card[number]=", card_number);
+        form.AddField("card[exp_month]=", card_expiry_month);
+        form.AddField("card[exp_year]=", card_expiry_year);
+        form.AddField("card[cvc]=", cvc);
+        form.AddField("type", PAYMENT_TYPE);
+        var response  = await SeembaWebRequest.Get.HttpsPostBearer(url, form);
+        Debug.Log(response);
+        var res = JSON.Parse(response);
+        Debug.Log("id:" + res["id"].Value);
+        return res["id"].Value;
     }
-    public JSONNode CreatePaymentIntent(string _paymentMethod, float amount, string token)
+    public async System.Threading.Tasks.Task<JSONNode> CreatePaymentIntentAsync(string _paymentMethod, float amount, string token)
     {
         string url = Endpoint.classesURL + "/payments/charge/";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        JSONNode res;
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        string json;
-        using (var stream = request.GetRequestStream())
-        {
-            //Amount en Cent
-            json = "payment_method="+_paymentMethod+"&amount=" + amount*100;
-            byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    res = JSON.Parse(jsonResponse);
-                    return res;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log (error);
-                    }
-                }
-            }
-            return "-1";
-        }
+        WWWForm form =  new WWWForm();
+        form.AddField("payment_method", _paymentMethod);
+        form.AddField("amount", (amount * 100).ToString());
+        var response  = await SeembaWebRequest.Get.HttpsPost(url, form);
+        return JSON.Parse(response);
     }
-    public string isChargeConfirmed(string _paymentIntent,string token) {
-		//UserManager um = new UserManager();
+    public async System.Threading.Tasks.Task<string> isChargeConfirmedAsync(string _paymentIntent,string token) {
 		string url = Endpoint.classesURL +"/payments/charge/" + _paymentIntent;
-		HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url);
-		request.Method = "GET";
-        request.Headers["x-access-token"] = token;
-        try {
-			HttpWebResponse response;
-			using(response = (HttpWebResponse) request.GetResponse()) {
-				System.IO.Stream s = response.GetResponseStream();
-				using(System.IO.StreamReader sr = new System.IO.StreamReader(s)) {
-					var jsonResponse = sr.ReadToEnd();
-					Debug.Log(jsonResponse);
-					var N = JSON.Parse(jsonResponse);
-				    Debug.Log("status: " + N["data"]["status"].Value);
-					return N["data"]["status"].Value;
-				}
-			}
-		} catch (WebException ex) {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log(error);
-                    }
-                }
-            }
-            return null;
-        }
+        var response = await SeembaWebRequest.Get.HttpsGet(url);
+        Debug.Log(response);
+        var N = JSON.Parse(response);
+        Debug.Log("status: " + N["data"]["status"].Value);
+        return N["data"]["status"].Value;
 	}
 	public bool MyRemoteCertificateValidationCallback(System.Object sender,
 		X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {

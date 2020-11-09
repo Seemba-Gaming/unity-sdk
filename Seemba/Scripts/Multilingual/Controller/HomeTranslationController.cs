@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class HomeTranslationController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     [Header("Home")]
     [SerializeField]
@@ -53,10 +55,14 @@ public class HomeTranslationController : MonoBehaviour
     private Text
         security,
         id_proof;
+    [SerializeField]
+    private Text AccountBackButton;
     [Space]
     [Header("Security")]
     [SerializeField]
     private Text email;
+    [SerializeField]
+    private Text SecurityBackButton;
     [SerializeField]
     private Text[]
         passwords;
@@ -66,6 +72,8 @@ public class HomeTranslationController : MonoBehaviour
     [Space]
     [Header("Wallet")]
     [SerializeField]
+    private Text WalletBackButton;
+    [SerializeField]
     private Text select1;
     [SerializeField]
     private Text select2, select3, select4;
@@ -74,15 +82,23 @@ public class HomeTranslationController : MonoBehaviour
     [Space]
     [Header("Withdraw")]
     [SerializeField]
+    private Text WithdrawBackButton;
+    [SerializeField]
     private Text money;
     [SerializeField]
     private Text withdrawTitle, available_balance, enter_the_amount_to_withdraw;
     [Space]
     [Header("HelpCenter")]
     [SerializeField]
+    private Text HelpCenterBackButton;
+    [SerializeField]
     private Text legal;
     [SerializeField]
+    private Text LegalBackButton;
+    [SerializeField]
     private Text contact;
+    [SerializeField]
+    private Text ContactBackButton;
     //Extra Translation 
     public static string WIN = "";
     public static string BUBBLES = "";
@@ -99,8 +115,14 @@ public class HomeTranslationController : MonoBehaviour
     private void Start()
     {
         TranslationManager.scene = "Home";
-        
-        //Extra Translation 
+        Debug.LogWarning(TranslationManager.Get("back_button"));
+        ContactBackButton.text = TranslationManager.Get("back_button");
+        LegalBackButton.text = TranslationManager.Get("back_button");
+        HelpCenterBackButton.text = TranslationManager.Get("back_button");
+        WithdrawBackButton.text = TranslationManager.Get("back_button");
+        WalletBackButton.text = TranslationManager.Get("back_button");
+        SecurityBackButton.text = TranslationManager.Get("back_button");
+        AccountBackButton.text = TranslationManager.Get("back_button");
         WIN = TranslationManager.Get("win") != string.Empty ? TranslationManager.Get("win") : "WIN";
         BUBBLES = TranslationManager.Get("bubbles") != string.Empty ? TranslationManager.Get("bubbles") : "bubbles";
         AT = TranslationManager.Get("at") != string.Empty ? TranslationManager.Get("at") : "at";

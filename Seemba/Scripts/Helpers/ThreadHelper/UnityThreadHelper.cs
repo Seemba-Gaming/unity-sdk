@@ -6,7 +6,9 @@ using UnityEngine;
 #endif
 #if !NO_UNITY
 [ExecuteInEditMode]
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class UnityThreadHelper : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 #else
 public class UnityThreadHelper
 #endif

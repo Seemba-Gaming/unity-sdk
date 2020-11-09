@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class HistoryListController : MonoBehaviour
 {
     #region Script Parameters

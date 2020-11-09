@@ -10,6 +10,7 @@ using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
+[CLSCompliant(false)]
 public class GamesManager : MonoBehaviour
 {
     #region Static
@@ -89,41 +90,41 @@ public class GamesManager : MonoBehaviour
         var creator = Activator.CreateInstance(type, nonPublic: true) as IWebRequestCreate;
         return creator.Create(uri) as HttpWebRequest;
     }
-    public ArrayList getPromotions(string id)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/promotions/promote/" + id;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var json = JSON.Parse(jsonResponse);
-                    var array = json["data"].AsArray;
-                    ArrayList listGames = new ArrayList();
-                    foreach (JSONNode N in array)
-                    {
-                        Game game = new Game(N["_id"].Value, N["name"].Value, N["editorId"].Value, N["bundle_id"].Value, N["appstore_id"].Value, N["icon"].Value);
-                        listGames.Add(game);
-                    }
-                    return listGames;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            Debug.Log(ex);
-            return null;
-        }
-    }
+    //public ArrayList getPromotions(string id)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/promotions/promote/" + id;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "GET";
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                Debug.Log(jsonResponse);
+    //                var json = JSON.Parse(jsonResponse);
+    //                var array = json["data"].AsArray;
+    //                ArrayList listGames = new ArrayList();
+    //                foreach (JSONNode N in array)
+    //                {
+    //                    Game game = new Game(N["_id"].Value, N["name"].Value, N["editorId"].Value, N["bundle_id"].Value, N["appstore_id"].Value, N["icon"].Value);
+    //                    listGames.Add(game);
+    //                }
+    //                return listGames;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        Debug.Log(ex);
+    //        return null;
+    //    }
+    //}
 
     public async Task<Game> getGamebyId(string gameId)
     {

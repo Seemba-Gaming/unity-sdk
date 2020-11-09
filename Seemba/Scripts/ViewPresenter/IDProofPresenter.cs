@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Threading;
 using System;
+
+[CLSCompliant(false)]
 public class IDProofPresenter : MonoBehaviour
 {
 

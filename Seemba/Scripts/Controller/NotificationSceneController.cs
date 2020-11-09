@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class NotificationSceneController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     private static NotificationSceneController _instance;
     public static NotificationSceneController instance;

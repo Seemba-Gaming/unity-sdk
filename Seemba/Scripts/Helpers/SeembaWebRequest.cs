@@ -21,7 +21,7 @@ class SeembaResponse<T>
     }
 }
 
-
+[CLSCompliant(false)]
 public class SeembaWebRequest : MonoBehaviour
 {
     #region Static
@@ -39,7 +39,7 @@ public class SeembaWebRequest : MonoBehaviour
     //
     // Retourne :
     //     An object that retrieves data from the uri.
-    public delegate void StringResponseEventHandler(string data);
+    public delegate void StringResponseEventHandler(UnityWebRequest data);
     public delegate void TextureResponseEventHandler(int id, Texture2D data);
     public event StringResponseEventHandler OnSeembaErrorEvent;
 
@@ -107,21 +107,15 @@ public class SeembaWebRequest : MonoBehaviour
     private async Task<string> HandleRequest(UnityWebRequest www)
     {
         await www.SendWebRequest();
-        if (www.isNetworkError || www.isHttpError) 
-        { 
-            OnSeembaError(www.downloadHandler.text);
-            return null;
-        }
 
-        if(www.error != null)
+        if (www.error != null)
         {
-            OnSeembaError(www.responseCode.ToString());
+            OnSeembaError(www);
         }
-        Debug.LogWarning(www.responseCode);
         return www.downloadHandler.text;
     }
 
-    void OnSeembaError(string data)
+    void OnSeembaError(UnityWebRequest data)
     {
         OnSeembaErrorEvent(data);
     }

@@ -1,13 +1,11 @@
 ﻿using Newtonsoft.Json;
 using SimpleJSON;
 using System;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class FavouritTournament : MonoBehaviour
 {
     #region Static

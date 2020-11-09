@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class Endpoint : MonoBehaviour {
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 	public static string cloudURL="http://seembaapi.herokuapp.com/api/functions/";
     //public static string classesURL = "https://api.seemba.com/api/v1";
     public static string classesURL = "http://api-staging.seemba.com/api/v1";

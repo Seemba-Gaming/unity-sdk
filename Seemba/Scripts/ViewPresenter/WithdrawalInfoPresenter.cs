@@ -9,7 +9,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class WithdrawalInfoPresenter : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public InputField Iban;
     public Image CountryFlag;

@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class ReplayChallengePresenter : MonoBehaviour
 {
     public static Challenge ChallengeToReplay;

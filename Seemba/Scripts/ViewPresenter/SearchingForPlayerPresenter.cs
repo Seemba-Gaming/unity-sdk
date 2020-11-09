@@ -2,6 +2,8 @@
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class SearchingForPlayerPresenter : MonoBehaviour
 {
     #region Static
@@ -86,9 +88,9 @@ public class SearchingForPlayerPresenter : MonoBehaviour
     {
         string token = UserManager.Get.getCurrentSessionToken();
         string userID = UserManager.Get.getCurrentUserId();
-        UnityThreadHelper.CreateThread(() =>
+        UnityThreadHelper.CreateThread(async () =>
         {
-            var N = ChallengeManager.Get.getChallengebyId(ChallengeManager.CurrentChallengeId, token);
+            var N = await ChallengeManager.Get.getChallengebyIdAsync(ChallengeManager.CurrentChallengeId, token);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 if (!string.IsNullOrEmpty(N["data"]["matched_user_1"]["_id"].Value) && !string.IsNullOrEmpty(N["data"]["matched_user_2"]["_id"].Value))

@@ -5,6 +5,7 @@ using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+[CLSCompliant(false)]
 public class UserService : MonoBehaviour
 {
     #region Static
@@ -58,9 +59,9 @@ public class UserService : MonoBehaviour
             }
         });
 
-        SendEmail.onClick.AddListener(() =>
+        SendEmail.onClick.AddListener(async () =>
         {
-            requestForResetPassword();
+            await requestForResetPasswordAsync();
         });
 
         Email.onValueChanged.AddListener(delegate
@@ -136,7 +137,7 @@ public class UserService : MonoBehaviour
         LoaderManager.Get.LoaderController.ShowLoader(null);
         UnityThreadHelper.CreateThread(() =>
         {
-            UserManager.Get.removeUserDeviceToken(userId, GamesManager.GAME_ID, deviceToken);
+            UserManager.Get.removeUserDeviceTokenAsync(userId, GamesManager.GAME_ID, deviceToken);
             UnityThreadHelper.Dispatcher.Dispatch(() =>
             {
                 LoaderManager.Get.LoaderController.HideLoader();
@@ -148,49 +149,43 @@ public class UserService : MonoBehaviour
     #endregion
 
     #region Implementation
-    private void requestForResetPassword()
+    private async System.Threading.Tasks.Task requestForResetPasswordAsync()
     {
         digits.text = "";
         LoaderManager.Get.LoaderController.ShowLoader(null);
-        UnityThreadHelper.CreateThread(() =>
+        int res = await UserManager.Get.send_emailAsync(Email.text);
+        LoaderManager.Get.LoaderController.HideLoader();
+        if (res == 0)
         {
-            int res = UserManager.Get.send_email(Email.text);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_EMAIL_NOT_FOUND, PopupsText.Get.EmailNotFound());
+        }
+        else
+        {
+            if (res == -1)
             {
-                LoaderManager.Get.LoaderController.HideLoader();
-                if (res == 0)
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+            }
+            else
+            {
+                digits.ActivateInputField();
+                code = res;
+                dt.AddMinutes(2).ToString("mm:ss");
+                chrono.text = "02:00";
+                sec = 59;
+                min = 1;
+                timeout = false;
+                if (aTimer != null)
                 {
-                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_EMAIL_NOT_FOUND, PopupsText.Get.EmailNotFound());
+                    aTimer.Stop();
                 }
-                else
-                {
-                    if (res == -1)
-                    {
-                        PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
-                    }
-                    else
-                    {
-                        digits.ActivateInputField();
-                        code = res;
-                        dt.AddMinutes(2).ToString("mm:ss");
-                        chrono.text = "02:00";
-                        sec = 59;
-                        min = 1;
-                        timeout = false;
-                        if (aTimer != null)
-                        {
-                            aTimer.Stop();
-                        }
 
-                        aTimer = null;
-                        aTimer = new System.Timers.Timer();
-                        aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                        aTimer.Interval = 1000;
-                        aTimer.Enabled = true;
-                    }
-                }
-            });
-        });
+                aTimer = null;
+                aTimer = new System.Timers.Timer();
+                aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+                aTimer.Interval = 1000;
+                aTimer.Enabled = true;
+            }
+        }
     }
     private void OnTimedEvent(object source, ElapsedEventArgs e)
     {

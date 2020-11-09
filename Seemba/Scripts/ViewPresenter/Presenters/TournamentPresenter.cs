@@ -1,10 +1,10 @@
 ﻿using SimpleJSON;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class TournamentPresenter : MonoBehaviour
 {
     #region Script Parameters

@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class PressedListenerHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public InputField password;

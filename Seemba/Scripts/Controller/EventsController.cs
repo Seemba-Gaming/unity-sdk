@@ -4,8 +4,12 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+
+
+[CLSCompliant(false)]
 public class EventsController : MonoBehaviour
 {
     #region Static
@@ -58,28 +62,22 @@ public class EventsController : MonoBehaviour
         SeembaWebRequest.Get.OnSeembaErrorEvent += OnSeembaError;
     }
 
-    private void OnSeembaError(string data)
+    private void OnSeembaError(UnityWebRequest www)
     {
-        //network //500 //403 
-        Debug.LogWarning(data);
-        if(data.Contains("network"))
+        if(www.isNetworkError)
         {
             PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
         }
         else
         {
-            int errorCode;
-            var res = int.TryParse(data, out errorCode);
-            if(res)
+            var errorCode = www.responseCode;
+            if(errorCode >= 500)
             {
-                if(errorCode >= 500)
-                {
-                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_SERVER_ERROR, PopupsText.Get.ServerError());
-                }
-                else if(errorCode == 403 || errorCode == 401)
-                {
-                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_UNAUTHORIZED, PopupsText.Get.Unauthorized());
-                }
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_SERVER_ERROR, PopupsText.Get.ServerError());
+            }
+            else if(errorCode == 403 || errorCode == 401)
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_UNAUTHORIZED, PopupsText.Get.Unauthorized());
             }
         }
     }
@@ -373,7 +371,7 @@ public class EventsController : MonoBehaviour
         ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
         SearchingForPlayerPresenter.nbPlayer = "duel";
         ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
-        LoaderManager.Get.LoaderController.ShowLoader("Loading First Challange ..");
+        LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.FIRST_CHALLENGE);
         ChallengeManager.CurrentChallenge = await ChallengeManager.Get.AddChallenge("headTohead", ChallengeManager.CurrentChallengeGain, ChallengeManager.CurrentChallengeGainType, 0, token);
         LoaderManager.Get.LoaderController.HideLoader();
         ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Matchmaking.gameObject);

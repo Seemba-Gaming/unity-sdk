@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[CLSCompliant(false)]
 public class HeaderController : MonoBehaviour
 {
     #region Script Parameters

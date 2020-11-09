@@ -7,6 +7,7 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
+[CLSCompliant(false)]
 public class SignupPresenter : MonoBehaviour
 {
     #region Script Parameters
@@ -52,64 +53,52 @@ public class SignupPresenter : MonoBehaviour
         RandomValue = rnd.Next(0, 20);
         Avatar.sprite = spriteArray[RandomValue];
 
-        username.onValueChanged.AddListener(delegate
+        username.onValueChanged.AddListener(async delegate
         {
             LoaderUsername.enabled = true;
             AcceptedUsername.enabled = false;
             DeclinedUsername.enabled = false;
 
             UnityThreading.ActionThread thread;
-            thread = UnityThreadHelper.CreateThread(() =>
+            bool valide = await UserManager.Get.checkUsernameAsync(username.text.ToUpper());
+            if (valide && username.text.Length >= 3)
             {
-                bool valide = UserManager.Get.checkUsername(username.text.ToUpper());
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    if (valide && username.text.Length >= 3)
-                    {
-                        LoaderUsername.enabled = false;
-                        AcceptedUsername.enabled = true;
-                        DeclinedUsername.enabled = false;
-                        isUsernameValid = true;
-                    }
-                    else
-                    {
-                        LoaderUsername.enabled = false;
-                        AcceptedUsername.enabled = false;
-                        DeclinedUsername.enabled = true;
-                        isUsernameValid = false;
-                    }
-                });
-            });
+                LoaderUsername.enabled = false;
+                AcceptedUsername.enabled = true;
+                DeclinedUsername.enabled = false;
+                isUsernameValid = true;
+            }
+            else
+            {
+                LoaderUsername.enabled = false;
+                AcceptedUsername.enabled = false;
+                DeclinedUsername.enabled = true;
+                isUsernameValid = false;
+            }
         });
 
-        email.onValueChanged.AddListener(delegate
+        email.onValueChanged.AddListener(async delegate
         {
             LoaderEmail.enabled = true;
             AcceptedEmail.enabled = false;
             DeclinedEmail.enabled = false;
             UnityThreading.ActionThread thread;
-            thread = UnityThreadHelper.CreateThread(() =>
-            {
-                bool valide = UserManager.Get.checkMail(email.text);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                bool valide = await UserManager.Get.checkMailAsync(email.text);
+                if (valide && IsValidEmail(email.text))
                 {
-                    if (valide && IsValidEmail(email.text))
-                    {
-                        LoaderEmail.enabled = false;
-                        AcceptedEmail.enabled = true;
-                        DeclinedEmail.enabled = false;
-                        isEmailValid = true;
+                    LoaderEmail.enabled = false;
+                    AcceptedEmail.enabled = true;
+                    DeclinedEmail.enabled = false;
+                    isEmailValid = true;
 
-                    }
-                    else
-                    {
-                        LoaderEmail.enabled = false;
-                        AcceptedEmail.enabled = false;
-                        DeclinedEmail.enabled = true;
-                        isEmailValid = false;
-                    }
-                });
-            });
+                }
+                else
+                {
+                    LoaderEmail.enabled = false;
+                    AcceptedEmail.enabled = false;
+                    DeclinedEmail.enabled = true;
+                    isEmailValid = false;
+                }
         });
 
         password.onValueChanged.AddListener(delegate

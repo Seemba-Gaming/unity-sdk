@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class PullToRefresh : MonoBehaviour
 {
     public static bool isActivated;

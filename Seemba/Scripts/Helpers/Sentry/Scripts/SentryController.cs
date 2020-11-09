@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Sentry;
 using UnityEngine;
 
+[CLSCompliant(false)]
+#pragma warning disable CS3019 // La vérification de conformité CLS ne sera pas effectuée, car l'objet inspecté n'est pas visible hors de cet assembly
 class SentryController
 {
     private static SentryController _Instance = null;
@@ -55,4 +53,6 @@ class SentryController
     }
 
 }
+#pragma warning restore CS3019 // La vérification de conformité CLS ne sera pas effectuée, car l'objet inspecté n'est pas visible hors de cet assembly
+
 

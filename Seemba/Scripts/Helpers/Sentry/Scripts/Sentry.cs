@@ -12,6 +12,7 @@ namespace Sentry
     /// </remarks>
     /// <seealso href="https://feedback.unity3d.com/suggestions/add-support-for-nullable-types-to-jsonutility"/>
     [Serializable]
+    [CLSCompliant(false)]
     public class Gpu
     {
         /// <summary>

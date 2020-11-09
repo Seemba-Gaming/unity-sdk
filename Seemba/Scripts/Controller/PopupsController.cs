@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,6 +48,7 @@ public enum PopupType
     SESSION_EXPIRED
 }
 
+[CLSCompliant(false)]
 public class PopupsController : MonoBehaviour
 {
     #region static
@@ -143,6 +145,12 @@ public class PopupsController : MonoBehaviour
                 break;
             case PopupType.VPN:
                 PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.INFO_POPUP_SERVER_ERROR:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.INFO_POPUP_UNAUTHORIZED:
+                PopupManager.Get.PopupViewPresenter.ShowNotAuthorizedPopup(_params);
                 break;
             default:
                 Debug.LogWarning(popupType);

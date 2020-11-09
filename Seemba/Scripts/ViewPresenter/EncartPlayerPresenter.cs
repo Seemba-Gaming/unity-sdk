@@ -1,14 +1,9 @@
 using UnityEngine;
-using System.Collections;
-using System.IO;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
-using System.Net;
-using System.Globalization;
-using System.Net.NetworkInformation;
-using System.Timers;
-using System.Linq;
+
+
+[CLSCompliant(false)]
 public class EncartPlayerPresenter : MonoBehaviour 
 {
 	public static Text PlayerUsername,PlayerMoney,PlayerWater;

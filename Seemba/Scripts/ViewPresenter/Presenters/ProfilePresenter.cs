@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Globalization;
+
+[CLSCompliant(false)]
 public class ProfilePresenter : MonoBehaviour
 {
     #region Script Parameters

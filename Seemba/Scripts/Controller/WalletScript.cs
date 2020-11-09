@@ -4,6 +4,8 @@ using System.Threading;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System.Globalization;
+
+[CLSCompliant(false)]
 public class WalletScript : MonoBehaviour
 {
     #region Script Parameters

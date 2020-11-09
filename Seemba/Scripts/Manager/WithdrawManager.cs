@@ -27,54 +27,54 @@ public class WithdrawManager
     public const string WITHDRAW_ERROR_BALANCE_INSUFFICIENT = "balance_insufficient";
     public const string WITHDRAW_ERROR_AMOUNT_INSUFFICIENT = "amount_insufficient";
     public const string WITHDRAW_BUSINESS_PROFILE_URL = "www.seemba.com";
-    public string uploadImage(string fullPath)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.cloudURL + "uploadImage";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["X-Parse-Application-Id"] = "seembaapi";
-        request.Headers["Access-Control-Request-Headers"] = "Content-Type";
-        request.Headers["Access-Control-Request-Headers"] = "Authorization";
-        request.ContentType = @"application/json";
-        using (var stream = request.GetRequestStream())
-        {
-            //Debug.Log (Convert.ToBase64String (File.ReadAllBytes (fullPath)));
-            byte[] jsonAsBytes = encoding.GetBytes("{\"bytes\":\"" + Convert.ToBase64String(File.ReadAllBytes(fullPath)) + "\"}");
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log (jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["result"].Value;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-            return null;
-        }
-    }
+    //public string uploadImage(string fullPath)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.cloudURL + "uploadImage";
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["X-Parse-Application-Id"] = "seembaapi";
+    //    request.Headers["Access-Control-Request-Headers"] = "Content-Type";
+    //    request.Headers["Access-Control-Request-Headers"] = "Authorization";
+    //    request.ContentType = @"application/json";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        //Debug.Log (Convert.ToBase64String (File.ReadAllBytes (fullPath)));
+    //        byte[] jsonAsBytes = encoding.GetBytes("{\"bytes\":\"" + Convert.ToBase64String(File.ReadAllBytes(fullPath)) + "\"}");
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                //Debug.Log (jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                return N["result"].Value;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                    //Debug.Log (error);
+    //                }
+    //            }
+    //        }
+    //        return null;
+    //    }
+    //}
     public async Task<string> TokenizeAccountAsync()
     {
         //UserManager um = new UserManager();
@@ -103,310 +103,275 @@ public class WithdrawManager
         return N["success"].AsBool;
     }
 
-    public bool attachTokenToAccount(string account_token, string token)
+    public async Task<bool> attachTokenToAccountAsync(string account_token, string token)
     {
-        //UserManager um = new UserManager();
         string url = Endpoint.classesURL + "/payments/updateAccount";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "external_account=" + account_token;
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log(error);
-                    }
-                }
-            }
-            return false;
-        }
-    }
-    public string HttpUploadFile(string path, string token)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/upload/doc/";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "bytes=" + Convert.ToBase64String(File.ReadAllBytes(path));
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    var N = JSON.Parse(jsonResponse);
-                    if (N["success"].AsBool)
-                    {
-                        PlayerPrefs.SetString("DocId", N["data"]["id"].Value);
-                        return N["data"]["id"].Value;
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                    }
-                }
-            }
-            return "error";
-        }
-    }
-    public async Task<bool> attachInfoToAccount(string token, string value, params string[] Params)
-    {
-        string fieldname = "individual";
-        foreach (string param in Params)
-        {
-            fieldname += "[" + param + "]";
-        }
-        Debug.Log("Fieldname: " + fieldname);
         WWWForm form = new WWWForm();
-        form.AddField(fieldname, value);
-        var url = Endpoint.classesURL + "/payments/updateAccount";
+        form.AddField("external_account", account_token);
         var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        Debug.Log(response);
         var N = JSON.Parse(response);
-        Debug.Log("Success: " + N["success"]);
         return N["success"].AsBool;
     }
-    public bool attachInfoToAccount1(string token, string value, params string[] Params)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/updateAccount";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            Debug.Log("value: " + value);
-            string json = "individual";
-            foreach (string param in Params)
-            {
-                json += "[" + param + "]";
-            }
-            json += "=" + value;
-            Debug.Log(json);
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                    }
-                }
-            }
-            return false;
-        }
-    }
-    public bool attachDOBToAccount(string token, int day, int month, int year)
-    {
-        Debug.Log("attachDOBToAccount:  " + "day: " + day + " month: " + month + " year: " + year);
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/updateAccount";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "";
-            json = "individual[dob][day]=" + day + "&&individual[dob][month]=" + month + "&&individual[dob][year]=" + year;
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log("attachDOBToAccount: " + jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        Debug.Log("WebException eroor: " + error);
-                    }
-                }
-            }
-            Debug.Log("WebException DOB");
-            return false;
-        }
-    }
-    public bool attachBusinessProfileToAccount(string token)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/updateAccount";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "business_profile[url]=" + WITHDRAW_BUSINESS_PROFILE_URL;
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                    }
-                }
-            }
-            return false;
-        }
-    }
-    public bool attachDocToAccount(string document_type, string file, string file_side, string token)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/updateAccount";
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = "application/x-www-form-urlencoded";
-        using (var stream = request.GetRequestStream())
-        {
-            string json = "individual[verification][" + document_type + "][" + file_side + "]=" + file;
-            byte[] jsonAsBytes = encoding.GetBytes(json);
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                    }
-                }
-            }
-            return false;
-        }
-    }
+    //public string HttpUploadFile(string path, string token)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/upload/doc/";
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = "application/x-www-form-urlencoded";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        string json = "bytes=" + Convert.ToBase64String(File.ReadAllBytes(path));
+    //        byte[] jsonAsBytes = encoding.GetBytes(json);
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                var N = JSON.Parse(jsonResponse);
+    //                if (N["success"].AsBool)
+    //                {
+    //                    PlayerPrefs.SetString("DocId", N["data"]["id"].Value);
+    //                    return N["data"]["id"].Value;
+    //                }
+    //                else
+    //                {
+    //                    return null;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                }
+    //            }
+    //        }
+    //        return "error";
+    //    }
+    //}
+    //public async Task<bool> attachInfoToAccount(string token, string value, params string[] Params)
+    //{
+    //    string fieldname = "individual";
+    //    foreach (string param in Params)
+    //    {
+    //        fieldname += "[" + param + "]";
+    //    }
+    //    Debug.Log("Fieldname: " + fieldname);
+    //    WWWForm form = new WWWForm();
+    //    form.AddField(fieldname, value);
+    //    var url = Endpoint.classesURL + "/payments/updateAccount";
+    //    var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+    //    var N = JSON.Parse(response);
+    //    Debug.Log("Success: " + N["success"]);
+    //    return N["success"].AsBool;
+    //}
+    //public bool attachInfoToAccount1(string token, string value, params string[] Params)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/updateAccount";
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = "application/x-www-form-urlencoded";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        Debug.Log("value: " + value);
+    //        string json = "individual";
+    //        foreach (string param in Params)
+    //        {
+    //            json += "[" + param + "]";
+    //        }
+    //        json += "=" + value;
+    //        Debug.Log(json);
+    //        byte[] jsonAsBytes = encoding.GetBytes(json);
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                Debug.Log(jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                return N["success"].AsBool;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                }
+    //            }
+    //        }
+    //        return false;
+    //    }
+    //}
+    //public bool attachDOBToAccount(string token, int day, int month, int year)
+    //{
+    //    Debug.Log("attachDOBToAccount:  " + "day: " + day + " month: " + month + " year: " + year);
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/updateAccount";
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = "application/x-www-form-urlencoded";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        string json = "";
+    //        json = "individual[dob][day]=" + day + "&&individual[dob][month]=" + month + "&&individual[dob][year]=" + year;
+    //        byte[] jsonAsBytes = encoding.GetBytes(json);
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                Debug.Log("attachDOBToAccount: " + jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                return N["success"].AsBool;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                    Debug.Log("WebException eroor: " + error);
+    //                }
+    //            }
+    //        }
+    //        Debug.Log("WebException DOB");
+    //        return false;
+    //    }
+    //}
+    //public bool attachBusinessProfileToAccount(string token)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/updateAccount";
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = "application/x-www-form-urlencoded";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        string json = "business_profile[url]=" + WITHDRAW_BUSINESS_PROFILE_URL;
+    //        byte[] jsonAsBytes = encoding.GetBytes(json);
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                var N = JSON.Parse(jsonResponse);
+    //                return N["success"].AsBool;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                }
+    //            }
+    //        }
+    //        return false;
+    //    }
+    //}
+    //public bool attachDocToAccount(string document_type, string file, string file_side, string token)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/updateAccount";
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = "application/x-www-form-urlencoded";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        string json = "individual[verification][" + document_type + "][" + file_side + "]=" + file;
+    //        byte[] jsonAsBytes = encoding.GetBytes(json);
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                Debug.Log(jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                return N["success"].AsBool;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                }
+    //            }
+    //        }
+    //        return false;
+    //    }
+    //}
     public async Task<AccountStatus> accountVerificationStatus(string token)
     {
         string url = Endpoint.classesURL + "/payments/retreiveAccount/";
@@ -418,27 +383,9 @@ public class WithdrawManager
     {
         string url = Endpoint.classesURL + "/payments/retreiveAccount/";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.Headers["x-access-token"] = token;
-        try
-        {
-            using (System.IO.Stream s = request.GetResponse().GetResponseStream())
-            {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-
-                    var N = JSON.Parse(jsonResponse);
-                    return N;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            //Debug.Log (ex);
-            return null;
-        }
+        var response = await SeembaWebRequest.Get.HttpsGet(url);
+        var N = JSON.Parse(response);
+        return N;
     }
     public bool validateIBAN(string bankAccount)
     {
@@ -480,229 +427,229 @@ public class WithdrawManager
             return false;
         }
     }
-    public int createAccount(string userId, string token)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/create/account/" + userId;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.Headers["x-access-token"] = token;
-        //Debug.Log("227W");
-        try
-        {
-            using (System.IO.Stream s = request.GetResponse().GetResponseStream())
-            {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log("233w");
-                    //Debug.Log(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    if (!N["success"].AsBool)
-                    {
-                        if (jsonResponse.Contains("\"field\":\"locale\"")) return 222;
-                        else return 400;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            //Debug.Log (ex);
-            return 400;
-        }
-    }
-    public bool bankInfo(string userId, string token, string iban, string swift)
-    {
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/bank/info/" + userId;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = @"application/json";
-        using (var stream = request.GetRequestStream())
-        {
-            byte[] jsonAsBytes = encoding.GetBytes("{\"IBAN\":\"" + iban + "\",\"swift\":\"" + swift + "\"}");
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log (jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    return N["success"].AsBool;
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-            return false;
-        }
-    }
-    public bool isPayoutConfirmed(string payout_id, string token)
-    {
-        //Get notification of transfer with transactionId=transId passed on params
-        //UserManager um = new UserManager();
-        string url = Endpoint.classesURL + "/payments/payout/" + payout_id;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "GET";
-        request.Headers["x-access-token"] = token;
-        try
-        {
-            using (System.IO.Stream s = request.GetResponse().GetResponseStream())
-            {
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    Debug.Log(jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    //Debug.Log("is payout confirmed status: "+N["data"]["status"].Value);
-                    if (N["success"].AsBool == true)
-                    {
-                        if (N["data"]["status"].Value == "paid")
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            return false;
-            Debug.Log(ex);
-        }
-    }
-    public string transfer(string userId, string token, string amount)
-    {
-        string url = Endpoint.classesURL + "/payments/transfer/" + userId;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.Headers["x-access-token"] = token;
-        request.ContentType = @"application/json";
-        using (var stream = request.GetRequestStream())
-        {
-            byte[] jsonAsBytes = encoding.GetBytes("{\"amount\":\"" + amount + "\"}");
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log (jsonResponse);
-                    var N = JSON.Parse(jsonResponse);
-                    try
-                    {
-                        if (N["data"]["code"].AsInt == 0)
-                        {
-                            return N["data"]["transaction_id"].Value;
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                    catch (FormatException fe)
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-            return null;
-        }
-    }
-    public void transferForOperator(string userId, string amount)
-    {
-        string url = Endpoint.classesURL + "/payments/transfer/operator/" + userId;
-        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        request.Method = "POST";
-        request.ContentType = @"application/json";
-        using (var stream = request.GetRequestStream())
-        {
-            byte[] jsonAsBytes = encoding.GetBytes("{\"amount\":\"" + amount + "\"}");
-            stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        }
-        try
-        {
-            HttpWebResponse response;
-            using (response = (HttpWebResponse)request.GetResponse())
-            {
-                System.IO.Stream s = response.GetResponseStream();
-                using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-                {
-                    var jsonResponse = sr.ReadToEnd();
-                    //Debug.Log (jsonResponse);
-                }
-            }
-        }
-        catch (WebException ex)
-        {
-            if (ex.Response != null)
-            {
-                using (var errorResponse = (HttpWebResponse)ex.Response)
-                {
-                    using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-                    {
-                        string error = reader.ReadToEnd();
-                        //Debug.Log (error);
-                    }
-                }
-            }
-        }
-    }
+    //public int createAccount(string userId, string token)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/create/account/" + userId;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "GET";
+    //    request.Headers["x-access-token"] = token;
+    //    //Debug.Log("227W");
+    //    try
+    //    {
+    //        using (System.IO.Stream s = request.GetResponse().GetResponseStream())
+    //        {
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                //Debug.Log("233w");
+    //                //Debug.Log(jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                if (!N["success"].AsBool)
+    //                {
+    //                    if (jsonResponse.Contains("\"field\":\"locale\"")) return 222;
+    //                    else return 400;
+    //                }
+    //                else
+    //                {
+    //                    return 0;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        //Debug.Log (ex);
+    //        return 400;
+    //    }
+    //}
+    //public bool bankInfo(string userId, string token, string iban, string swift)
+    //{
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/bank/info/" + userId;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = @"application/json";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        byte[] jsonAsBytes = encoding.GetBytes("{\"IBAN\":\"" + iban + "\",\"swift\":\"" + swift + "\"}");
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                //Debug.Log (jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                return N["success"].AsBool;
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                    //Debug.Log (error);
+    //                }
+    //            }
+    //        }
+    //        return false;
+    //    }
+    //}
+    //public bool isPayoutConfirmed(string payout_id, string token)
+    //{
+    //    //Get notification of transfer with transactionId=transId passed on params
+    //    //UserManager um = new UserManager();
+    //    string url = Endpoint.classesURL + "/payments/payout/" + payout_id;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "GET";
+    //    request.Headers["x-access-token"] = token;
+    //    try
+    //    {
+    //        using (System.IO.Stream s = request.GetResponse().GetResponseStream())
+    //        {
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                Debug.Log(jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                //Debug.Log("is payout confirmed status: "+N["data"]["status"].Value);
+    //                if (N["success"].AsBool == true)
+    //                {
+    //                    if (N["data"]["status"].Value == "paid")
+    //                    {
+    //                        return true;
+    //                    }
+    //                    else
+    //                    {
+    //                        return false;
+    //                    }
+    //                }
+    //                else
+    //                {
+    //                    return false;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        return false;
+    //        Debug.Log(ex);
+    //    }
+    //}
+    //public string transfer(string userId, string token, string amount)
+    //{
+    //    string url = Endpoint.classesURL + "/payments/transfer/" + userId;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.Headers["x-access-token"] = token;
+    //    request.ContentType = @"application/json";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        byte[] jsonAsBytes = encoding.GetBytes("{\"amount\":\"" + amount + "\"}");
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                //Debug.Log (jsonResponse);
+    //                var N = JSON.Parse(jsonResponse);
+    //                try
+    //                {
+    //                    if (N["data"]["code"].AsInt == 0)
+    //                    {
+    //                        return N["data"]["transaction_id"].Value;
+    //                    }
+    //                    else
+    //                    {
+    //                        return null;
+    //                    }
+    //                }
+    //                catch (FormatException fe)
+    //                {
+    //                    return null;
+    //                }
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                    //Debug.Log (error);
+    //                }
+    //            }
+    //        }
+    //        return null;
+    //    }
+    //}
+    //public void transferForOperator(string userId, string amount)
+    //{
+    //    string url = Endpoint.classesURL + "/payments/transfer/operator/" + userId;
+    //    ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+    //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+    //    request.Method = "POST";
+    //    request.ContentType = @"application/json";
+    //    using (var stream = request.GetRequestStream())
+    //    {
+    //        byte[] jsonAsBytes = encoding.GetBytes("{\"amount\":\"" + amount + "\"}");
+    //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
+    //    }
+    //    try
+    //    {
+    //        HttpWebResponse response;
+    //        using (response = (HttpWebResponse)request.GetResponse())
+    //        {
+    //            System.IO.Stream s = response.GetResponseStream();
+    //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
+    //            {
+    //                var jsonResponse = sr.ReadToEnd();
+    //                //Debug.Log (jsonResponse);
+    //            }
+    //        }
+    //    }
+    //    catch (WebException ex)
+    //    {
+    //        if (ex.Response != null)
+    //        {
+    //            using (var errorResponse = (HttpWebResponse)ex.Response)
+    //            {
+    //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
+    //                {
+    //                    string error = reader.ReadToEnd();
+    //                    //Debug.Log (error);
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
     public async Task<string> Payout(string token, float amount)
     {
         //UserManager um = new UserManager();

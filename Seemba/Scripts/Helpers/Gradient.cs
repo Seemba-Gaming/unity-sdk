@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
+
 [AddComponentMenu("UI/Effects/Gradient")]
+[CLSCompliant(false)]
 public class Gradient : BaseMeshEffect
 {
 	public enum Type

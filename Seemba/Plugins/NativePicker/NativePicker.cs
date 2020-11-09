@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System;
+
+[CLSCompliant(false)]
 public class NativePicker : MonoBehaviour {
 	public enum PickerType {
 		CustomPicker,

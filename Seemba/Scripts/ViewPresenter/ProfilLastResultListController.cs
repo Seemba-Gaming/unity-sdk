@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class ProfilLastResultListController : MonoBehaviour
 {
     public GameObject ContentPanel;

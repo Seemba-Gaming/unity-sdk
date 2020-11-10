@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System;
 using System.IO;
 using SimpleJSON;
-using UnityEditor;
-using System.Collections;
-using UnityEngine.Networking;
 using System.Threading.Tasks;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public sealed class TranslationManager : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public static string scene = null;
     public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
@@ -23,6 +19,7 @@ public sealed class TranslationManager : MonoBehaviour
     private static SystemLanguage d_Language = SystemLanguage.French;
 #endif
     private static SystemLanguage current_language;
+
     private static void CheckInstance()
     {
         if (Translations == null)
@@ -64,14 +61,13 @@ public sealed class TranslationManager : MonoBehaviour
     }
     public static async Task<bool> SavePreferedLanguage()
     {
-
         if (!isLanguageSupported())
         {
             await GetUserLanguage(SystemLanguage.English.ToString());
             isDownloaded = true;
             return true;
         }
-        else if ((!systemLanguage.Equals("English")) && (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage))))
+        else if (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage)))
         {
             var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
             var req = await SeembaWebRequest.Get.HttpsGet(url);
@@ -91,12 +87,7 @@ public sealed class TranslationManager : MonoBehaviour
                 return true;
             }
         }
-        else
-        {
-            await GetUserLanguage(systemLanguage);
-            isDownloaded = true;
-            return true;
-        }
+        return true;
     }
 
     public static async Task<bool> GetUserLanguage(string language)

@@ -14,6 +14,7 @@ public class EventsController : MonoBehaviour
 {
     #region Static
     public static EventsController Get { get { return sInstance; } }
+
     private static EventsController sInstance;
     public static GameObject last_view;
     #endregion
@@ -64,9 +65,52 @@ public class EventsController : MonoBehaviour
 
     private void OnSeembaError(UnityWebRequest www)
     {
+        Debug.LogWarning(www.uri);
+        Debug.LogWarning(www.downloadHandler.text);
+        Debug.LogWarning(www.error);
+
         if(www.isNetworkError)
         {
             PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+        }
+        else if(www.uri.ToString().Contains("stripe"))
+        {
+            var responseJson = JSON.Parse(www.downloadHandler.text);
+            Debug.LogWarning(responseJson["error"]["code"].ToString().Replace('"',' ').Trim());
+            if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_number"))
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_NUMBER, PopupsText.Get.StripeIncorrectNumber());
+                return;
+            }
+            if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("card_declined"))
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_CARD_DECLINED, PopupsText.Get.StripeCardDeclined());
+                return;
+            }
+            if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_cvc"))
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_CVC, PopupsText.Get.StripeIncorrectCVC());
+                return;
+            }
+            if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("balance_insufficient"))
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
+                return;
+            }
+            if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("insufficient_funds"))
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
+                return;
+            }
+            //if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("try_again_later"))
+            //{
+            PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_TRY_AGAIN_LATER, PopupsText.Get.StripeTryAgainLater());
+            return;
+            //}
+            //else
+            //{
+
+            //}
         }
         else
         {
@@ -185,8 +229,8 @@ public class EventsController : MonoBehaviour
         {
             backToWinMoney();
             LoaderManager.Get.LoaderController.HideLoader();
-
-            object[] _params = { headertext, headertext2, msg, "continue" };
+            TranslationManager.scene = "Home";
+            object[] _params = { headertext, headertext2, msg, TranslationManager.Get("continue")};
             PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
         });
     }

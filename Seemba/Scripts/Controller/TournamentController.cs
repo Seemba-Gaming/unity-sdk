@@ -77,6 +77,7 @@ public class TournamentController : MonoBehaviour
     {
         if (isProhibitedLocation(UserManager.Get.CurrentUser.country_code))
         {
+            Debug.LogWarning("hyere");
             PopupManager.Get.PopupController.ShowPopup(PopupType.PROHIBITED_LOCATION, PopupsText.Get.prohibited_location());
             return;
         }
@@ -130,7 +131,7 @@ public class TournamentController : MonoBehaviour
     }
     private bool isProhibitedLocation(string code)
     {
-        return CountryController.checkCountry(code);
+        return !CountryController.checkCountry(code);
     }
     private async System.Threading.Tasks.Task<bool> isVPNEnabledAsync()
     {

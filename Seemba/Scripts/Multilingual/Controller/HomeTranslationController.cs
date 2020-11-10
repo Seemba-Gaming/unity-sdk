@@ -115,7 +115,6 @@ public class HomeTranslationController : MonoBehaviour
     private void Start()
     {
         TranslationManager.scene = "Home";
-        Debug.LogWarning(TranslationManager.Get("back_button"));
         ContactBackButton.text = TranslationManager.Get("back_button");
         LegalBackButton.text = TranslationManager.Get("back_button");
         HelpCenterBackButton.text = TranslationManager.Get("back_button");

@@ -48,8 +48,8 @@ public class ViewsEvents : MonoBehaviour
             UserManager.Get.CurrentUser = user;
             UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(user.avatar);
             GoToMenu(Menu.gameObject);
-            //ShowScene(Menu.Home);
-            ShowScene(Menu.HaveFun);
+            ShowScene(Menu.Home);
+            //ShowScene(Menu.HaveFun);
             PopupManager.Get.PopupsTranslationController.Init();
         }
         else

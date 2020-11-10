@@ -224,14 +224,12 @@ public class PopupsViewPresenter : MonoBehaviour
     {
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
-
-
+        PopupInfoConfirmButton.onClick.RemoveAllListeners();
     }
     public void ShowInsufficientBalancePopup(object[] _paras)
     {
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_paras[0].ToString(), _paras[1].ToString(), _paras[2].ToString(), _paras[3].ToString());
-
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
         PopupInfoConfirmButton.onClick.AddListener(() =>
         {
@@ -245,6 +243,7 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+        PopupInfoConfirmButton.onClick.RemoveAllListeners();
     }
     public void ShowMissingInfoPopup(object[] _param, string source)
     {
@@ -267,29 +266,12 @@ public class PopupsViewPresenter : MonoBehaviour
             }
         });
     }
-    public void ShowMissingPopup(object[] _param)
-    {
-        _params = _param;
-        PopupInfoCancelButton.gameObject.SetActive(false);
-        ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
-
-    }
-    public void ShowErrorPopup(object[] _param)
-    {
-        _params = _param;
-        PopupInfoCancelButton.gameObject.SetActive(false);
-        ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-        InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
-
-    }
     public void ShowEqualityRefundPopup(object[] _param)
     {
         _params = _param;
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
-
     }
     public void ShowNotAuthorizedPopup(object[] _param)
     {
@@ -346,6 +328,7 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
+        PopupInfoConfirmButton.onClick.RemoveAllListeners();
 
     }
     public void ShowProhibitedLocationWalletPopup(object[] _param)
@@ -354,7 +337,7 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
-
+        PopupInfoConfirmButton.onClick.RemoveAllListeners();
     }
     public void ShowProhibitedLocationWithdrawPopup(object[] _param)
     {
@@ -362,7 +345,7 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupInfoCancelButton.gameObject.SetActive(false);
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
         InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
-
+        PopupInfoConfirmButton.onClick.RemoveAllListeners();
     }
     public void ShowTooyoungPopup(object[] _param)
     {
@@ -514,7 +497,6 @@ public class PopupsViewPresenter : MonoBehaviour
         {
             ViewsEvents.Get.GoBack();
         }
-        Debug.LogWarning(ViewsEvents.Get.Menu.GetCurrentSubMenu().name);
         BottomMenuController.Show();
         if (ViewsEvents.Get.Menu.GetCurrentSubMenu() == ViewsEvents.Get.Menu.Settings)
         {

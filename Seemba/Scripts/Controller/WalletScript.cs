@@ -34,7 +34,7 @@ public class WalletScript : MonoBehaviour
 		if(string.IsNullOrEmpty(UserManager.Get.CurrentUser.country_code)){
 			UserManager.Get.CurrentUser.country_code = await UserManager.Get.GetGeoLoc();
 		}
-		if (CountryController.checkCountry (UserManager.Get.CurrentUser.country_code) == true) {
+		if (CountryController.checkCountry (UserManager.Get.CurrentUser.country_code)) {
 			StartCoroutine (EventsController.Get.checkInternetConnection (async (isConnected) => {
 
 				LoaderManager.Get.LoaderController.HideLoader();
@@ -61,18 +61,16 @@ public class WalletScript : MonoBehaviour
 						await AddOtherAmount.AddOtherAmountAsync();
 					}
 				}
-				else{
-					try{
-					}catch(ArgumentException ex){}
-						ConnectivityController.CURRENT_ACTION = ConnectivityController.CREDIT_ACTION;
+				else
+				{
+					ConnectivityController.CURRENT_ACTION = ConnectivityController.CREDIT_ACTION;
 					PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
-
 				}
 			}));
 		} 
 		else 
 		{
-			UnityThreading.ActionThread thread, thr;
+			UnityThreading.ActionThread thread;
 			thread = UnityThreadHelper.CreateThread (() => {
 				Thread.Sleep(300);
 				UnityThreadHelper.Dispatcher.Dispatch (() => {

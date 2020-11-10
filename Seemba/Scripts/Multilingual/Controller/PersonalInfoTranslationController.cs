@@ -17,7 +17,6 @@ public class PersonalInfoTranslationController : MonoBehaviour
     void Start()
     {
         TranslationManager.scene = "Home";
-        Debug.LogWarning(TranslationManager.Get("back_button"));
         BackButton.text = TranslationManager.Get("back_button");
         TranslationManager.scene = "PersonalInfo";
         first_name.text = TranslationManager.Get("first_name") != string.Empty ? TranslationManager.Get("first_name") : first_name.text;

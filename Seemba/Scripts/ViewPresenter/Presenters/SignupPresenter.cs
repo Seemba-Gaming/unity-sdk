@@ -45,7 +45,8 @@ public class SignupPresenter : MonoBehaviour
 
         changeCharacter.onClick.AddListener(() =>
         {
-            object[] _params = { "choose yout character" };
+            TranslationManager.scene = "Signup";
+            object[] _params = { TranslationManager.Get("choose_your_character") };
             PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CHOOSE_CHARACTER, _params);
         });
 

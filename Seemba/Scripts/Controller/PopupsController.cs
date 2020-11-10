@@ -45,6 +45,12 @@ public enum PopupType
     INFO_POPUP_PAYMENT_NOT_CONFIRMED,
     INFO_POPUP_EQUALITY_REFUND,
     INFO_POPUP_NOT_AVAILABLE,
+    STRIPE_INCORRECT_NUMBER,
+    STRIPE_INCORRECT_CVC,
+    STRIPE_CARD_DECLINED,
+    STRIPE_INVALID_CARD_TYPE,
+    STRIPE_BALANCE_INSUFFICIENT,
+    STRIPE_TRY_AGAIN_LATER,
     SESSION_EXPIRED
 }
 
@@ -151,6 +157,27 @@ public class PopupsController : MonoBehaviour
                 break;
             case PopupType.INFO_POPUP_UNAUTHORIZED:
                 PopupManager.Get.PopupViewPresenter.ShowNotAuthorizedPopup(_params);
+                break;
+            case PopupType.INFO_POPUP_PROHIBITED_LOCATION_WALLET:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.STRIPE_INCORRECT_NUMBER:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.STRIPE_CARD_DECLINED:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.STRIPE_INCORRECT_CVC:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.STRIPE_INVALID_CARD_TYPE:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.STRIPE_BALANCE_INSUFFICIENT:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.STRIPE_TRY_AGAIN_LATER:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                 break;
             default:
                 Debug.LogWarning(popupType);

@@ -278,7 +278,6 @@ public class ChargePresenter : MonoBehaviour
             if (!_paymentIntent.Equals("-1"))
             {
                 _paymentIntentID = _paymentIntent["data"]["id"].Value;
-                Debug.Log("_paymentIntentID: " + _paymentIntentID);
                 if (_paymentIntent["success"].AsBool)
                 {
                     if (Is3DSecure(_paymentIntent))
@@ -287,16 +286,12 @@ public class ChargePresenter : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("is3DSecure false");
-
                         if (_paymentIntent["status"].Value == ChargeManager.PAYMENT_STATUS_SUCCEEDED)
                         {
-                            Debug.LogWarning("here succeeded");
                             ChargeSucceeded();
                         }
                         else
                         {
-                            Debug.LogWarning("here canceled");
                             ChargeCanceled();
                         }
                     }
@@ -317,14 +312,11 @@ public class ChargePresenter : MonoBehaviour
 
     private bool Is3DSecure(JSONNode json)
     {
-        Debug.Log("status:" + json["status"].Value);
-        Debug.Log(json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_ACTION || json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_SOURCE_ACTION);
         return json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_ACTION || json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_SOURCE_ACTION;
     }
     private void Confirm3DSecure(JSONNode json)
     {
         var _3DSecureURL = json["redirect_url"].Value;
-        Debug.Log("_3DSecureURL: " + json["redirect_url"].Value);
         OpenBrowserFor3dSecure(_3DSecureURL);
     }
     private void OpenBrowserFor3dSecure(string url)
@@ -366,7 +358,8 @@ public class ChargePresenter : MonoBehaviour
     private void ChargeSucceeded()
     {
         float credit = float.Parse(UserManager.Get.GetCurrentMoneyCredit()) + WalletScript.LastCredit;
-        object[] _params = { "Congratulations", "Transaction Accepted", credit.ToString() + "€", "(+" + WalletScript.LastCredit + CurrencyManager.CURRENT_CURRENCY + ")", "Ok !" };
+        TranslationManager.scene = "Home";
+        object[] _params = { TranslationManager.Get("congratulations"), TranslationManager.Get("transaction_accepted"), credit.ToString() + "€", "(+" + WalletScript.LastCredit + CurrencyManager.CURRENT_CURRENCY + ")", TranslationManager.Get("ok")+ " !" };
         LoaderManager.Get.LoaderController.HideLoader();
         PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS, _params);
         UserManager.Get.UpdateUserMoneyCredit(credit.ToString());

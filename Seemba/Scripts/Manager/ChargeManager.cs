@@ -38,15 +38,13 @@ public class ChargeManager : MonoBehaviour {
         string url = Endpoint.stripeURL + "/payment_methods";
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         WWWForm form = new WWWForm();
-        form.AddField("card[number]=", card_number);
-        form.AddField("card[exp_month]=", card_expiry_month);
-        form.AddField("card[exp_year]=", card_expiry_year);
-        form.AddField("card[cvc]=", cvc);
+        form.AddField("card[number]", card_number);
+        form.AddField("card[exp_month]", card_expiry_month);
+        form.AddField("card[exp_year]", card_expiry_year);
+        form.AddField("card[cvc]", cvc);
         form.AddField("type", PAYMENT_TYPE);
-        var response  = await SeembaWebRequest.Get.HttpsPostBearer(url, form);
-        Debug.Log(response);
+        var response  = await SeembaWebRequest.Get.HttpsPostBearer(url, form, Endpoint.TokenizationAccount);
         var res = JSON.Parse(response);
-        Debug.Log("id:" + res["id"].Value);
         return res["id"].Value;
     }
     public async System.Threading.Tasks.Task<JSONNode> CreatePaymentIntentAsync(string _paymentMethod, float amount, string token)

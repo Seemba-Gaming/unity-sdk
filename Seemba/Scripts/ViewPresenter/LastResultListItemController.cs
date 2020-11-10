@@ -247,7 +247,8 @@ public class LastResultListItemController : MonoBehaviour
     async System.Threading.Tasks.Task SetOpponentDetailsAsync(LastResultListController controller, User user)
     {
         Sprite sprite = await UserManager.Get.getAvatar(user.avatar);
-        controller.Drapeau.sprite = sprite;
+        var Flag = await UserManager.Get.GetFlagBytes(user.country_code);
+        controller.Drapeau.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
         controller.Drapeau.transform.localScale = Vector3.one;
         controller.avatar.sprite = sprite;
         controller.AdversaryName.text = user.username;

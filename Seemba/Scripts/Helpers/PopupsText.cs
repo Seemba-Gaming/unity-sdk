@@ -136,6 +136,32 @@ public class PopupsText : MonoBehaviour
     {
         return new object[] { TranslationManager.Get("email"), TranslationManager.Get("sent"), TranslationManager.Get("email_instructions"), TranslationManager.Get("ok"), "BUTTON_SEND_AGAIN" };
     }
+    public object[] StripeIncorrectNumber()
+    {
+        TranslationManager.scene = "Popups";
+        Debug.LogWarning(TranslationManager.Get("stripe_incorrect_number"));
+        return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_incorrect_number"), TranslationManager.Get("i_understand") };
+    }
+    public object[] StripeCardDeclined()
+    {
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_card_declined"), TranslationManager.Get("i_understand") };
+    }
+    public object[] StripeIncorrectCVC()
+    {
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_incorrect_cvc"), TranslationManager.Get("i_understand") };
+    }
+    public object[] StripeBalanceInsufficient()
+    {
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_balance_insufficient"), TranslationManager.Get("i_understand") };
+    }
+    public object[] StripeTryAgainLater()
+    {
+        TranslationManager.scene = "Popups";
+        return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_try_again_later"), TranslationManager.Get("i_understand") };
+    }
     public object[] PaymentNotConfirmed()
     {
         return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };

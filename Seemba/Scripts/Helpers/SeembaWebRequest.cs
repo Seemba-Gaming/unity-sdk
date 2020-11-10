@@ -65,11 +65,19 @@ public class SeembaWebRequest : MonoBehaviour
         return response.data;
     }
 
-    public async Task<string> HttpsPostBearer(string uri, WWWForm postData)
+    public async Task<string> HttpsPostBearer(string uri, WWWForm postData, string token = null)
     {
         UnityWebRequest www = UnityWebRequest.Post(uri,postData);
-        var token = UserManager.Get.getCurrentSessionToken();
-        if (token != null)
+        if(string.IsNullOrEmpty(token))
+        {
+            var userToken = UserManager.Get.getCurrentSessionToken();
+            if (userToken != null)
+            {
+                www.SetRequestHeader("Authorization", "Bearer " + userToken);
+                www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+            }
+        }
+        else
         {
             www.SetRequestHeader("Authorization", "Bearer " + token);
             www.uploadHandler.contentType = "application/x-www-form-urlencoded";

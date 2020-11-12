@@ -130,21 +130,15 @@ public class UserService : MonoBehaviour
     #endregion
 
     #region Methods
-    public void Logout()
+    public async void Logout()
     {
         var userId = UserManager.Get.getCurrentUserId();
         var deviceToken = PlayerPrefs.GetString("DeviceToken");
         LoaderManager.Get.LoaderController.ShowLoader(null);
-        UnityThreadHelper.CreateThread(() =>
-        {
-            UserManager.Get.removeUserDeviceTokenAsync(userId, GamesManager.GAME_ID, deviceToken);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                LoaderManager.Get.LoaderController.HideLoader();
-                UserManager.Get.logingOut();
-                SceneManager.LoadSceneAsync("SeembaEsports");
-            });
-        });
+        await UserManager.Get.removeUserDeviceTokenAsync(userId, GamesManager.GAME_ID, deviceToken);
+        LoaderManager.Get.LoaderController.HideLoader();
+        UserManager.Get.logingOut();
+        SceneManager.LoadSceneAsync("SeembaEsports");
     }
     #endregion
 
@@ -239,11 +233,7 @@ public class UserService : MonoBehaviour
         }
         else
         {
-            if (res == null)
-            {
-                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
-            }
-
+            //what ?
         }
     }
     private bool IsValidEmail(string email)

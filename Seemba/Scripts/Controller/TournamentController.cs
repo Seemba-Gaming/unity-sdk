@@ -33,7 +33,7 @@ public class TournamentController : MonoBehaviour
         sInstance = this;
     }
 
-    public void Play(object[] _duel_params)
+    public async void Play(object[] _duel_params)
     {
 
         userId = UserManager.Get.getCurrentUserId();
@@ -50,7 +50,7 @@ public class TournamentController : MonoBehaviour
 
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
-                StartCashTournamentAsync(entry_fee, gain, gain_type);
+                await StartCashTournamentAsync(entry_fee, gain, gain_type);
             }
             else
             {

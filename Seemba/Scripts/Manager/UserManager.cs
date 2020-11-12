@@ -11,9 +11,8 @@ using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class UserManager : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
 
     #region Static
@@ -75,20 +74,16 @@ public class UserManager : MonoBehaviour
             }
         }
         byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
         await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
     }
 
     public async Task<Texture2D> GetFlagBytes(string country_code)
     {
-        string url = "https://seemba-api.herokuapp.com/flags/" + country_code + ".png";
-        //var url = "https://seemba-users.s3.eu-west-2.amazonaws.com/1524121466763.jpeg";
-        var www = UnityWebRequestTexture.GetTexture(url);
+        string url = "http://api-staging.seemba.com/flags/" + country_code + ".png";
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         await www.SendWebRequest();
-        while (!www.isDone) { }
-
-        var texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+        var texture = DownloadHandlerTexture.GetContent(www);
         return texture;
     }
     public async Task<string> GetGeoLoc()
@@ -323,8 +318,8 @@ public class UserManager : MonoBehaviour
     }
     string getDataPath()
     {
-        string path = "";
 #if UNITY_ANDROID && !UNITY_EDITOR
+        string path = "";
 		try {
 			IntPtr obj_context = AndroidJNI.FindClass("android/content/ContextWrapper");
 			IntPtr method_getFilesDir = AndroidJNIHelper.GetMethodID(obj_context, "getFilesDir", "()Ljava/io/File;");

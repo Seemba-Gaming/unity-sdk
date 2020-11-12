@@ -1,9 +1,9 @@
-﻿//using Boo.Lang;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
+[CLSCompliant(false)]
 public class Game
 {
 	public string _id, name, editorId, bundle_id, appstore_id, game_scene_name, game_level;

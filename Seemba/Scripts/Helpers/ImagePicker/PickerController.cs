@@ -1,24 +1,21 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
-using System.IO;
-using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace Kakera
 {
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+    #pragma warning disable 0649
+    [CLSCompliant(false)]
     public class PickerController : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
     {
         [SerializeField]
         private Unimgpicker imagePicker;
         [SerializeField]
         private Image imageRenderer;
         public static string pathID1, pathAddress, pathBank, pathPassport, imageToUpload;
-        void Awake()
+
+        private void Awake()
         {
             try
             {
@@ -27,7 +24,7 @@ namespace Kakera
                     LoadImage(path, imageRenderer);
                 };
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
             }
         }
@@ -37,7 +34,7 @@ namespace Kakera
             {
                 imagePicker.Show("Select Image", "unimgpicker", 1024);
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
             }
         }
@@ -49,14 +46,15 @@ namespace Kakera
                 imageToUpload = name;
                 //Debug.Log ("imageToUpload : "+imageToUpload);
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
             }
         }
-        string getDataPath()
+
+        private string getDataPath()
         {
-            string path = "";
 #if UNITY_ANDROID && !UNITY_EDITOR
+            string path = "";
 			try {
 			IntPtr obj_context = AndroidJNI.FindClass("android/content/ContextWrapper");
 			IntPtr method_getFilesDir = AndroidJNIHelper.GetMethodID(obj_context, "getFilesDir", "()Ljava/io/File;");
@@ -91,7 +89,7 @@ namespace Kakera
             {
                 imageRenderer.sprite = newSprite;
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
             }
             imageRenderer.sprite = newSprite;

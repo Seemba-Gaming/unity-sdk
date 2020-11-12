@@ -147,7 +147,7 @@ public class ResultPresenter : MonoBehaviour
         ResultImage.sprite = ResultImages[1];
 
     }
-    public async void Init(Challenge challenge)
+    public void Init(Challenge challenge)
     {
         mCurrentChallenge = challenge;
         Date.text = challenge.CreatedAt.Substring(0, challenge.CreatedAt.IndexOf("T"));

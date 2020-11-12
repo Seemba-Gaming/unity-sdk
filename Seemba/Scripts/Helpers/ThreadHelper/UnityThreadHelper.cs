@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 #if !NO_UNITY
 using UnityEngine;
 #endif
 #if !NO_UNITY
 [ExecuteInEditMode]
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class UnityThreadHelper : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 #else
 public class UnityThreadHelper
 #endif
@@ -104,7 +104,7 @@ public class UnityThreadHelper
                 {
                     action(currentThread);
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
                     //UnityEngine.//Debug.LogError(ex);
                 }

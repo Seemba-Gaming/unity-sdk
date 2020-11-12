@@ -53,7 +53,7 @@ public class LastResultListItemController : MonoBehaviour
                 {
                     score1 = item.user_1_score;
                 }
-                catch (NullReferenceException ex)
+                catch (NullReferenceException)
                 {
                     score1 = null;
                 }
@@ -62,7 +62,7 @@ public class LastResultListItemController : MonoBehaviour
                 {
                     score2 = item.user_2_score;
                 }
-                catch (NullReferenceException ex)
+                catch (NullReferenceException)
                 {
                     score2 = null;
                 }
@@ -103,11 +103,11 @@ public class LastResultListItemController : MonoBehaviour
                         SeeMoreResult.gameObject.SetActive(true);
                         nbElement = 4;
                     }
-                    show(nbElement);
-                    SeeMoreResult.onClick.AddListener(() =>
+                    await showAsync(nbElement);
+                    SeeMoreResult.onClick.AddListener(async () =>
                     {
                         nbElement += 4;
-                        show(nbElement);
+                        await showAsync(nbElement);
                         if (nbElement >= count)
                         {
                             SeeMoreResult.gameObject.SetActive(false);
@@ -139,7 +139,7 @@ public class LastResultListItemController : MonoBehaviour
             }
         }
     }
-    void show(int nbElement)
+    async System.Threading.Tasks.Task showAsync(int nbElement)
     {
         int count = 0;
         foreach (JSONNode item in ItemsTournament)
@@ -202,11 +202,11 @@ public class LastResultListItemController : MonoBehaviour
                         LastResultListController controller = newItem.GetComponent<LastResultListController>();
                         if (UserId == item.matched_user_1._id)
                         {
-                            SetOpponentDetailsAsync(controller, item.matched_user_2);
+                            await SetOpponentDetailsAsync(controller, item.matched_user_2);
                         }
                         else
                         {
-                            SetOpponentDetailsAsync(controller, item.matched_user_1);
+                            await SetOpponentDetailsAsync(controller, item.matched_user_1);
                         }
                         SetChallengeDetails(controller, item);
                         controller.avatar.GetComponentInChildren<Button>().onClick.AddListener(() =>
@@ -291,7 +291,7 @@ public class LastResultListItemController : MonoBehaviour
             {
                 if (count >= nbElement)
                 {
-                    DestroyObject(child.gameObject);
+                    Destroy(child.gameObject);
                 }
                 count++;
             }

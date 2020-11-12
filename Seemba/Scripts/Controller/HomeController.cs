@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [CLSCompliant(false)]
 public class HomeController : MonoBehaviour
@@ -14,7 +15,7 @@ public class HomeController : MonoBehaviour
 
     private bool notConnected;
 
-    private async void OnEnable()
+    private void OnEnable()
     {
         StartCoroutine(SelectHome());
 
@@ -81,14 +82,9 @@ public class HomeController : MonoBehaviour
     }
     public IEnumerator checkInternetConnection()
     {
-        WWW www = new WWW("https://www.google.fr");
-        float timer = 0;
-        while (!www.isDone)
-        {
-            if (timer > 5) { notConnected = true; break; }
-            timer += Time.deltaTime;
-            yield return null;
-        }
+        UnityWebRequest www = new UnityWebRequest("https://www.google.fr");
+        yield return www.SendWebRequest();
+
         if (notConnected)
         {
             www.Dispose();

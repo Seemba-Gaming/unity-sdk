@@ -27,7 +27,7 @@ public class SignupController : MonoBehaviour
     void Start()
     {
     }
-    public async void Signup(string username, string email, string password, Image avatar)
+    public void Signup(string username, string email, string password, Image avatar)
     {
         LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.CHECKING_CONNECTION);
         StartCoroutine(
@@ -66,7 +66,7 @@ public class SignupController : MonoBehaviour
                             await UserManager.Get.addUserDeviceToken(userid, GamesManager.GAME_ID, deviceToken, platform);
 
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             Debug.LogWarning(" deviceToken is null");
                         }

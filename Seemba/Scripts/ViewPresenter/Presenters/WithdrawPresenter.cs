@@ -72,7 +72,7 @@ public class WithdrawPresenter : MonoBehaviour
             }
         });
     }
-    private async void OnEnable()
+    private void OnEnable()
     {
         balance.text = UserManager.Get.CurrentUser.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
     }
@@ -93,7 +93,7 @@ public class WithdrawPresenter : MonoBehaviour
     #region Implementation
     private async void CheckAndWithdraw()
     {
-
+        Debug.LogWarning("here");
         if (CountryController.checkCountry(UserManager.Get.CurrentUser.country_code) == true)
         {
             var token = UserManager.Get.getCurrentSessionToken();

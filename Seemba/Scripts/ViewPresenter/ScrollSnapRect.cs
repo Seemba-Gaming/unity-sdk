@@ -264,7 +264,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
                 }
             }
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
         }
         try
@@ -280,7 +280,7 @@ public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler,
                 }
             }
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
         }
     }

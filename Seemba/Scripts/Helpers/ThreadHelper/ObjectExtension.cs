@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 namespace UnityThreading
 {
-	public static class ObjectExtension
+    [CLSCompliant(false)]
+    public static class ObjectExtension
 	{
         /// <summary>
         /// Starts the given Method as async Task on the given TaskDistributor.

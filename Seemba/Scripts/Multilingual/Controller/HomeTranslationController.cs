@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+
+[CLSCompliant(false)]
+#pragma warning disable 0649
 public class HomeTranslationController : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     [Header("Home")]
     [SerializeField]
@@ -237,5 +239,10 @@ public class HomeTranslationController : MonoBehaviour
         //HelpCenter
         legal.text = TranslationManager.Get("legal") != string.Empty ? TranslationManager.Get("legal") : legal.text;
         contact.text = TranslationManager.Get("contact") != string.Empty ? TranslationManager.Get("contact") : contact.text;
+        //Wihdraw
+        money.text = TranslationManager.Get("money");
+        withdrawTitle.text = TranslationManager.Get("withdraw");
+        available_balance.text = TranslationManager.Get("available_balance");
+        enter_the_amount_to_withdraw.text = TranslationManager.Get("enter_the_amount_to_withdraw");
     }
 }

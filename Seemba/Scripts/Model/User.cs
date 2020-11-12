@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 
 [Serializable]
+[CLSCompliant(false)]
 public class User  {
 	public string _id;
 	public string username;

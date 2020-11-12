@@ -54,7 +54,6 @@ public class PersonelInfoController : MonoBehaviour
                 country_flag.transform.localScale = Vector3.one;
             }
             catch (ArgumentNullException) { }
-            Debug.Log(usr.birthdate);
             if (!string.IsNullOrEmpty(usr.birthdate))
             {
                 Birthdate.text = DateTime.Parse(usr.birthdate).ToString("yyyy-MM-dd");
@@ -244,14 +243,8 @@ public class PersonelInfoController : MonoBehaviour
                             Country.text
                 };
                     Country.GetComponent<InputfieldStateController>().ShowLoading();
-                    UnityThreadHelper.CreateThread(() =>
-                    {
-                        UpdateUser(attrib, value);
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            Country.GetComponent<InputfieldStateController>().ShowAccepted();
-                        });
-                    });
+                    UpdateUser(attrib, value);
+                    Country.GetComponent<InputfieldStateController>().ShowAccepted();
                 }
                 else
                 {
@@ -311,7 +304,7 @@ public class PersonelInfoController : MonoBehaviour
         UserManager.Get.UpdateUserByField(attrib, values);
     }
 
-    public async void UpdateAge(string[] attrib, string[] values)
+    public void UpdateAge(string[] attrib, string[] values)
     {
         Debug.Log("update age");
         string[] date = values[0].Split(new char[] { '-' }, 3);

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+[CLSCompliant(false)]
 public class Challenge
 {
     //public string objectId;

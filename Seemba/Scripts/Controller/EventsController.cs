@@ -28,9 +28,7 @@ public class EventsController : MonoBehaviour
     #endregion
 
     #region Fields
-    private Text _textDatePredefined;
     private string _selectedDateString2 = "1995-09-15";
-    private Image mImage;
     private string mCaller;
     #endregion
 
@@ -44,11 +42,6 @@ public class EventsController : MonoBehaviour
         {
             _selectedDateString2 = value;
             UserManager.Get.CurrentUser.birthdate = value;
-            try
-            {
-                _textDatePredefined.text = SelectedDateString2;
-            }
-            catch (NullReferenceException ex) { }
         }
     }
     private void Awake()
@@ -177,7 +170,7 @@ public class EventsController : MonoBehaviour
                 {
                     ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
                 }
-                catch (Exception e) { }
+                catch (Exception) { }
             });
         });
     }
@@ -225,14 +218,19 @@ public class EventsController : MonoBehaviour
 
     public void withdrawFailed(string headertext, string headertext2, string msg)
     {
-        UnityThreadHelper.Dispatcher.Dispatch(() =>
-        {
-            backToWinMoney();
-            LoaderManager.Get.LoaderController.HideLoader();
-            TranslationManager.scene = "Home";
-            object[] _params = { headertext, headertext2, msg, TranslationManager.Get("continue")};
-            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
-        });
+        StartCoroutine(WithdrawFailed(headertext, headertext2, msg));
+    }
+
+    IEnumerator WithdrawFailed(string headertext, string headertext2, string msg)
+    {
+        ViewsEvents.Get.Menu.ScrollSnap.LerpToPage(0);
+        BottomMenuController.Get.selectSettings();
+        ViewsEvents.Get.SettingsClick();
+        yield return new WaitForSeconds(0.2f);
+        ViewsEvents.Get.WinMoneyClick();
+        LoaderManager.Get.LoaderController.HideLoader();
+        object[] _params = { headertext, headertext2, msg, TranslationManager.Get("continue") };
+        PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
     }
     public void backToWinMoney()
     {
@@ -258,7 +256,6 @@ public class EventsController : MonoBehaviour
         OpponentFound.Avatar = null;
         OpponentFound.AdvCountryCode = null; 
         advFound = false;
-        Text entry_fee, Gain;
         switch (ChallengeManager.CurrentChallenge.gain_type)
         {
             case ChallengeManager.CHALLENGE_WIN_TYPE_CASH:
@@ -321,15 +318,13 @@ public class EventsController : MonoBehaviour
     }
     public bool checkUserBirthday(User user)
     {
-        string Years;
         DateTime birthdate;
         try
         {
             birthdate = DateTime.Parse(user.birthdate);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Years = "0";
             return true;
         }
         if (!string.IsNullOrEmpty(user.birthdate))
@@ -372,41 +367,16 @@ public class EventsController : MonoBehaviour
     }
     public IEnumerator checkInternetConnection(Action<bool?> action)
     {
+        UnityWebRequest www = new UnityWebRequest("https://www.google.fr");
+        yield return www.SendWebRequest();
 
-
-        WWW www = new WWW("https://www.google.fr");
-        float timer = 0;
-        bool failed = false;
-        while (!www.isDone)
+        if (www.error == null)
         {
-
-            if (timer > 5) { failed = true; break; }
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-
-        if (failed)
-        {
-
-            //Show Popup Failed connection
-
-            www.Dispose();
-            action(false);
+            action(true);
         }
         else
         {
-            if (www.error == null)
-            {
-                action(true);
-            }
-            else
-            {
-
-
-
-                action(false);
-            }
+            action(false);
         }
     }
     public async void startFirstChallenge(string token)
@@ -472,17 +442,6 @@ public class EventsController : MonoBehaviour
     public void PrivacyPolicy()
     {
         Application.OpenURL("http://www.seemba.com/downloads/Privacy_Policy.pdf");
-    }
-    void imageHandle(string message, byte[] data)
-    {
-        JSONArray jsa = (JSONArray)JSON.Parse(message);
-        JSONNode jsn = jsa[0];
-        int w = jsn["width"].AsInt;
-        int h = jsn["height"].AsInt;
-        Texture2D xx = new Texture2D(w, h, TextureFormat.BGRA32, false);
-        xx.LoadImage(data);
-        Sprite newSprite = Sprite.Create(xx as Texture2D, new Rect(0f, 0f, xx.width, xx.height), Vector2.zero);
-        mImage.sprite = newSprite;
     }
 
     #region DatePicker

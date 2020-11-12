@@ -68,7 +68,8 @@ public class TournamentManager : MonoBehaviour
     {
         string url = Endpoint.classesURL + "/tournaments/" + id;
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-        var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
+        var response = await SeembaWebRequest.Get.HttpsGet(url);
+        var json = JSON.Parse(response);
         return json;
     }
     public async Task<bool> addScore(string tournamentsID, float score)

@@ -9,9 +9,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class WithdrawalInfoPresenter : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public InputField Iban;
     public Image CountryFlag;
@@ -31,13 +30,16 @@ public class WithdrawalInfoPresenter : MonoBehaviour
         controller = new WithdrawController();
         init();
     }
-    async void init()
+    private void Start()
     {
-        Continue.interactable = false;
         Continue.onClick.AddListener(async delegate
         {
             await CreateConnectAccount();
         });
+    }
+    async void init()
+    {
+        Continue.interactable = false;
 
         LoaderManager.Get.LoaderController.ShowLoader();
         User user = await UserManager.Get.getUser();
@@ -88,14 +90,18 @@ public class WithdrawalInfoPresenter : MonoBehaviour
         bool res = await controller.TokenizeAndCreate(country_code, currency, Iban.text);
         if (res) Iban.interactable = false;
         var account = await controller.GetAccountStatus();
+        Debug.LogWarning(account.verification_status);
+        Debug.LogWarning(account.verification_link);
         if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
         {
+            Debug.LogWarning("here");
             if (!string.IsNullOrEmpty(account.verification_link))
             {
                 Application.OpenURL(account.verification_link);
             }
         }
         ViewsEvents.Get.GoBack();
+        if (res) Iban.interactable = true;
     }
     void init_iban(User user)
     {

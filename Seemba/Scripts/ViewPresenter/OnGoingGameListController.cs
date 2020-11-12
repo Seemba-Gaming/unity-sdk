@@ -10,7 +10,6 @@ public class OnGoingGameListController : MonoBehaviour
     public GameObject ContentPanel, ContentOngoing;
     public GameObject ListItemPrefab;
     public GameObject tournamentPrefab;
-    ArrayList ItemsBracket;
     string userId;
     string token;
     public Sprite[] spriteArray;
@@ -19,14 +18,6 @@ public class OnGoingGameListController : MonoBehaviour
     JSONArray ItemsTournamentsPending;
 
     private bool initialized = false;
-    public bool ItemsBracketFinished()
-    {
-        if (ItemsBracket == null)
-        {
-            return true;
-        }
-        return false;
-    }
 
     void OnDisable()
     {
@@ -118,7 +109,6 @@ public class OnGoingGameListController : MonoBehaviour
             {
                 ArrayList ListItems = new ArrayList();
                 ArrayList controllers = new ArrayList();
-                UnityThreading.ActionThread thread;
 
                 Items1vs1SeeResults = await ChallengeManager.Get.getSeeResultsChallenges(token);
                 Items1vs1Pending = await ChallengeManager.Get.getPendingChallenges(token);
@@ -198,7 +188,7 @@ public class OnGoingGameListController : MonoBehaviour
                         {
                             score1 = item.user_1_score;
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             score1 = null;
                         }
@@ -207,7 +197,7 @@ public class OnGoingGameListController : MonoBehaviour
                         {
                             score2 = item.user_2_score;
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             score2 = null;
                         }
@@ -216,7 +206,7 @@ public class OnGoingGameListController : MonoBehaviour
                         {
                             matched_user_2_id = item.matched_user_2._id;
                         }
-                        catch (NullReferenceException ex)
+                        catch (NullReferenceException)
                         {
                             matched_user_2_id = null;
                         }
@@ -287,25 +277,20 @@ public class OnGoingGameListController : MonoBehaviour
                 }
             }
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
         }
     }
-    private async void Win()
+    private void Win()
     {
         string[] attrib = { "last_result" };
         string[] values = { "win" };
         UserManager.Get.UpdateUserByField(attrib, values);
     }
-    private async void Loss()
+    private void Loss()
     {
         string[] attrib = { "last_result" };
         string[] values = { "loss" };
         UserManager.Get.UpdateUserByField(attrib, values);
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

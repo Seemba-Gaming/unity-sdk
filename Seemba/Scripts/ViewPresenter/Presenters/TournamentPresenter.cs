@@ -97,7 +97,7 @@ public class TournamentPresenter : MonoBehaviour
             }
         }
     }
-    public async void InitBracketsAsync(JSONNode match, int pos, JSONArray participants, int tourIndex)
+    public void InitBracketsAsync(JSONNode match, int pos, JSONArray participants, int tourIndex)
     {
         if (match != null)
         {
@@ -202,7 +202,7 @@ public class TournamentPresenter : MonoBehaviour
             }
         }
     }
-    private async void initBrakcetPlayersInfo(JSONNode player1, JSONNode player2, int pos, int tourIndex)
+    private void initBrakcetPlayersInfo(JSONNode player1, JSONNode player2, int pos, int tourIndex)
     {
         mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.InitAsync(player1);
         mToursController.Tours[tourIndex].ToursChallenges[pos].Player2.InitAsync(player2);

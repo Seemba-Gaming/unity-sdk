@@ -6,9 +6,8 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class IntegrationGUI : EditorWindow
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     private Texture2D m_Logo = null;
 
@@ -46,7 +45,7 @@ public class IntegrationGUI : EditorWindow
                 GAME_SCENE_NAME = SavedGame.game_scene_name;
             }
         }
-        catch (Exception ex) { }
+        catch (Exception) { }
         GetScenes();
     }
     #endregion
@@ -112,7 +111,7 @@ public class IntegrationGUI : EditorWindow
                 game.game_scene_name = SavedGame.game_scene_name;
             }
         }
-        catch (Exception ex) { }
+        catch (Exception) { }
 
         if (string.IsNullOrEmpty(game._id) && string.IsNullOrEmpty(game.name) && string.IsNullOrEmpty(game.game_scene_name))
         {

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 [CLSCompliant(false)]
@@ -18,6 +19,12 @@ public class TourPlayer : MonoBehaviour
     public Image Pro;
     public GameObject Loader;
 
+
+    private void Awake()
+    {
+        TranslationManager.scene = "Bracket";
+        Username.text = TranslationManager.Get("to_be_determined");
+    }
     public async void InitAsync(JSONNode info)
     {
         if(info != null && info["avatar"] != null)
@@ -58,9 +65,9 @@ public class TourPlayer : MonoBehaviour
 
     public IEnumerator initPlayerAvatar(string url, Image avatar)
     {
-        var www = new WWW(url);
-        yield return www;
-        var texture = www.texture;
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+        yield return www.SendWebRequest();
+        var texture = DownloadHandlerTexture.GetContent(www);
         Texture2D RoundTxt = ImagesManager.RoundCrop(texture);
         avatar.sprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
     }

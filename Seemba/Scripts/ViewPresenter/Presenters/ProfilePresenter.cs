@@ -69,7 +69,7 @@ public class ProfilePresenter : MonoBehaviour
                 pro.gameObject.SetActive(false);
             }
         }
-        catch (FormatException ex)
+        catch (FormatException)
         {
             if (user.money_credit > 0)
             {

@@ -14,9 +14,8 @@ using UnityEngine.Networking;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class ChallengeManager : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     #region Static
     public static ChallengeManager Get { get { return sInstance; } }
@@ -110,19 +109,19 @@ public class ChallengeManager : MonoBehaviour
         }
     }
 
-        private async void Win()
+    private void Win()
     {
         string[] attrib = { "last_result" };
         string[] values = { "WIN" };
         UserManager.Get.UpdateUserByField(attrib, values);
     }
-    private async void Loss()
+    private void Loss()
     {
         string[] attrib = { "last_result" };
         string[] values = { "loss" };
         UserManager.Get.UpdateUserByField(attrib, values);
     }
-    public async void ShowResult()
+    public void ShowResult()
     {
         EventsController.Get.AudioListener.enabled = true;
         ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ResultPresenter.gameObject);
@@ -372,7 +371,7 @@ public class ChallengeManager : MonoBehaviour
         {
             user_2_score = N["data"]["user_2_score"].AsFloat;
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
             user_2_score = null;
         }
@@ -380,7 +379,7 @@ public class ChallengeManager : MonoBehaviour
         {
             user_1_score = N["data"]["user_1_score"].AsFloat;
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
             user_1_score = null;
         }
@@ -388,7 +387,7 @@ public class ChallengeManager : MonoBehaviour
         {
             game_level = N["data"]["game_level"].AsInt;
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
             game_level = null;
         }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 #pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
@@ -61,53 +62,40 @@ public class Seemba : MonoBehaviour
     }
     public IEnumerator checkInternetConnection(Action<bool?> action)
     {
-
-        WWW www = new WWW("https://www.google.fr");
-        float timer = 0;
-        bool failed = false;
-        while (!www.isDone)
+        UnityWebRequest www = new UnityWebRequest("https://www.google.fr");
+        yield return www.SendWebRequest();
+        if (www.error == null)
         {
-            if (timer > 5) { failed = true; break; }
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-
-        if (failed)
-        {
-            www.Dispose();
-            action(false);
+            action(true);
         }
         else
         {
-            if (www.error == null)
-            {
-                action(true);
-            }
-            else
-            {
-                action(false);
-            }
+            action(false);
         }
     }
     private async Task<bool> LoadSeembaConfig()
     {
-            try
-            {
+        try
+        {
             Game Game = JsonUtility.FromJson<Game>(Resources.Load<TextAsset>("seemba-services").ToString());
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogWarning(ex.Message);
-                Debug.LogError("Please complete the game integration before starting");
-                Debug.Break();
-            }
+        }
+        catch (Exception)
+        {
+            Debug.LogError("Please complete the game integration before starting");
+            Debug.Break();
+        }
         var res = await DownloadAssets();
-
-        return true;
+        if(res)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     private async Task<bool> DownloadAssets()
     {
@@ -134,7 +122,7 @@ public class Seemba : MonoBehaviour
     {
         SentryController.Instance.instantiate();
     }
-    private async void OpenSeemba()
+    private void OpenSeemba()
     {
         ConnectivityController.CURRENT_ACTION = ConnectivityController.ENTER_ESPORT_TOURNAMENT_ACTION;
         LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.CHECKING_CONNECTION);

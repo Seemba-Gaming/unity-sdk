@@ -28,7 +28,7 @@ public class ViewsEvents : MonoBehaviour
     public ProfilePresenter Profile;
     public PersonalInfoPresenter PersonalInfo;
     public HistoryPresenter History;
-    public WithdrawPresenter WithdrawalInfo;
+    public WithdrawalInfoPresenter WithdrawalInfo;
     #endregion
 
     #region fields

@@ -2,9 +2,8 @@
 using System.Globalization;
 using UnityEngine;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class ChallengeController : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     #region Static
     public static ChallengeController Get => sInstance;
@@ -19,10 +18,10 @@ public class ChallengeController : MonoBehaviour
     }
     #endregion
     #region Methods
-    public void Play(object[] _duel_params)
+    public async void Play(object[] _duel_params)
     {
-        float entry_fee = float.Parse(_duel_params[0].ToString(), CultureInfo.InvariantCulture.NumberFormat);
-        float gain = float.Parse(_duel_params[1].ToString(), CultureInfo.InvariantCulture.NumberFormat);
+        float entry_fee = float.Parse(_duel_params[0].ToString().Replace(",", "."), CultureInfo.InvariantCulture.NumberFormat);
+        float gain = float.Parse(_duel_params[1].ToString().Replace(",", "."), CultureInfo.InvariantCulture.NumberFormat);
         string gain_type = _duel_params[2].ToString();
 
         if (isCreditSuffisant(entry_fee, gain_type))
@@ -37,7 +36,7 @@ public class ChallengeController : MonoBehaviour
 
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
-                StartCashChallengeAsync(entry_fee, gain, gain_type);
+                await StartCashChallengeAsync(entry_fee, gain, gain_type);
             }
             else
             {
@@ -130,27 +129,6 @@ public class ChallengeController : MonoBehaviour
         return await vpn.isVpnConnectedAsync();
     }
 
-    private void update(float entry_fee, float gain, string gain_type, string attrib, int value)
-    {
-        /*if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
-        {
-            UserManager.CurrentWater = (int.Parse(UserManager.CurrentWater) - int.Parse(entry_fee.ToString())).ToString();
-        }
-        else if (gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
-        {
-            Debug.Log(ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
-            SearchingForPlayerPresenter.GameMontant = GameMontant + CurrencyManager.CURRENT_CURRENCY;
-            UserManager.CurrentMoney = (float.Parse(UserManager.CurrentMoney) - float.Parse(FeeGame)).ToString("N2");
-        }
-        SearchingForPlayerPresenter.isTrainingGame = false;
-        UnityThreading.ActionThread thread;
-        thread = UnityThreadHelper.CreateThread(() =>
-        {
-            string[] attribute = { attrib };
-            string[] Att_value = { (value + 1).ToString() };
-            userManager.UpdateUserByField(userId, token, attribute, Att_value);
-        });*/
-    }
     private bool isCreditSuffisant(float entry_fee, string win_type)
     {
         if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && UserManager.Get.CurrentUser.money_credit >= entry_fee)

@@ -38,7 +38,7 @@ class SentryController
     public void exc(){
         throw new NullReferenceException();
     }
-    private new void SendMessage(string message)
+    private void SendMessage(string message)
     {
         
         if (message == "event")

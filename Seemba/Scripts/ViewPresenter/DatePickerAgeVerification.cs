@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CLSCompliant(false)]
+#pragma warning disable 0649
 public class DatePickerAgeVerification : MonoBehaviour
 {
     public ToggleGroup toggleGroup;

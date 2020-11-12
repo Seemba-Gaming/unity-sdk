@@ -59,17 +59,17 @@ public class IDProofPresenter : MonoBehaviour
             {
                 documentFrontID = account["account"]["individual"]["verification"]["document"]["front"].Value;
             }
-            catch (NullReferenceException ex) { }
+            catch (NullReferenceException) { }
             try
             {
                 documentBackID = account["account"]["individual"]["verification"]["document"]["back"].Value;
             }
-            catch (NullReferenceException ex) { }
+            catch (NullReferenceException) { }
             try
             {
                 documentAddress = account["account"]["individual"]["verification"]["additional_document"]["front"].Value;
             }
-            catch (NullReferenceException ex) { }
+            catch (NullReferenceException) { }
 
             if (accountStatus.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED))
             {

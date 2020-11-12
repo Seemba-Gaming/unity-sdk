@@ -6,7 +6,8 @@ using System.Collections;
 using System.Diagnostics;
 namespace UnityThreading
 {
-	public abstract class ThreadBase : IDisposable
+    [CLSCompliant(false)]
+    public abstract class ThreadBase : IDisposable
 	{
 		public static int AvailableProcessors
 		{
@@ -259,6 +260,7 @@ namespace UnityThreading
 			}
 		}
     }
+    [CLSCompliant(false)]
     public sealed class ActionThread : ThreadBase
     {
         private Action<ActionThread> action;
@@ -289,6 +291,7 @@ namespace UnityThreading
             return null;
         }
     }
+    [CLSCompliant(false)]
     public sealed class EnumeratableActionThread : ThreadBase
     {
         private Func<ThreadBase, IEnumerator> enumeratableAction;
@@ -318,7 +321,8 @@ namespace UnityThreading
             return enumeratableAction(this);
         }
     }
-	public sealed class TickThread : ThreadBase
+    [CLSCompliant(false)]
+    public sealed class TickThread : ThreadBase
 	{
 		private Action action;
 		private int tickLengthInMilliseconds;

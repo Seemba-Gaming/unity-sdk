@@ -105,7 +105,7 @@ public class PopupsText : MonoBehaviour
     }
     public object[] MissingInfo()
     {
-        return new object[] { "unverified", "Account", "Please provide the following information so we can verify your account", "Got it !" };
+        return new object[] { TranslationManager.Get("unverified"), TranslationManager.Get("account"), TranslationManager.Get("please_provide"), TranslationManager.Get("got_it") };
     }
     public object[] Missing()
     {

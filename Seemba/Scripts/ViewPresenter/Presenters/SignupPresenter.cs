@@ -59,8 +59,6 @@ public class SignupPresenter : MonoBehaviour
             LoaderUsername.enabled = true;
             AcceptedUsername.enabled = false;
             DeclinedUsername.enabled = false;
-
-            UnityThreading.ActionThread thread;
             bool valide = await UserManager.Get.checkUsernameAsync(username.text.ToUpper());
             if (valide && username.text.Length >= 3)
             {
@@ -83,7 +81,6 @@ public class SignupPresenter : MonoBehaviour
             LoaderEmail.enabled = true;
             AcceptedEmail.enabled = false;
             DeclinedEmail.enabled = false;
-            UnityThreading.ActionThread thread;
                 bool valide = await UserManager.Get.checkMailAsync(email.text);
                 if (valide && IsValidEmail(email.text))
                 {

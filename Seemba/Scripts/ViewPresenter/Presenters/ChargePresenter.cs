@@ -55,7 +55,6 @@ public class ChargePresenter : MonoBehaviour
     #region Unity Methods
     void OnEnable()
     {
-        Debug.LogWarning(WalletScript.LastCredit.ToString("N2").Replace(",", ".") + CurrencyManager.CURRENT_CURRENCY);
         Amount.text = WalletScript.LastCredit.ToString("N2").Replace(",", ".") + CurrencyManager.CURRENT_CURRENCY;
     }
     void Start()

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [CLSCompliant(false)]
+#pragma warning disable 0649
 public class PopupsViewPresenter : MonoBehaviour
 {
     #region static
@@ -260,9 +261,8 @@ public class PopupsViewPresenter : MonoBehaviour
             }
             else if (source.Equals("withdraw"))
             {
-                //PopupManager.Get.PopupController.HideCurrentPopup();
                 HidePopupContent(PopupManager.Get.PopupController.PopupInfo);
-                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.PersonalInfo.gameObject);
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.WithdrawalInfo.gameObject);
             }
         });
     }

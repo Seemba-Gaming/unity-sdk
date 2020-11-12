@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
 [CLSCompliant(false)]
 public class GameListItemController : MonoBehaviour
@@ -86,13 +87,9 @@ public class GameListItemController : MonoBehaviour
 		}); */
 	}
 	public IEnumerator ShowIcon(string url){
-		var www = new WWW (url);
-			yield return www;
-			var texture = www.texture;
+		UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+			yield return www.SendWebRequest();
+			var texture = DownloadHandlerTexture.GetContent(www);
 			icon.sprite = Sprite.Create (texture, new Rect (0, 0, texture.width, texture.height), new Vector2 (0, 0));
-	}
-	// Update is called once per frame
-	void Update ()
-	{
 	}
 }

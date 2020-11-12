@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
+[CLSCompliant(false)]
 public class Tournament {
     int nb_player;
     float gain;
@@ -19,6 +20,7 @@ public class Tournament {
 	}	
 }
 
+[CLSCompliant(false)]
 public class TournamentData
 {
 	public bool success;

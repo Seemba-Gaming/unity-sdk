@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Timers;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
 [CLSCompliant(false)]
@@ -63,8 +64,8 @@ public class ConnectionManager : MonoBehaviour
     }
     private IEnumerator checkInternetConnection(Action<bool> action)
     {
-        WWW www = new WWW("http://google.com");
-        yield return www;
+        UnityWebRequest www = new UnityWebRequest("http://google.com");
+        yield return www.SendWebRequest();
         if (www.error != null)
         {
             action(false);

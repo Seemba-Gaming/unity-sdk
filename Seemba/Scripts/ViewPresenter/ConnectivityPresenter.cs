@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Net;
 using UnityEngine;
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+
+[CLSCompliant(false)]
 public class ConnectivityPresenter : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     public static bool beginPing;
 
     public ConnectivityController connectivity;
     public GameObject Home;
-
-    private bool isLoader = false;
 
     private void OnEnable()
     {
@@ -35,7 +33,6 @@ public class ConnectivityPresenter : MonoBehaviour
     public void check_connection()
     {
         LoaderManager.Get.LoaderController.ShowLoader(null);
-        isLoader = true;
         InvokeRepeating("ping", 0f, 1f);
     }
 }

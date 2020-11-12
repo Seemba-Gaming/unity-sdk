@@ -61,7 +61,7 @@ public class HeaderController : MonoBehaviour
         Avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
     }
 
-    public async void UpdateHeaderInfo(User user)
+    public void UpdateHeaderInfo(User user)
     {
         UserManager.Get.UpdateUserMoneyCredit(user.money_credit.ToString("N2"));
         UserManager.Get.UpdateUserBubblesCredit(user.bubble_credit.ToString());

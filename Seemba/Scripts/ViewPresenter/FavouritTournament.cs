@@ -51,8 +51,11 @@ public class FavouritTournament : MonoBehaviour
     {
         string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
         var res = await SeembaWebRequest.Get.HttpsGet(url);
-        var json = JSON.Parse(res);
-        ShowFavTournament(json["data"]["gain"].Value , json["data"]["gain_type"].Value, json["data"]["type"].Value);
+        if(string.IsNullOrEmpty(res))
+        {
+            var json = JSON.Parse(res);
+            ShowFavTournament(json["data"]["gain"].Value , json["data"]["gain_type"].Value, json["data"]["type"].Value);
+        }
         return true;
     }
 

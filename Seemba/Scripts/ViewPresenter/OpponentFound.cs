@@ -27,7 +27,6 @@ public class OpponentFound : MonoBehaviour
             PanelLookingForPlayer.SetActive(false);
             PanelPlayerFound.transform.localScale = Vector3.one;
             opponent_username.text = adversaireName;
-            Byte[] img;
             opponent_avatar.sprite = await UserManager.Get.getAvatar(Avatar);
             try
             {

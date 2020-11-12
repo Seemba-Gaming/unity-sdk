@@ -270,6 +270,7 @@ namespace Sentry
     }
 
     [Serializable]
+    [CLSCompliant(false)]
     public class Context
     {
         public App app;
@@ -372,6 +373,7 @@ namespace Sentry
         public string screenOrientation;
     }
     [Serializable]
+[CLSCompliant(false)]
     public class Game
     {
         public string _id;
@@ -385,6 +387,7 @@ namespace Sentry
     }
 
     [Serializable]
+[   CLSCompliant(false)]
     public class User
     {
         public string email;
@@ -398,6 +401,7 @@ namespace Sentry
     }
 
     [Serializable]
+[   CLSCompliant(false)]
     public class SentryEvent
     {
         public string event_id;
@@ -486,6 +490,7 @@ namespace Sentry
         }
     }
 
+    [CLSCompliant(false)]
     public class SentryExceptionEvent : SentryEvent
     {
         public ExceptionContainer exception;

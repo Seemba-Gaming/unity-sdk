@@ -12,7 +12,7 @@ public sealed class TranslationManager : MonoBehaviour
     public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
     private static JSONNode Translations = null;
     public static bool? isDownloaded = null;
-    //static string systemLanguage = SystemLanguage.English.ToString();
+   // static string systemLanguage = SystemLanguage.English.ToString();
     static string systemLanguage = Application.systemLanguage.ToString();
 #if UNITY_EDITOR
     private static bool d_OverrideLanguage = true;
@@ -53,7 +53,7 @@ public sealed class TranslationManager : MonoBehaviour
         {
             return Translations[scene][key].Value;
         }
-        catch (NullReferenceException ex) { return defaultString; }
+        catch (NullReferenceException) { return defaultString; }
     }
     public static void ParseFile(string data)
     {

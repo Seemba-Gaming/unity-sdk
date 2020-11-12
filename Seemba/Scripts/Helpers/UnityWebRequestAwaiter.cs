@@ -26,6 +26,7 @@ public class UnityWebRequestAwaiter : INotifyCompletion
         continuation();
     }
 }
+[CLSCompliant(false)]
 public static class ExtensionMethods
 {
     public static UnityWebRequestAwaiter GetAwaiter(this UnityWebRequestAsyncOperation asyncOp)

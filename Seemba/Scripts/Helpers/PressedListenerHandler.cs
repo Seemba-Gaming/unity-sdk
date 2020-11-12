@@ -6,10 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [CLSCompliant(false)]
+#pragma warning disable 0649
 public class PressedListenerHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     public InputField password;
-    bool ispressed = false;
     void Update()
     {
         //if (ispressed)
@@ -24,11 +24,9 @@ public class PressedListenerHandler : MonoBehaviour, IPointerDownHandler, IPoint
     }
     public void OnPointerDown(PointerEventData eventData)
     {
-        ispressed = true;
     }
     public void OnPointerUp(PointerEventData eventData)
     {
-        ispressed = false;
     }
 }
 

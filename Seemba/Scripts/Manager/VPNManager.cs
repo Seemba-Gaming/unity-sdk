@@ -9,7 +9,6 @@ public class VPNManager  {
 		string negativeResponse = "no";
 		string url = Endpoint.classesURL+"/users/check/vpn";
 		var response = await SeembaWebRequest.Get.HttpsGet(url);
-		Debug.LogWarning(response);
 		var N = JSON.Parse(response);
 		if (N["body"]["proxy"].Value.ToString() == negativeResponse)
 		{

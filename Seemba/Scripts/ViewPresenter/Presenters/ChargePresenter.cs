@@ -273,7 +273,6 @@ public class ChargePresenter : MonoBehaviour
         {
             JSONNode _paymentIntent = await ChargeManager.Get.CreatePaymentIntentAsync(_paymentMethodID, WalletScript.LastCredit, token);
 
-
             if (!_paymentIntent.Equals("-1"))
             {
                 _paymentIntentID = _paymentIntent["data"]["id"].Value;
@@ -362,20 +361,15 @@ public class ChargePresenter : MonoBehaviour
         LoaderManager.Get.LoaderController.HideLoader();
         PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS, _params);
         UserManager.Get.UpdateUserMoneyCredit(credit.ToString());
-        //EncartPlayerPresenter.Init();
-        //ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Menu.gameObject);
     }
     private void ChargeCanceled()
     {
-        UnityThreadHelper.Dispatcher.Dispatch(() =>
-        {
-            UnloadBankingInfo();
-        });
+        UnloadBankingInfo();
     }
     private void UnloadBankingInfo()
     {
         LoaderManager.Get.LoaderController.HideLoader();
-        SelectWinMoney();
+        //SelectWinMoney();
     }
     #endregion
 }

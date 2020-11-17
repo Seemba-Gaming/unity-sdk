@@ -30,6 +30,7 @@ public class ResultPresenter : MonoBehaviour
     public Button                   PlayAgainButton;
     public Button                   ContinueButton;
     public Sprite[]                 ResultImages;
+    public Sprite                   SeembaNoPlayer;
     #endregion
 
     #region Fields
@@ -45,23 +46,26 @@ public class ResultPresenter : MonoBehaviour
         }
 
         var mCurrentChallenge = ChallengeManager.CurrentChallenge;
-        if (mCurrentChallenge.user_2_score == null || mCurrentChallenge.user_1_score == null)
+        if(mCurrentChallenge != null)
         {
-            InitResultWaiting(mCurrentChallenge);
-        }
-        else
-        {
-            if (mCurrentChallenge.user_1_score == mCurrentChallenge.user_2_score)
+            if (mCurrentChallenge.user_2_score == null || mCurrentChallenge.user_1_score == null)
             {
-                InitResultDraw(mCurrentChallenge);
-            }
-            else if (mCurrentChallenge.winner_user == UserManager.Get.getCurrentUserId())
-            {
-                InitResultWin(mCurrentChallenge);
+                InitResultWaiting(mCurrentChallenge);
             }
             else
             {
-                InitResultLose(mCurrentChallenge);
+                if (mCurrentChallenge.user_1_score == mCurrentChallenge.user_2_score)
+                {
+                    InitResultDraw(mCurrentChallenge);
+                }
+                else if (mCurrentChallenge.winner_user == UserManager.Get.getCurrentUserId())
+                {
+                    InitResultWin(mCurrentChallenge);
+                }
+                else
+                {
+                    InitResultLose(mCurrentChallenge);
+                }
             }
         }
     }
@@ -170,11 +174,22 @@ public class ResultPresenter : MonoBehaviour
 
     public void OnClickContinue()
     {
+        ResetOpponent();
         ViewsEvents.Get.SelectHomeCoroutineLauncher();
+    }
+
+    void ResetOpponent()
+    {
+        OpponentUserName.text = string.Empty;
+        OpponentAvatar.sprite = SeembaNoPlayer;
+        OpponentScore.text = string.Empty;
+        ChallengeManager.CurrentChallenge = null;
+        EventsController.advFound = false;
     }
 
     public void OnClickPlayAgain()
     {
+        ResetOpponent();
         object[] _params = { ChallengeManager.Get.GetChallengeFee(float.Parse(mCurrentChallenge.gain), mCurrentChallenge.gain_type), mCurrentChallenge.gain, mCurrentChallenge.gain_type, ChallengeManager.CHALLENGE_TYPE_1V1 };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7936583796614785747
 RectTransform:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2084185651741618811}
+      - m_Target: {fileID: 8371655274722499687}
         m_MethodName: OnClickFavouriteType
         m_Mode: 1
         m_Arguments:
@@ -273,9 +273,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 36
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -425,9 +425,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 14
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -542,9 +542,9 @@ RectTransform:
   m_Father: {fileID: 2084185651884155969}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 11.134825, y: -7.5}
   m_SizeDelta: {x: 23, y: 14.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2084185650594038919
@@ -1720,9 +1720,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 40
+    m_MaxSize: 36
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1849,7 +1849,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2084185651741618811}
+      - m_Target: {fileID: 8371655274722499687}
         m_MethodName: OnClickFavouriteType
         m_Mode: 1
         m_Arguments:
@@ -1928,9 +1928,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 14
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2026,7 +2026,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2084185651741618814}
   - component: {fileID: 2084185651741618810}
-  - component: {fileID: 2084185651741618811}
   - component: {fileID: 2084185651741618808}
   - component: {fileID: 2084185651741618809}
   m_Layer: 5
@@ -2066,22 +2065,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2084185651741618815}
   m_CullTransparentMesh: 0
---- !u!114 &2084185651741618811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2084185651741618815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0051f05947e4c4cf19e43f39fb84d794, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Fav1V1: {fileID: 2084185651945098807}
-  FavTournament: {fileID: 16098971543116750}
-  Fav1V1Text: {fileID: 2084185650830465537}
-  FavTournamentText: {fileID: 2578439106797506737}
 --- !u!114 &2084185651741618808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2145,13 +2128,14 @@ GameObject:
   - component: {fileID: 2084185651774291823}
   - component: {fileID: 2084185651774291820}
   - component: {fileID: 2084185651774291821}
+  - component: {fileID: 8371655274722499687}
   m_Layer: 5
   m_Name: ProfileCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2084185651774291816
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2277,6 +2261,22 @@ MonoBehaviour:
   verified: {fileID: 2084185651982526633}
   pending: {fileID: 2084185650546565643}
   unverified: {fileID: 2084185652418172874}
+--- !u!114 &8371655274722499687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084185651774291858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0051f05947e4c4cf19e43f39fb84d794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fav1V1: {fileID: 2084185651945098807}
+  FavTournament: {fileID: 16098971543116750}
+  Fav1V1Text: {fileID: 2084185650830465537}
+  FavTournamentText: {fileID: 2578439106797506737}
 --- !u!1 &2084185651813724858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2656,7 +2656,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 86}
+  m_SizeDelta: {x: -294.1, y: 86}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2084185651849813711
 MonoBehaviour:
@@ -2754,7 +2754,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 160}
-  m_SizeDelta: {x: 0, y: 15}
+  m_SizeDelta: {x: 22.26965, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2084185651884155971
 MonoBehaviour:
@@ -3094,7 +3094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2084185651945098806
 RectTransform:
   m_ObjectHideFlags: 0

@@ -22,7 +22,8 @@ public class BankingTranslationController : MonoBehaviour
         terms_conditions, 
         privacy_policy, 
         credit, 
-        secured_payment;
+        secured_payment,
+        transaction_fees_may_apply;
     void Start()
     {
         TranslationManager.scene = "BankingInfo";
@@ -40,5 +41,6 @@ public class BankingTranslationController : MonoBehaviour
         privacy_policy.text = TranslationManager.Get("privacy_policy") != string.Empty ? TranslationManager.Get("privacy_policy") : privacy_policy.text;
         credit.text = TranslationManager.Get("credit") != string.Empty ? TranslationManager.Get("credit") : credit.text;
         secured_payment.text = TranslationManager.Get("secured_payment") != string.Empty ? TranslationManager.Get("secured_payment") : secured_payment.text;
+        transaction_fees_may_apply.text = TranslationManager.Get("transaction_fees_may_apply");
     }
 }

@@ -105,7 +105,6 @@ public class ImagesManager : MonoBehaviour
         form.AddBinaryData("avatar", avatar);
         var url = Endpoint.classesURL + "/users/avatars/upload";
         var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-        Debug.LogWarning(response);
         var N = JSON.Parse(response);
         //Save The current Session ID
         AvatarURL = N["data"].Value;

@@ -118,14 +118,19 @@ public class UserManager : MonoBehaviour
     {
         Texture2D texture = new Texture2D(100, 100);
         string prefsURL = PlayerPrefs.GetString(url);
-        var www = UnityWebRequestTexture.GetTexture(url);
+        if(string.IsNullOrEmpty(url))
+        {
+            return null;
+        }
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         await www.SendWebRequest();
+
         if(www.isNetworkError || www.isHttpError)
         {
             Debug.LogWarning(www.error);
             return null;
         }
-        var avatarTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+        var avatarTexture = DownloadHandlerTexture.GetContent(www);
         texture = ImagesManager.RoundCrop(avatarTexture);
         PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
         return Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
@@ -224,6 +229,29 @@ public class UserManager : MonoBehaviour
     {
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         string url = Endpoint.classesURL + "/users/" + getCurrentUserId();
+        var seembaResponse = await SeembaWebRequest.Get.HttpsGet(url);
+        UserData userData = JsonUtility.FromJson<UserData>(seembaResponse);
+        var token = getCurrentSessionToken();
+        if (!userData.success)
+        {
+            if (userData.message == "Failed to authenticate token.")
+            {
+                ShowExpiredSession();
+            }
+            else if (userData.message == "Could not find user")
+            {
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
+            }
+            return null;
+        }
+        CurrentUser = userData.data;
+        return CurrentUser;
+    }
+
+    public async Task<User> GetUserById(string id)
+    {
+        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+        string url = Endpoint.classesURL + "/users/" + id;
         var seembaResponse = await SeembaWebRequest.Get.HttpsGet(url);
         UserData userData = JsonUtility.FromJson<UserData>(seembaResponse);
         var token = getCurrentSessionToken();

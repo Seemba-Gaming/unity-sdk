@@ -69,7 +69,6 @@ public class EventsController : MonoBehaviour
         else if(www.uri.ToString().Contains("stripe"))
         {
             var responseJson = JSON.Parse(www.downloadHandler.text);
-            Debug.LogWarning(responseJson["error"]["code"].ToString().Replace('"',' ').Trim());
             if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_number"))
             {
                 PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_NUMBER, PopupsText.Get.StripeIncorrectNumber());
@@ -117,6 +116,7 @@ public class EventsController : MonoBehaviour
                 PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_UNAUTHORIZED, PopupsText.Get.Unauthorized());
             }
         }
+        LoaderManager.Get.LoaderController.HideLoader();
     }
 
     private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -232,6 +232,20 @@ public class EventsController : MonoBehaviour
         object[] _params = { headertext, headertext2, msg, TranslationManager.Get("continue") };
         PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
     }
+    public void withdrawSucceeded()
+    {
+        StartCoroutine(WithdrawSucceeded());
+    }
+    IEnumerator WithdrawSucceeded()
+    {
+        ViewsEvents.Get.Menu.ScrollSnap.LerpToPage(0);
+        BottomMenuController.Get.selectSettings();
+        ViewsEvents.Get.SettingsClick();
+        yield return new WaitForSeconds(0.2f);
+        ViewsEvents.Get.WinMoneyClick();
+        LoaderManager.Get.LoaderController.HideLoader();
+        PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS_WITHDRAW, PopupsText.Get.CongratsWithdraw());
+    }
     public void backToWinMoney()
     {
         ViewsEvents.Get.WinMoneyClick();
@@ -247,8 +261,8 @@ public class EventsController : MonoBehaviour
     }
     public void openCurrentProfile()
     {
-        ViewsEvents.Get.ShowOverayMenu(ViewsEvents.Get.Profile.gameObject);
         ViewsEvents.Get.Profile.InitProfile(UserManager.Get.CurrentUser);
+        ViewsEvents.Get.ShowOverayMenu(ViewsEvents.Get.Profile.gameObject);
     }
     public void playAgain()
     {

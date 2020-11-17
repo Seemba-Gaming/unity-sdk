@@ -1,19 +1,57 @@
 using UnityEngine;
 using System.Collections;
-using System.Net;
-using System.IO;
 using System;
 using System.Text;
 using SimpleJSON;
-using System.Threading;
-using System.Timers;
-//using UnityEditor.VersionControl;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using UnityEngine.Networking;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
+[CLSCompliant(false)]
+public class GenericTournament
+{
+    public string _id;
+    public int nb_current_players;
+    public bool is_full;
+    public string[] rounds;
+    public string[] losers;
+    public string[] participants;
+    public string game_level;
+    public int nb_players;
+    public string gain;
+    public string gain_type;
+    public string game;
+    public string status;
+    public string createdAt;
+    public string updatedAt;
+    public string __v;
+}
+[CLSCompliant(false)]
+public class GenericChallenge
+{
+    public string _id;
+    public string user_1_score;
+    public string user_2_score;
+    public string[] users_old_scores;
+    public string tournament_id;
+    public string game;
+    public string status;
+    public string challenge_type;
+    public string gain;
+    public string gain_type;
+    public string next_challenge_id;
+    public string createdAt;
+    public string updatedAt;
+    public string matched_user_1;
+    public string matched_user_1_contry;
+    public string user_1_joined_at;
+    public string matched_user_2;
+    public string matched_user_2_contry;
+    public string user_2_joined_at;
+    public string winner_user;
+    public string __v;
+    public GenericTournament tournament;
+}
 [CLSCompliant(false)]
 public class ChallengeManager : MonoBehaviour
 {
@@ -133,7 +171,6 @@ public class ChallengeManager : MonoBehaviour
         var N = JSON.Parse(response);
         if (N != null)
         {
-            Challenge challenge = new Challenge(); //(N ["data"]["matched_user_1"].Value, N ["data"]["matched_user_2"].Value, N ["data"]["user_1_score"].AsFloat, N ["data"]["user_2_score"].AsFloat, N ["data"]["challenge_type"].Value, N ["data"]["game"].Value, N ["data"]["status"].Value, N ["data"]["gain"].Value, N ["data"]["gain_type"].Value, N ["data"]["level"].AsInt);
             return N;
         }
         else
@@ -162,6 +199,18 @@ public class ChallengeManager : MonoBehaviour
             seeResultChallenges.Add(challenge);
         }
         return seeResultChallenges;
+    }
+    public async Task<GenericChallenge[]> GetOnGoingChallenges(int page, int pageSize)
+    {
+        string url = Endpoint.classesURL + "/challenges/ongoing?game_id=" + GamesManager.GAME_ID+ "&page=" + page + "&pagesize="+pageSize;
+        var response = await SeembaWebRequest.Get.HttpsGetJSON<GenericChallenge[]>(url);
+        return response;
+    }
+    public async Task<GenericChallenge[]> GetLastResulatChallenges(int page, int pageSize)
+    {
+        string url = Endpoint.classesURL + "/challenges/last_results?game_id=" + GamesManager.GAME_ID + "&page=" + page + "&pagesize=" + pageSize;
+        var response = await SeembaWebRequest.Get.HttpsGetJSON<GenericChallenge[]>(url);
+        return response;
     }
     public async Task<ArrayList> getFinishedChallenges(string token)
     {

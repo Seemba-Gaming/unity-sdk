@@ -89,7 +89,6 @@ public class WalletTogglePresenter : MonoBehaviour
     public async System.Threading.Tasks.Task AddOtherAmountAsync()
     {
         WalletScript.LastCredit = float.Parse(OtherAmount.text.Replace(".",","),System.Globalization.NumberStyles.Float);
-        Debug.LogWarning(WalletScript.LastCredit);
         LoaderManager.Get.LoaderController.ShowLoader(null);
         User user = await UserManager.Get.getUser();
 

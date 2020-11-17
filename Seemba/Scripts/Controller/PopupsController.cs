@@ -74,6 +74,7 @@ public class PopupsController : MonoBehaviour
     public Animator                                 PopupCongrats;
     public Animator                                 PopupPayment;
     public Animator                                 PopupChooseCharacter;
+    public Animator                                 PopupCongratsWithdrawal;
     #endregion
 
     #region Fields
@@ -178,6 +179,9 @@ public class PopupsController : MonoBehaviour
                 break;
             case PopupType.STRIPE_TRY_AGAIN_LATER:
                 PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                break;
+            case PopupType.POPUP_CONGRATS_WITHDRAW:
+                PopupManager.Get.PopupViewPresenter.ShowCongratsWithdrawalPopup(_params);
                 break;
             default:
                 Debug.LogWarning(popupType);

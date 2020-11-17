@@ -19,7 +19,7 @@ public class ProfileTranslationController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TranslationManager.scene = "ProfilePresenter";
+        TranslationManager.scene = "Profile";
         games_won.text = TranslationManager.Get("games_won") != string.Empty ? TranslationManager.Get("games_won") : games_won.text;
         in_a_row.text = TranslationManager.Get("in_a_row") != string.Empty ? TranslationManager.Get("in_a_row") : in_a_row.text;
         favourite.text = TranslationManager.Get("favourite") != string.Empty ? TranslationManager.Get("favourite") : favourite.text;

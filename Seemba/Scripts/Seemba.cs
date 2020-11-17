@@ -5,9 +5,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class Seemba : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
 
     #region Static

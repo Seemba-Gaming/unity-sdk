@@ -77,7 +77,6 @@ public class TournamentController : MonoBehaviour
     {
         if (isProhibitedLocation(UserManager.Get.CurrentUser.country_code))
         {
-            Debug.LogWarning("hyere");
             PopupManager.Get.PopupController.ShowPopup(PopupType.PROHIBITED_LOCATION, PopupsText.Get.prohibited_location());
             return;
         }

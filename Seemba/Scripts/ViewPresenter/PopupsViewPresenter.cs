@@ -104,6 +104,15 @@ public class PopupsViewPresenter : MonoBehaviour
     public Button PopupCongratsConfirmButton;
     public Text PopupCongratsConfirmButtonText;
 
+    [Header("popup Congrats Withdrawal")]
+    public Animator PopupCongratsWithdrawal;
+    public Text PopupCongratsWithdrawalTitle;
+    public Text PopupCongratsWithdrawalSubtitle;
+    public Text PopupCongratsWithdrawalDesc;
+    public Text PopupCongratsWithdrawalWorkingDaysDesc;
+    public Button PopupCongratsWithdrawalConfirmButton;
+    public Text PopupCongratsWithdrawalConfirmButtonText;
+
     [Header("popup Choose Character")]
     public Animator PopupchooseCharacter;
     public Text PopupchooseCharacterTitle;
@@ -339,6 +348,7 @@ public class PopupsViewPresenter : MonoBehaviour
         InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
         PopupInfoConfirmButton.onClick.RemoveAllListeners();
     }
+
     public void ShowProhibitedLocationWithdrawPopup(object[] _param)
     {
         _params = _param;
@@ -361,11 +371,28 @@ public class PopupsViewPresenter : MonoBehaviour
             EventsController.Get.gotItButton();
         });
     }
+    public void ShowCongratsWithdrawalPopup(object[] _param)
+    {
+        _params = _param;
+        ShowPopupContent(PopupManager.Get.PopupController.PopupCongratsWithdrawal.gameObject);
+        PopupManager.Get.PopupController.PopupCongratsWithdrawal.SetBool("Show", true);
+        PopupCongratsWithdrawalTitle.text = _params[0].ToString();
+        PopupCongratsWithdrawalSubtitle.text = _params[1].ToString();
+        PopupCongratsWithdrawalDesc.text = _params[2].ToString();
+        PopupCongratsWithdrawalWorkingDaysDesc.text = _params[3].ToString();
+        PopupCongratsWithdrawalConfirmButtonText.text = _params[4].ToString();
+        PopupCongratsWithdrawalConfirmButton.onClick.RemoveAllListeners();
+        PopupCongratsWithdrawalConfirmButton.onClick.AddListener(() =>
+        {
+
+        });
+    }
     public void ShowDuelsPopup(object[] _param, string note = null)
     {
         _params = _param;
         ShowPopupContent(PopupManager.Get.PopupController.PopupDuels.gameObject);
         PopupManager.Get.PopupController.PopupDuels.SetBool("Show", true);
+        TranslationManager.scene = "Home";
         entry_fee.text = TranslationManager.Get("entry_fee") + " " + _param[0];
         gain.text = _param[1].ToString();
         if (_param[2].Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))

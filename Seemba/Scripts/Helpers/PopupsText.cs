@@ -70,7 +70,8 @@ public class PopupsText : MonoBehaviour
     }
     public object[] CongratsWithdraw()
     {
-        return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };
+        TranslationManager.scene = "Home";
+        return new object[] { TranslationManager.Get("withdrawal"), TranslationManager.Get("confirmed"), TranslationManager.Get("you_will_receive"), TranslationManager.Get("working_days"), TranslationManager.Get("great") };
     }
     public object[] Congrats()
     {
@@ -139,7 +140,6 @@ public class PopupsText : MonoBehaviour
     public object[] StripeIncorrectNumber()
     {
         TranslationManager.scene = "Popups";
-        Debug.LogWarning(TranslationManager.Get("stripe_incorrect_number"));
         return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_incorrect_number"), TranslationManager.Get("i_understand") };
     }
     public object[] StripeCardDeclined()

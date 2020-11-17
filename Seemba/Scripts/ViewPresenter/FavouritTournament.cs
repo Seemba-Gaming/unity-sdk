@@ -21,7 +21,7 @@ public class FavouritTournament : MonoBehaviour
     public Text                     FavTournamentText;
     #endregion
 
-    #region Feilds
+    #region Fields
     string mCurrentGain;
     string mCurrentGainType;
     string mCurrentChallengeType;
@@ -31,27 +31,17 @@ public class FavouritTournament : MonoBehaviour
     private async void OnEnable()
     {
         string userId;
-        string token = UserManager.Get.getCurrentSessionToken();
-        if (FavInPopUpProfile)
-        {
-            FavInPopUpProfile = false;
-            userId = ViewsEvents.Get.Profile.PlayerId;
-        }
-        else
-        {
-            userId = UserManager.Get.CurrentUser._id;
-        }
-
-        await GetFavoriteTournament(userId, token);
+        userId = ViewsEvents.Get.Profile.PlayerId;
+        await GetFavoriteTournament(userId);
     }
     #endregion
 
     #region Methods
-    public async Task<bool> GetFavoriteTournament(string userId, string token)
+    public async Task<bool> GetFavoriteTournament(string userId)
     {
         string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
         var res = await SeembaWebRequest.Get.HttpsGet(url);
-        if(string.IsNullOrEmpty(res))
+        if(!string.IsNullOrEmpty(res))
         {
             var json = JSON.Parse(res);
             ShowFavTournament(json["data"]["gain"].Value , json["data"]["gain_type"].Value, json["data"]["type"].Value);
@@ -76,25 +66,24 @@ public class FavouritTournament : MonoBehaviour
         mCurrentGain = gain;
         mCurrentGainType = gainType;
         mCurrentChallengeType = challengeType;
+        TranslationManager.scene = "Home";
         if (challengeType.Equals("1vs1"))
         {
             Fav1V1.SetActive(true);
             FavTournament.SetActive(false);
             if (gainType.Contains("cash"))
             {
-
-                Fav1V1Text.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " €";
+                Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + gain + " €";
             }
             else
             {
-                Fav1V1Text.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " Bubbles";
+                Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + gain + " " +  TranslationManager.Get("bubbles");
             }
         }
         else
         {
             Fav1V1.SetActive(false);
             FavTournament.SetActive(true);
-
             if (gainType.Contains("cash"))
             {
                 FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " €";

@@ -23,9 +23,8 @@ public class SearchingForPlayerPresenter : MonoBehaviour
     #endregion
 
     #region Unity Methods
-    private void Start()
+    private void OnEnable()
     {
-        
         nb_players.text = nbPlayer;
         username.text = UserManager.Get.CurrentUser.username;
         var mTexture = new Texture2D(1, 1);
@@ -81,37 +80,35 @@ public class SearchingForPlayerPresenter : MonoBehaviour
         {
         }
     }
+    private void OnDisable()
+    {
+        CancelInvoke("CheckOpponent");
+    }
     #endregion
 
     #region Implementation
-    private void CheckOpponent()
+    private async void CheckOpponent()
     {
         string token = UserManager.Get.getCurrentSessionToken();
         string userID = UserManager.Get.getCurrentUserId();
-        UnityThreadHelper.CreateThread(async () =>
+        var N = await ChallengeManager.Get.getChallengebyIdAsync(ChallengeManager.CurrentChallengeId, token);
+        if (!string.IsNullOrEmpty(N["data"]["matched_user_1"]["_id"].Value) && !string.IsNullOrEmpty(N["data"]["matched_user_2"]["_id"].Value))
         {
-            var N = await ChallengeManager.Get.getChallengebyIdAsync(ChallengeManager.CurrentChallengeId, token);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
+            if (N["data"]["matched_user_1"]["_id"].Value.Equals(userID))
             {
-                if (!string.IsNullOrEmpty(N["data"]["matched_user_1"]["_id"].Value) && !string.IsNullOrEmpty(N["data"]["matched_user_2"]["_id"].Value))
-                {
-                    if (N["data"]["matched_user_1"]["_id"].Value.Equals(userID))
-                    {
-                        OpponentFound.adversaireName = N["data"]["matched_user_2"]["username"];
-                        OpponentFound.Avatar = N["data"]["matched_user_2"]["avatar"];
-                        OpponentFound.AdvCountryCode = N["data"]["matched_user_2"]["country_code"];
-                    }
-                    else
-                    {
-                        OpponentFound.adversaireName = N["data"]["matched_user_1"]["username"];
-                        OpponentFound.Avatar = N["data"]["matched_user_1"]["avatar"];
-                        OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
-                    }
-                    EventsController.advFound = true;
-                    CancelInvoke("CheckOpponent");
-                }
-            });
-        });
+                OpponentFound.adversaireName = N["data"]["matched_user_2"]["username"];
+                OpponentFound.Avatar = N["data"]["matched_user_2"]["avatar"];
+                OpponentFound.AdvCountryCode = N["data"]["matched_user_2"]["country_code"];
+            }
+            else
+            {
+                OpponentFound.adversaireName = N["data"]["matched_user_1"]["username"];
+                OpponentFound.Avatar = N["data"]["matched_user_1"]["avatar"];
+                OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
+            }
+            EventsController.advFound = true;
+            CancelInvoke("CheckOpponent");
+        }
     }
     #endregion
 }

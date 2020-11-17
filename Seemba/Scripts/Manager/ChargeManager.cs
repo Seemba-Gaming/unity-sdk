@@ -55,6 +55,7 @@ public class ChargeManager : MonoBehaviour {
         form.AddField("payment_method", _paymentMethod);
         form.AddField("amount", (amount * 100).ToString());
         var response  = await SeembaWebRequest.Get.HttpsPost(url, form);
+        Debug.LogWarning(response);
         return JSON.Parse(response);
     }
     public async System.Threading.Tasks.Task<string> isChargeConfirmedAsync(string _paymentIntent,string token) {

@@ -54,7 +54,6 @@ public class SignupController : MonoBehaviour
                     if (Res["success"].AsBool)
                     {
                         var deviceToken = PlayerPrefs.GetString("DeviceToken");
-                        Debug.Log(deviceToken);
                         var userid = UserManager.Get.getCurrentUserId();
                         var platform = "";
                         if (Application.platform == RuntimePlatform.Android)
@@ -68,11 +67,9 @@ public class SignupController : MonoBehaviour
                         }
                         catch (Exception)
                         {
-                            Debug.LogWarning(" deviceToken is null");
                         }
                         UserManager.Get.CurrentUser.username = username;
                         LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SAVING);
-                        Debug.LogWarning(avatarUrl);
                         UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);
                         var mTexture = await UserManager.Get.GetFlagBytes(await UserManager.Get.GetGeoLoc());
                         UserManager.Get.CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());

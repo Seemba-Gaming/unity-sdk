@@ -74,7 +74,9 @@ public class HomeTranslationController : MonoBehaviour
     [Space]
     [Header("Wallet")]
     [SerializeField]
-    private Text WalletBackButton;
+    private Text WalletSettingBackButton;
+    [SerializeField]
+    private Text WalletHeaderBackButton;
     [SerializeField]
     private Text select1;
     [SerializeField]
@@ -121,7 +123,8 @@ public class HomeTranslationController : MonoBehaviour
         LegalBackButton.text = TranslationManager.Get("back_button");
         HelpCenterBackButton.text = TranslationManager.Get("back_button");
         WithdrawBackButton.text = TranslationManager.Get("back_button");
-        WalletBackButton.text = TranslationManager.Get("back_button");
+        WalletSettingBackButton.text = TranslationManager.Get("back_button");
+        WalletHeaderBackButton.text = TranslationManager.Get("back_button");
         SecurityBackButton.text = TranslationManager.Get("back_button");
         AccountBackButton.text = TranslationManager.Get("back_button");
         WIN = TranslationManager.Get("win") != string.Empty ? TranslationManager.Get("win") : "WIN";

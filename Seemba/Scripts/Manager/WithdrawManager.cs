@@ -40,17 +40,34 @@ public class WithdrawManager
         var N = JSON.Parse(response);
         return N["id"].Value;
     }
+    public async Task<string> TokenizeBankAccount(string country_code, string currency, string iban)
+    {
+        string url = Endpoint.stripeURL + "/tokens";
+        ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+        System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        WWWForm form = new WWWForm();
+        form.AddField("bank_account[country]", country_code);
+        form.AddField("bank_account[currency]", currency);
+        form.AddField("bank_account[account_number]", iban);
+        var response = await SeembaWebRequest.Get.HttpsPostBearer(url, form, Endpoint.TokenizationAccount);
+        var N = JSON.Parse(response);
+        return N["id"].Value;
+    }
     public async Task<bool> CreateConnectAccount(string account_token, string bank_account_token, string currency, string country_code, string token)
     {
         ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
         string url = Endpoint.classesURL + "/payments/create/connect_account";
         WWWForm form = new WWWForm();
-
         form.AddField("ct", account_token);
         form.AddField("external_account", bank_account_token);
         form.AddField("currency", currency);
         form.AddField("country_code", country_code);
+        Debug.LogWarning("ct " + account_token);
+        Debug.LogWarning("external_account " + bank_account_token);
+        Debug.LogWarning("currency " + currency);
+        Debug.LogWarning("country_code " + country_code);
         var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        Debug.LogWarning("CreateConnectAccount " + response);
         var N = JSON.Parse(response);
         return N["success"].AsBool;
     }
@@ -71,7 +88,6 @@ public class WithdrawManager
     {
         string url = Endpoint.classesURL + "/payments/retreiveAccount/";
         var response = await SeembaWebRequest.Get.HttpsGet(url);
-        Debug.LogWarning(response);
         AccountStatus accountStatus = JsonConvert.DeserializeObject<AccountStatus>(response);
         return accountStatus;
     }
@@ -348,7 +364,6 @@ public class WithdrawManager
     //}
     public async Task<string> Payout(string token, float amount)
     {
-        //UserManager um = new UserManager();
         string url = Endpoint.classesURL + "/payments/payout/";
         WWWForm form = new WWWForm();
         form.AddField("amount", amount.ToString());

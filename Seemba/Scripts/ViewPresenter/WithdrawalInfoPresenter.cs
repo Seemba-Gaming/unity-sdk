@@ -94,7 +94,6 @@ public class WithdrawalInfoPresenter : MonoBehaviour
         Debug.LogWarning(account.verification_link);
         if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
         {
-            Debug.LogWarning("here");
             if (!string.IsNullOrEmpty(account.verification_link))
             {
                 Application.OpenURL(account.verification_link);

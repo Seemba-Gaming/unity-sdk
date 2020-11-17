@@ -45,7 +45,7 @@ public class ResultController : MonoBehaviour
         ID_TEXT = TranslationManager.Get("ID");
         SCORE_TEXT = TranslationManager.Get("score");
         BUBBLES = TranslationManager.Get("bubbles");
-        YOU_LOST_TEXT = TranslationManager.Get("you_lost");
+        YOU_LOST_TEXT = TranslationManager.Get("you_lose");
         DEFEAT_TEXT = TranslationManager.Get("defeat");
         YOUR_OPPONENT_WON_TEXT = TranslationManager.Get("your_opponent_won");
         DO_NOT_GIVE_UP_TEXT = TranslationManager.Get("dont_give_up");

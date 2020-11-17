@@ -93,7 +93,6 @@ public class WithdrawPresenter : MonoBehaviour
     #region Implementation
     private async void CheckAndWithdraw()
     {
-        Debug.LogWarning("here");
         if (CountryController.checkCountry(UserManager.Get.CurrentUser.country_code) == true)
         {
             var token = UserManager.Get.getCurrentSessionToken();

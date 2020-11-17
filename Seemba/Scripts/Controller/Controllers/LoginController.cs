@@ -26,6 +26,7 @@ public class LoginController : MonoBehaviour
     public async Task<bool> Login(string username, string password)
     {
         LoaderManager.Get.LoaderController.ShowLoader(null);
+        ResetLoginFailedAnimation();
         var deviceToken = PlayerPrefs.GetString("DeviceToken");
         string res = await UserManager.Get.logingIn(username, password);
         LoaderManager.Get.LoaderController.HideLoader();
@@ -37,14 +38,15 @@ public class LoginController : MonoBehaviour
             else platform = "ios";
             await UserManager.Get.addUserDeviceToken(UserManager.Get.CurrentUser._id, GamesManager.GAME_ID, deviceToken, platform);
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Menu.gameObject);
-            //ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Home);
-            ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.HaveFun);
+            ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Home);
+            //ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.HaveFun);
 
             return true;
         }
         else if (res == "failed")
         {
             print("auth failed");
+            ShowLoginFailedAnimation();
             return false;
         }
         else
@@ -54,6 +56,14 @@ public class LoginController : MonoBehaviour
 
             return false;
         }
+    }
+    void ShowLoginFailedAnimation()
+    {
+        ViewsEvents.Get.Login.LoginAnimator.SetBool("loginFailed", true);
+    }
+    void ResetLoginFailedAnimation()
+    {
+        ViewsEvents.Get.Login.LoginAnimator.SetBool("loginFailed", false);
     }
     public bool IsValidEmail(string email)
     {

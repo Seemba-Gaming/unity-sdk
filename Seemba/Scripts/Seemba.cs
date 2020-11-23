@@ -10,8 +10,9 @@ public class Seemba : MonoBehaviour
 {
 
     #region Static
-    public static Seemba Get => sInstance;
+    public static Seemba Get { get { return sInstance; } }
     private static Seemba sInstance;
+
     public static bool gameOver = false;
     public static bool isFromSeembaStore = false;
     #endregion

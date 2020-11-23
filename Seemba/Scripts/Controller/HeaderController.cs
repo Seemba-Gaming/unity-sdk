@@ -14,6 +14,7 @@ public class HeaderController : MonoBehaviour
     public Image Flag;
     public Text VirtualMoney;
     public Text RealMoney;
+    public Animator Market;
     #endregion
 
     #region Fields
@@ -66,6 +67,11 @@ public class HeaderController : MonoBehaviour
         UserManager.Get.UpdateUserMoneyCredit(user.money_credit.ToString("N2"));
         UserManager.Get.UpdateUserBubblesCredit(user.bubble_credit.ToString());
         Init(user);
+    }
+
+    public void OnMarketClick()
+    {
+       BottomMenuController.Get.SelectMarket();
     }
     #endregion
 }

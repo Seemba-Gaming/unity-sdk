@@ -15,9 +15,6 @@ public class OnGoingGameListController : MonoBehaviour
     public int          nbElement = 0;
     string token;
     public Sprite[] spriteArray;
-    ArrayList OnGoingChallenges = new ArrayList();
-    ArrayList LastResults = new ArrayList();
-    JSONArray ItemsTournamentsPending;
     GenericChallenge[] mChallengesList;
     private bool initialized = false;
     int page = 1;
@@ -34,7 +31,7 @@ public class OnGoingGameListController : MonoBehaviour
             token = UserManager.Get.getCurrentSessionToken();
             if (token != null)
             {
-                mChallengesList = await ChallengeManager.Get.GetOnGoingChallenges(1, 4);
+                mChallengesList = await ChallengeManager.Get.GetOnGoingChallenges(1, pageSize);
                 if(mChallengesList.Length > 0)
                 {
                     ContentPanel.SetActive(true);
@@ -50,7 +47,7 @@ public class OnGoingGameListController : MonoBehaviour
                 SeeMoreResult.onClick.AddListener(async () =>
                 {
                     page++;
-                    mChallengesList = await ChallengeManager.Get.GetOnGoingChallenges(page, 4);
+                    mChallengesList = await ChallengeManager.Get.GetOnGoingChallenges(page, pageSize);
                     if (mChallengesList.Length > 0)
                     {
                         DisplayOnGoingChallenges(mChallengesList);

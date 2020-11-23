@@ -14,7 +14,7 @@ public class BottomMenuController : MonoBehaviour
     private static BottomMenuController sInstance;
     #endregion
     private static BottomMenuController _Instance;
-    public GameObject home,haveFun,WinMoney,settings;
+    public GameObject home,haveFun,WinMoney,settings, Market;
     public static int _currentPage = 0;
     public string selectedMenu = "Home";
     void Awake() 
@@ -89,5 +89,14 @@ public class BottomMenuController : MonoBehaviour
     public void unselectSettings()
     {
         if (menu == "Settings") { settings.GetComponent<Animator>().SetBool("focused", false); }
+    }
+    public void SelectMarket()
+    {
+        Market.GetComponent<Animator>().SetBool("focused", true);
+        menu = "Market";
+    }
+    public void unselectMarket()
+    {
+        if (menu == "Market") { Market.GetComponent<Animator>().SetBool("focused", false); }
     }
 }

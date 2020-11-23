@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-
 [CLSCompliant(false)]
-public class HomeBottomBarController : MonoBehaviour
+public class MarketBottomBarController : MonoBehaviour
 {
     // Start is called before the first frame update
     void OnEnable()
@@ -13,8 +10,8 @@ public class HomeBottomBarController : MonoBehaviour
         BottomMenuController.Show();
         BottomMenuController.Get.unselectHaveFun();
         BottomMenuController.Get.unselectWinMoney();
-        BottomMenuController.Get.unselectMarket();
         BottomMenuController.Get.unselectSettings();
-        BottomMenuController.Get.selectHome();
+        BottomMenuController.Get.unselectHome();
+        BottomMenuController.Get.SelectMarket();
     }
 }

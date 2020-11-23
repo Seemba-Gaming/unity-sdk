@@ -77,6 +77,11 @@ public class ViewsEvents : MonoBehaviour
         BottomMenuController.Show();
         ShowScene(Menu.Home);
     }
+    public void MarketClick()
+    {
+        BottomMenuController.Show();
+        ShowScene(Menu.Market);
+    }
     public void SettingsClick()
     {
         ProfilLastResultListController.profileSceneOpened = false;

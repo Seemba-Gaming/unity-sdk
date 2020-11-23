@@ -17,6 +17,7 @@ public class MenuPresenter : MonoBehaviour
     public GameObject Wallet;
     public GameObject BottomBar;
     public GameObject Header;
+    public GameObject Market;
     public ScrollSnapRect ScrollSnap;
     #endregion
 
@@ -37,6 +38,7 @@ public class MenuPresenter : MonoBehaviour
         mSubMenus.Add(Security);
         mSubMenus.Add(Legal);
         mSubMenus.Add(Wallet);
+        mSubMenus.Add(Market);
     }
     #endregion
 
@@ -53,15 +55,17 @@ public class MenuPresenter : MonoBehaviour
             mCurrentSubMenu = menuGameObject;
         }
     }
-
     public void ShowBottomBar(bool show)
     {
         BottomBar.SetActive(show);
     }
-
     public void ShowHeader(bool show)
     {
         Header.SetActive(show);
+    }
+    public void ShowMarket(bool show)
+    {
+        Market.SetActive(show);
     }
 
     public GameObject GetCurrentSubMenu()

@@ -23,7 +23,6 @@ public class EventsController : MonoBehaviour
     public static bool advFound;
     public static string ChallengeType, ChallengeName;
     public static int MoneyToAdd;
-    public bool AutoPlayActivated;
     public AudioListener AudioListener;
     #endregion
 

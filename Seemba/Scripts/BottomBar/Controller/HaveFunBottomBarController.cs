@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+
+[CLSCompliant(false)]
 public class HaveFunBottomBarController : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     void OnEnable()
     {
@@ -11,6 +12,7 @@ public class HaveFunBottomBarController : MonoBehaviour
         BottomMenuController.Get.unselectHome();
         BottomMenuController.Get.unselectWinMoney();
         BottomMenuController.Get.unselectSettings();
+        BottomMenuController.Get.unselectMarket();
         BottomMenuController.Get.selectHaveFun();
     }
 }

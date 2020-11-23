@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 namespace UnityThreading
 {
+    [CLSCompliant(false)]
     public abstract class DispatcherBase : IDisposable
     {
         protected int lockCount = 0;
@@ -182,7 +183,8 @@ namespace UnityThreading
         }
         #endregion
     }
-	public class NullDispatcher : DispatcherBase
+    [CLSCompliant(false)]
+    public class NullDispatcher : DispatcherBase
 	{
 		public static NullDispatcher Null = new NullDispatcher();
 		protected override void CheckAccessLimitation()
@@ -193,6 +195,7 @@ namespace UnityThreading
 			task.DoInternal();
 		}
 	}
+    [CLSCompliant(false)]
     public class Dispatcher : DispatcherBase
     {
         [ThreadStatic]

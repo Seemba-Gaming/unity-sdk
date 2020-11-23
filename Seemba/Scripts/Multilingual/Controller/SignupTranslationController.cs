@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+#pragma warning disable 0649
+[CLSCompliant(false)]
 public class SignupTranslationController : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]
-    private Text create_your, account, choose_a_username, enter_your_email,enter_your_password, confirm_your_password, have_you_got_an_account, signin, create, choose_your_character;
+    private Text create_your, account, choose_a_username, enter_your_email,enter_your_password, confirm_your_password, have_you_got_an_account, signin, create;
     void Start()
     {
         TranslationManager.scene = "Signup";
@@ -19,6 +23,5 @@ public class SignupTranslationController : MonoBehaviour
         have_you_got_an_account.text = TranslationManager.Get("have_you_got_an_account") !=string.Empty ? TranslationManager.Get("have_you_got_an_account") : have_you_got_an_account.text;
         signin.text = TranslationManager.Get("signin") !=string.Empty ? TranslationManager.Get("signin") : signin.text;
         create.text = TranslationManager.Get("create") !=string.Empty ? TranslationManager.Get("create") : create.text;
-        choose_your_character.text = TranslationManager.Get("choose_your_character") !=string.Empty ? TranslationManager.Get("choose_your_character") : choose_your_character.text;
     }
 }

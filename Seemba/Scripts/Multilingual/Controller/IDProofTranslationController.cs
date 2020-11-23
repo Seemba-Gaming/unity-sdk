@@ -1,12 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+[CLSCompliant(false)]
+#pragma warning disable 0649
 public class IDProofTranslationController : MonoBehaviour
 {
-    //IDENTITY VIEW
-    [SerializeField]
-    private Text identity_proof,
+
+    public Text identity_proof,
         note1,
         note2,
         note3,
@@ -17,17 +20,15 @@ public class IDProofTranslationController : MonoBehaviour
         upload_passport,
         waiting_identity_text_front, waiting_identity_text_back,
         verified_identity_front, verified_identity_back;
-    //PASSPORT VIEW
-    [SerializeField]
-    private Text passport_proof,
+
+    public Text passport_proof,
                  passport,
                  passport_text,
                  upload_identity,
                  waiting_passport_text_front,
                  verified_passport_front;
-    //RESIDENCY VIEW
-    [SerializeField]
-    private Text address_proof,
+
+    public Text address_proof,
                  residency,
                  residency_text,
                  waiting_residency_text_front,

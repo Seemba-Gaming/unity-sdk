@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
+[CLSCompliant(false)]
 public class Game
 {
 	public string _id, name, editorId, bundle_id, appstore_id, game_scene_name, game_level;
 	public string icon, background_image;
-	public Game(string _id, string name, string editorId, string bundle_id, string appstore_id)
+	public Game (string _id, string name, string editorId, string bundle_id, string appstore_id)
 	{
-
-		this._id = _id;
+        
+        this._id = _id;
 		this.name = name;
 		this.editorId = editorId;
 		this.bundle_id = bundle_id;
@@ -24,11 +27,21 @@ public class Game
 		this.bundle_id = bundle_id;
 		this.appstore_id = appstore_id;
 	}
-	public Game(string _id, string name)
+	public Game (string _id, string name, string editorId, string bundle_id, string appstore_id,string icon)
 	{
 		this._id = _id;
 		this.name = name;
+		this.editorId = editorId;
+		this.icon = icon;
+		this.bundle_id = bundle_id;
+		this.appstore_id = appstore_id;
 	}
+    public Game(string _id, string name)
+    {
+        this._id = _id;
+        this.name = name;
+        
+    }
 	public Game(string _id, string name, string game_scene_name, string game_level)
 	{
 		this._id = _id;
@@ -36,5 +49,7 @@ public class Game
 		this.game_scene_name = game_scene_name;
 		this.game_level = game_level;
 	}
+	public Game() { }
+
 }
 

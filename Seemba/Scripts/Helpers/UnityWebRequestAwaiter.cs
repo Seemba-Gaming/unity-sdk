@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
+
+[CLSCompliant(false)]
 public class UnityWebRequestAwaiter : INotifyCompletion
 {
     private UnityWebRequestAsyncOperation asyncOp;
@@ -24,6 +26,7 @@ public class UnityWebRequestAwaiter : INotifyCompletion
         continuation();
     }
 }
+[CLSCompliant(false)]
 public static class ExtensionMethods
 {
     public static UnityWebRequestAwaiter GetAwaiter(this UnityWebRequestAsyncOperation asyncOp)

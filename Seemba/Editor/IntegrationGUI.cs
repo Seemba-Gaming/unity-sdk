@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
+[CLSCompliant(false)]
 public class IntegrationGUI : EditorWindow
 {
     private Texture2D m_Logo = null;
@@ -44,7 +45,7 @@ public class IntegrationGUI : EditorWindow
                 GAME_SCENE_NAME = SavedGame.game_scene_name;
             }
         }
-        catch (Exception ex) { }
+        catch (Exception) { }
         GetScenes();
     }
     #endregion
@@ -110,7 +111,7 @@ public class IntegrationGUI : EditorWindow
                 game.game_scene_name = SavedGame.game_scene_name;
             }
         }
-        catch (Exception ex) { }
+        catch (Exception) { }
 
         if (string.IsNullOrEmpty(game._id) && string.IsNullOrEmpty(game.name) && string.IsNullOrEmpty(game.game_scene_name))
         {

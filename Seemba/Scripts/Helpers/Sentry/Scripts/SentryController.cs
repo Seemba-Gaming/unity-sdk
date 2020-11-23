@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Sentry;
 using UnityEngine;
 
-class SentryController: MonoBehaviour
+[CLSCompliant(false)]
+#pragma warning disable CS3019 // La vérification de conformité CLS ne sera pas effectuée, car l'objet inspecté n'est pas visible hors de cet assembly
+class SentryController
 {
     private static SentryController _Instance = null;
     private bool isInstantiated = false;
@@ -40,7 +38,7 @@ class SentryController: MonoBehaviour
     public void exc(){
         throw new NullReferenceException();
     }
-    private new void SendMessage(string message)
+    private void SendMessage(string message)
     {
         
         if (message == "event")
@@ -55,4 +53,6 @@ class SentryController: MonoBehaviour
     }
 
 }
+#pragma warning restore CS3019 // La vérification de conformité CLS ne sera pas effectuée, car l'objet inspecté n'est pas visible hors de cet assembly
+
 

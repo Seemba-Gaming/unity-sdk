@@ -8,6 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+[CLSCompliant(false)]
 public class ImagesManager : MonoBehaviour
 {
     public static string AvatarURL;
@@ -100,28 +101,13 @@ public class ImagesManager : MonoBehaviour
     }
     public async static Task<string> FixImage(byte[] avatar)
     {
-        WWWForm form = new WWWForm(); 
+        WWWForm form = new WWWForm();
         form.AddBinaryData("avatar", avatar);
-        var download = UnityWebRequest.Post(Endpoint.classesURL + "/users/avatars/upload", form);
-        download.timeout = 4000;
-        await download.SendWebRequest();
-
-        if (download.isNetworkError)
-        {
-            print("Error downloading: " + download.error);
-            AvatarURL = "error";
-            return AvatarURL;
-        }
-        if (download.responseCode == 200)
-        {
-            var N = JSON.Parse(download.downloadHandler.text);
-            //Save The current Session ID
-            AvatarURL = N["data"].Value;
-            return AvatarURL;
-        }
-        else
-        {
-            return null;
-        }
+        var url = Endpoint.classesURL + "/users/avatars/upload";
+        var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+        var N = JSON.Parse(response);
+        //Save The current Session ID
+        AvatarURL = N["data"].Value;
+        return AvatarURL;
     }
 }

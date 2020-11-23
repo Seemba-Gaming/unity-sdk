@@ -1,11 +1,11 @@
-using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Collections;
 namespace UnityThreading
 {
-    public class TaskDistributor : DispatcherBase
+	[CLSCompliant(false)]
+	public class TaskDistributor : DispatcherBase
 	{
         private TaskWorker[] workerThreads;
         internal WaitHandle NewDataWaitHandle { get { return dataEvent; } }

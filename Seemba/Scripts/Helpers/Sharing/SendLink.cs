@@ -1,12 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
-public class SendLink : MonoBehaviour {
+
+[CLSCompliant(false)]
+public class SendLink : MonoBehaviour
+{
 	public Button sendLink;
 	// Use this for initialization
 	void Start () {
-		string ExtraSubject = "";
-		string ExtraTitle = "";
 		string ExtraText = "Download Modern Snike and earn money *TestMessage* ";
 		sendLink.onClick.AddListener (() => {
 			#if UNITY_ANDROID
@@ -24,8 +25,5 @@ public class SendLink : MonoBehaviour {
 			GeneralSharingiOSBridge.ShareSimpleText (ExtraText);
 			#endif
 		});
-	}
-	// Update is called once per frame
-	void Update () {
 	}
 }

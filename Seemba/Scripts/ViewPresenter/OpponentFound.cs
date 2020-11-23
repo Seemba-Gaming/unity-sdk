@@ -1,63 +1,57 @@
-using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
 using System;
-using SimpleJSON;
+using UnityEngine;
+using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class OpponentFound : MonoBehaviour
 {
     public static string adversaireName;
     public Text opponent_username;
     public static string Avatar, AdvCountryCode;
-    // Use this for initialization
-    ChallengeManager challengeManager;
     public Image opponent_avatar, opponent_flag;
     public GameObject loaderPending, PanelLookingForPlayer, PanelPlayerFound, OpponentName;
     public GameObject Versus_container;
     public Animator Versus_background;
-    public void Start()
+    public void OnEnable()
     {
         InvokeRepeating("init", 0f, 1f);
     }
-    public void init()
+    public async void init()
     {
-        UserManager um = new UserManager();
-        UserManager manager = new UserManager();
 
-        UnityThreadHelper.CreateThread(() =>
+        if (EventsController.advFound)
         {
-            if (EventsController.advFound == true)
+            CancelInvoke();
+            Texture2D txt = new Texture2D(1, 1);
+            Sprite newSprite;
+            PanelLookingForPlayer.SetActive(false);
+            PanelPlayerFound.SetActive(true);
+            opponent_username.text = adversaireName;
+            opponent_avatar.sprite = await UserManager.Get.getAvatar(Avatar);
+            try
             {
-                Byte[] lnByte = manager.getAvatar(Avatar);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    CancelInvoke();
-                    Texture2D txt = new Texture2D(1, 1);
-                    Sprite newSprite;
-                    PanelLookingForPlayer.SetActive(false);
-                    PanelPlayerFound.transform.localScale = Vector3.one;
-                    challengeManager = new ChallengeManager();
-                    opponent_username.text = adversaireName;
-                    Byte[] img;
-                    opponent_avatar.sprite = ImagesManager.getSpriteFromBytes(lnByte);
-                    try
-                    {
-                        img = Convert.FromBase64String(manager.GetFlagByte(AdvCountryCode));
-                        txt.LoadImage(img);
-                        newSprite = Sprite.Create(txt as Texture2D, new Rect(0f, 0f, txt.width, txt.height), Vector2.zero);
-                        opponent_flag.sprite = newSprite;
-                    }
-                    catch (NullReferenceException ex)
-                    {
-                        
-                    }
-                    Versus_background.SetBool("StopBG", true);
-                    Versus_container.SetActive(true);
-                });
+                var mTexture = await UserManager.Get.GetFlagBytes(AdvCountryCode);
+                newSprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
+                opponent_flag.sprite = newSprite;
             }
-        });
+            catch (NullReferenceException)
+            {
+
+            }
+            Versus_background.SetBool("StopBG", true);
+            Versus_container.SetActive(true);
+
+        }
+
     }
-    // Update is called once per frame
-    void Update()
+
+    public void ResetOpponent()
     {
+        PanelLookingForPlayer.SetActive(true);
+        PanelPlayerFound.SetActive(false);
+        Versus_container.SetActive(false);
+        opponent_username.text = string.Empty;
+        opponent_flag.sprite = null;
+        opponent_avatar.sprite = null;
     }
 }

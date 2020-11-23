@@ -5,77 +5,98 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Reflection;
+
+[CLSCompliant(false)]
 public class BottomMenuController : MonoBehaviour 
-{   private static BottomMenuController _Instance;
-    public GameObject Toolbar { get { return GetComponent<GameObject>(); } }
-    public GameObject home,haveFun,WinMoney,settings;
+{
+    #region Static
+    public static BottomMenuController Get { get { return sInstance; } }
+    private static BottomMenuController sInstance;
+    #endregion
+    private static BottomMenuController _Instance;
+    public GameObject home,haveFun,WinMoney,settings, Market;
     public static int _currentPage = 0;
-    public String selectedMenu="Home";
-    public String menu
+    public string selectedMenu = "Home";
+    void Awake() 
+    {
+        sInstance = this;
+    }
+    private void Start()
+    {
+        InvokeRepeating("hideOrShowToolbar", 0f, 0.01f);
+    }
+    public string menu
     {
         get { return selectedMenu; }
         set { selectedMenu = value; }
     }
-    void Start() {
-        _Instance=this;
-        InvokeRepeating("hideOrShowToolbar", 0f, 0.01f);
+    public static void Hide() 
+    {
+        ViewsEvents.Get.Menu.BottomBar.SetActive(false);
+        ViewsEvents.Get.Menu.Header.SetActive(false);
     }
-    public static void Hide() {
-
-       try
+    public static void Show() 
+    {
+        ViewsEvents.Get.Menu.Header.SetActive(true);
+        ViewsEvents.Get.Menu.BottomBar.SetActive(true);
+    }
+    public void hideOrShowToolbar() 
+    {
+        if ((ScrollSnapRect.currentView=="Settings"&&ScrollSnapRect.focusedPage!=0)|| ScrollSnapRect.currentView == "Wallet") 
         {
-           GameObject.Find("Toolbar").transform.localScale = Vector3.zero;
+            Hide();
         }
-        catch (Exception e) {
-        }
-    }
-    public static void Show() {
-        
-        try
-        {
-            GameObject.Find("Toolbar").transform.localScale = Vector3.one;
-        }
-        catch (Exception e) { }
-    }
-    public void hideOrShowToolbar() {
-        try {
-            if ((ScrollSnapRect.currentView=="Settings"&&ScrollSnapRect.focusedPage!=0)|| ScrollSnapRect.currentView == "Wallet") {
-            GameObject.Find("Toolbar").transform.localScale = Vector3.zero;
-            }
         else
-        {  if (ScrollSnapRect.currentView != "WinMoney" && ScrollSnapRect.currentView != "HaveFun") { }
+        {  
+            if (ScrollSnapRect.currentView != "WinMoney" && ScrollSnapRect.currentView != "HaveFun")
+            { 
+
+            }
         }
-        }catch(NullReferenceException ex) { }
     }
-    public static BottomMenuController getInstance(){
-        return _Instance;
-    }
-    public void selectHome(){
+    public void selectHome()
+    {
         home.GetComponent<Animator>().SetBool("focused", true);
         menu = "Home";
     }
-    public void unselectHome(){
+    public void unselectHome()
+    {
         if (menu == "Home") { home.GetComponent<Animator>().SetBool("focused", false); }
     }
-    public void selectHaveFun(){
+    public void selectHaveFun()
+    {
         haveFun.GetComponent<Animator>().SetBool("focused", true);
         menu = "HaveFun";
     }
-    public void unselectHaveFun(){
+    public void unselectHaveFun()
+    {
         if (menu == "HaveFun") { haveFun.GetComponent<Animator>().SetBool("focused", false); }
     }
-    public void selectWinMoney(){
+    public void selectWinMoney()
+    {
         WinMoney.GetComponent<Animator>().SetBool("focused", true);
         menu = "WinMoney";
     }
-    public void unselectWinMoney(){
+    public void unselectWinMoney()
+    {
         if (menu == "WinMoney") { WinMoney.GetComponent<Animator>().SetBool("focused", false); }
     }
-    public void selectSettings(){
+    public void selectSettings()
+    {
         settings.GetComponent<Animator>().SetBool("focused", true);
         menu = "Settings";
     }
-    public void unselectSettings(){
+    public void unselectSettings()
+    {
         if (menu == "Settings") { settings.GetComponent<Animator>().SetBool("focused", false); }
+    }
+    public void SelectMarket()
+    {
+        Market.GetComponent<Animator>().SetBool("focused", true);
+        menu = "Market";
+    }
+    public void unselectMarket()
+    {
+        if (menu == "Market") { Market.GetComponent<Animator>().SetBool("focused", false); }
     }
 }

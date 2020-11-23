@@ -1,7 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
- [RequireComponent(typeof(Button))]
+using System;
+
+[RequireComponent(typeof(Button))]
+
+[CLSCompliant(false)]
 public class ClickSoundController : MonoBehaviour 
 {
     public AudioClip sound;

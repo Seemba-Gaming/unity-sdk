@@ -8,47 +8,49 @@ using UnityEngine.SceneManagement;
 using System.Globalization;
 using static PopupsViewPresenter;
 
+[CLSCompliant(false)]
 public class TournamentController : MonoBehaviour
 {
-    static TournamentController _Instance;
+    #region Static
+    public static TournamentController Get { get { return sInstance; } }
+    private static TournamentController sInstance;
 
     private static string CURRENT_TOURNAMENT_ID;
     public static int CURRENT_TOURNAMENT_NB_PLAYER;
     public static float CURRENT_TOURNAMENT_GAIN;
     public static string CURRENT_TOURNAMENT_GAIN_TYPE;
-    TournamentManager tm;
+    #endregion
+
     public TournamentPresenter tp;
     public JSONNode tournamentJson;
     public Button _Play, _Great;
     public GameObject Bubbles, Others;
 
-    private UserManager userManager = new UserManager();
     string userId, token;
-    public static TournamentController getInstance()
+
+    private void Start()
     {
-        if (!_Instance) _Instance = new TournamentController();
-        return _Instance;
+        sInstance = this;
     }
 
-    public void Play(object[] _duel_params)
+    public async void Play(object[] _duel_params)
     {
 
-        userId = userManager.getCurrentUserId();
-        token = userManager.getCurrentSessionToken();
-
-        float entry_fee = float.Parse(_duel_params[0].ToString(), CultureInfo.InvariantCulture.NumberFormat);
-        float gain = float.Parse(_duel_params[1].ToString(), CultureInfo.InvariantCulture.NumberFormat);
+        userId = UserManager.Get.getCurrentUserId();
+        token = UserManager.Get.getCurrentSessionToken();
+        float entry_fee = float.Parse(_duel_params[0].ToString());
+        float gain = float.Parse(_duel_params[1].ToString());
         string gain_type = _duel_params[2].ToString();
 
         if (isCreditSuffisant(entry_fee, gain_type))
         {
 
             ChallengeController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_BRACKET;
-            //Needs Change
             EventsController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
+
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
-                StartCashTournament(entry_fee, gain, gain_type);
+                await StartCashTournamentAsync(entry_fee, gain, gain_type);
             }
             else
             {
@@ -59,11 +61,11 @@ public class TournamentController : MonoBehaviour
         {
             if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
             {
-                ShowPopup(PopupsController.PopupType.INSUFFICIENT_BALANCE, PopupsText.getInstance().insufficient_balance());
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_INSUFFICIENT_BALANCE, PopupsText.Get.insufficient_balance());
             }
             else
             {
-                ShowPopup(PopupsController.PopupType.INSUFFICIENT_BUBBLES, PopupsText.getInstance().insufficient_bubbles());
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_INSUFFICIENT_BUBBLES, PopupsText.Get.insufficient_bubbles());
             }
         }
     }
@@ -71,49 +73,31 @@ public class TournamentController : MonoBehaviour
     {
         JoinTournament(entry_fee, gain, gain_type);
     }
-    public void StartCashTournament(float entry_fee, float gain, string gain_type)
+    public async System.Threading.Tasks.Task StartCashTournamentAsync(float entry_fee, float gain, string gain_type)
     {
-        if (isDeveloperModeEnabled())
+        if (isProhibitedLocation(UserManager.Get.CurrentUser.country_code))
         {
-            ShowPopup(PopupsController.PopupType.DEV_MODE, PopupsText.getInstance().dev_mode());
+            PopupManager.Get.PopupController.ShowPopup(PopupType.PROHIBITED_LOCATION, PopupsText.Get.prohibited_location());
+            return;
+        }
+        var mIsVpnEnabled = await isVPNEnabledAsync();
+        if (mIsVpnEnabled)
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.VPN, PopupsText.Get.vpn());
             return;
         }
 
-        /* if (isProhibitedLocation(UserManager.CurrentCountryCode))
-         {
-             ShowPopup(PopupsController.PopupType.PROHIBITED_LOCATION, PopupsText.getInstance().prohibited_location());
-             return;
-         }
-
-         if (isVPNEnabled())
-         {
-             ShowPopup(PopupsController.PopupType.VPN, PopupsText.getInstance().vpn());
-             return;
-         }*/
-
         JoinTournament(entry_fee, gain, gain_type);
     }
-    private void JoinTournament(float entry_fee, float gain, string gain_type)
+    private async void JoinTournament(float entry_fee, float gain, string gain_type)
     {
-        //Show The Loader
-        SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-
-        UnityThreadHelper.CreateThread(() =>
+        LoaderManager.Get.LoaderController.ShowLoader(null);
+        string tournamentId = await TournamentManager.Get.JoinOrCreateTournament(TournamentManager.TOURNAMENT_8, gain, gain_type, userId, token);
+        LoaderManager.Get.LoaderController.HideLoader();
+        if (tournamentId != null)
         {
-            TournamentManager tm = new TournamentManager();
-            string tournamentId = tm.JoinOrCreateTournament(TournamentManager.TOURNAMENT_8, gain, gain_type, userId, token);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                SceneManager.UnloadSceneAsync("Loader");
-
-                if (tournamentId != null)
-                {
-                    
-                    setCurrentTournamentID(tournamentId);
-                    SceneManager.LoadScene("Bracket", LoadSceneMode.Additive);
-                }
-            });
-        });
+            ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);
+        }
     }
     private bool isDeveloperModeEnabled()
     {
@@ -146,31 +130,25 @@ public class TournamentController : MonoBehaviour
     }
     private bool isProhibitedLocation(string code)
     {
-        return CountryController.checkCountry(code);
+        return !CountryController.checkCountry(code);
     }
-    private bool isVPNEnabled()
+    private async System.Threading.Tasks.Task<bool> isVPNEnabledAsync()
     {
         VPNManager vpn = new VPNManager();
-        return vpn.isVpnConnected();
+        return await vpn.isVpnConnectedAsync();
     }
-    void ShowPopup(PopupsController.PopupType popup, object[] popup_details)
-    {
-        PopupsController.getInstance().ShowPopup(popup, popup_details);
-    }
+
     private bool isCreditSuffisant(float entry_fee, string win_type)
     {
-
-        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && (UserManager.CurrentUser.money_credit >= entry_fee))
+        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH) && UserManager.Get.CurrentUser.money_credit >= entry_fee)
         {
             return true;
         }
-        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES) && (UserManager.CurrentUser.bubble_credit >= entry_fee))
+        if (win_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES) && UserManager.Get.CurrentUser.bubble_credit >= entry_fee)
         {
             return true;
         }
-
         return false;
-
     }
     public static void setCurrentTournamentID(string id)
     {

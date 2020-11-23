@@ -1,31 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
+[CLSCompliant(false)]
 public class LoaderController : MonoBehaviour
 {
-    private static AsyncOperation asyncLoad;
-    // Use this for initialization
-    public static void ShowLoader()
-    {
-        asyncLoad = SceneManager.LoadSceneAsync("Loader");
-    }
-    public static void HideLoader()
-    {
-        //StartCoroutine(UnloadLoader());
-    }
-    static IEnumerator UnloadLoader()
-    {
-        // The Application loads the Scene in the background at the same time as the current Scene.
-        //This is particularly good for creating loading screens. You could also load the Scene by build //number.
-        //Wait until the last operation fully loads to return anything
-        while (!asyncLoad.isDone)
-        { }
-        SceneManager.UnloadSceneAsync("Loader");
-        yield return null;
-    }
+    public Loader Loader;
+
+    private GameObject mContent;
     void Start()
     {
-
+        DontDestroyOnLoad(this.gameObject);
+        mContent = transform.GetChild(0).gameObject;
+    }
+    public void ShowLoader(string message = null)
+    {
+        mContent.SetActive(true);
+        Loader.title.text = message;
+    }
+    public void HideLoader()
+    {
+        mContent.SetActive(false);
     }
 }

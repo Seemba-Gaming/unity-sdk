@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System;
+
+[CLSCompliant(false)]
 public class NativePicker : MonoBehaviour {
 	public enum PickerType {
 		CustomPicker,
@@ -43,26 +45,24 @@ public class NativePicker : MonoBehaviour {
 		_pluginObject = new AndroidJavaObject("ua.org.jeff.unity.nativepicker.AndroidPlugin");
 #endif
 	}
-	void ItemPicked(String message) {
-		//Debug.Log("Item picked " + message);
-		long val = long.Parse(message);
-		if (_currentAction != null) {
-			_currentAction(val);
-		}
+	void ItemPicked(string message) {
+		Debug.Log("Item picked " + message);
+		long val;
+		bool res = long.TryParse(message.Trim(),out val);
+        //_currentAction?.Invoke(val);
+		EventsController.Get.OnDateSelected(val);
 	}
-	void PickerCanceled(String message) {
-		//Debug.Log("PickerCanceled");
-		if (_cancelAction != null) {
-			_cancelAction();
-		}
-	}
+	void PickerCanceled(string message) {
+		Debug.Log("PickerCanceled");
+       // _cancelAction?.Invoke();
+    }
 	void makeJNICall(PickerType type, string[] items, long selectedItem)
 	{
 		if (isMobileRuntime == false) {
 			return;
 		}
 #if UNITY_ANDROID
-        //Debug.Log(String.Format("Selected item -> {0}", selectedItem));
+        Debug.Log(String.Format("Selected item -> {0}", selectedItem));
         _pluginObject.Call("showPicker", (int)type, items, selectedItem, "NativePicker");
 #else
 		return;
@@ -92,7 +92,8 @@ public class NativePicker : MonoBehaviour {
 	 * can be null
 	 */
 	public void ShowDatePicker(Rect position, Action<long> onValueSelectedAction, Action onPickerCanceled) {
-		ShowDatePicker(position, DateTime.Now, onValueSelectedAction, onPickerCanceled);
+			Debug.Log("ShowDatePicker");
+			ShowDatePicker(position, DateTime.Now, onValueSelectedAction, onPickerCanceled);
 	}
 	/**
 	 * Show date picker
@@ -111,6 +112,7 @@ public class NativePicker : MonoBehaviour {
 			return;
 		}
 		_currentAction = onValueSelectedAction;
+		Debug.Log(onValueSelectedAction.ToString());
 		_cancelAction = onPickerCanceled;
 #if UNITY_ANDROID
 		makeJNICall(PickerType.DatePicker, new string[] {}, ConvertToUnixTimestamp(date));
@@ -119,6 +121,7 @@ public class NativePicker : MonoBehaviour {
 		showPicker(PickerType.DatePicker, new string[] {}, 0, ConvertToUnixTimestamp(date), (int)position.x, (int)position.y, (int)position.width, (int)position.height, "NativePicker");
 #endif
 	}
+	
 	/**
 	 * Show time picker
 	 * position - popover pointing rect (required by iPad platform)	 

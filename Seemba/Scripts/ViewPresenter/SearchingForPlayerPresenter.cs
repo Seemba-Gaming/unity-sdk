@@ -1,40 +1,42 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
-using SimpleJSON;
+﻿using System;
 using System.Threading;
+using UnityEngine;
+using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class SearchingForPlayerPresenter : MonoBehaviour
 {
+    #region Static
+    public static bool isTrainingGame = false;
+    #endregion
 
-    public Text fee, username, gain, nb_players;
+    #region Script Parameters
+    public Text fee;
+    public Text username;
+    public Text gain;
+    public Text nb_players;
     public Text counter;
     public Image user_flag, user_avatar;
-    public Text looking_for_opponent,start_now,same_game;
+    public Text looking_for_opponent, start_now, same_game;
     public Button Continue;
     public static string nbPlayer, GameMontant;
+    #endregion
 
-    public static bool isTrainingGame = false;
-    void Start()
+    #region Unity Methods
+    private void OnEnable()
     {
-        InvokeRepeating("CheckOpponent", 0.5f, 3f);
-
-        UserManager manager = new UserManager();
-        string UserId = manager.getCurrentUserId();
-        string token = manager.getCurrentSessionToken();
-        Texture2D txt = new Texture2D(1, 1);
-        Sprite newSprite;
-
         nb_players.text = nbPlayer;
-        username.text = UserManager.CurrentUsername;
-        Byte[] img1 = Convert.FromBase64String(UserManager.CurrentFlagBytesString);
-        txt.LoadImage(img1);
-        Texture2D roundTxt1 = ImagesManager.RoundCrop(txt);
-        newSprite = Sprite.Create(txt as Texture2D, new Rect(0f, 0f, txt.width, txt.height), Vector2.zero);
-        user_flag.sprite = newSprite;
-        user_avatar.sprite = UserManager.CurrentAvatarBytesString;
+        username.text = UserManager.Get.CurrentUser.username;
+        var mTexture = new Texture2D(1, 1);
+        var flagBytes = Convert.FromBase64String(PlayerPrefs.GetString("CurrentFlagBytesString"));
+        mTexture.LoadImage(flagBytes);
+        user_flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
+        user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
+
         gain.text = ChallengeManager.CurrentChallenge.gain.ToString();
         gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ? " bubbles" : " €";
+        InvokeRepeating("CheckOpponent", .5f, 3f);
+
         try
         {
 
@@ -52,7 +54,7 @@ public class SearchingForPlayerPresenter : MonoBehaviour
                              {
                                  Continue.transform.localScale = Vector3.one;
                              }
-                             catch (NullReferenceException ex)
+                             catch (NullReferenceException)
                              {
                              }
                          }
@@ -64,7 +66,7 @@ public class SearchingForPlayerPresenter : MonoBehaviour
                                  start_now.transform.localScale = Vector3.zero;
                                  same_game.transform.localScale = Vector3.zero;
                              }
-                             catch (NullReferenceException ex)
+                             catch (NullReferenceException)
                              {
                              }
                          }
@@ -74,40 +76,39 @@ public class SearchingForPlayerPresenter : MonoBehaviour
                  }
              });
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
         }
     }
-   
-    void CheckOpponent()
+    private void OnDisable()
     {
-        UserManager um = new UserManager();
-        string token = um.getCurrentSessionToken();
-        string userID = um.getCurrentUserId();
-        ChallengeManager cm = new ChallengeManager();
-        UnityThreadHelper.CreateThread(() =>
-        {
-            var N = cm.getChallengebyId(ChallengeManager.CurrentChallengeId, token);
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                if (!string.IsNullOrEmpty(N["data"]["matched_user_1"]["_id"].Value) && !string.IsNullOrEmpty(N["data"]["matched_user_2"]["_id"].Value))
-                {
-                    if (N["data"]["matched_user_1"]["_id"].Value.Equals(userID))
-                    {
-                        OpponentFound.adversaireName = N["data"]["matched_user_2"]["username"];
-                        OpponentFound.Avatar = N["data"]["matched_user_2"]["avatar"];
-                        OpponentFound.AdvCountryCode = N["data"]["matched_user_2"]["country_code"];
-                    }
-                    else
-                    {
-                        OpponentFound.adversaireName = N["data"]["matched_user_1"]["username"];
-                        OpponentFound.Avatar = N["data"]["matched_user_1"]["avatar"];
-                        OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
-                    }
-                    EventsController.advFound = true;
-                    CancelInvoke("CheckOpponent");
-                }
-            });
-        });
+        CancelInvoke("CheckOpponent");
     }
+    #endregion
+
+    #region Implementation
+    private async void CheckOpponent()
+    {
+        string token = UserManager.Get.getCurrentSessionToken();
+        string userID = UserManager.Get.getCurrentUserId();
+        var N = await ChallengeManager.Get.getChallengebyIdAsync(ChallengeManager.CurrentChallengeId, token);
+        if (!string.IsNullOrEmpty(N["data"]["matched_user_1"]["_id"].Value) && !string.IsNullOrEmpty(N["data"]["matched_user_2"]["_id"].Value))
+        {
+            if (N["data"]["matched_user_1"]["_id"].Value.Equals(userID))
+            {
+                OpponentFound.adversaireName = N["data"]["matched_user_2"]["username"];
+                OpponentFound.Avatar = N["data"]["matched_user_2"]["avatar"];
+                OpponentFound.AdvCountryCode = N["data"]["matched_user_2"]["country_code"];
+            }
+            else
+            {
+                OpponentFound.adversaireName = N["data"]["matched_user_1"]["username"];
+                OpponentFound.Avatar = N["data"]["matched_user_1"]["avatar"];
+                OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
+            }
+            EventsController.advFound = true;
+            CancelInvoke("CheckOpponent");
+        }
+    }
+    #endregion
 }

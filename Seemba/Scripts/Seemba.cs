@@ -1,198 +1,187 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
-using System;
-using SimpleJSON;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using System.IO;
-using static PopupsViewPresenter;
-using System.Diagnostics;
-using UnityEditor;
 
+[CLSCompliant(false)]
 public class Seemba : MonoBehaviour
 {
-    UserManager userManager = new UserManager();
 
+    #region Static
+    public static Seemba Get { get { return sInstance; } }
+    private static Seemba sInstance;
+
+    public static bool gameOver = false;
     public static bool isFromSeembaStore = false;
+    #endregion
 
+    #region Script Parameters
+    public bool IsSeemba = false;
+    #endregion
+
+    #region Fields
+    private GameObject mSeembaManagers;
+    #endregion
     private void Awake()
     {
-        //Set The FPS target in the Awake function to avoid all changes from outsides.
         Application.targetFrameRate = 60;
+        sInstance = this;
+    }
+    private void Start()
+    {
+        if (UserManager.Get == null)
+        {
+            mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
+            DontDestroyOnLoad(mSeembaManagers);
+        }
+
+        if (EventsController.Get != null)
+        {
+            IsSeemba = true;
+        }
     }
     public void Enter()
     {
-        //PlayerPrefs.DeleteAll();
 #if (UNITY_ANDROID)
-        if (!isFromSeembaStore) OpenSeemba();
+        if (!isFromSeembaStore)
+        {
+            OpenSeemba();
+        }
         else
         {
-            PopupsController.getInstance().ShowPopup(PopupsController.PopupType.DOWNLOAD_FROM_STORE, PopupsText.getInstance().download_from_store());
+            PopupManager.Get.PopupController.ShowPopup(PopupType.DOWNLOAD_FROM_STORE, PopupsText.Get.download_from_store());
         }
 #else
-        OpenSeemba();   
+   
+        OpenSeemba();
+        
 #endif
 
     }
-
-    #region OPEN_SEEMBA
-    private void OpenSeemba()
+    public IEnumerator checkInternetConnection(Action<bool?> action)
     {
-        CheckConnection();
-    }
-    private void CheckConnection()
-    {
-        EventsController nbs = new EventsController();
-        ConnectivityController.CURRENT_ACTION = ConnectivityController.ENTER_ESPORT_TOURNAMENT_ACTION;
-
-        StartCoroutine(nbs.checkInternetConnection((isConnected) =>
+        UnityWebRequest www = new UnityWebRequest("https://www.google.fr");
+        yield return www.SendWebRequest();
+        if (www.error == null)
         {
-            // handle connection status here
-            if (isConnected == true)
-            {
-
-                SceneManager.UnloadSceneAsync("Loader");
-                SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-                LoadSeembaConfig();
-            }
-            else
-            {
-                try
-                {
-                    SceneManager.UnloadSceneAsync("ConnectionFailed");
-                }
-                catch (ArgumentException ex) { }
-                SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                SceneManager.UnloadSceneAsync("Loader");
-            }
-        }));
+            action(true);
+        }
+        else
+        {
+            action(false);
+        }
     }
-    private void LoadSeembaConfig()
+    private async Task<bool> LoadSeembaConfig()
     {
         try
-        {   
-             
+        {
             Game Game = JsonUtility.FromJson<Game>(Resources.Load<TextAsset>("seemba-services").ToString());
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
-            DownloadAssets();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            UnityEngine.Debug.LogError("Please complete the game integration before starting");
-            UnityEngine.Debug.Break();
+            Debug.LogError("Please complete the game integration before starting");
+            Debug.Break();
+        }
+        var res = await DownloadAssets();
+        if(res)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
-    private void DownloadAssets()
+    private async Task<bool> DownloadAssets()
     {
-        GamesManager gamesManager = new GamesManager();
-
-        UnityThreadHelper.CreateThread(() =>
+        var res = await GamesManager.Get.getGamebyId(GamesManager.GAME_ID);
+        if (res != null)
         {
-            string res = gamesManager.getGamebyId(GamesManager.GAME_ID);
-            if (!string.IsNullOrEmpty(res))
-            {
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    StartCoroutine(BackgroundController.SaveBackgroundImage(GamesManager.BACKGROUND_IMAGE_URL));
-                    StartCoroutine(GamesManager.SaveIcon(GamesManager.ICON_URL));
-                    StartCoroutine(TranslationManager.SavePreferedLaguage());
-                });
-                while (GamesManager.backgroundSaved == null || TranslationManager.isDownloaded == null)
-                {
-                }
-                if (GamesManager.backgroundSaved == true && TranslationManager.isDownloaded == true)
-                {
-                    UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
-                        //instantiate sentry for catching crashes...
-                        InstantiateSentry();
-                        if (userManager.getCurrentUserId() != null)
-                        {
-                            SceneManager.LoadSceneAsync("Home");
-                        }
-                        else
-                        {
-                            SceneManager.LoadSceneAsync("Intro");
-                        }
-                    });
-                }
-                else
-                {
-                    UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
-                        SceneManager.UnloadSceneAsync("Loader");
-                        SceneManager.LoadScene("ConnectionFailed", LoadSceneMode.Additive);
-                    });
-                }
-            }
-            else
-            {
-                UnityEngine.Debug.LogError("Please verify your game ID");
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
-                        UnityEngine.Debug.Break();
-                        SceneManager.UnloadSceneAsync("Loader");
-                    });
-            }
-
-        });
+            LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.DONWLOADING);
+            await BackgroundController.SaveBackgroundImage(GamesManager.BACKGROUND_IMAGE_URL);
+            await GamesManager.SaveIcon(GamesManager.ICON_URL);
+            LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SETTING_LANGUAGE);
+            await TranslationManager.SavePreferedLanguage();
+            LoaderManager.Get.LoaderController.HideLoader();
+            return true;
+        }
+        else
+        {
+            Debug.LogError("Please verify your game ID");
+            Debug.Break();
+            LoaderManager.Get.LoaderController.HideLoader();
+            return false;
+        }
     }
     private void InstantiateSentry()
     {
         SentryController.Instance.instantiate();
     }
-    #endregion
-    public void Quit()
+    private void OpenSeemba()
     {
-        BackgroundController.CurrentBackground = null;
-        EventsController.ChallengeType = null;
-        SceneManager.LoadScene(0);
+        ConnectivityController.CURRENT_ACTION = ConnectivityController.ENTER_ESPORT_TOURNAMENT_ACTION;
+        LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.CHECKING_CONNECTION);
+        StartCoroutine(checkInternetConnection(async (isConnected) =>
+        {
+            if (isConnected == true)
+            {
+                LoaderManager.Get.LoaderController.ShowLoader(null);
+                await LoadSeembaConfig();
+
+                if (string.IsNullOrEmpty(GamesManager.GAME_ID))
+                {
+                    Debug.LogError("Please Insert game id in GamesManager Class(gameId)");
+                }
+                else
+                {
+                    IsSeemba = true;
+                    InstantiateSentry();
+                    SceneManager.LoadSceneAsync("SeembaEsports");
+                }
+            }
+            else
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+                LoaderManager.Get.LoaderController.HideLoader();
+            }
+        }));
     }
-    public void SetResult(int score)
+    public async void setResult(float score)
     {
-        //1vs1
         if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)
         {
-            ChallengeManager challengeManager = new ChallengeManager();
-            try
-            {
-                UserManager userManager = new UserManager();
-                string userId = userManager.getCurrentUserId();
-                string token = userManager.getCurrentSessionToken();
-                SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-                UnityThreadHelper.CreateThread(() =>
-                {
-                    challengeManager.addScore(userId, token, ChallengeManager.CurrentChallengeId, float.Parse(score.ToString()));
-                    UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
-                        SceneManager.UnloadScene("Loader");
-                        challengeManager.ShowResults();
-                    });
-                });
-            }
-            catch (FormatException ex)
-            {
-                //Catch
-            }
+            LoaderManager.Get.LoaderController.ShowLoader(null);
+            var resAddScore = await ChallengeManager.Get.addScore(ChallengeManager.CurrentChallengeId, score);
+            ChallengeManager.Get.ShowResult();
+            LoaderManager.Get.LoaderController.HideLoader();
         }
         else if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_BRACKET)
         {
-            string userId = userManager.getCurrentUserId();
-            string token = userManager.getCurrentSessionToken();
-            TournamentManager tournamentManager = new TournamentManager();
-            SceneManager.LoadScene("Loader", LoadSceneMode.Additive);
-            UnityThreadHelper.CreateThread(() =>
-            {
-                string TournamentId = tournamentManager.addScoreInTournament(TournamentController.getCurrentTournamentID(), score, userId, token);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    SceneManager.UnloadScene("Loader");
-                    SceneManager.LoadScene("Bracket");
-                });
-            });
+            LoaderManager.Get.LoaderController.ShowLoader(null);
+            await TournamentManager.Get.addScore(TournamentController.getCurrentTournamentID(), score);
+            ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);
+            ViewsEvents.Get.Brackets.OnEnable();
         }
-
+        SceneManager.UnloadSceneAsync(GamesManager.GAME_SCENE_NAME);
+        LoaderManager.Get.LoaderController.HideLoader();
     }
-    
+    public void setGameOver(bool GameOver)
+    {
+        gameOver = GameOver;
+    }
+    public bool isGameOver()
+    {
+        return gameOver;
+    }
+    public void On_ApplicationQuit()
+    {
+        if (!isGameOver())
+        {
+        }
+    }
 }

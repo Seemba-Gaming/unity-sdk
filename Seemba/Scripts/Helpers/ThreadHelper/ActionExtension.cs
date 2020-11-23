@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 namespace UnityThreading
 {
+	[CLSCompliant(false)]
 	public static class ActionExtension
 	{
         /// <summary>

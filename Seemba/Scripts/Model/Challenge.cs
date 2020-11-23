@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+[CLSCompliant(false)]
 public class Challenge
 {
     //public string objectId;
@@ -15,9 +16,8 @@ public class Challenge
     public string CreatedAt;
     public int? game_level;
 
-    public Challenge(string _id, User matched_user_1, User matched_user_2, float? user_1_score, float? user_2_score, string challenge_type, Game game, string status, string gain, string gain_type, int level, string CreatedAt,string winner_user, int? game_level)
+    public Challenge(string _id, User matched_user_1, User matched_user_2, float? user_1_score, float? user_2_score, string challenge_type, Game game, string status, string gain, string gain_type, int level, string CreatedAt, string winner_user, int? game_level)
     {
-        //this.objectId = objectId;
         this._id = _id;
         this.gain = gain;
         this.matched_user_1 = matched_user_1;
@@ -37,5 +37,5 @@ public class Challenge
     public Challenge()
     {
     }
-}
 
+}

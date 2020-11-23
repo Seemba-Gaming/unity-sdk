@@ -1,11 +1,13 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 #if !NO_UNITY
 using UnityEngine;
 #endif
 #if !NO_UNITY
 [ExecuteInEditMode]
+[CLSCompliant(false)]
 public class UnityThreadHelper : MonoBehaviour
 #else
 public class UnityThreadHelper
@@ -102,7 +104,7 @@ public class UnityThreadHelper
                 {
                     action(currentThread);
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
                     //UnityEngine.//Debug.LogError(ex);
                 }

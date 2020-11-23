@@ -93,7 +93,7 @@ namespace RestSharp.Deserializers
 					isAttribute = options.Attribute;
 				}
 				var value = GetValueFromXml(root, name, isAttribute);
-				if (value == null || value == string.Empty)
+				if (string.IsNullOrEmpty(value.ToString()))
 				{
 					// special case for inline list items
 					if (type.IsGenericType)

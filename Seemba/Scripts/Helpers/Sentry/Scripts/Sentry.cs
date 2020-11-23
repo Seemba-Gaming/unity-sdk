@@ -12,6 +12,7 @@ namespace Sentry
     /// </remarks>
     /// <seealso href="https://feedback.unity3d.com/suggestions/add-support-for-nullable-types-to-jsonutility"/>
     [Serializable]
+    [CLSCompliant(false)]
     public class Gpu
     {
         /// <summary>
@@ -269,6 +270,7 @@ namespace Sentry
     }
 
     [Serializable]
+    [CLSCompliant(false)]
     public class Context
     {
         public App app;
@@ -371,6 +373,7 @@ namespace Sentry
         public string screenOrientation;
     }
     [Serializable]
+[CLSCompliant(false)]
     public class Game
     {
         public string _id;
@@ -384,6 +387,7 @@ namespace Sentry
     }
 
     [Serializable]
+[   CLSCompliant(false)]
     public class User
     {
         public string email;
@@ -397,6 +401,7 @@ namespace Sentry
     }
 
     [Serializable]
+[   CLSCompliant(false)]
     public class SentryEvent
     {
         public string event_id;
@@ -426,7 +431,7 @@ namespace Sentry
             this.tags = new Tags();
             this.extra = new Extra();
             this.game = new Game(GamesManager.GAME_ID, GamesManager.GAME_NAME);
-            this.user = new User(UserManager.CurrentUser._id, UserManager.CurrentUser.email);
+            this.user = new User(UserManager.Get.CurrentUser._id, UserManager.Get.CurrentUser.email);
         }
     }
 
@@ -485,6 +490,7 @@ namespace Sentry
         }
     }
 
+    [CLSCompliant(false)]
     public class SentryExceptionEvent : SentryEvent
     {
         public ExceptionContainer exception;

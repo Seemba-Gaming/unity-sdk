@@ -4,7 +4,9 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using System;
+#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
 public class ShareController : MonoBehaviour
+#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     private string text = "I challenge you on " + GamesManager.GAME_NAME + ". are you up to the challenge? Can you beat my highscore? Waiting for you on "+GamesManager.GAME_ANDROID_URL;
     public void ShareScreenshot()
@@ -26,6 +28,9 @@ public class ShareController : MonoBehaviour
         Destroy(ss);
         Debug.Log(text);
         new NativeShare().AddFile(filePath).SetText(text).Share();
+        // Share on WhatsApp only, if installed (Android only)
+        //if( NativeShare.TargetExists( "com.whatsapp" ) )
+        //	new NativeShare().AddFile( filePath ).SetText( "Hello world!" ).SetTarget( "com.whatsapp" ).Share();
     }
     private IEnumerator ShareTextInBG()
     {

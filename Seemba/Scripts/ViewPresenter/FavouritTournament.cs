@@ -1,72 +1,99 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Newtonsoft.Json;
 using SimpleJSON;
-using System.Net;
-using System.Linq;
+using System;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.UI;
+
+[CLSCompliant(false)]
 public class FavouritTournament : MonoBehaviour
 {
-	UserManager um = new UserManager ();
-	public static bool FavInPopUpProfile;
-	// Use this for initialization
-	void Start ()
-	{
-		string userId;
-		string token = um.getCurrentSessionToken ();
-		if (FavInPopUpProfile) {
-			FavInPopUpProfile = false;
-			userId = ProfileViewPresenter.PlayerId;
-		} else {
-			userId = um.getCurrentUserId ();
-		}
-          UnityThreadHelper.CreateThread (() => {
-			string tournament_name = GetFavoriteTournament (userId, token);
-			UnityThreadHelper.Dispatcher.Dispatch (() => { 
-				switch (tournament_name) {
-				case "novice_bubble":
-					GameObject.Find ("noviceBubble").transform.localScale = new Vector3 (1, 1, 1);
-					break;
-				case "amateur_money":
-					GameObject.Find ("amateurCash").transform.localScale = new Vector3 (1, 1, 1);
-					break;
-				case "novice_money":
-					GameObject.Find ("noviceCash").transform.localScale = new Vector3 (1, 1, 1);
-					break;
-				case "confirmed_money":
-					GameObject.Find ("confirmedCash").transform.localScale = new Vector3 (1, 1, 1);
-					break;
-				case "amateur_bubble":
-					GameObject.Find ("amateurBubble").transform.localScale = new Vector3 (1, 1, 1);
-					break;
-				case "confirmed_bubble":
-					GameObject.Find ("confirmedBubble").transform.localScale = new Vector3 (1, 1, 1);
-					break;
-				}
-			});
-		});
-	}
-	public string GetFavoriteTournament (string userId, string token)
-	{
-		string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
-		HttpWebRequest request = (HttpWebRequest)WebRequest.Create (url);
-		request.Method = "GET";
-		request.Headers ["x-access-token"] = token;
-		try {
-			using (System.IO.Stream s = request.GetResponse ().GetResponseStream ()) {
-				using (System.IO.StreamReader sr = new System.IO.StreamReader (s)) {
-					var jsonResponse = sr.ReadToEnd ();
+    #region Static
+    public static bool FavInPopUpProfile;
+    const string OpenHtmlColorBracket = "<color=#535CB3>";
+    const string CloseHtmlColorBracket = "</color>";
+    #endregion
 
-					var N = JSON.Parse (jsonResponse);
-					JSONArray M = N ["data"].AsArray;
-					var P = M.Children.First ();
-					return (P ["game_type"]);
-				}
-			}
-		} catch (WebException ex) {
-			return "novice_bubble";
-		}
-	}
-	// Update is called once per frame
-	void Update ()
-	{
-	}
+    #region Script Parameters
+    public GameObject               Fav1V1;
+    public GameObject               FavTournament;
+    public Text                     Fav1V1Text;
+    public Text                     FavTournamentText;
+    #endregion
+
+    #region Fields
+    string mCurrentGain;
+    string mCurrentGainType;
+    string mCurrentChallengeType;
+    #endregion
+
+    #region Unity Methods
+    private async void OnEnable()
+    {
+        string userId;
+        userId = ViewsEvents.Get.Profile.PlayerId;
+        await GetFavoriteTournament(userId);
+    }
+    #endregion
+
+    #region Methods
+    public async Task<bool> GetFavoriteTournament(string userId)
+    {
+        string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
+        var res = await SeembaWebRequest.Get.HttpsGet(url);
+        if(!string.IsNullOrEmpty(res))
+        {
+            var json = JSON.Parse(res);
+            ShowFavTournament(json["data"]["gain"].Value , json["data"]["gain_type"].Value, json["data"]["type"].Value);
+        }
+        return true;
+    }
+
+    public void OnClickFavouriteType()
+    {
+        ViewsEvents.Get.Profile.Animator.ResetTrigger("ShowProfile");
+        EventsController.Get.closeProfil();
+        var fee = ChallengeManager.Get.GetChallengeFee(float.Parse(mCurrentGain), mCurrentGainType);
+        object[] _params = { fee, mCurrentGain, mCurrentGainType, mCurrentChallengeType };
+        PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
+    }
+    #endregion
+
+    #region Implementation
+
+    private void ShowFavTournament(string gain, string gainType, string challengeType)
+    {
+        mCurrentGain = gain;
+        mCurrentGainType = gainType;
+        mCurrentChallengeType = challengeType;
+        TranslationManager.scene = "Home";
+        if (challengeType.Equals("1vs1"))
+        {
+            Fav1V1.SetActive(true);
+            FavTournament.SetActive(false);
+            if (gainType.Contains("cash"))
+            {
+                Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + gain + " €";
+            }
+            else
+            {
+                Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + gain + " " +  TranslationManager.Get("bubbles");
+            }
+        }
+        else
+        {
+            Fav1V1.SetActive(false);
+            FavTournament.SetActive(true);
+            if (gainType.Contains("cash"))
+            {
+                FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " €";
+
+            }
+            else
+            {
+                FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " Bubbles";
+            }
+        }
+    }
+    #endregion
 }

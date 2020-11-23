@@ -1,14 +1,18 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[CLSCompliant(false)]
 public class HaveFunBottomBarController : MonoBehaviour
 {
     void OnEnable()
     {
-        BottomMenuController menuController = BottomMenuController.getInstance();
-        menuController.unselectHome();
-        menuController.unselectWinMoney();
-        menuController.unselectSettings();
-        menuController.selectHaveFun();
+        BottomMenuController.Show();
+        BottomMenuController.Get.unselectHome();
+        BottomMenuController.Get.unselectWinMoney();
+        BottomMenuController.Get.unselectSettings();
+        BottomMenuController.Get.unselectMarket();
+        BottomMenuController.Get.selectHaveFun();
     }
 }

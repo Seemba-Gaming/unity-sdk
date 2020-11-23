@@ -80,7 +80,7 @@ public class UserManager : MonoBehaviour
 
     public async Task<Texture2D> GetFlagBytes(string country_code)
     {
-        string url = "http://api-staging.seemba.com/flags/" + country_code + ".png";
+        string url = Endpoint.flagsURL + country_code + ".png";
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         await www.SendWebRequest();
         var texture = DownloadHandlerTexture.GetContent(www);

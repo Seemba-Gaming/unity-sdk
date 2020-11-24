@@ -35,6 +35,7 @@ public class GenericChallenge
     public string[] users_old_scores;
     public string tournament_id;
     public string game;
+    public int? game_level;
     public string status;
     public string challenge_type;
     public string gain;

@@ -665,7 +665,7 @@ GameObject:
   - component: {fileID: 7655449399629720202}
   - component: {fileID: 6633360193966942377}
   - component: {fileID: 744139951620382957}
-  - component: {fileID: 5245822871484614987}
+  - component: {fileID: 8987382219244403795}
   m_Layer: 5
   m_Name: Playagain
   m_TagString: Untagged
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &5245822871484614987
+--- !u!114 &8987382219244403795
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -782,10 +782,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3358471048541854428}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af7249bb27db44640b0f7ae4f9926fc2, type: 3}
+  m_Script: {fileID: 11500000, guid: c79b8796fc143364595c60f570348bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GradientType: 1
+  GradientType: 0
   Offset: 0
   StartColor:
     serializedVersion: 2

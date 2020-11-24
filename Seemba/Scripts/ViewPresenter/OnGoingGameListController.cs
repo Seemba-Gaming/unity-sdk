@@ -90,15 +90,26 @@ public class OnGoingGameListController : MonoBehaviour
         {
             SeeMoreResult.gameObject.SetActive(false);
         }
+
         foreach (GenericChallenge challenge in list)
         {
-            if (challenge.tournament_id != null)
+            if ((challenge.matched_user_1 == UserManager.Get.CurrentUser._id && challenge.user_1_score == null) || (challenge.matched_user_2 == UserManager.Get.CurrentUser._id && challenge.user_2_score == null))
             {
-                InitOnGoingTournament(challenge);
+                ChallengeManager.CurrentChallengeId = challenge._id;
+                ReplayChallengePresenter.ChallengeToReplay = challenge;
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject);
+                return;
             }
             else
             {
-                InitOnGoingChallenge(challenge);
+                if (challenge.tournament_id != null)
+                {
+                    InitOnGoingTournament(challenge);
+                }
+                else
+                {
+                    InitOnGoingChallenge(challenge);
+                }
             }
         }
     }
@@ -132,7 +143,7 @@ public class OnGoingGameListController : MonoBehaviour
         controller.challengeResultId.text = challenge._id;
         controller.challengeId.text = challenge._id;
         SetControllerTitle(challenge, controller);
-        if(challenge.status.Equals("results pending") || challenge.status.Equals("pending"))
+        if(challenge.status.Equals("results pending") || challenge.status.Equals("pending") || challenge.status.Equals("on going"))
         {
             TranslationManager.scene = "Home";
             controller.pending_text.text = TranslationManager.Get("pending");

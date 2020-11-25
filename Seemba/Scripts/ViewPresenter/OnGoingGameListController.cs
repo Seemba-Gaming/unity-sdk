@@ -132,7 +132,7 @@ public class OnGoingGameListController : MonoBehaviour
         controller.challengeResultId.text = challenge._id;
         controller.challengeId.text = challenge._id;
         SetControllerTitle(challenge, controller);
-        if(challenge.status.Equals("results pending") || challenge.status.Equals("pending"))
+        if(challenge.status.Equals("results pending") || challenge.status.Equals("pending") || challenge.status.Equals("on going"))
         {
             TranslationManager.scene = "Home";
             controller.pending_text.text = TranslationManager.Get("pending");

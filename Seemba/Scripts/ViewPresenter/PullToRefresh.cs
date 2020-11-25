@@ -16,7 +16,7 @@ public class PullToRefresh : MonoBehaviour
     public float ContentYini;
     public float ContentYCurrent;
     public float imgY;
-    public Image image;
+    public Image Loader;
     public Image anim;
     public GameObject ContentHome;
     public GameObject PanelLastResults;
@@ -35,7 +35,7 @@ public class PullToRefresh : MonoBehaviour
         {
             ContentYini = Content.transform.position.y;
             ContentYCurrent = ContentYini;
-            __alpha = image.color;
+            __alpha = Loader.color;
         }
         catch (NullReferenceException)
         {
@@ -56,6 +56,7 @@ public class PullToRefresh : MonoBehaviour
     }
     private void refresh()
     {
+        Loader.gameObject.SetActive(false);
         isActivated = true;
         lastResultfinished = false;
         ongoingfinished = false;
@@ -78,14 +79,14 @@ public class PullToRefresh : MonoBehaviour
         if (user != null)
         {
             ViewsEvents.Get.Menu.Header.GetComponent<HeaderController>().UpdateHeaderInfo(user);
-            InvokeRepeating("hideAnimation", 0f, 0.5f);
+            //InvokeRepeating("hideAnimation", 0f, 0.5f);
         }
         else
         {
             lastResultfinished = true;
             ongoingfinished = true;
             walletFinished = true;
-            InvokeRepeating("hideAnimation", 0f, 2f);
+            //InvokeRepeating("hideAnimation", 0f, 2f);
             HomeController.enabled = false;
             HomeController.enabled = true;
         }
@@ -104,89 +105,105 @@ public class PullToRefresh : MonoBehaviour
                     a.gameObject.SetActive(false);
                     anim.gameObject.SetActive(false);
                     __alpha.a = 0f;
-                    image.color = __alpha;
+                    Loader.color = __alpha;
                 });
             }
         });
     }
 
+    public void BeginDrag()
+    {
+        if(scrollRect.verticalNormalizedPosition > 1.2)
+        {
+            Loader.gameObject.SetActive(true);
+        }
+    }
+
+    public void EndDrag()
+    {
+        if (scrollRect.verticalNormalizedPosition > 1.2)
+        {
+            refresh();
+        }
+    }
+
     private void Update()
     {
-        if (__alpha.a >= 1f)
-        {
-            Anim();
-        }
-        else
-        {
-            if (__alpha.a < 1f)
-            {
-                __alpha.a = (ContentYini - Content.transform.position.y);
-                image.color = __alpha;
-            }
-            ////Debug.Log("verticalNormalizedPosition: ");
-            if (Input.GetMouseButtonDown(0))
-            {
-                //save began touch 2d point
-                firstPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
-                //save ended touch 2d point
-                secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-                //create vector from the two points
-                currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
-                //normalize the 2d vector
-                currentSwipe.Normalize();
-                //swipe upwards
-                if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
-                {
-                }
-                //swipe down
-                if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
-                {
-                }
-                //swipe left
-                if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
-                {
-                }
-                //swipe right
-                if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
-                {
-                }
-            }
-            //#if UNITY_ANDROID
-            if (Input.touchCount > 0)
-            {
-                Touch touch = Input.touches[0];
-                switch (touch.phase)
-                {
-                    case TouchPhase.Began:
-                        startPos = touch.position;
-                        break;
-                    case TouchPhase.Ended:
-                        float swipeDistVertical = (new Vector3(0, touch.position.y, 0) - new Vector3(0, startPos.y, 0)).magnitude;
-                        if (swipeDistVertical > minSwipeDistY)
-                        {
-                            float swipeValue = Mathf.Sign(touch.position.y - startPos.y);
-                            if (swipeValue > 0)//up swipe
-                            { }
-                            else if (swipeValue < 0)//down swipe
-                            { }
-                        }
-                        float swipeDistHorizontal = (new Vector3(touch.position.x, 0, 0) - new Vector3(startPos.x, 0, 0)).magnitude;
-                        if (swipeDistHorizontal > minSwipeDistX)
-                        {
-                            float swipeValue = Mathf.Sign(touch.position.x - startPos.x);
-                            if (swipeValue > 0)//right swipe
-                                               //MoveRight ();
-                            { }
-                            else if (swipeValue < 0)//left swipe
-                                                    //MoveLeft ();
-                            { }
-                        }
-                        break;
-                }
-            }
-        }
+        //if (__alpha.a >= 1f)
+        //{
+        //    Anim();
+        //}
+        //else
+        //{
+        //    if (__alpha.a < 1f)
+        //    {
+        //        __alpha.a = (ContentYini - Content.transform.position.y);
+        //        image.color = __alpha;
+        //    }
+        //    ////Debug.Log("verticalNormalizedPosition: ");
+        //    if (Input.GetMouseButtonDown(0))
+        //    {
+        //        //save began touch 2d point
+        //        firstPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        //    }
+        //    if (Input.GetMouseButtonUp(0))
+        //    {
+        //        //save ended touch 2d point
+        //        secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        //        //create vector from the two points
+        //        currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
+        //        //normalize the 2d vector
+        //        currentSwipe.Normalize();
+        //        //swipe upwards
+        //        if (currentSwipe.y > 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+        //        {
+        //        }
+        //        //swipe down
+        //        if (currentSwipe.y < 0 && currentSwipe.x > -0.5f && currentSwipe.x < 0.5f)
+        //        {
+        //        }
+        //        //swipe left
+        //        if (currentSwipe.x < 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+        //        {
+        //        }
+        //        //swipe right
+        //        if (currentSwipe.x > 0 && currentSwipe.y > -0.5f && currentSwipe.y < 0.5f)
+        //        {
+        //        }
+        //    }
+        //    //#if UNITY_ANDROID
+        //    if (Input.touchCount > 0)
+        //    {
+        //        Touch touch = Input.touches[0];
+        //        switch (touch.phase)
+        //        {
+        //            case TouchPhase.Began:
+        //                startPos = touch.position;
+        //                break;
+        //            case TouchPhase.Ended:
+        //                float swipeDistVertical = (new Vector3(0, touch.position.y, 0) - new Vector3(0, startPos.y, 0)).magnitude;
+        //                if (swipeDistVertical > minSwipeDistY)
+        //                {
+        //                    float swipeValue = Mathf.Sign(touch.position.y - startPos.y);
+        //                    if (swipeValue > 0)//up swipe
+        //                    { }
+        //                    else if (swipeValue < 0)//down swipe
+        //                    { }
+        //                }
+        //                float swipeDistHorizontal = (new Vector3(touch.position.x, 0, 0) - new Vector3(startPos.x, 0, 0)).magnitude;
+        //                if (swipeDistHorizontal > minSwipeDistX)
+        //                {
+        //                    float swipeValue = Mathf.Sign(touch.position.x - startPos.x);
+        //                    if (swipeValue > 0)//right swipe
+        //                                       //MoveRight ();
+        //                    { }
+        //                    else if (swipeValue < 0)//left swipe
+        //                                            //MoveLeft ();
+        //                    { }
+        //                }
+        //                break;
+        //        }
+        //    }
+        //}
     }
 }

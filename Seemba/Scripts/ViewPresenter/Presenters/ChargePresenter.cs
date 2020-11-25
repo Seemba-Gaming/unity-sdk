@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using SeembaGaming;
 struct GradientColor
 {
     public Color32 startColor; public Color32 endColor;
@@ -224,8 +225,8 @@ public class ChargePresenter : MonoBehaviour
     #region Implementations
     private void setCardColor(int random)
     {
-        Card.GetComponent<Gradient>().StartColor = CardColors.ElementAt(random).startColor;
-        Card.GetComponent<Gradient>().EndColor = CardColors.ElementAt(random).endColor;
+        Card.GetComponent<SeembaGradient>().StartColor = CardColors.ElementAt(random).startColor;
+        Card.GetComponent<SeembaGradient>().EndColor = CardColors.ElementAt(random).endColor;
     }
 
     private void AddColorsSet()

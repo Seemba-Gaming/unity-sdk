@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [CLSCompliant(false)]
 public class ReplayChallengePresenter : MonoBehaviour
 {
-    public static Challenge ChallengeToReplay;
+    public static GenericChallenge ChallengeToReplay;
     public Text GameId, Date, Prize, sorryText;
     public Button Replay;
 
@@ -41,7 +41,7 @@ public class ReplayChallengePresenter : MonoBehaviour
     private void Init()
     {
         GameId.text = ChallengeToReplay._id;
-        Date.text = DateTime.Parse(ChallengeToReplay.CreatedAt).ToString("MM/dd/yyyy hh:mm:ss"); ;
+        Date.text = DateTime.Parse(ChallengeToReplay.createdAt).ToString("MM/dd/yyyy hh:mm:ss"); ;
         if (ChallengeToReplay.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
         {
             Prize.text = float.Parse(ChallengeToReplay.gain).ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;

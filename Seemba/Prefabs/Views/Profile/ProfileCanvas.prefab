@@ -2027,7 +2027,7 @@ GameObject:
   - component: {fileID: 2084185651741618814}
   - component: {fileID: 2084185651741618810}
   - component: {fileID: 2084185651741618808}
-  - component: {fileID: 2084185651741618809}
+  - component: {fileID: 2084185651293730800}
   m_Layer: 5
   m_Name: FavTournamaent
   m_TagString: Untagged
@@ -2094,7 +2094,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2084185651741618809
+--- !u!114 &2084185651293730800
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2103,10 +2103,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2084185651741618815}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af7249bb27db44640b0f7ae4f9926fc2, type: 3}
+  m_Script: {fileID: 11500000, guid: c79b8796fc143364595c60f570348bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GradientType: 1
+  GradientType: 0
   Offset: 0
   StartColor:
     serializedVersion: 2

@@ -89,77 +89,6 @@ public class LastResultListItemController : MonoBehaviour
                 ContentPanel.SetActive(false);
                 ContentLastResult.SetActive(false);
             }
-            #region oldCode
-            //foreach (Challenge item in Items)
-            //{
-            //    float? score1 = null;
-            //    try
-            //    {
-            //        score1 = item.user_1_score;
-            //    }
-            //    catch (NullReferenceException)
-            //    {
-            //        score1 = null;
-            //    }
-            //    float? score2 = null;
-            //    try
-            //    {
-            //        score2 = item.user_2_score;
-            //    }
-            //    catch (NullReferenceException)
-            //    {
-            //        score2 = null;
-            //    }
-            //    if (item.status.Equals("on going") && (((item.matched_user_1._id == UserId && score1 == null)) || (item.matched_user_2._id == UserId && score2 == null)))
-            //    {
-            //        ChallengeManager.CurrentChallengeId = item._id;
-            //        ReplayChallengePresenter.ChallengeToReplay = item;
-            //        ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject);
-            //    }
-            //    if (item.status == "finished" || (item.status == "see results for user 1" && item.matched_user_2._id == UserId) || (item.status == "see results for user 2" && item.matched_user_1._id == UserId))
-            //    {
-            //        lastResultItem.Add(item);
-            //    }
-            //}
-            //if (lastResultItem == null && ItemsTournament == null)
-            //{
-            //    ContentLastResult.SetActive(false);
-            //}
-            //else
-            //{
-            //    int count = 0;
-            //    ContentLastResult.SetActive(true);
-            //    if (lastResultItem != null && ItemsTournament != null)
-            //    {
-            //        if (lastResultItem.Count == 0 && ItemsTournament.Count == 0)
-            //        {
-            //            ContentLastResult.SetActive(false);
-            //            HomeController.NoLastResult = true;
-            //        }
-            //        else if (lastResultItem.Count + ItemsTournament.Count <= 4)
-            //        {
-            //            SeeMoreResult.gameObject.SetActive(false);
-            //            count = lastResultItem.Count + ItemsTournament.Count;
-            //            nbElement = count;
-            //        }
-            //        else
-            //        {
-            //            SeeMoreResult.gameObject.SetActive(true);
-            //            nbElement = 4;
-            //        }
-            //        await showAsync(nbElement);
-            //        SeeMoreResult.onClick.AddListener(async () =>
-            //        {
-            //            nbElement += 4;
-            //            await showAsync(nbElement);
-            //            if (nbElement >= count)
-            //            {
-            //                SeeMoreResult.gameObject.SetActive(false);
-            //            }
-            //        });
-            //    }
-            //}
-            #endregion
         }
     }
     void OnDisable()
@@ -173,6 +102,7 @@ public class LastResultListItemController : MonoBehaviour
 
     async System.Threading.Tasks.Task DisplayLastResultsChallengesAsync(GenericChallenge[] list)
     {
+
         nbElement += mChallengesList.Length;
         if (mChallengesList.Length == 4)
         {
@@ -184,13 +114,23 @@ public class LastResultListItemController : MonoBehaviour
         }
         foreach (GenericChallenge challenge in list)
         {
-            if (challenge.tournament_id != null)
+            if ((challenge.matched_user_1 == UserManager.Get.CurrentUser._id && challenge.user_1_score == null) || (challenge.matched_user_2 == UserManager.Get.CurrentUser._id && challenge.user_2_score == null))
             {
-                InitTournamentLastResult(challenge);
+                ChallengeManager.CurrentChallengeId = challenge._id;
+                ReplayChallengePresenter.ChallengeToReplay = challenge;
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject);
+                return;
             }
             else
             {
-                await InitChallengeLastResultAsync(challenge);
+                if (challenge.tournament_id != null)
+                {
+                    InitTournamentLastResult(challenge);
+                }
+                else
+                {
+                    await InitChallengeLastResultAsync(challenge);
+                }
             }
         }
     }
@@ -240,9 +180,10 @@ public class LastResultListItemController : MonoBehaviour
     }
     private async System.Threading.Tasks.Task InitChallengeLastResultAsync(GenericChallenge challenge)
     {
-        GameObject newItem = Instantiate(ListItemPrefab) as GameObject;
-        LastResultListController controller = newItem.GetComponent<LastResultListController>();
         User mOpponent;
+        GameObject newItem = Instantiate(ListItemPrefab);
+        LastResultListController controller = newItem.GetComponent<LastResultListController>();
+
         if (challenge.matched_user_1.Equals(UserManager.Get.CurrentUser._id))
         {
             mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_2);

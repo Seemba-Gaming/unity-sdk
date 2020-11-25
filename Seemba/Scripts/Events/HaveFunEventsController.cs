@@ -63,19 +63,19 @@ public class HaveFunEventsController : MonoBehaviour
         });
         _bracket_bubbles_confident.onClick.AddListener(() =>
         {
-            object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CONFIDENT, TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
+            object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
         });
         _bracket_bubbles_champion.onClick.AddListener(() =>
         {
-            object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CHAMPION, TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
+            object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_NOVICE, TournamentManager.WIN_BRACKET_BUBBLE_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
         });
         _bracket_bubbles_legend.onClick.AddListener(() =>
         {
-            object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_LEGEND, TournamentManager.WIN_BRACKET_BUBBLE_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
+            object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CONFIRMED, TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
         });

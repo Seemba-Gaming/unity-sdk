@@ -52,22 +52,22 @@ public class ChallengeTypePresenter : MonoBehaviour
                 _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;  //1V1_PRO_LEGEND
                 break;
             case ChallengesType._BRACKET_BUBBLES_CONFIDENT:
-                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT + " "+ HomeTranslationController.BUBBLES;   //BRACKET_BUBBLES_CONFIDENT  
+                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR + " "+ HomeTranslationController.BUBBLES;   //BRACKET_BUBBLES_CONFIDENT  
                 break;
             case ChallengesType._BRACKET_BUBBLES_CHAMPION:
-                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION + " "+ HomeTranslationController.BUBBLES;  //BRACKET_BUBBLES_CHAMPION
+                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_NOVICE + " "+ HomeTranslationController.BUBBLES;  //BRACKET_BUBBLES_CHAMPION
                 break;
             case ChallengesType._BRACKET_BUBBLES_LEGEND:
-                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_LEGEND + " "+ HomeTranslationController.BUBBLES;    //BRACKET_BUBBLES_LEGEND
+                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED + " "+ HomeTranslationController.BUBBLES;    //BRACKET_BUBBLES_LEGEND
                 break;
             case ChallengesType._BRACKET_CASH_CONFIDENT:
-                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY; //BRACKET_CASH_CONFIDENT
+                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_AMATEUR.ToString("N2") + CurrencyManager.CURRENT_CURRENCY; //BRACKET_CASH_CONFIDENT
                 break;
             case ChallengesType._BRACKET_CASH_CHAMPION:
-                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;  //BRACKET_CASH_CHAMPION
+                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_NOVICE.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;  //BRACKET_CASH_CHAMPION
                 break;
             case ChallengesType._BRACKET_CASH_LEGEND:
-                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;    //BRACKET_CASH_LEGEND
+                _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_CONFIRMED.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;    //BRACKET_CASH_LEGEND
                 break;
         }
     }

@@ -113,7 +113,7 @@ public class PullToRefresh : MonoBehaviour
 
     public void BeginDrag()
     {
-        if(scrollRect.verticalNormalizedPosition > 1.2)
+        if (scrollRect.verticalNormalizedPosition > 1.2)
         {
             Loader.gameObject.SetActive(true);
         }
@@ -121,10 +121,7 @@ public class PullToRefresh : MonoBehaviour
 
     public void EndDrag()
     {
-        if (scrollRect.verticalNormalizedPosition > 1.2)
-        {
-            refresh();
-        }
+        refresh();
     }
 
     private void Update()

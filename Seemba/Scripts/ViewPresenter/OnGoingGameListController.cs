@@ -192,32 +192,32 @@ public class OnGoingGameListController : MonoBehaviour
     {
         if (item.gain_type == TournamentManager.GAIN_TYPE_CASH)
         {
-            switch (float.Parse(item.gain))
+            if(float.Parse(item.gain) == TournamentManager.WIN_BRACKET_CASH_AMATEUR)
             {
-                case TournamentManager.WIN_BRACKET_CASH_CONFIDENT:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
-                    break;
-                case TournamentManager.WIN_BRACKET_CASH_CHAMPION:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CHAMPION + CurrencyManager.CURRENT_CURRENCY;
-                    break;
-                case TournamentManager.WIN_BRACKET_CASH_LEGEND:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_LEGEND + CurrencyManager.CURRENT_CURRENCY;
-                    break;
+                controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_AMATEUR + CurrencyManager.CURRENT_CURRENCY;
+            }
+            else if(float.Parse(item.gain) == TournamentManager.WIN_BRACKET_CASH_NOVICE)
+            {
+                controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_NOVICE + CurrencyManager.CURRENT_CURRENCY;
+            }
+            else if(float.Parse(item.gain) == TournamentManager.WIN_BRACKET_CASH_CONFIRMED)
+            {
+                controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CONFIRMED + CurrencyManager.CURRENT_CURRENCY;
             }
         }
         else
         {
-            switch (float.Parse(item.gain))
+            if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR)
             {
-                case TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT + " " + HomeTranslationController.BUBBLES;
-                    break;
-                case TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION + " " + HomeTranslationController.BUBBLES;
-                    break;
-                case TournamentManager.WIN_BRACKET_BUBBLE_LEGEND:
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_LEGEND + " " + HomeTranslationController.BUBBLES;
-                    break;
+                controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR + " " + HomeTranslationController.BUBBLES;
+            }
+            else if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_BUBBLE_NOVICE)
+            {
+                controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_NOVICE + " " + HomeTranslationController.BUBBLES;
+            }
+            else if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED)
+            {
+                controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED + " " + HomeTranslationController.BUBBLES;
             }
         }
     }

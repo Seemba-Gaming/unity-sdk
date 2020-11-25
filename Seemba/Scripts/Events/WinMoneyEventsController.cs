@@ -61,17 +61,17 @@ public class WinMoneyEventsController : MonoBehaviour
         });
         _bracket_cash_confident.onClick.AddListener(() =>
         {
-            object[] _params = { TournamentManager.FEE_BRACKET_CASH_CONFIDENT.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_CONFIDENT.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
+            object[] _params = { TournamentManager.FEE_BRACKET_CASH_AMATEUR.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_AMATEUR.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
         });
         _bracket_cash_champion.onClick.AddListener(() =>
         {
-            object[] _params = { TournamentManager.FEE_BRACKET_CASH_CHAMPION.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_CHAMPION.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
+            object[] _params = { TournamentManager.FEE_BRACKET_CASH_NOVICE.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_NOVICE.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
         });
         _bracket_cash_legend.onClick.AddListener(() =>
         {
-            object[] _params = { TournamentManager.FEE_BRACKET_CASH_LEGEND.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_LEGEND.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
+            object[] _params = { TournamentManager.FEE_BRACKET_CASH_CONFIRMED.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_CONFIRMED.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
         });
     }

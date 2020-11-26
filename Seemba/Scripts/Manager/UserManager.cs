@@ -267,8 +267,7 @@ public class UserManager : MonoBehaviour
             }
             return null;
         }
-        CurrentUser = userData.data;
-        return CurrentUser;
+        return userData.data;
     }
     void ShowExpiredSession()
     {

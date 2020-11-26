@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-[CLSCompliant(false)]
 public class Seemba : MonoBehaviour
 {
 

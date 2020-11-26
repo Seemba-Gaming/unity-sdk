@@ -253,14 +253,12 @@ public class ChargePresenter : MonoBehaviour
         string res = "";
         for (int i = 0; i < content.Length; i++)
         {
-            Debug.Log("i:" + i);
             if (i != 1 && i != 0 && i % 4 == 0)
             {
                 res += " ";
             }
             res += content.ElementAt(i);
         }
-        Debug.Log("res:" + res);
         return res;
     }
     private async System.Threading.Tasks.Task<bool> CreatePaymentMethodAsync(string card_number, string cvc, int card_expiry_month, int card_expiry_year)

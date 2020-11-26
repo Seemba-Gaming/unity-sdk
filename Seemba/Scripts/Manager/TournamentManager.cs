@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+[CLSCompliant(false)]
 public class TournamentManager : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
 {
     #region Static
     public static TournamentManager Get { get { return sInstance; } }

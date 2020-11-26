@@ -53,18 +53,18 @@ public class GamesData
 }
 public class GameChallengesInfo
 {
-    public Duels duels;
-    public Tournaments tournament;
+    public DuelsPrice duels;
+    public TournamentsPrice tournament;
 }
 
-public class Duels
+public class DuelsPrice
 {
     public ChallengePrice Confident;
     public ChallengePrice Champion;
     public ChallengePrice Legend;
 }
 
-public class Tournaments
+public class TournamentsPrice
 {
     public ChallengePrice Amateur;
     public ChallengePrice Novice;

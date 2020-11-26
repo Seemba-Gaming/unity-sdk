@@ -562,37 +562,37 @@ public class EventsController : MonoBehaviour
     public void ShowTournamentBubbleConfidentpopUp()
     {
         ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-        object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CONFIDENT, TournamentManager.WIN_BRACKET_BUBBLE_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, TournamentManager.BRACKET_TYPE_CONFIDENT };
+        object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, TournamentManager.BRACKET_TYPE_CONFIDENT };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }
     public void ShowTournamentBubbleChampionpopUp()
     {
         ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-        object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CHAMPION, TournamentManager.WIN_BRACKET_BUBBLE_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, TournamentManager.BRACKET_TYPE_CHAMPION };
+        object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_NOVICE, TournamentManager.WIN_BRACKET_BUBBLE_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, TournamentManager.BRACKET_TYPE_CHAMPION };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }
     public void ShowTournamentBubbleLegendpopUp()
     {
         ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-        object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_LEGEND, TournamentManager.WIN_BRACKET_BUBBLE_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, TournamentManager.BRACKET_TYPE_LEGEND };
+        object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CONFIRMED, TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, TournamentManager.BRACKET_TYPE_LEGEND };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }
     public void ShowTournamentCashConfidentpopUp()
     {
         ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-        object[] _params = { TournamentManager.FEE_BRACKET_CASH_CONFIDENT, TournamentManager.WIN_BRACKET_CASH_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_CONFIDENT };
+        object[] _params = { TournamentManager.FEE_BRACKET_CASH_AMATEUR, TournamentManager.WIN_BRACKET_CASH_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_CONFIDENT };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }
     public void ShowTournamentCashChampionpopUp()
     {
         ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-        object[] _params = { TournamentManager.FEE_BRACKET_CASH_CHAMPION, TournamentManager.WIN_BRACKET_CASH_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_CHAMPION };
+        object[] _params = { TournamentManager.FEE_BRACKET_CASH_NOVICE, TournamentManager.WIN_BRACKET_CASH_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_CHAMPION };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }
     public void ShowTournamentCashLegendpopUp()
     {
         ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-        object[] _params = { TournamentManager.FEE_BRACKET_CASH_LEGEND, TournamentManager.WIN_BRACKET_CASH_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_LEGEND };
+        object[] _params = { TournamentManager.FEE_BRACKET_CASH_CONFIRMED, TournamentManager.WIN_BRACKET_CASH_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_LEGEND };
         PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
     }
     #endregion

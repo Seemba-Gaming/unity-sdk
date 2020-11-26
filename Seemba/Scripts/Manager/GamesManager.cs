@@ -13,6 +13,14 @@ using System.Threading.Tasks;
 [CLSCompliant(false)]
 public class GameInfo
 {
+    public GamesData game;
+    public GameChallengesInfo fees;
+    public GameChallengesInfo gain;
+}
+
+[CLSCompliant(false)]
+public class GamesData
+{
     public string app_store_link;
     public bool completed;
     public bool deleted;
@@ -43,7 +51,31 @@ public class GameInfo
     public string score_mode;
     public string updatedAt;
 }
+public class GameChallengesInfo
+{
+    public Duels duels;
+    public Tournaments tournament;
+}
 
+public class Duels
+{
+    public ChallengePrice Confident;
+    public ChallengePrice Champion;
+    public ChallengePrice Legend;
+}
+
+public class Tournaments
+{
+    public ChallengePrice Amateur;
+    public ChallengePrice Novice;
+    public ChallengePrice Confirmed;
+}
+
+public class ChallengePrice
+{
+    public float cash;
+    public float bubbles;
+}
 [CLSCompliant(false)]
 public class GamesManager : MonoBehaviour
 {
@@ -123,28 +155,34 @@ public class GamesManager : MonoBehaviour
         var req = await SeembaWebRequest.Get.HttpsGetJSON<GameInfo>(url);
         if (req != null)
         {
-            foreach (string bracket_type in req.brackets)
+            ChallengeManager.Get.InitFees(req.fees);
+            ChallengeManager.Get.InitGains(req.gain);
+            TournamentManager.Get.InitGains(req.gain);
+            TournamentManager.Get.InitGains(req.gain);
+            var duels = req.game.brackets;
+            foreach (string duel_type in duels)
             {
-                TournamentManager.AVALAIBLE_TOURNAMENTS.Add(bracket_type);
+                TournamentManager.AVALAIBLE_TOURNAMENTS.Add(duel_type);
             }
+            var tournaments = req.game.tournaments;
 
-            foreach (string tournament_type in req.tournaments)
+            foreach (string tournament_type in tournaments)
             {
                 ChallengeManager.AVALAIBLE_CHALLENGE.Add(tournament_type);
             }
 
-            if (!string.IsNullOrEmpty(req.background_image))
+            if (!string.IsNullOrEmpty(req.game.background_image))
             {
-                BACKGROUND_IMAGE_URL = req.background_image;
+                BACKGROUND_IMAGE_URL = req.game.background_image;
             }
             else
             {
                 Debug.LogError("Please add background-image for your game in the dashboard");
             }
 
-            if (!string.IsNullOrEmpty(req.icon))
+            if (!string.IsNullOrEmpty(req.game.icon))
             {
-                ICON_URL = req.icon;
+                ICON_URL = req.game.icon;
             }
             else
             {

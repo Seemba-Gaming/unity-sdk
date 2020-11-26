@@ -18,23 +18,22 @@ public class TournamentManager : MonoBehaviour
     public static TournamentManager Get { get { return sInstance; } }
     private static TournamentManager sInstance;
 
-    public static List<String> AVALAIBLE_TOURNAMENTS = new List<String>();
-
+    public static List<string> AVALAIBLE_TOURNAMENTS = new List<string>();
     public const int TOURNAMENT_8 = 8;
     public const int TOURNAMENT_16 = 16;
     public const int TOURNAMENT_32 = 32;
-    public const float FEE_BRACKET_CASH_CONFIDENT = 2.00f;
-    public const float FEE_BRACKET_CASH_CHAMPION = 4.00f;
-    public const float FEE_BRACKET_CASH_LEGEND = 8.00f;
-    public const float WIN_BRACKET_CASH_CONFIDENT = 8.00f;
-    public const float WIN_BRACKET_CASH_CHAMPION = 16.00f;
-    public const float WIN_BRACKET_CASH_LEGEND = 32.00f;
-    public const float FEE_BRACKET_BUBBLE_CONFIDENT = 5.00f;
-    public const float FEE_BRACKET_BUBBLE_CHAMPION = 10.00f;
-    public const float FEE_BRACKET_BUBBLE_LEGEND = 20.00f;
-    public const float WIN_BRACKET_BUBBLE_CONFIDENT = 25f;
-    public const float WIN_BRACKET_BUBBLE_CHAMPION = 50f;
-    public const float WIN_BRACKET_BUBBLE_LEGEND = 100f;
+    public static float FEE_BRACKET_CASH_AMATEUR = 2.00f;
+    public static float FEE_BRACKET_CASH_NOVICE = 4.00f;
+    public static float FEE_BRACKET_CASH_CONFIRMED = 8.00f;
+    public static float WIN_BRACKET_CASH_AMATEUR = 8.00f;
+    public static float WIN_BRACKET_CASH_NOVICE = 16.00f;
+    public static float WIN_BRACKET_CASH_CONFIRMED = 32.00f;
+    public static float FEE_BRACKET_BUBBLE_AMATEUR = 5.00f;
+    public static float FEE_BRACKET_BUBBLE_NOVICE = 10.00f;
+    public static float FEE_BRACKET_BUBBLE_CONFIRMED = 20.00f;
+    public static float WIN_BRACKET_BUBBLE_AMATEUR = 25f;
+    public static float WIN_BRACKET_BUBBLE_NOVICE = 50f;
+    public static float WIN_BRACKET_BUBBLE_CONFIRMED = 100f;
     public const string GAIN_TYPE_CASH = "cash";
     public const string GAIN_TYPE_BUBBLE = "bubble";
     public const string BRACKET_TYPE_CONFIDENT = "Confident";
@@ -50,6 +49,26 @@ public class TournamentManager : MonoBehaviour
     #endregion
 
     #region Methods
+    public void InitFees(GameChallengesInfo fees)
+    {
+        FEE_BRACKET_CASH_AMATEUR = fees.tournament.Amateur.cash;
+        FEE_BRACKET_CASH_NOVICE = fees.tournament.Novice.cash;
+        FEE_BRACKET_CASH_CONFIRMED = fees.tournament.Confirmed.cash;
+        FEE_BRACKET_BUBBLE_AMATEUR = fees.tournament.Amateur.bubbles;
+        FEE_BRACKET_BUBBLE_NOVICE = fees.tournament.Novice.bubbles;
+        WIN_BRACKET_BUBBLE_CONFIRMED = fees.tournament.Confirmed.bubbles;
+    }
+
+    public void InitGains(GameChallengesInfo gain)
+    {
+
+        WIN_BRACKET_CASH_AMATEUR = gain.tournament.Amateur.cash;
+        WIN_BRACKET_CASH_NOVICE = gain.tournament.Novice.cash;
+        WIN_BRACKET_CASH_CONFIRMED = gain.tournament.Confirmed.cash;
+        WIN_BRACKET_BUBBLE_AMATEUR = gain.tournament.Amateur.bubbles;
+        WIN_BRACKET_BUBBLE_NOVICE = gain.tournament.Novice.bubbles;
+        WIN_BRACKET_BUBBLE_CONFIRMED = gain.tournament.Confirmed.bubbles;
+    }
     public async Task<JSONArray> getUserPendingTournaments(string token)
     {
         string url = Endpoint.classesURL + "/tournaments/pending/" + GamesManager.GAME_ID;

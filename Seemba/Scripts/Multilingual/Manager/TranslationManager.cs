@@ -67,11 +67,10 @@ public sealed class TranslationManager : MonoBehaviour
             isDownloaded = true;
             return true;
         }
-        else if (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage)))
+        else
         {
             var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
             var req = await SeembaWebRequest.Get.HttpsGet(url);
-
             if (req == null)
             {
                 isDownloaded = false;
@@ -87,7 +86,6 @@ public sealed class TranslationManager : MonoBehaviour
                 return true;
             }
         }
-        return true;
     }
 
     public static async Task<bool> GetUserLanguage(string language)

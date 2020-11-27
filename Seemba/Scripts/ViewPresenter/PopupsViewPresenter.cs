@@ -127,13 +127,15 @@ public class PopupsViewPresenter : MonoBehaviour
     public Button cancel_duels;
     public Button confirm_duels;
 
-    [Header("popup error")]
-    public Animator popup_error_animator;
-    public Text popup_error_title;
-    public Text popup_error_subtitle;
-    public Text popup_error_main_text;
-    public Text popup_error_button_text;
-    public Button popup_error_button;
+    [Header("popup gift card")]
+    public Animator PopupGiftCardAnimator;
+    public Text PopupGiftCardTitle;
+    public Text PopupGiftCardSubtitle;
+    public Text PopupGiftCardDesc;
+    public Text PopupGiftCardPrice;
+    public Image PopupGiftCardImage;
+    public Button PopupGiftCardConfirmButton;
+    public Text PopupGiftCardConfirmButtonText;
     #endregion
 
     #region Unity Methods
@@ -175,22 +177,6 @@ public class PopupsViewPresenter : MonoBehaviour
             }
         });
 
-        //popup_error_button.onClick.AddListener(() =>
-        //{
-        //    switch (CURRENT_POPUP)
-        //    {
-        //        case PopupType.INFO_INSUFFICIENT_BALANCE:
-        //            OpenWallet("WinMoney");
-        //            break;
-        //        case PopupType.INFO_INSUFFICIENT_BUBBLES:
-        //            OpenWallet("HaveFun");
-        //            break;
-        //        case PopupType.DOWNLOAD_FROM_STORE:
-        //            EventsController.Get.DownloadFromStore();
-        //            break;
-        //    }
-        //});
-
         PopupAgeconfirmButton.onClick.AddListener(() =>
         {
             StartCoroutine(OnClickConfirmAegVerificationButton());
@@ -223,13 +209,7 @@ public class PopupsViewPresenter : MonoBehaviour
         });
 
     }
-    public void ShowErrorPopup()
-    {
-        popup_error_title.text = _params[0].ToString();
-        popup_error_subtitle.text = _params[1].ToString();
-        popup_error_main_text.text = _params[2].ToString();
-        popup_error_button_text.text = _params[3].ToString();
-    }
+
     public void ShowInfoPopup(object[] _params)
     {
         ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
@@ -385,6 +365,24 @@ public class PopupsViewPresenter : MonoBehaviour
         PopupCongratsWithdrawalConfirmButton.onClick.AddListener(() =>
         {
 
+        });
+    }
+    
+    public void ShowGiftCardPopup(object[] _param, Image cover)
+    {
+        _params = _param;
+        ShowPopupContent(PopupManager.Get.PopupController.PopupGiftCard.gameObject);
+        PopupManager.Get.PopupController.PopupGiftCard.SetBool("Show", true);
+        PopupGiftCardTitle.text = _params[0].ToString();
+        PopupGiftCardSubtitle.text = _params[1].ToString();
+        PopupGiftCardDesc.text = _params[2].ToString();
+        PopupGiftCardPrice.text = _params[3].ToString();
+        PopupGiftCardConfirmButtonText.text = _params[4].ToString();
+        PopupGiftCardImage.sprite = cover.sprite;
+        PopupGiftCardConfirmButton.onClick.RemoveAllListeners();
+        PopupGiftCardConfirmButton.onClick.AddListener(async () =>
+        {
+            await ViewsEvents.Get.Menu.Market.GetComponent<MarketController>().BuyGiftAsync();
         });
     }
     public void ShowDuelsPopup(object[] _param, string note = null)

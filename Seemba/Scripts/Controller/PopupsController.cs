@@ -51,6 +51,8 @@ public enum PopupType
     STRIPE_INVALID_CARD_TYPE,
     STRIPE_BALANCE_INSUFFICIENT,
     STRIPE_TRY_AGAIN_LATER,
+    POPUP_GIFT_CARD_INFO,
+    POPUP_GIFT_CARD_SUCCESS,
     SESSION_EXPIRED
 }
 
@@ -75,6 +77,7 @@ public class PopupsController : MonoBehaviour
     public Animator                                 PopupPayment;
     public Animator                                 PopupChooseCharacter;
     public Animator                                 PopupCongratsWithdrawal;
+    public Animator                                 PopupGiftCard;
     #endregion
 
     #region Fields
@@ -90,7 +93,7 @@ public class PopupsController : MonoBehaviour
     #endregion
 
     #region Methods
-    public void ShowPopup(PopupType popupType, object[] _params, string note = null)
+    public void ShowPopup(PopupType popupType, object[] _params, string note = null, Image cover = null)
     {
         //LoadPopup();
         CURRENT_POPUP = popupType;
@@ -182,6 +185,12 @@ public class PopupsController : MonoBehaviour
                 break;
             case PopupType.POPUP_CONGRATS_WITHDRAW:
                 PopupManager.Get.PopupViewPresenter.ShowCongratsWithdrawalPopup(_params);
+                break;
+            case PopupType.POPUP_GIFT_CARD_INFO:
+                PopupManager.Get.PopupViewPresenter.ShowGiftCardPopup(_params, cover);
+                break;
+            case PopupType.POPUP_GIFT_CARD_SUCCESS:
+                PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                 break;
             default:
                 Debug.LogWarning(popupType);

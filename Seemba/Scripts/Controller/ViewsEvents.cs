@@ -164,7 +164,7 @@ public class ViewsEvents : MonoBehaviour
         {
             mHistory.Pop().SetActive(false);
         }
-        Debug.LogWarning("Going From " + mHistory.First().name + "To " + menu.name);
+        //Debug.LogWarning("Going From " + mHistory.First().name + "To " + menu.name);
         Show(mHistory.First(), menu);
         mCurrentMenu = menu;
     }

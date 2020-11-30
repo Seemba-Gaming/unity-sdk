@@ -2,9 +2,8 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using SeembaSDK;
 
-namespace Kakera
+namespace SeembaSDK.Kakera
 {
     #pragma warning disable 0649
     [CLSCompliant(false)]

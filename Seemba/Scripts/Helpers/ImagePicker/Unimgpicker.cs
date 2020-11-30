@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-namespace Kakera
+﻿using System;
+using UnityEngine;
+namespace SeembaSDK.Kakera
 {
-#pragma warning disable CS3009 // Le type de base n'est pas conforme CLS
+	[CLSCompliant(false)]
     public class Unimgpicker : MonoBehaviour
-#pragma warning restore CS3009 // Le type de base n'est pas conforme CLS
     {
         public delegate void ImageDelegate(string path);
         public delegate void ErrorDelegate(string message);

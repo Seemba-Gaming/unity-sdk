@@ -1,6 +1,6 @@
 ﻿#if UNITY_ANDROID
 using UnityEngine;
-namespace Kakera
+namespace SeembaSDK.Kakera
 {
     internal class PickerAndroid : IPicker
     {

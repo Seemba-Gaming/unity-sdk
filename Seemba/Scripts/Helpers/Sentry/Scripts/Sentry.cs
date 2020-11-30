@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using SeembaSDK;
 
-namespace Sentry
+namespace SeembaSDK.Sentry
 {
     /// <summary>
     /// Graphics device unit

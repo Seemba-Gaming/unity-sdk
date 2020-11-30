@@ -1,17 +1,20 @@
 ﻿using System;
 using UnityEngine;
 
-[CLSCompliant(false)]
-public class MarketBottomBarController : MonoBehaviour
+namespace SeembaSDK
 {
-    // Start is called before the first frame update
-    void OnEnable()
+    [CLSCompliant(false)]
+    public class MarketBottomBarController : MonoBehaviour
     {
-        BottomMenuController.Show();
-        BottomMenuController.Get.unselectHaveFun();
-        BottomMenuController.Get.unselectWinMoney();
-        BottomMenuController.Get.unselectSettings();
-        BottomMenuController.Get.unselectHome();
-        BottomMenuController.Get.SelectMarket();
+        // Start is called before the first frame update
+        void OnEnable()
+        {
+            BottomMenuController.Show();
+            BottomMenuController.Get.unselectHaveFun();
+            BottomMenuController.Get.unselectWinMoney();
+            BottomMenuController.Get.unselectSettings();
+            BottomMenuController.Get.unselectHome();
+            BottomMenuController.Get.SelectMarket();
+        }
     }
 }

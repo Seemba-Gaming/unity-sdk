@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CLSCompliant(false)]
-public class Loader : MonoBehaviour
+namespace SeembaSDK
 {
-   public Text title;
+    [CLSCompliant(false)]
+    public class Loader : MonoBehaviour
+    {
+        public Text title;
+    }
 }

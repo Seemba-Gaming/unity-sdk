@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System;
 
 
-namespace SeembaGaming
+namespace SeembaSDK
 {
 	[AddComponentMenu("UI/Effects/SeembaGradient")]
 	[CLSCompliant(false)]

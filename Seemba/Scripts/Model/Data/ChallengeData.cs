@@ -1,35 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-[Serializable]
-class ChallengeData
+namespace SeembaSDK
 {
-    public bool success;
-    public string message;
-    public Challenge data;
-
-    public ChallengeData(bool success, string message, Challenge data)
+    [CLSCompliant(false)]
+    public class ChallengeData
     {
-        this.success = success;
-        this.message = message;
-        this.data = data;
+        public bool success;
+        public string message;
+        public Challenge data;
+
+        public ChallengeData(bool success, string message, Challenge data)
+        {
+            this.success = success;
+            this.message = message;
+            this.data = data;
+        }
     }
-}
-[Serializable]
-class ChallengeListData
-{
-    public bool success;
-    public string message;
-    public Challenge[] data;
-
-    public ChallengeListData(bool success, string message, Challenge[] data)
+    [Serializable]
+    class ChallengeListData
     {
-        this.success = success;
-        this.message = message;
-        this.data = data;
+        public bool success;
+        public string message;
+        public Challenge[] data;
+
+        public ChallengeListData(bool success, string message, Challenge[] data)
+        {
+            this.success = success;
+            this.message = message;
+            this.data = data;
+        }
     }
 }
 

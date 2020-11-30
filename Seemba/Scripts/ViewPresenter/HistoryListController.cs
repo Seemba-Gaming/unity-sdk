@@ -4,75 +4,77 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CLSCompliant(false)]
-public class HistoryListController : MonoBehaviour
+namespace SeembaSDK
 {
-    #region Script Parameters
-    public GameObject                           ContentPanelPro;
-    public GameObject                           ListItemPrefab;
-    public Text                                 nbGameWon;
-    public Text                                 nbGameWonInARow;
-    #endregion
-
-    #region Fields
-    private ArrayList                           Items;
-    private ArrayList                           proItems;
-    #endregion
-
-    #region Unity Methods
-    private async void OnEnable()
+    [CLSCompliant(false)]
+    public class HistoryListController : MonoBehaviour
     {
-        Items = new ArrayList();
-        proItems = new ArrayList();
-        await show();
-    }
+        #region Script Parameters
+        public GameObject ContentPanelPro;
+        public GameObject ListItemPrefab;
+        public Text nbGameWon;
+        public Text nbGameWonInARow;
+        #endregion
 
-    private void OnDisable()
-    {
-        foreach (Transform child in ContentPanelPro.transform)
+        #region Fields
+        private ArrayList Items;
+        private ArrayList proItems;
+        #endregion
+
+        #region Unity Methods
+        private async void OnEnable()
         {
-            Destroy(child.gameObject);
+            Items = new ArrayList();
+            proItems = new ArrayList();
+            await show();
         }
-    }
-    #endregion
 
-    #region Implementation
-    private IEnumerator CheckItems()
-    {
-        float timer = 0;
-        bool failed = false;
-        while (ContentPanelPro.transform.childCount == 0 && !failed)
+        private void OnDisable()
         {
-            if (timer > 5)
+            foreach (Transform child in ContentPanelPro.transform)
             {
-                failed = true;
-                break;
+                Destroy(child.gameObject);
             }
-            timer += Time.deltaTime;
-            yield return null;
         }
-        if (failed)
+        #endregion
+
+        #region Implementation
+        private IEnumerator CheckItems()
         {
-            ConnectivityController.CURRENT_ACTION = ConnectivityController.HISTORY_ACTION;
-            PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
-
-            try
+            float timer = 0;
+            bool failed = false;
+            while (ContentPanelPro.transform.childCount == 0 && !failed)
             {
-                LoaderManager.Get.LoaderController.HideLoader();
+                if (timer > 5)
+                {
+                    failed = true;
+                    break;
+                }
+                timer += Time.deltaTime;
+                yield return null;
             }
-            catch (ArgumentException) { }
-        }
-    }
+            if (failed)
+            {
+                ConnectivityController.CURRENT_ACTION = ConnectivityController.HISTORY_ACTION;
+                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
 
-    private async Task show()
-    {
-        LoaderManager.Get.LoaderController.ShowLoader();
-        GamesManager.LoadIcon();
-        Items = new ArrayList();
-        string token = UserManager.Get.getCurrentSessionToken();
-        StartCoroutine(CheckItems());
-        User user = await UserManager.Get.getUser();
-        Items = await ChallengeManager.Get.getChallengesUserResults(token);
+                try
+                {
+                    LoaderManager.Get.LoaderController.HideLoader();
+                }
+                catch (ArgumentException) { }
+            }
+        }
+
+        private async Task show()
+        {
+            LoaderManager.Get.LoaderController.ShowLoader();
+            GamesManager.LoadIcon();
+            Items = new ArrayList();
+            string token = UserManager.Get.getCurrentSessionToken();
+            StartCoroutine(CheckItems());
+            User user = await UserManager.Get.getUser();
+            Items = await ChallengeManager.Get.getChallengesUserResults(token);
             nbGameWon.text = user.victories_count.ToString();
             nbGameWonInARow.text = user.current_victories_count.ToString();
             if (Items != null)
@@ -297,6 +299,7 @@ public class HistoryListController : MonoBehaviour
                 }
             }
             LoaderManager.Get.LoaderController.HideLoader();
+        }
+        #endregion
     }
-    #endregion
 }

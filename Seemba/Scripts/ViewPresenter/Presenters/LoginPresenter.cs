@@ -3,111 +3,112 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[CLSCompliant(false)]
-public class LoginPresenter : MonoBehaviour
+namespace SeembaSDK
 {
-    [Header("Login")]
-    public Button Signup;
-    public Button Login;
-    public Button MagicCode;
-    public InputField Username;
-    public InputField Password;
-    public Animator LoginAnimator;
-    public Animator SigninContent;
-    //Go PressedListenerHandler for ShowPassword behavior
-    public Button ShowPassword;
-
-    [Header("Reset Password")]
-    public Button ResetPassword;
-    public Button SubmitResetPassword;
-    public InputField EmailResetPassword;
-    public InputField CodeResetPassword;
-    public Text TimerResetPassword;
-
-
-
-    // Start is called before the first frame update
-    void Start()
+    [CLSCompliant(false)]
+    public class LoginPresenter : MonoBehaviour
     {
-        Signup.onClick.AddListener(delegate
-        {
-            ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
-        });
-        Login.onClick.AddListener(delegate
-        {
-            login();
-        });
+        [Header("Login")]
+        public Button Signup;
+        public Button Login;
+        public Button MagicCode;
+        public InputField Username;
+        public InputField Password;
+        public Animator LoginAnimator;
+        public Animator SigninContent;
+        //Go PressedListenerHandler for ShowPassword behavior
+        public Button ShowPassword;
 
-        Username.ActivateInputField();
-        Username.onValueChanged.AddListener(delegate
-        {
-            if (LoginAnimator.GetBool("loginFailed") == true)
-            {
-                LoginAnimator.SetBool("loginFailed", false);
-            }
-        });
+        [Header("Reset Password")]
+        public Button ResetPassword;
+        public Button SubmitResetPassword;
+        public InputField EmailResetPassword;
+        public InputField CodeResetPassword;
+        public Text TimerResetPassword;
 
-        Password.onValueChanged.AddListener(delegate
+
+
+        // Start is called before the first frame update
+        void Start()
         {
-            if (LoginAnimator.GetBool("loginFailed") == true)
+            Signup.onClick.AddListener(delegate
             {
-                LoginAnimator.SetBool("loginFailed", false);
-            }
-            if (string.IsNullOrEmpty(Password.text))
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
+            });
+            Login.onClick.AddListener(delegate
             {
-                ShowPassword.gameObject.SetActive(false);
+                login();
+            });
+
+            Username.ActivateInputField();
+            Username.onValueChanged.AddListener(delegate
+            {
+                if (LoginAnimator.GetBool("loginFailed") == true)
+                {
+                    LoginAnimator.SetBool("loginFailed", false);
+                }
+            });
+
+            Password.onValueChanged.AddListener(delegate
+            {
+                if (LoginAnimator.GetBool("loginFailed") == true)
+                {
+                    LoginAnimator.SetBool("loginFailed", false);
+                }
+                if (string.IsNullOrEmpty(Password.text))
+                {
+                    ShowPassword.gameObject.SetActive(false);
+                }
+                else
+                {
+                    ShowPassword.gameObject.SetActive(true);
+                }
+            });
+
+            EmailResetPassword.onValueChanged.AddListener(delegate
+            {
+                if (LoginController.Get.IsValidEmail(EmailResetPassword.text))
+                {
+                    ResetPassword.interactable = true;
+                }
+            });
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (string.IsNullOrEmpty(Username.text) || string.IsNullOrEmpty(Password.text))
+            {
+                Login.interactable = false;
             }
             else
             {
-                ShowPassword.gameObject.SetActive(true);
+                Login.interactable = true;
             }
-        });
-
-        EmailResetPassword.onValueChanged.AddListener(delegate
+        }
+        public void OnClickShowOrHidePassword()
         {
-            if (LoginController.Get.IsValidEmail(EmailResetPassword.text))
+            if (Password.contentType == InputField.ContentType.Password)
             {
-                ResetPassword.interactable = true;
+                Password.contentType = InputField.ContentType.Standard;
             }
-        });
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (string.IsNullOrEmpty(Username.text) || string.IsNullOrEmpty(Password.text))
-        {
-            Login.interactable = false;
+            else
+            {
+                Password.contentType = InputField.ContentType.Password;
+            }
+            Password.ForceLabelUpdate();
         }
-        else
+        async void login()
         {
-            Login.interactable = true;
+            var res = await LoginController.Get.Login(Username.text, Password.text);
+            if (!res)
+            {
+                showLoginFailedAnimation();
+            }
         }
-    }
-    public void OnClickShowOrHidePassword()
-    {
-        if (Password.contentType == InputField.ContentType.Password)
+        void showLoginFailedAnimation()
         {
-            Password.contentType = InputField.ContentType.Standard;
-        }
-        else
-        {
-            Password.contentType = InputField.ContentType.Password;
-        }
-        Password.ForceLabelUpdate();
-    }
-    async void login()
-    {
-        var res = await LoginController.Get.Login(Username.text, Password.text);
-        if (!res)
-        {
-            showLoginFailedAnimation();
+            SigninContent.SetBool("loginFailed", true);
         }
     }
-    void showLoginFailedAnimation()
-    {
-        SigninContent.SetBool("loginFailed", true);
-    }
-
-
 }

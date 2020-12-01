@@ -1,6 +1,6 @@
 ﻿#if UNITY_IOS
 using System.Runtime.InteropServices;
-namespace Kakera
+namespace SeembaSDK.Kakera
 {
     internal class PickeriOS : IPicker
     {

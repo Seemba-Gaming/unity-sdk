@@ -23,22 +23,22 @@ namespace SeembaSDK
         public GameObject unverified;
         #endregion
 
-        #region Unity Methods
-        async void OnEnable()
+        #region Methods
+        public async void InitProfile(User user)
         {
-            WithdrawManager wm = new WithdrawManager();
-            ProfilLastResultListController.profileSceneOpened = true;
-            Loading.SetActive(true);
-            User user = await UserManager.Get.getUser();
-
+            PlayerId = user._id;
+            avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
+            username.text = user.username;
             string token = UserManager.Get.getCurrentSessionToken();
             string userId = UserManager.Get.getCurrentUserId();
+            WithdrawManager wm = new WithdrawManager();
             AccountStatus accountStatus = null;
 
             if (PlayerId == userId)
             {
                 accountStatus = await wm.accountVerificationStatus(token);
             }
+
             string Vectoires = user.victories_count.ToString();
             string SerieVectoires = user.current_victories_count.ToString();
 
@@ -86,15 +86,6 @@ namespace SeembaSDK
             drapeau.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
             nbGameWon.text = Vectoires;
             nbGameWonInARow.text = SerieVectoires;
-        }
-        #endregion
-
-        #region Methods
-        public async void InitProfile(User user)
-        {
-            PlayerId = user._id;
-            avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
-            username.text = user.username;
         }
         #endregion
 

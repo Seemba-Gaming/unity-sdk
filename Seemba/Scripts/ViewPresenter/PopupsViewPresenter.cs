@@ -134,6 +134,8 @@ public class PopupsViewPresenter : MonoBehaviour
     public Text popup_error_main_text;
     public Text popup_error_button_text;
     public Button popup_error_button;
+
+    public ScrollRect PopupPrivacyPolicyScrollRect;
     #endregion
 
     #region Unity Methods
@@ -386,6 +388,13 @@ public class PopupsViewPresenter : MonoBehaviour
         {
 
         });
+    }
+    
+    public void ShowPrivacyPolicy()
+    {
+        ShowPopupContent(PopupManager.Get.PopupController.PopupPrivacyPolicy.gameObject);
+        PopupManager.Get.PopupController.PopupPrivacyPolicy.SetBool("Show", true);
+        PopupPrivacyPolicyScrollRect.verticalNormalizedPosition = 0;
     }
     public void ShowDuelsPopup(object[] _param, string note = null)
     {

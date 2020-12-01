@@ -51,6 +51,7 @@ public enum PopupType
     STRIPE_INVALID_CARD_TYPE,
     STRIPE_BALANCE_INSUFFICIENT,
     STRIPE_TRY_AGAIN_LATER,
+    POPUP_PRIVACY_POLICY,
     SESSION_EXPIRED
 }
 
@@ -75,6 +76,7 @@ public class PopupsController : MonoBehaviour
     public Animator                                 PopupPayment;
     public Animator                                 PopupChooseCharacter;
     public Animator                                 PopupCongratsWithdrawal;
+    public Animator                                 PopupPrivacyPolicy;
     #endregion
 
     #region Fields
@@ -96,6 +98,9 @@ public class PopupsController : MonoBehaviour
         CURRENT_POPUP = popupType;
         switch (popupType)
         {
+            case PopupType.POPUP_PRIVACY_POLICY:
+                PopupManager.Get.PopupViewPresenter.ShowPrivacyPolicy();
+                break;
             case PopupType.DUELS:
                 PopupManager.Get.PopupViewPresenter.ShowDuelsPopup(_params, note);
                 break;

@@ -1,12 +1,14 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using System;
-
-[CLSCompliant(false)]
-public class LastResultListController : MonoBehaviour {
-	public Image  FeeIcon,proWon,bubbleWon,lost,avatar;
-	public Text GameDate,AdversaryName,Fee,gainPro,gainBubble,result,victory,defeat,equality,matchId,AdvId;
-	public Image Drapeau;
-	public Button showResult;
+namespace SeembaSDK
+{
+	[CLSCompliant(false)]
+	public class LastResultListController : MonoBehaviour
+	{
+		public Image FeeIcon, proWon, bubbleWon, lost, avatar;
+		public Text GameDate, AdversaryName, Fee, gainPro, gainBubble, result, victory, defeat, equality, matchId, AdvId;
+		public Image Drapeau;
+		public Button showResult;
+	}
 }

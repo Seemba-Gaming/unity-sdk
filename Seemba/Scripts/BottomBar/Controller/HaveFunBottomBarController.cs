@@ -3,16 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CLSCompliant(false)]
-public class HaveFunBottomBarController : MonoBehaviour
+namespace SeembaSDK
 {
-    void OnEnable()
+    [CLSCompliant(false)]
+    public class HaveFunBottomBarController : MonoBehaviour
     {
-        BottomMenuController.Show();
-        BottomMenuController.Get.unselectHome();
-        BottomMenuController.Get.unselectWinMoney();
-        BottomMenuController.Get.unselectSettings();
-        BottomMenuController.Get.unselectMarket();
-        BottomMenuController.Get.selectHaveFun();
+        void OnEnable()
+        {
+            BottomMenuController.Show();
+            BottomMenuController.Get.unselectHome();
+            BottomMenuController.Get.unselectWinMoney();
+            BottomMenuController.Get.unselectSettings();
+            BottomMenuController.Get.unselectMarket();
+            BottomMenuController.Get.selectHaveFun();
+        }
     }
 }

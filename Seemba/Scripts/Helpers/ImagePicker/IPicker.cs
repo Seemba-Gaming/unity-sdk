@@ -1,4 +1,4 @@
-﻿namespace Kakera
+﻿namespace SeembaSDK.Kakera
 {
     internal interface IPicker
     {

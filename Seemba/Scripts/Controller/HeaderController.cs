@@ -4,74 +4,77 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[CLSCompliant(false)]
-public class HeaderController : MonoBehaviour
+namespace SeembaSDK
 {
-    #region Script Parameters
-    public Image Avatar;
-    public Text Username;
-    public Image ProLabel;
-    public Image Flag;
-    public Text VirtualMoney;
-    public Text RealMoney;
-    public Animator Market;
-    #endregion
-
-    #region Fields
-    User mUser;
-    #endregion
-
-    #region Unity Methods
-    private async void Start()
+    [CLSCompliant(false)]
+    public class HeaderController : MonoBehaviour
     {
-        if(UserManager.Get.CurrentUser == null)
+        #region Script Parameters
+        public Image Avatar;
+        public Text Username;
+        public Image ProLabel;
+        public Image Flag;
+        public Text VirtualMoney;
+        public Text RealMoney;
+        public Animator Market;
+        #endregion
+
+        #region Fields
+        User mUser;
+        #endregion
+
+        #region Unity Methods
+        private async void Start()
         {
-            mUser = await UserManager.Get.getUser();
-            Init(mUser);
+            if(UserManager.Get.CurrentUser == null)
+            {
+                mUser = await UserManager.Get.getUser();
+                Init(mUser);
+            }
+            else
+            {
+                Init(UserManager.Get.CurrentUser);
+            }
+
         }
-        else
+
+        private async void OnEnable()
         {
-            Init(UserManager.Get.CurrentUser);
+            User user = await UserManager.Get.getUser();
+            UpdateHeaderInfo(user);
         }
 
-    }
-
-    private async void OnEnable()
-    {
-        User user = await UserManager.Get.getUser();
-        UpdateHeaderInfo(user);
-    }
-
-    public async void Init(User user)
-    {
-        Username.text = UserManager.Get.CurrentUser.username;
-        if (user.money_credit > 0)
+        public async void Init(User user)
         {
-            ProLabel.enabled = true;
+            Username.text = UserManager.Get.CurrentUser.username;
+            if (user.money_credit > 0)
+            {
+                ProLabel.enabled = true;
+            }
+            else
+            {
+                ProLabel.enabled = false;
+            }
+            VirtualMoney.text = user.bubble_credit.ToString();
+            RealMoney.text = user.money_credit.ToString() + CurrencyManager.CURRENT_CURRENCY;
+            var mTexture = new Texture2D(20, 20);
+            var flagBytes = Convert.FromBase64String(PlayerPrefs.GetString("CurrentFlagBytesString"));
+            mTexture.LoadImage(flagBytes);
+            Flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
+            Avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
         }
-        else
+
+        public void UpdateHeaderInfo(User user)
         {
-            ProLabel.enabled = false;
+            UserManager.Get.UpdateUserMoneyCredit(user.money_credit.ToString("N2"));
+            UserManager.Get.UpdateUserBubblesCredit(user.bubble_credit.ToString());
+            Init(user);
         }
-        VirtualMoney.text = user.bubble_credit.ToString();
-        RealMoney.text = user.money_credit.ToString() + CurrencyManager.CURRENT_CURRENCY;
-        var mTexture = new Texture2D(20, 20);
-        var flagBytes = Convert.FromBase64String(PlayerPrefs.GetString("CurrentFlagBytesString"));
-        mTexture.LoadImage(flagBytes);
-        Flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
-        Avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
-    }
 
-    public void UpdateHeaderInfo(User user)
-    {
-        UserManager.Get.UpdateUserMoneyCredit(user.money_credit.ToString("N2"));
-        UserManager.Get.UpdateUserBubblesCredit(user.bubble_credit.ToString());
-        Init(user);
+        public void OnMarketClick()
+        {
+           BottomMenuController.Get.SelectMarket();
+        }
+        #endregion
     }
-
-    public void OnMarketClick()
-    {
-       BottomMenuController.Get.SelectMarket();
-    }
-    #endregion
 }

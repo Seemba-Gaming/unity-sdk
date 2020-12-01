@@ -4,11 +4,13 @@ using System.Globalization;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-[CLSCompliant(false)]
-public class CountryListController : MonoBehaviour
+namespace SeembaSDK
 {
-    public static string[] Countries = new string[]
+    [CLSCompliant(false)]
+    public class CountryListController : MonoBehaviour
     {
+        public static string[] Countries = new string[]
+        {
         "Afghanistan",
         "Albania",
         "Algeria",
@@ -242,37 +244,36 @@ public class CountryListController : MonoBehaviour
         "Yemen",
         "Zambia",
         "Zimbabwe",
-    };
-    public GameObject CountryItem;
-    public GameObject Content;
-    public InputField Search;
-    public Text CountryText;
+        };
+        public GameObject CountryItem;
+        public GameObject Content;
+        public InputField Search;
+        public Text CountryText;
 
-    // Use this for initialization
-    private void Start()
-    {
-    }
-    public static List<string> GetCountires()
-    {
-        List<string> countryList = new List<string>();
-        foreach (string country in Countries)
+        // Use this for initialization
+        private void Start()
         {
-            countryList.Add(country);
         }
-        countryList.Sort();
-        return countryList;
-    }
-    public static List<RegionInfo> GetCountriesByIso3166()
-    {
-        List<RegionInfo> countries = new List<RegionInfo>();
-        foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+        public static List<string> GetCountires()
         {
-            RegionInfo country = new RegionInfo(culture.LCID);
-            if (countries.Where(p => p.Name == country.Name).Count() == 0)
-                countries.Add(country);
+            List<string> countryList = new List<string>();
+            foreach (string country in Countries)
+            {
+                countryList.Add(country);
+            }
+            countryList.Sort();
+            return countryList;
         }
-        return countries.OrderBy(p => p.EnglishName).ToList();
+        public static List<RegionInfo> GetCountriesByIso3166()
+        {
+            List<RegionInfo> countries = new List<RegionInfo>();
+            foreach (CultureInfo culture in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
+            {
+                RegionInfo country = new RegionInfo(culture.LCID);
+                if (countries.Where(p => p.Name == country.Name).Count() == 0)
+                    countries.Add(country);
+            }
+            return countries.OrderBy(p => p.EnglishName).ToList();
+        }
     }
-
-
 }

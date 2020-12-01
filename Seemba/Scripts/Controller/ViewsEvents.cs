@@ -4,184 +4,187 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CLSCompliant(false)]
-public class ViewsEvents : MonoBehaviour
+namespace SeembaSDK
 {
-
-
-    #region Static
-    public static ViewsEvents Get { get { return sInstance; } }
-    private static ViewsEvents sInstance;
-    #endregion
-
-    #region Script Parameters
-    public SignupPresenter Signup;
-    public IntroPresenter Intro;
-    public MenuPresenter Menu;
-    public GameObject Matchmaking;
-    public TournamentPresenter Brackets;
-    public ResultPresenter ResultPresenter;
-    public GameObject ReplayChallenge;
-    public LoginPresenter Login;
-    public GameObject IdProof;
-    public ChargePresenter BankingInfo;
-    public ProfilePresenter Profile;
-    public PersonalInfoPresenter PersonalInfo;
-    public HistoryPresenter History;
-    public WithdrawalInfoPresenter WithdrawalInfo;
-    #endregion
-
-    #region fields
-    private GameObject mCurrentMenu;
-    private Stack<GameObject> mHistory = new Stack<GameObject>();
-    #endregion
-
-    private async void Start()
+    [CLSCompliant(false)]
+    public class ViewsEvents : MonoBehaviour
     {
-        sInstance = this;
-        mCurrentMenu = Intro.gameObject;
-        mHistory.Push(Intro.gameObject);
-        //Open the first view
-        if (UserManager.Get.getCurrentUserId() != null)
+
+
+        #region Static
+        public static ViewsEvents Get { get { return sInstance; } }
+        private static ViewsEvents sInstance;
+        #endregion
+
+        #region Script Parameters
+        public SignupPresenter Signup;
+        public IntroPresenter Intro;
+        public MenuPresenter Menu;
+        public GameObject Matchmaking;
+        public TournamentPresenter Brackets;
+        public ResultPresenter ResultPresenter;
+        public GameObject ReplayChallenge;
+        public LoginPresenter Login;
+        public GameObject IdProof;
+        public ChargePresenter BankingInfo;
+        public ProfilePresenter Profile;
+        public PersonalInfoPresenter PersonalInfo;
+        public HistoryPresenter History;
+        public WithdrawalInfoPresenter WithdrawalInfo;
+        #endregion
+
+        #region fields
+        private GameObject mCurrentMenu;
+        private Stack<GameObject> mHistory = new Stack<GameObject>();
+        #endregion
+
+        private async void Start()
         {
-            var user = await UserManager.Get.getUser();
-            UserManager.Get.CurrentUser = user;
-            UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(user.avatar);
-            GoToMenu(Menu.gameObject);
+            sInstance = this;
+            mCurrentMenu = Intro.gameObject;
+            mHistory.Push(Intro.gameObject);
+            //Open the first view
+            if (UserManager.Get.getCurrentUserId() != null)
+            {
+                var user = await UserManager.Get.getUser();
+                UserManager.Get.CurrentUser = user;
+                UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(user.avatar);
+                GoToMenu(Menu.gameObject);
+                ShowScene(Menu.Home);
+                //ShowScene(Menu.HaveFun);
+                PopupManager.Get.PopupsTranslationController.Init();
+            }
+            else
+            {
+                GoToMenu(Intro.gameObject);
+            }
+        }
+        public void WalletClick(string last_view)
+        {
+            ShowScene(Menu.Wallet);
+        }
+        public void WinMoneyClick()
+        {
+            BottomMenuController._currentPage = 0;
+            BottomMenuController.Show();
+            ShowScene(Menu.winMoney);
+        }
+        public void HaveFunClick()
+        {
+            BottomMenuController.Show();
+            ShowScene(Menu.HaveFun);
+        }
+        public void HomeClick()
+        {
+            BottomMenuController.Show();
             ShowScene(Menu.Home);
-            //ShowScene(Menu.HaveFun);
-            PopupManager.Get.PopupsTranslationController.Init();
         }
-        else
+        public void MarketClick()
         {
-            GoToMenu(Intro.gameObject);
+            BottomMenuController.Show();
+            ShowScene(Menu.Market);
         }
-    }
-    public void WalletClick(string last_view)
-    {
-        ShowScene(Menu.Wallet);
-    }
-    public void WinMoneyClick()
-    {
-        BottomMenuController._currentPage = 0;
-        BottomMenuController.Show();
-        ShowScene(Menu.winMoney);
-    }
-    public void HaveFunClick()
-    {
-        BottomMenuController.Show();
-        ShowScene(Menu.HaveFun);
-    }
-    public void HomeClick()
-    {
-        BottomMenuController.Show();
-        ShowScene(Menu.Home);
-    }
-    public void MarketClick()
-    {
-        BottomMenuController.Show();
-        ShowScene(Menu.Market);
-    }
-    public void SettingsClick()
-    {
-        ProfilLastResultListController.profileSceneOpened = false;
-        //BottomMenuController.Show();
-        ShowScene(Menu.Settings);
-    }
-    public void SecurityClick()
-    {
-        ShowScene(Menu.Security);
-    }
-    public void PersonalInfoclick()
-    {
-        GoToMenu(PersonalInfo.gameObject);
-    }
-    public void LegalClick()
-    {
-        BottomMenuController.Hide();
-        ShowScene(Menu.Legal);
-    }
-    public void ContactClick()
-    {
-        BottomMenuController.Hide();
-        ShowScene(Menu.Contact);
-    }
-    public void HistoryClick()
-    {
-        GoToMenu(History.gameObject);
-    }
-    public void ShowScene(GameObject gameObject)
-    {
-        EventsController.last_view = Menu.GetCurrentSubMenu();
-        ScrollSnapRect.currentView = gameObject.name;
-        Menu.HideAllObjectsExceptOne(gameObject);
-    }
-    public void Show(GameObject current, GameObject next, bool stackMenu = true)
-    {
-        if (current != null)
+        public void SettingsClick()
         {
-            current.SetActive(false);
+            ProfilLastResultListController.profileSceneOpened = false;
+            //BottomMenuController.Show();
+            ShowScene(Menu.Settings);
         }
-
-        if (next != null)
+        public void SecurityClick()
         {
-            next.SetActive(true);
-            if (stackMenu)
+            ShowScene(Menu.Security);
+        }
+        public void PersonalInfoclick()
+        {
+            GoToMenu(PersonalInfo.gameObject);
+        }
+        public void LegalClick()
+        {
+            BottomMenuController.Hide();
+            ShowScene(Menu.Legal);
+        }
+        public void ContactClick()
+        {
+            BottomMenuController.Hide();
+            ShowScene(Menu.Contact);
+        }
+        public void HistoryClick()
+        {
+            GoToMenu(History.gameObject);
+        }
+        public void ShowScene(GameObject gameObject)
+        {
+            EventsController.last_view = Menu.GetCurrentSubMenu();
+            ScrollSnapRect.currentView = gameObject.name;
+            Menu.HideAllObjectsExceptOne(gameObject);
+        }
+        public void Show(GameObject current, GameObject next, bool stackMenu = true)
+        {
+            if (current != null)
             {
-                mHistory.Push(next);
+                current.SetActive(false);
+            }
+
+            if (next != null)
+            {
+                next.SetActive(true);
+                if (stackMenu)
+                {
+                    mHistory.Push(next);
+                }
             }
         }
-    }
-    public void ShowOverayMenu(GameObject gameObject)
-    {
-        gameObject.SetActive(true);
-    }
-    public void HideOverlayMenu(GameObject gameObject)
-    {
-        gameObject.SetActive(false);
-    }
-    public void ShowLastView()
-    {
-        ShowScene(EventsController.last_view);
-    }
-    public void GoBack()
-    {
-        var current = mHistory.Pop();
-        Show(current, mHistory.First(), false);
-        mCurrentMenu = mHistory.First();
-    }
-    public void GoToMenu(GameObject menu, bool popBeforeGoing = false)
-    {
-        if (menu == mHistory.First() && menu != Intro.gameObject)
+        public void ShowOverayMenu(GameObject gameObject)
         {
-            if(!menu.activeSelf)
+            gameObject.SetActive(true);
+        }
+        public void HideOverlayMenu(GameObject gameObject)
+        {
+            gameObject.SetActive(false);
+        }
+        public void ShowLastView()
+        {
+            ShowScene(EventsController.last_view);
+        }
+        public void GoBack()
+        {
+            var current = mHistory.Pop();
+            Show(current, mHistory.First(), false);
+            mCurrentMenu = mHistory.First();
+        }
+        public void GoToMenu(GameObject menu, bool popBeforeGoing = false)
+        {
+            if (menu == mHistory.First() && menu != Intro.gameObject)
             {
-                menu.SetActive(true);
+                if (!menu.activeSelf)
+                {
+                    menu.SetActive(true);
+                }
+                return;
             }
-            return;
+            if (popBeforeGoing)
+            {
+                mHistory.Pop().SetActive(false);
+            }
+            //Debug.LogWarning("Going From " + mHistory.First().name + "To " + menu.name);
+            Show(mHistory.First(), menu);
+            mCurrentMenu = menu;
         }
-        if (popBeforeGoing)
+        public GameObject GetCurrentMenu()
         {
-            mHistory.Pop().SetActive(false);
+            return mCurrentMenu;
         }
-        //Debug.LogWarning("Going From " + mHistory.First().name + "To " + menu.name);
-        Show(mHistory.First(), menu);
-        mCurrentMenu = menu;
-    }
-    public GameObject GetCurrentMenu()
-    {
-        return mCurrentMenu;
-    }
 
-    public void SelectHomeCoroutineLauncher()
-    {
-        StartCoroutine(SelectHomeCoroutine());
-    }
+        public void SelectHomeCoroutineLauncher()
+        {
+            StartCoroutine(SelectHomeCoroutine());
+        }
 
-    public IEnumerator SelectHomeCoroutine()
-    {
-        GoToMenu(Menu.gameObject);
-        yield return new WaitForSeconds(0.2f);
-        ShowScene(Menu.Home);
+        public IEnumerator SelectHomeCoroutine()
+        {
+            GoToMenu(Menu.gameObject);
+            yield return new WaitForSeconds(0.2f);
+            ShowScene(Menu.Home);
+        }
     }
 }

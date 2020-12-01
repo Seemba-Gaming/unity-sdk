@@ -1,5 +1,5 @@
 ﻿using System;
-using Sentry;
+using SeembaSDK.Sentry;
 using UnityEngine;
 
 [CLSCompliant(false)]

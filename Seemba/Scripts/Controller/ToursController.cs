@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
-[CLSCompliant(false)]
-public class ToursController : MonoBehaviour
+namespace SeembaSDK
 {
-    public List<Tour> Tours = new List<Tour>();
+    [System.Serializable]
+    [CLSCompliant(false)]
+    public class ToursController : MonoBehaviour
+    {
+        public List<Tour> Tours = new List<Tour>();
+    }
 }

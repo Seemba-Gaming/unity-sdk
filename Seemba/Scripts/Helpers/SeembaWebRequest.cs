@@ -6,125 +6,128 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
-[Serializable]
-class SeembaResponse<T>
+namespace SeembaSDK
 {
-    public bool success;
-    public string message;
-    public T data;
-
-    public SeembaResponse(bool success, string message, T data)
+    [Serializable]
+    class SeembaResponse<T>
     {
-        this.success = success;
-        this.message = message;
-        this.data = data;
-    }
-}
+        public bool success;
+        public string message;
+        public T data;
 
-[CLSCompliant(false)]
-public class SeembaWebRequest : MonoBehaviour
-{
-    #region Static
-    public static SeembaWebRequest Get { get { return sInstance; } }
-
-    private static SeembaWebRequest sInstance;
-    #endregion
-    //
-    // Résumé :
-    //     Create a UnityWebRequest for HTTP GET.
-    //
-    // Paramètres :
-    //   uri:
-    //     The URI of the resource to retrieve via HTTP GET.
-    //
-    // Retourne :
-    //     An object that retrieves data from the uri.
-    public delegate void StringResponseEventHandler(UnityWebRequest data);
-    public delegate void TextureResponseEventHandler(int id, Texture2D data);
-    public event StringResponseEventHandler OnSeembaErrorEvent;
-
-    private void Start()
-    {
-        sInstance = this;
-    }
-    public async Task<string> HttpsGet(string uri)
-    {
-        UnityWebRequest www = UnityWebRequest.Get(uri);
-        var token = UserManager.Get.getCurrentSessionToken();
-        if(token != null)
+        public SeembaResponse(bool success, string message, T data)
         {
-            www.SetRequestHeader("x-access-token", token);
+            this.success = success;
+            this.message = message;
+            this.data = data;
         }
-        return await HandleRequest(www);
     }
 
-    public async Task<T> HttpsGetJSON<T>(string uri)
+    [CLSCompliant(false)]
+    public class SeembaWebRequest : MonoBehaviour
     {
-        string responseText = await HttpsGet(uri);
-        SeembaResponse<T> response = JsonConvert.DeserializeObject<SeembaResponse<T>>(responseText);
-        return response.data;
-    }
+        #region Static
+        public static SeembaWebRequest Get { get { return sInstance; } }
 
-    public async Task<string> HttpsPostBearer(string uri, WWWForm postData, string token = null)
-    {
-        UnityWebRequest www = UnityWebRequest.Post(uri,postData);
-        if(string.IsNullOrEmpty(token))
+        private static SeembaWebRequest sInstance;
+        #endregion
+        //
+        // Résumé :
+        //     Create a UnityWebRequest for HTTP GET.
+        //
+        // Paramètres :
+        //   uri:
+        //     The URI of the resource to retrieve via HTTP GET.
+        //
+        // Retourne :
+        //     An object that retrieves data from the uri.
+        public delegate void StringResponseEventHandler(UnityWebRequest data);
+        public delegate void TextureResponseEventHandler(int id, Texture2D data);
+        public event StringResponseEventHandler OnSeembaErrorEvent;
+
+        private void Start()
         {
-            var userToken = UserManager.Get.getCurrentSessionToken();
-            if (userToken != null)
+            sInstance = this;
+        }
+        public async Task<string> HttpsGet(string uri)
+        {
+            UnityWebRequest www = UnityWebRequest.Get(uri);
+            var token = UserManager.Get.getCurrentSessionToken();
+            if (token != null)
             {
-                www.SetRequestHeader("Authorization", "Bearer " + userToken);
+                www.SetRequestHeader("x-access-token", token);
+            }
+            return await HandleRequest(www);
+        }
+
+        public async Task<T> HttpsGetJSON<T>(string uri)
+        {
+            string responseText = await HttpsGet(uri);
+            SeembaResponse<T> response = JsonConvert.DeserializeObject<SeembaResponse<T>>(responseText);
+            return response.data;
+        }
+
+        public async Task<string> HttpsPostBearer(string uri, WWWForm postData, string token = null)
+        {
+            UnityWebRequest www = UnityWebRequest.Post(uri, postData);
+            if (string.IsNullOrEmpty(token))
+            {
+                var userToken = UserManager.Get.getCurrentSessionToken();
+                if (userToken != null)
+                {
+                    www.SetRequestHeader("Authorization", "Bearer " + userToken);
+                    www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+                }
+            }
+            else
+            {
+                www.SetRequestHeader("Authorization", "Bearer " + token);
                 www.uploadHandler.contentType = "application/x-www-form-urlencoded";
             }
+            return await HandleRequest(www);
         }
-        else
+
+        public async Task<string> HttpsPost(string uri, WWWForm postData)
         {
-            www.SetRequestHeader("Authorization", "Bearer " + token);
-            www.uploadHandler.contentType = "application/x-www-form-urlencoded";
+            UnityWebRequest www = UnityWebRequest.Post(uri, postData);
+            var token = UserManager.Get.getCurrentSessionToken();
+            if (token != null)
+            {
+                www.SetRequestHeader("x-access-token", token);
+                www.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+            }
+            return await HandleRequest(www);
         }
-        return await HandleRequest(www);
-    }
 
-    public async Task<string> HttpsPost(string uri, WWWForm postData)
-    {
-        UnityWebRequest www = UnityWebRequest.Post(uri, postData);
-        var token = UserManager.Get.getCurrentSessionToken();
-        if (token != null)
+
+        public async Task<string> HttpsPut(string uri, byte[] bodyData)
         {
-            www.SetRequestHeader("x-access-token", token);
-            www.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+            UnityWebRequest www = UnityWebRequest.Put(uri, bodyData);
+            var token = UserManager.Get.getCurrentSessionToken();
+            if (token != null)
+            {
+                www.SetRequestHeader("x-access-token", token);
+                www.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+            }
+            return await HandleRequest(www);
         }
-        return await HandleRequest(www);
-    }
 
 
-    public async Task<string> HttpsPut(string uri, byte[] bodyData)
-    {
-        UnityWebRequest www = UnityWebRequest.Put(uri, bodyData);
-        var token = UserManager.Get.getCurrentSessionToken();
-        if (token != null)
+
+        private async Task<string> HandleRequest(UnityWebRequest www)
         {
-            www.SetRequestHeader("x-access-token", token);
-            www.SetRequestHeader("content-type", "application/x-www-form-urlencoded");
+            await www.SendWebRequest();
+
+            if (www.error != null)
+            {
+                OnSeembaError(www);
+            }
+            return www.downloadHandler.text;
         }
-        return await HandleRequest(www);
-    }
 
-    
-
-    private async Task<string> HandleRequest(UnityWebRequest www)
-    {
-        await www.SendWebRequest();
-
-        if (www.error != null)
+        void OnSeembaError(UnityWebRequest data)
         {
-            OnSeembaError(www);
+            OnSeembaErrorEvent(data);
         }
-        return www.downloadHandler.text;
-    }
-
-    void OnSeembaError(UnityWebRequest data)
-    {
-        OnSeembaErrorEvent(data);
     }
 }

@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-[CLSCompliant(false)]
-public class Tour : MonoBehaviour
+
+namespace SeembaSDK
 {
-    public List<TourChallengePresenter> ToursChallenges = new List<TourChallengePresenter>();
+    [System.Serializable]
+    [CLSCompliant(false)]
+    public class Tour : MonoBehaviour
+    {
+        public List<TourChallengePresenter> ToursChallenges = new List<TourChallengePresenter>();
+    }
 }
 

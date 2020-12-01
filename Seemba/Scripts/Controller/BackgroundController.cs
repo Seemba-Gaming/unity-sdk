@@ -1,74 +1,73 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
-using UnityEditor;
 using System;
 
-[CLSCompliant(false)]
-public class BackgroundController : MonoBehaviour
+namespace SeembaSDK
 {
-    public static Sprite CurrentBackground;
-    public static string backgroundURL;
-    public Image background;
-                              // Use this for initialization
-    void Start()
+    [CLSCompliant(false)]
+    public class BackgroundController : MonoBehaviour
     {
-        if (CurrentBackground == null)
+        public static Sprite CurrentBackground;
+        public static string backgroundURL;
+        public Image background;
+        // Use this for initialization
+        void Start()
         {
-            background.sprite = LoadBackgroundImage();
-        }
-        else
-        {
-            SetBackground();
-        }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-    }
-    public async static Task<bool> SaveBackgroundImage(string url)
-    {
-        if (string.IsNullOrEmpty(PlayerPrefs.GetString("BackgroundURL")) || !PlayerPrefs.GetString("BackgroundURL").Equals(url))
-        {
-            var www = UnityWebRequestTexture.GetTexture(url);
-            await www.SendWebRequest();
-
-            if (www.isNetworkError || www.isHttpError)
+            if (CurrentBackground == null)
             {
-                www.Dispose();
-                return false;
+                background.sprite = LoadBackgroundImage();
             }
             else
             {
-                PlayerPrefs.SetString("BackgroundURL", url);
-                var texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
-                byte[] bytes;
-                bytes = texture.EncodeToPNG();
-                System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "background.png", bytes);
+                SetBackground();
+            }
+        }
+        // Update is called once per frame
+        void Update()
+        {
+        }
+        public async static Task<bool> SaveBackgroundImage(string url)
+        {
+            if (string.IsNullOrEmpty(PlayerPrefs.GetString("BackgroundURL")) || !PlayerPrefs.GetString("BackgroundURL").Equals(url))
+            {
+                var www = UnityWebRequestTexture.GetTexture(url);
+                await www.SendWebRequest();
+
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    www.Dispose();
+                    return false;
+                }
+                else
+                {
+                    PlayerPrefs.SetString("BackgroundURL", url);
+                    var texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+                    byte[] bytes;
+                    bytes = texture.EncodeToPNG();
+                    System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "background.png", bytes);
+                    return true;
+                }
+            }
+            else
+            {
                 return true;
             }
         }
-        else
+        static Sprite LoadBackgroundImage()
         {
-            return true;
+            byte[] bytes;
+            bytes = System.IO.File.ReadAllBytes(Application.persistentDataPath + '/' + "background.png");
+            Texture2D txt = new Texture2D(1, 1);
+            txt.LoadImage(bytes);
+            txt.Apply();
+            CurrentBackground = Sprite.Create(txt, new Rect(0, 0, txt.width, txt.height), new Vector2(0, 0));
+            return CurrentBackground;
         }
-    }
-    static Sprite LoadBackgroundImage()
-    {
-        byte[] bytes;
-        bytes = System.IO.File.ReadAllBytes(Application.persistentDataPath + '/' + "background.png");
-        Texture2D txt = new Texture2D(1, 1);
-        txt.LoadImage(bytes);
-        txt.Apply();
-        CurrentBackground = Sprite.Create(txt, new Rect(0, 0, txt.width, txt.height), new Vector2(0, 0));
-        return CurrentBackground;
-    }
-    void SetBackground()
-    {
-        background.sprite = CurrentBackground;
+        void SetBackground()
+        {
+            background.sprite = CurrentBackground;
+        }
     }
 }

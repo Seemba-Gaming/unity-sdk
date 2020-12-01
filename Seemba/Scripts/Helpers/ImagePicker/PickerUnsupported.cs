@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-namespace Kakera
+namespace SeembaSDK.Kakera
 {
     internal class PickerUnsupported : IPicker
     {

@@ -454,7 +454,8 @@ namespace SeembaSDK
         }
         public void PrivacyPolicy()
         {
-            Application.OpenURL("http://www.seemba.com/downloads/Privacy_Policy.pdf");
+            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PRIVACY_POLICY, null);
+            //Application.OpenURL("http://www.seemba.com/downloads/Privacy_Policy.pdf");
         }
 
         private void OnApplicationQuit()

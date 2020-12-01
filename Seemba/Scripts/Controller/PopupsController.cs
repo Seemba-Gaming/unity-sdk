@@ -47,6 +47,7 @@ namespace SeembaSDK
         STRIPE_INVALID_CARD_TYPE,
         STRIPE_BALANCE_INSUFFICIENT,
         STRIPE_TRY_AGAIN_LATER,
+        POPUP_PRIVACY_POLICY,
         SESSION_EXPIRED
     }
 
@@ -57,21 +58,23 @@ namespace SeembaSDK
         public static PopupType CURRENT_POPUP;
         #endregion
 
-        #region Script Parameters
-        public Animator PopupDuels;
-        public Animator PopupAds;
-        public Animator PopupError;
-        public Animator PopupInfo;
-        public Animator PopupAgeVerification;
-        public Animator PopupUpdatePassword;
-        public Animator PopupForgetPassword;
-        public Animator PopupCurrentPassword;
-        public Animator PopupWin;
-        public Animator PopupCongrats;
-        public Animator PopupPayment;
-        public Animator PopupChooseCharacter;
-        public Animator PopupCongratsWithdrawal;
-        #endregion
+
+    #region Script Parameters
+    public Animator                                 PopupDuels;
+    public Animator                                 PopupAds;
+    public Animator                                 PopupError;
+    public Animator                                 PopupInfo;
+    public Animator                                 PopupAgeVerification;
+    public Animator                                 PopupUpdatePassword;
+    public Animator                                 PopupForgetPassword;
+    public Animator                                 PopupCurrentPassword;
+    public Animator                                 PopupWin;
+    public Animator                                 PopupCongrats;
+    public Animator                                 PopupPayment;
+    public Animator                                 PopupChooseCharacter;
+    public Animator                                 PopupCongratsWithdrawal;
+    public Animator                                 PopupPrivacyPolicy;
+    #endregion
 
         #region Fields
         private GameObject mPopupContent;
@@ -92,6 +95,9 @@ namespace SeembaSDK
             CURRENT_POPUP = popupType;
             switch (popupType)
             {
+                case PopupType.POPUP_PRIVACY_POLICY:
+                    PopupManager.Get.PopupViewPresenter.ShowPrivacyPolicy();
+                    break;
                 case PopupType.DUELS:
                     PopupManager.Get.PopupViewPresenter.ShowDuelsPopup(_params, note);
                     break;
@@ -191,7 +197,5 @@ namespace SeembaSDK
             mPopupContent.SetActive(false);
         }
         #endregion
-
-
     }
 }

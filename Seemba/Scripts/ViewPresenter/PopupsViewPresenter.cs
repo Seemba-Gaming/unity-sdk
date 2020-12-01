@@ -136,6 +136,8 @@ namespace SeembaSDK
         public Text popup_error_main_text;
         public Text popup_error_button_text;
         public Button popup_error_button;
+        
+        public ScrollRect PopupPrivacyPolicyScrollRect;
         #endregion
 
         #region Unity Methods
@@ -388,6 +390,11 @@ namespace SeembaSDK
             {
 
             });
+        }
+        public void ShowPrivacyPolicy()
+        {
+            ShowPopupContent(PopupManager.Get.PopupController.PopupPrivacyPolicy.gameObject);
+            PopupManager.Get.PopupController.PopupPrivacyPolicy.SetBool("Show", true);
         }
         public void ShowDuelsPopup(object[] _param, string note = null)
         {

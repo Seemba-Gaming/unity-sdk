@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 #pragma warning disable 0649
 namespace SeembaSDK
 {
@@ -12,7 +11,12 @@ namespace SeembaSDK
     {
         // Start is called before the first frame update
         [SerializeField]
-        private Text create_your, account, choose_a_username, enter_your_email, enter_your_password, confirm_your_password, have_you_got_an_account, signin, create;
+        private Text create_your, account, choose_a_username, enter_your_email, enter_your_password, confirm_your_password,
+            have_you_got_an_account, signin, create;
+        public Text ByCreatingThisAccount;
+        public Text TermsOfUse;
+        public Text And;
+        public Text PrivacyPolicy;
         void Start()
         {
             TranslationManager.scene = "Signup";
@@ -25,6 +29,8 @@ namespace SeembaSDK
             have_you_got_an_account.text = TranslationManager.Get("have_you_got_an_account") != string.Empty ? TranslationManager.Get("have_you_got_an_account") : have_you_got_an_account.text;
             signin.text = TranslationManager.Get("signin") != string.Empty ? TranslationManager.Get("signin") : signin.text;
             create.text = TranslationManager.Get("create") != string.Empty ? TranslationManager.Get("create") : create.text;
+            ByCreatingThisAccount.text = TranslationManager.Get("by_creating_this_account") + " <color=#FAB986>" + TranslationManager.Get("terms_conditions") + "</color> "
+                 + TranslationManager.Get("and") + " <color=#FAB986>" + TranslationManager.Get("privacy_policy") + "</color>";
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +19,14 @@ namespace SeembaSDK
         public string altText;
         public string __v;
     }
-
+    public class OrderResponse
+    {
+        public string result;
+        public float buyPrice;
+        public string orderId;
+        public string code;
+        public string error;
+    }
 
     [CLSCompliant(false)]
     public class MarketController : MonoBehaviour
@@ -32,12 +38,49 @@ namespace SeembaSDK
         public Button GoDown;
         #endregion
 
+        #region Fields
+        private GiftCard mCurrentGiftCard;
+        #endregion
+
         #region Unity Methods
         // Start is called before the first frame update
         async void OnEnable()
         {
             var GiftCards = await GetGiftCards();
             FillGifts(GiftCards);
+        }
+        #endregion
+
+        #region Methods
+        public GiftCard GetCurrentGiftCard()
+        {
+            return mCurrentGiftCard;
+        }
+
+        public void SetCurrentGiftCard(GiftCard card)
+        {
+            mCurrentGiftCard = card;
+        }
+        public async Task<bool> BuyGiftAsync()
+        {
+            string url = Endpoint.classesURL + "/products/order";
+            WWWForm form = new WWWForm();
+            form.AddField("product", mCurrentGiftCard.product);
+            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<OrderResponse> responseData = JsonConvert.DeserializeObject<SeembaResponse<OrderResponse>>(response);
+            Debug.LogWarning(responseData.data.code);
+            if (responseData.data.code.Equals("su"))
+            {
+                PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_SUCCESS, PopupsText.Get.GiftCardSuccess());
+            }
+            else
+            {
+                if (responseData.data.code.Equals("if"))
+                {
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_SUCCESS, PopupsText.Get.GiftCardSuccess());
+                }
+            }
+            return true;
         }
         #endregion
 

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
+
 namespace SeembaSDK
 {
     [CLSCompliant(false)]
@@ -154,6 +155,16 @@ namespace SeembaSDK
             {
                 Avatar.sprite = image.sprite;
             }
+        }
+
+        public void OnClickTermsOfUse()
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PRIVACY_POLICY, null);
+        }
+
+        public void OnClickPrivacyPolicy()
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PRIVACY_POLICY, null);
         }
         #endregion
 

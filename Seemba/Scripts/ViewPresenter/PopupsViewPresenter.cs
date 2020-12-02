@@ -129,6 +129,16 @@ namespace SeembaSDK
         public Button cancel_duels;
         public Button confirm_duels;
 
+        [Header("popup gift card")]
+        public Animator PopupGiftCardAnimator;
+        public Text PopupGiftCardTitle;
+        public Text PopupGiftCardSubtitle;
+        public Text PopupGiftCardDesc;
+        public Text PopupGiftCardPrice;
+        public Image PopupGiftCardImage;
+        public Button PopupGiftCardConfirmButton;
+        public Text PopupGiftCardConfirmButtonText;
+
         [Header("popup error")]
         public Animator popup_error_animator;
         public Text popup_error_title;
@@ -137,7 +147,6 @@ namespace SeembaSDK
         public Text popup_error_button_text;
         public Button popup_error_button;
         
-        public ScrollRect PopupPrivacyPolicyScrollRect;
         #endregion
 
         #region Unity Methods
@@ -389,6 +398,23 @@ namespace SeembaSDK
             PopupCongratsWithdrawalConfirmButton.onClick.AddListener(() =>
             {
 
+            });
+        }
+        public void ShowGiftCardPopup(object[] _param, Image cover)
+        {
+            _params = _param;
+            ShowPopupContent(PopupManager.Get.PopupController.PopupGiftCard.gameObject);
+            PopupManager.Get.PopupController.PopupGiftCard.SetBool("Show", true);
+            PopupGiftCardTitle.text = _params[0].ToString();
+            PopupGiftCardSubtitle.text = _params[1].ToString();
+            PopupGiftCardDesc.text = _params[2].ToString();
+            PopupGiftCardPrice.text = _params[3].ToString();
+            PopupGiftCardConfirmButtonText.text = _params[4].ToString();
+            PopupGiftCardImage.sprite = cover.sprite;
+            PopupGiftCardConfirmButton.onClick.RemoveAllListeners();
+            PopupGiftCardConfirmButton.onClick.AddListener(async () =>
+            {
+                await ViewsEvents.Get.Menu.Market.GetComponent<MarketController>().BuyGiftAsync();
             });
         }
         public void ShowPrivacyPolicy()

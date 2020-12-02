@@ -105,6 +105,10 @@ namespace SeembaSDK
         private Text contact;
         [SerializeField]
         private Text ContactBackButton;
+        [Header("Market")]
+        [SerializeField]
+        private Text BubblesMarket;
+
         //Extra Translation 
         public static string WIN = "";
         public static string BUBBLES = "";
@@ -221,11 +225,6 @@ namespace SeembaSDK
             select3.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select3.text;
             select4.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select4.text;
 
-            //foreach (Text title in other_amount)
-            //{ 
-            //    title.text = TranslationManager.Get("other_amount") != string.Empty ? TranslationManager.Get("other_amount") : title.text; 
-            //}
-
             foreach (Text title in creditWallet)
             {
                 title.text = TranslationManager.Get("creditWallet") != string.Empty ? TranslationManager.Get("creditWallet") : title.text;
@@ -249,6 +248,7 @@ namespace SeembaSDK
             withdrawTitle.text = TranslationManager.Get("withdraw");
             available_balance.text = TranslationManager.Get("available_balance");
             enter_the_amount_to_withdraw.text = TranslationManager.Get("enter_the_amount_to_withdraw");
+            BubblesMarket.text = TranslationManager.Get("bubbles_market");
         }
     }
 }

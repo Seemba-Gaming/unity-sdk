@@ -62,6 +62,10 @@ namespace SeembaSDK
 #endif
 
         }
+        public void OnDeepLinkActivated(string url)
+        {
+            Debug.LogWarning(url);
+        }
         public IEnumerator checkInternetConnection(Action<bool?> action)
         {
             UnityWebRequest www = new UnityWebRequest("https://www.google.fr");

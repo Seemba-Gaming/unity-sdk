@@ -20,7 +20,9 @@ namespace SeembaSDK
         #endregion
 
         #region Script Parameters
+        [HideInInspector]
         public bool IsSeemba = false;
+        public bool OverlayActivated = false;
         #endregion
 
         #region Fields

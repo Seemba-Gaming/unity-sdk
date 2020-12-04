@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -25,6 +26,8 @@ namespace SeembaSDK
         public Image DeclinedConfirmPassword;
         public Image LoaderConfirmPassword;
         public Image Avatar;
+        public TextMeshProUGUI TermsText;
+        public string LastClickedWord;
         #endregion
 
         #region Fields
@@ -32,11 +35,17 @@ namespace SeembaSDK
         private string pathPreFix;
         private int RandomValue;
         private bool isEmailValid, isUsernameValid, isPasswordValid, isPasswordConfirmed;
+        private string mTermsConditions;
+        private string mPrivacyPolicy;
         #endregion
 
         #region Unity Methods
         void Start()
         {
+            TranslationManager.scene = "Signup";
+            mTermsConditions = TranslationManager.Get("terms_conditions");
+            mPrivacyPolicy = TranslationManager.Get("privacy_policy");
+
             Signin.onClick.AddListener(delegate
             {
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
@@ -144,6 +153,26 @@ namespace SeembaSDK
             else
             {
                 Signup.interactable = false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                var wordIndex = TMP_TextUtilities.FindIntersectingWord(TermsText, Input.mousePosition, null);
+
+                if (wordIndex != -1)
+                {
+                    LastClickedWord = TermsText.textInfo.wordInfo[wordIndex].GetWord();
+
+                    Debug.Log("Clicked on " + LastClickedWord);
+                    if(mTermsConditions.Contains(LastClickedWord))
+                    {
+                        OnClickTermsOfUse();
+                    }
+                    else if(mPrivacyPolicy.Contains(LastClickedWord))
+                    {
+                        OnClickPrivacyPolicy();
+                    }
+                }
             }
         }
         #endregion

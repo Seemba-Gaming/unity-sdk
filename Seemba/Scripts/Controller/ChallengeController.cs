@@ -108,7 +108,7 @@ namespace SeembaSDK
             {
                 DevMode = systemGlobal.CallStatic<int>("getInt", context.Call<AndroidJavaObject>("getContentResolver"), "development_settings_enabled");
             }
-            catch (NullReferenceException ex) { }
+            catch (NullReferenceException) { }
             if (DevMode == 1)
             {
                 //HidePopup("popup", false);

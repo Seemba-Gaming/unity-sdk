@@ -1,6 +1,6 @@
 {
     "name": "Seemba",
-    "references": ["NativeShare.Editor", "NativeShare.Runtime"],
+    "references": ["NativeShare.Editor", "NativeShare.Runtime", "Unity.TextMeshPro", "Unity.TextMeshPro.Editor"],
     "includePlatforms": [],
     "excludePlatforms": [
         "LinuxStandalone64",

@@ -79,12 +79,7 @@ namespace SeembaSDK
             {
                 ConnectivityController.CURRENT_ACTION = ConnectivityController.PERSONNEL_INFO_WITHDRAW_ACTION;
                 PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
-
-                try
-                {
-                    LoaderManager.Get.LoaderController.HideLoader();
-                }
-                catch (ArgumentException) { }
+                LoaderManager.Get.LoaderController.HideLoader();
             }
 
         }
@@ -174,67 +169,49 @@ namespace SeembaSDK
                 return !string.IsNullOrEmpty(user.firstname) && !string.IsNullOrEmpty(user.lastname) && !string.IsNullOrEmpty(user.birthdate) && !string.IsNullOrEmpty(user.address) && !string.IsNullOrEmpty(user.city) && !string.IsNullOrEmpty(user.zipcode) && !string.IsNullOrEmpty(user.country);
             }
         }
-        public void Withdraw()
+        public async void Withdraw()
         {
             WithdrawManager wm = new WithdrawManager();
             LoaderManager.Get.LoaderController.ShowLoader(null);
             string DocId = PlayerPrefs.GetString("DocId");
-            UnityThreadHelper.CreateThread(async () =>
+            string withdrawResult = null;
+            withdrawResult = await wm.Payout(token, WithdrawPresenter.WithdrawMoney);
+            Debug.Log("withdrawResult: " + withdrawResult);
+            currentIdProof = null;
+            currentIBAN = null;
+            if (!string.IsNullOrEmpty(withdrawResult))
             {
-                string withdrawResult = null;
-                withdrawResult = await wm.Payout(token, WithdrawPresenter.WithdrawMoney);
-                Debug.Log("withdrawResult: " + withdrawResult);
-                currentIdProof = null;
-                currentIBAN = null;
-                if (!string.IsNullOrEmpty(withdrawResult))
+                if (withdrawResult == "ProhibitedLocation")
                 {
-                    if (withdrawResult == "ProhibitedLocation")
-                    {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            LoaderManager.Get.LoaderController.HideLoader();
-                            EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
-                        });
-                    }
-                    else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_AMOUNT_INSUFFICIENT)
-                    {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
-                        });
-                    }
-                    else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_BALANCE_INSUFFICIENT)
-                    {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
-                        });
-                    }
-                    else if (withdrawResult == "error")
-                    {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            EventsController.Get.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
-                        });
-                    }
-                    else if (withdrawResult == WithdrawManager.WITHDRAW_SUCCEEDED_STATUS)
-                    {
-                        UnityThreadHelper.Dispatcher.Dispatch(() =>
-                        {
-                            LoaderManager.Get.LoaderController.HideLoader();
-                            UserManager.Get.UpdateUserMoneyCredit((float.Parse(UserManager.Get.GetCurrentMoneyCredit()) - WithdrawPresenter.WithdrawMoney).ToString("N2").Replace(",", "."));
-                            EventsController.Get.backToWinMoney();
-                        });
-                    }
+                        LoaderManager.Get.LoaderController.HideLoader();
+                        EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
                 }
-                else
+                else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_AMOUNT_INSUFFICIENT)
                 {
-                    UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
+                        EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_AMOUNT_FAILED_MESSAGE);
+                }
+                else if (withdrawResult == WithdrawManager.WITHDRAW_ERROR_BALANCE_INSUFFICIENT)
+                {
+                        EventsController.Get.withdrawFailed("Withdrawal", null, WithdrawManager.WITHDRAW_INSUFFICIENT_FUNDS_FAILED_MESSAGE);
+                }
+                else if (withdrawResult == "error")
+                {
                         EventsController.Get.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
-                    });
                 }
-            });
+                else if (withdrawResult == WithdrawManager.WITHDRAW_SUCCEEDED_STATUS)
+                {
+                        LoaderManager.Get.LoaderController.HideLoader();
+                        UserManager.Get.UpdateUserMoneyCredit((float.Parse(UserManager.Get.GetCurrentMoneyCredit()) - WithdrawPresenter.WithdrawMoney).ToString("N2").Replace(",", "."));
+                        EventsController.Get.backToWinMoney();
+                }
+            }
+            else
+            {
+                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                {
+                    EventsController.Get.withdrawFailed(null, null, WithdrawManager.WITHDRAW_FAILED_MESSAGE);
+                });
+            }
         }
         private async void tokenizeAndAttach()
         {

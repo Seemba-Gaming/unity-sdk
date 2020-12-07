@@ -53,16 +53,13 @@ namespace SeembaSDK
             form.AddField("payment_method", _paymentMethod);
             form.AddField("amount", (amount * 100).ToString());
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            Debug.LogWarning(response);
             return JSON.Parse(response);
         }
         public async System.Threading.Tasks.Task<string> isChargeConfirmedAsync(string _paymentIntent, string token)
         {
             string url = Endpoint.classesURL + "/payments/charge/" + _paymentIntent;
             var response = await SeembaWebRequest.Get.HttpsGet(url);
-            Debug.Log(response);
             var N = JSON.Parse(response);
-            Debug.Log("status: " + N["data"]["status"].Value);
             return N["data"]["status"].Value;
         }
         public bool MyRemoteCertificateValidationCallback(System.Object sender,

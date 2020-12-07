@@ -188,22 +188,6 @@ namespace SeembaSDK
                 }
             });
 
-            //popup_error_button.onClick.AddListener(() =>
-            //{
-            //    switch (CURRENT_POPUP)
-            //    {
-            //        case PopupType.INFO_INSUFFICIENT_BALANCE:
-            //            OpenWallet("WinMoney");
-            //            break;
-            //        case PopupType.INFO_INSUFFICIENT_BUBBLES:
-            //            OpenWallet("HaveFun");
-            //            break;
-            //        case PopupType.DOWNLOAD_FROM_STORE:
-            //            EventsController.Get.DownloadFromStore();
-            //            break;
-            //    }
-            //});
-
             PopupAgeconfirmButton.onClick.AddListener(() =>
             {
                 StartCoroutine(OnClickConfirmAegVerificationButton());
@@ -236,13 +220,15 @@ namespace SeembaSDK
             });
 
         }
-        public void ShowErrorPopup()
+
+        public void ClearPopups()
         {
-            popup_error_title.text = _params[0].ToString();
-            popup_error_subtitle.text = _params[1].ToString();
-            popup_error_main_text.text = _params[2].ToString();
-            popup_error_button_text.text = _params[3].ToString();
+            PopupForgetPassEmailInputField.text = string.Empty;
+            PopupCurrentPassInputField.text = string.Empty;
+            PopupUpdatePassNewPasswordInputField.text = string.Empty;
+            PopupUpdatePassConfirmPasswordInputField.text = string.Empty;
         }
+
         public void ShowInfoPopup(object[] _params)
         {
             ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
@@ -572,7 +558,7 @@ namespace SeembaSDK
                 yield return new WaitForSeconds(0.15f);
                 ViewsEvents.Get.WinMoneyClick();
             }
-
+            ViewsEvents.Get.BankingInfo.CleatInputs();
         }
 
         public void ShowUnkownDevicePopup(object[] _param)

@@ -31,6 +31,8 @@ namespace SeembaSDK
         public PersonalInfoPresenter PersonalInfo;
         public HistoryPresenter History;
         public WithdrawalInfoPresenter WithdrawalInfo;
+
+        public GameObject Overlay;
         #endregion
 
         #region fields
@@ -40,6 +42,14 @@ namespace SeembaSDK
 
         private async void Start()
         {
+            if(Seemba.Get.OverlayActivated)
+            {
+                Overlay.SetActive(true);
+            }
+            else
+            {
+                Overlay.SetActive(false);
+            }
             sInstance = this;
             mCurrentMenu = Intro.gameObject;
             mHistory.Push(Intro.gameObject);

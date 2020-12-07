@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
+using TMPro;
+
 namespace SeembaSDK
 {
     [CLSCompliant(false)]
@@ -24,6 +26,8 @@ namespace SeembaSDK
         public Image DeclinedConfirmPassword;
         public Image LoaderConfirmPassword;
         public Image Avatar;
+        public TextMeshProUGUI TermsText;
+        public string LastClickedWord;
         #endregion
 
         #region Fields
@@ -31,11 +35,17 @@ namespace SeembaSDK
         private string pathPreFix;
         private int RandomValue;
         private bool isEmailValid, isUsernameValid, isPasswordValid, isPasswordConfirmed;
+        private string mTermsConditions;
+        private string mPrivacyPolicy;
         #endregion
 
         #region Unity Methods
         void Start()
         {
+            TranslationManager.scene = "Signup";
+            mTermsConditions = TranslationManager.Get("terms_conditions");
+            mPrivacyPolicy = TranslationManager.Get("privacy_policy");
+
             Signin.onClick.AddListener(delegate
             {
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
@@ -144,6 +154,26 @@ namespace SeembaSDK
             {
                 Signup.interactable = false;
             }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                var wordIndex = TMP_TextUtilities.FindIntersectingWord(TermsText, Input.mousePosition, null);
+
+                if (wordIndex != -1)
+                {
+                    LastClickedWord = TermsText.textInfo.wordInfo[wordIndex].GetWord();
+
+                    Debug.Log("Clicked on " + LastClickedWord);
+                    if(mTermsConditions.Contains(LastClickedWord))
+                    {
+                        OnClickTermsOfUse();
+                    }
+                    else if(mPrivacyPolicy.Contains(LastClickedWord))
+                    {
+                        OnClickPrivacyPolicy();
+                    }
+                }
+            }
         }
         #endregion
 
@@ -154,6 +184,16 @@ namespace SeembaSDK
             {
                 Avatar.sprite = image.sprite;
             }
+        }
+
+        public void OnClickTermsOfUse()
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PRIVACY_POLICY, null);
+        }
+
+        public void OnClickPrivacyPolicy()
+        {
+            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PRIVACY_POLICY, null);
         }
         #endregion
 

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using System;
 using System.IO;
 using SimpleJSON;
@@ -69,7 +68,7 @@ namespace SeembaSDK
                 isDownloaded = true;
                 return true;
             }
-            else if (string.IsNullOrEmpty(PlayerPrefs.GetString(systemLanguage)))
+            else
             {
                 var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
                 var req = await SeembaWebRequest.Get.HttpsGet(url);
@@ -89,7 +88,6 @@ namespace SeembaSDK
                     return true;
                 }
             }
-            return true;
         }
 
         public static async Task<bool> GetUserLanguage(string language)

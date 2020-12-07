@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SeembaSDK
 {
@@ -48,6 +49,8 @@ namespace SeembaSDK
         STRIPE_BALANCE_INSUFFICIENT,
         STRIPE_TRY_AGAIN_LATER,
         POPUP_PRIVACY_POLICY,
+        POPUP_GIFT_CARD_SUCCESS,
+        POPUP_GIFT_CARD_INFO,
         SESSION_EXPIRED
     }
 
@@ -74,7 +77,9 @@ namespace SeembaSDK
     public Animator                                 PopupChooseCharacter;
     public Animator                                 PopupCongratsWithdrawal;
     public Animator                                 PopupPrivacyPolicy;
-    #endregion
+    public Animator                                 PopupGiftCard;
+
+        #endregion
 
         #region Fields
         private GameObject mPopupContent;
@@ -89,7 +94,7 @@ namespace SeembaSDK
         #endregion
 
         #region Methods
-        public void ShowPopup(PopupType popupType, object[] _params, string note = null)
+        public void ShowPopup(PopupType popupType, object[] _params, string note = null, Image cover = null)
         {
             //LoadPopup();
             CURRENT_POPUP = popupType;
@@ -184,6 +189,12 @@ namespace SeembaSDK
                     break;
                 case PopupType.POPUP_CONGRATS_WITHDRAW:
                     PopupManager.Get.PopupViewPresenter.ShowCongratsWithdrawalPopup(_params);
+                    break;
+                case PopupType.POPUP_GIFT_CARD_INFO:
+                    PopupManager.Get.PopupViewPresenter.ShowGiftCardPopup(_params, cover);
+                    break;
+                case PopupType.POPUP_GIFT_CARD_SUCCESS:
+                    PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                     break;
                 default:
                     Debug.LogWarning(popupType);

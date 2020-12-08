@@ -140,6 +140,7 @@ namespace SeembaSDK
             await UserManager.Get.removeUserDeviceTokenAsync(userId, GamesManager.GAME_ID, deviceToken);
             LoaderManager.Get.LoaderController.HideLoader();
             UserManager.Get.logingOut();
+            PopupManager.Get.InitPopup();
             SceneManager.LoadSceneAsync("SeembaEsports");
         }
         #endregion
@@ -185,8 +186,6 @@ namespace SeembaSDK
         }
         private void OnTimedEvent(object source, ElapsedEventArgs e)
         {
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
                 try
                 {
                     if (sec >= 0 && min >= 0)
@@ -221,7 +220,6 @@ namespace SeembaSDK
                 catch (MissingReferenceException)
                 {
                 }
-            });
         }
         private async void resetPassword()
         {

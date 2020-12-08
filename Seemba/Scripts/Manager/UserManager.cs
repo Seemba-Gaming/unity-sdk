@@ -138,10 +138,7 @@ namespace SeembaSDK
         }
         public void saveUserId(string user)
         {
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                writeStringToFile(user, "User.dat");
-            });
+            writeStringToFile(user, "User.dat");
         }
         public string getCurrentUserId()
         {
@@ -149,10 +146,7 @@ namespace SeembaSDK
         }
         public void saveSessionToken(string token)
         {
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                writeStringToFile(token, "Token.dat");
-            });
+            writeStringToFile(token, "Token.dat");
         }
         public string getCurrentSessionToken()
         {

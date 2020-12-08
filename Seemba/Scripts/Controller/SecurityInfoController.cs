@@ -27,18 +27,12 @@ namespace SeembaSDK
         #region Unity Methods
         private void Start()
         {
-            UnityThreadHelper.CreateThread(() =>
+            CurrentUser = UserManager.Get.CurrentUser;
+            email.text = CurrentUser.email.Substring(0, 4);
+            for (int i = 0; i < CurrentUser.email.Length; i++)
             {
-                CurrentUser = UserManager.Get.CurrentUser;
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    email.text = CurrentUser.email.Substring(0, 4);
-                    for (int i = 0; i < CurrentUser.email.Length; i++)
-                    {
-                        email.text = email.text + "*";
-                    }
-                });
-            });
+                email.text = email.text + "*";
+            }
 
             CurrentPassword = PopupManager.Get.PopupViewPresenter.PopupCurrentPassInputField;
             NewPassword = PopupManager.Get.PopupViewPresenter.PopupUpdatePassNewPasswordInputField;
@@ -49,13 +43,9 @@ namespace SeembaSDK
 
             CurrentPassword.onValueChanged.AddListener(async delegate
             {
-            //GameObject.Find("LoadingInCurrentPassword").transform.localScale = Vector3.one;
-            nextCurrentPassword.interactable = false;
-            // UnityThreadHelper.CreateThread(() =>
-            //  {
-            await CurrentPasswordListener(); // not working
-                                             // });
-        });
+                nextCurrentPassword.interactable = false;
+                await CurrentPasswordListener(); 
+            });
 
             ConfirmPassword.onValueChanged.AddListener(delegate
             {
@@ -72,21 +62,15 @@ namespace SeembaSDK
             nextCurrentPassword.onClick.AddListener(() =>
             {
                 PopupManager.Get.PopupViewPresenter.HidePopupContent(PopupManager.Get.PopupController.PopupCurrentPassword);
-                UnityThreadHelper.CreateThread(() =>
-                {
-                    Thread.Sleep(650);
-                    UnityThreadHelper.Dispatcher.Dispatch(() =>
-                    {
-                        PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_UPDATE_PASSWORD, PopupsText.Get.UpdatePassword());
-                        CurrentPassword.text = "";
-                        nextCurrentPassword.interactable = false;
-                    });
-                });
+                PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_UPDATE_PASSWORD, PopupsText.Get.UpdatePassword());
+                CurrentPassword.text = "";
+                nextCurrentPassword.interactable = false;
             });
 
             UpdatePassword.onClick.AddListener(delegate
             {
                 OnClickUpdaetPassword();
+                PopupManager.Get.PopupViewPresenter.ClearPopups();
             });
         }
 
@@ -116,10 +100,7 @@ namespace SeembaSDK
 
         public async Task<bool> CurrentPasswordListener()
         {
-            Debug.LogWarning(CurrentUser.email);
-            Debug.LogWarning(CurrentPassword.text);
             string res = await UserManager.Get.logingIn(CurrentUser.email, CurrentPassword.text);
-            Debug.LogWarning(res);
             if (res == "success")
             {
                 nextCurrentPassword.interactable = true;

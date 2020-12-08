@@ -221,6 +221,17 @@ namespace SeembaSDK
                 await CreatePaymentMethodAsync(CardNumber.text, CVV.text, int.Parse(valueMonths), int.Parse(valueYears));
             }
         }
+        public void CleatInputs()
+        {
+            Years.value = 0;
+            Month.value = 0;
+            CardHolder.text = string.Empty;
+            CardNumber.text = string.Empty;
+            CVV.text = string.Empty;
+            TermsToggel.isOn = false;
+            ViewsEvents.Get.Menu.Wallet.GetComponent<WalletScript>().ChargeAmount.text = string.Empty;
+            ViewsEvents.Get.Menu.SettingsWallet.ChargeAmount.text = string.Empty;
+        }
         #endregion
 
         #region Implementations

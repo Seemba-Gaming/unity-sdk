@@ -40,6 +40,11 @@ namespace SeembaSDK
         private Stack<GameObject> mHistory = new Stack<GameObject>();
         #endregion
 
+        private void Awake()
+        {
+            sInstance = this;
+        }
+
         private async void Start()
         {
             if(Seemba.Get.OverlayActivated)
@@ -50,10 +55,10 @@ namespace SeembaSDK
             {
                 Overlay.SetActive(false);
             }
-            sInstance = this;
+
             mCurrentMenu = Intro.gameObject;
             mHistory.Push(Intro.gameObject);
-            //Open the first view
+
             if (UserManager.Get.getCurrentUserId() != null)
             {
                 var user = await UserManager.Get.getUser();

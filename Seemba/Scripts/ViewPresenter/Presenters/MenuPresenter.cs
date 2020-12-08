@@ -21,6 +21,7 @@ namespace SeembaSDK
         public GameObject Header;
         public GameObject Market;
         public ScrollSnapRect ScrollSnap;
+        public WalletScript SettingsWallet;
         #endregion
 
         #region Fields

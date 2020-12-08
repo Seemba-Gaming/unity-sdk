@@ -55,8 +55,10 @@ namespace SeembaSDK
             {
                 yield return new WaitForSeconds(0.1f);
             }
-
-            ViewsEvents.Get.HomeClick();
+            if(ViewsEvents.Get != null)
+            {
+                ViewsEvents.Get.HomeClick();
+            }
         }
         private IEnumerator CheckOngoingAndLastResult()
         {

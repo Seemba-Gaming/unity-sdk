@@ -20,22 +20,32 @@ namespace SeembaSDK
         public PopupsTranslationController PopupsTranslationController;
         #endregion
 
+        #region Fields
+        private GameObject mPopupPrefab;
+        #endregion
         #region Unity Methods
         private void Awake()
         {
             sInstance = this;
-            //DontDestroyOnLoad(this.gameObject);
         }
         void Start()
         {
-            var popup = Instantiate(PopupPrefab) as GameObject;
-            PopupController = popup.GetComponent<PopupsController>();
-            PopupViewPresenter = popup.GetComponent<PopupsViewPresenter>();
-            PopupsTranslationController = popup.GetComponent<PopupsTranslationController>();
+            InitPopup();
         }
         #endregion
 
         #region Methods
+        public void InitPopup()
+        {
+            if(mPopupPrefab != null)
+            {
+                Destroy(mPopupPrefab);
+            }
+            mPopupPrefab = Instantiate(PopupPrefab);
+            PopupController = mPopupPrefab.GetComponent<PopupsController>();
+            PopupViewPresenter = mPopupPrefab.GetComponent<PopupsViewPresenter>();
+            PopupsTranslationController = mPopupPrefab.GetComponent<PopupsTranslationController>();
+        }
         #endregion
 
         #region Implementation

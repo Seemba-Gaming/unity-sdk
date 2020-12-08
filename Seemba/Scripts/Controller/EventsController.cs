@@ -136,23 +136,23 @@ namespace SeembaSDK
                 PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_EQUALITY_REFUND, PopupsText.Get.EqualityRefund());
             }
         }
-        public void IdProof()
-        {
-            ViewsEvents.Get.GoToMenu(ViewsEvents.Get.IdProof.gameObject);
-        }
-        public void CloseIdProof()
-        {
-            ViewsEvents.Get.IdProof.transform.GetChild(0).GetComponent<Animator>().SetBool("showView", false);
-            UnityThreading.ActionThread thread;
-            thread = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(500);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ViewsEvents.Get.GoBack();
-                });
-            });
-        }
+        //public void IdProof()
+        //{
+        //    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.IdProof.gameObject);
+        //}
+        //public void CloseIdProof()
+        //{
+        //    ViewsEvents.Get.IdProof.transform.GetChild(0).GetComponent<Animator>().SetBool("showView", false);
+        //    UnityThreading.ActionThread thread;
+        //    thread = UnityThreadHelper.CreateThread(() =>
+        //    {
+        //        Thread.Sleep(500);
+        //        UnityThreadHelper.Dispatcher.Dispatch(() =>
+        //        {
+        //            ViewsEvents.Get.GoBack();
+        //        });
+        //    });
+        //}
         public void OpenWallet(string last_view)
         {
             ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Wallet);

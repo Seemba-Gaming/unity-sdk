@@ -36,6 +36,7 @@ namespace SeembaSDK
 			{
 				UserManager.Get.CurrentUser.country_code = await UserManager.Get.GetGeoLoc();
 			}
+
 			if (CountryController.checkCountry(UserManager.Get.CurrentUser.country_code))
 			{
 				StartCoroutine(EventsController.Get.checkInternetConnection(async (isConnected) =>

@@ -2337,7 +2337,7 @@ GameObject:
   - component: {fileID: 9103986860854220004}
   - component: {fileID: 9103986860854220003}
   m_Layer: 5
-  m_Name: Container_Personalinfo
+  m_Name: SafeArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4684,6 +4684,7 @@ GameObject:
   - component: {fileID: 9103986861338897901}
   - component: {fileID: 9103986861338897900}
   - component: {fileID: 9103986862151747434}
+  - component: {fileID: 9103986862151747435}
   m_Layer: 5
   m_Name: PersonalInfoCanvas
   m_TagString: Untagged
@@ -4853,6 +4854,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4755cfe716fb42e42a4f6fdbfa459991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9103986862151747435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103986861338897899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335cec501cb4dd1459ca7802e2739fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  safeAreaTransform: {fileID: 0}
 --- !u!1 &9103986861345261991
 GameObject:
   m_ObjectHideFlags: 0

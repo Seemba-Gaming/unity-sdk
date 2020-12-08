@@ -45,6 +45,8 @@ namespace SeembaSDK
             {
                 IsSeemba = true;
             }
+            SeembaAnalyticsManager.Get.GameOpened("Game opened" + Application.productName);
+            Debug.LogWarning(Application.productName);
         }
         public void Enter()
         {
@@ -149,6 +151,7 @@ namespace SeembaSDK
                     {
                         IsSeemba = true;
                         InstantiateSentry();
+                        SeembaAnalyticsManager.Get.SendGameEvent("Enter Seemba from " + GamesManager.GAME_NAME);
                         SceneManager.LoadSceneAsync("SeembaEsports");
                     }
                 }
@@ -163,6 +166,7 @@ namespace SeembaSDK
         {
             if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)
             {
+                SeembaAnalyticsManager.Get.SendDuelEvent("Duel Finished", ChallengeManager.CurrentChallengeId, score);
                 LoaderManager.Get.LoaderController.ShowLoader(null);
                 var resAddScore = await ChallengeManager.Get.addScore(ChallengeManager.CurrentChallengeId, score);
                 ChallengeManager.Get.ShowResult();
@@ -170,6 +174,7 @@ namespace SeembaSDK
             }
             else if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_BRACKET)
             {
+                SeembaAnalyticsManager.Get.SendTournamentEvent("Tournament Challenge done", TournamentController.getCurrentTournamentID(), score);
                 LoaderManager.Get.LoaderController.ShowLoader(null);
                 await TournamentManager.Get.addScore(TournamentController.getCurrentTournamentID(), score);
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);

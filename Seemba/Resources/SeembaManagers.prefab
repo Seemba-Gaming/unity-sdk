@@ -131,8 +131,8 @@ MonoBehaviour:
     zipcode: 
     passport_uploaded: 0
     last_result: 
-    birthday: 
-    adress: 
+    birthdate: 
+    address: 
     country: 
     residency_proof_uploaded: 0
     victories_count: 0
@@ -175,6 +175,7 @@ Transform:
   - {fileID: 5359414945753321117}
   - {fileID: 8576071937036763167}
   - {fileID: 8924541790555986975}
+  - {fileID: 1121196711064589142}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -359,6 +360,7 @@ MonoBehaviour:
     type: 3}
   PopupController: {fileID: 0}
   PopupViewPresenter: {fileID: 0}
+  PopupsTranslationController: {fileID: 0}
 --- !u!114 &2074294610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,6 +371,49 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bdd957f96c10ec478d19b1926c4689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &8517572724746952277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1121196711064589142}
+  - component: {fileID: 307040528253482215}
+  m_Layer: 0
+  m_Name: AnalyticsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1121196711064589142
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517572724746952277}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3815232973937849937}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &307040528253482215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8517572724746952277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c129c382dd4cc4ab0e14da532e1c45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &9044794649818409714

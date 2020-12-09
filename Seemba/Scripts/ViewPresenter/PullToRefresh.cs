@@ -70,7 +70,7 @@ namespace SeembaSDK
         {
             secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
-            if (currentSwipe.y < 0 && currentSwipe.x > -50f && currentSwipe.x < 50f && scrollRect.verticalNormalizedPosition > 1)
+            if (currentSwipe.y < 0 && currentSwipe.x > -50f && currentSwipe.x < 50f && scrollRect.verticalNormalizedPosition >= 1)
             {
                 Loader.gameObject.SetActive(true);
             }
@@ -80,7 +80,7 @@ namespace SeembaSDK
         {
             secondPressPos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             currentSwipe = new Vector2(secondPressPos.x - firstPressPos.x, secondPressPos.y - firstPressPos.y);
-            if (currentSwipe.y < 0 && Math.Abs(currentSwipe.x) <= 50f && scrollRect.verticalNormalizedPosition > 1)
+            if (currentSwipe.y < 0 && Math.Abs(currentSwipe.x) <= 50f && scrollRect.verticalNormalizedPosition >= 1)
             {
                 refresh();
             }

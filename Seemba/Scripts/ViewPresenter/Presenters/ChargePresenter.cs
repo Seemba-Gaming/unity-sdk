@@ -66,6 +66,7 @@ namespace SeembaSDK
             setCardColor(new System.Random().Next(0, 5));
             Credit.onClick.AddListener(async () =>
             {
+                SeembaAnalyticsManager.Get.SendCreditEvent("Click on crédit", WalletScript.LastCredit);
                 await ChargeAsync();
             });
             TermsToggel.onValueChanged.AddListener(delegate
@@ -198,20 +199,24 @@ namespace SeembaSDK
             if (string.IsNullOrEmpty(CardHolder.text))
             {
                 CardHolderError.SetBool("wrongcardholder", true);
+                SeembaAnalyticsManager.Get.SendCreditEvent("Wrong Card Holder Name", WalletScript.LastCredit);
                 confirmData = false;
             }
             if (CardNumber.text.Length != 16 || string.IsNullOrEmpty(CardNumber.text))
             {
+                SeembaAnalyticsManager.Get.SendCreditEvent("Wrong Card Number", WalletScript.LastCredit);
                 CardNumberError.SetBool("wrongcardnumber", true);
                 confirmData = false;
             }
             if (CVV.text.Length < 3 || string.IsNullOrEmpty(CVV.text))
             {
+                SeembaAnalyticsManager.Get.SendCreditEvent("Wrong CVV Number", WalletScript.LastCredit);
                 CVVError.SetBool("cvverror", true);
                 confirmData = false;
             }
             if (valueYears == "YYYY" || valueMonths == "MM" || (valueYears.Equals(DateTime.Today.Year.ToString()) && int.Parse(valueMonths) < DateTime.Today.Month))
             {
+                SeembaAnalyticsManager.Get.SendCreditEvent("Wrong Card Exp Date", WalletScript.LastCredit);
                 DAEError.SetBool("daeerror", true);
                 confirmData = false;
             }
@@ -330,11 +335,8 @@ namespace SeembaSDK
         }
         private void OpenBrowserFor3dSecure(string url)
         {
-            UnityThreadHelper.Dispatcher.Dispatch(() =>
-            {
-                Application.OpenURL(url);
-                InvokeRepeating("IsChargeCompleted", 0.0f, 1f);
-            });
+            Application.OpenURL(url);
+            InvokeRepeating("IsChargeCompleted", 0.0f, 1f);
         }
 
         private void SelectWinMoney()
@@ -366,6 +368,7 @@ namespace SeembaSDK
         }
         private void ChargeSucceeded()
         {
+            SeembaAnalyticsManager.Get.SendCreditEvent("Credit Succeeded", WalletScript.LastCredit);
             float credit = float.Parse(UserManager.Get.GetCurrentMoneyCredit()) + WalletScript.LastCredit;
             TranslationManager.scene = "Home";
             object[] _params = { TranslationManager.Get("congratulations"), TranslationManager.Get("transaction_accepted"), credit.ToString() + "€", "(+" + WalletScript.LastCredit + CurrencyManager.CURRENT_CURRENCY + ")", TranslationManager.Get("ok") + " !" };
@@ -375,6 +378,7 @@ namespace SeembaSDK
         }
         private void ChargeCanceled()
         {
+            SeembaAnalyticsManager.Get.SendCreditEvent("Credit Canceled", WalletScript.LastCredit);
             UnloadBankingInfo();
         }
         private void UnloadBankingInfo()

@@ -35,6 +35,7 @@ namespace SeembaSDK
             Loader.gameObject.SetActive(true);
             if (await UserManager.Get.WinFreeBubble(token))
             {
+                SeembaAnalyticsManager.Get.SendUserEvent("Free Bubbles");
                 string[] attrib = { "last_bubble_click" };
                 string[] value = { DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") };
                 UserManager.Get.UpdateUserByField(attrib, value);

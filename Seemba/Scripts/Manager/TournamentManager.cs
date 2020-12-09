@@ -68,6 +68,40 @@ namespace SeembaSDK
             WIN_BRACKET_BUBBLE_NOVICE = gain.tournament.Novice.bubbles;
             WIN_BRACKET_BUBBLE_CONFIRMED = gain.tournament.Confirmed.bubbles;
         }
+
+        public float GetChallengeFee(float gain, string gainType)
+        {
+            if (gainType.Equals(GAIN_TYPE_CASH))
+            {
+                if (gain.Equals(WIN_BRACKET_CASH_AMATEUR))
+                {
+                    return FEE_BRACKET_CASH_AMATEUR;
+                }
+                else if (gain.Equals(WIN_BRACKET_CASH_NOVICE))
+                {
+                    return FEE_BRACKET_CASH_NOVICE;
+                }
+                else
+                {
+                    return FEE_BRACKET_CASH_CONFIRMED;
+                }
+            }
+            else
+            {
+                if (gain.Equals(WIN_BRACKET_BUBBLE_AMATEUR))
+                {
+                    return FEE_BRACKET_BUBBLE_AMATEUR;
+                }
+                else if (gain.Equals(WIN_BRACKET_BUBBLE_NOVICE))
+                {
+                    return FEE_BRACKET_BUBBLE_NOVICE;
+                }
+                else
+                {
+                    return WIN_BRACKET_BUBBLE_CONFIRMED;
+                }
+            }
+        }
         public async Task<JSONArray> getUserPendingTournaments(string token)
         {
             string url = Endpoint.classesURL + "/tournaments/pending/" + GamesManager.GAME_ID;

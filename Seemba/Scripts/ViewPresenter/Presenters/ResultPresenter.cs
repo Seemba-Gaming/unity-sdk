@@ -99,6 +99,7 @@ namespace SeembaSDK
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
                 OpponentScore.text = challenge.user_1_score.ToString();
             }
+            SeembaAnalyticsManager.Get.SendUserEvent("Challenge Lost");
         }
         public async void InitResultWin(Challenge challenge)
         {
@@ -121,7 +122,7 @@ namespace SeembaSDK
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
                 OpponentScore.text = challenge.user_1_score.ToString();
             }
-
+            SeembaAnalyticsManager.Get.SendUserEvent("Challenge Won");
         }
         public async void InitResultDraw(Challenge challenge)
         {
@@ -145,6 +146,7 @@ namespace SeembaSDK
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
                 OpponentScore.text = challenge.user_1_score.ToString();
             }
+            SeembaAnalyticsManager.Get.SendUserEvent("Challenge Draw");
         }
         public void InitResultWaiting(Challenge challenge)
         {
@@ -154,7 +156,7 @@ namespace SeembaSDK
             DescriptionTitle.text = ResultController.CONTINUE_NOW;
             DescriptionSubtite.text = ResultController.AND_GET_RESULT_LATER;
             ResultImage.sprite = ResultImages[1];
-
+            SeembaAnalyticsManager.Get.SendUserEvent("Challenge Pending");
         }
         public void Init(Challenge challenge)
         {
@@ -187,6 +189,7 @@ namespace SeembaSDK
         {
             ResetOpponent();
             ViewsEvents.Get.SelectHomeCoroutineLauncher();
+            SeembaAnalyticsManager.Get.SendUserEvent("Continue After Challenge");
         }
 
         void ResetOpponent()
@@ -203,6 +206,7 @@ namespace SeembaSDK
             ResetOpponent();
             object[] _params = { ChallengeManager.Get.GetChallengeFee(float.Parse(mCurrentChallenge.gain), mCurrentChallenge.gain_type), mCurrentChallenge.gain, mCurrentChallenge.gain_type, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
+            SeembaAnalyticsManager.Get.SendUserEvent("Replay Challenge");
         }
 
         #endregion

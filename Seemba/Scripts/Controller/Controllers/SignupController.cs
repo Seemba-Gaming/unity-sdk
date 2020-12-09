@@ -78,7 +78,7 @@ namespace SeembaSDK
                             ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
                             LoaderManager.Get.LoaderController.HideLoader();
                             EventsController.Get.startFirstChallenge(Res["token"].Value);
-                            SeembaAnalyticsManager.Get.SendGameEvent("FirstChallenge");
+                            SeembaAnalyticsManager.Get.SendUserEvent("Signed up with Email");
                         }
                         else
                         {
@@ -86,7 +86,6 @@ namespace SeembaSDK
                             LoaderManager.Get.LoaderController.HideLoader();
                             PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
                             SeembaAnalyticsManager.Get.SendGameEvent("weak network");
-
                         }
                     }
                 }));

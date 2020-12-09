@@ -12,7 +12,6 @@ namespace SeembaSDK
         private static SeembaAnalyticsManager sInstance;
         #endregion
 
-
         #region Unity Methods
         private void Awake()
         {
@@ -47,13 +46,24 @@ namespace SeembaSDK
             SeembaMixpanel.Track(action, props);
         }
 
-        public void SendDuelEvent(string action, string duelId, float score)
+        public void SendUserDuelEvent(string action, string duelId, float score)
         {
             var props = new Value(); 
             InitProps(props);
             props["User Id"] = UserManager.Get.CurrentUser._id;
             props["challenge Id"] = duelId;
             props["score"] = score;
+            props["Action"] = action;
+            SeembaMixpanel.Track(action, props);
+        }
+        public void SendDuelInfoEvent(string action, float entryFee, float gain, string gainType)
+        {
+            var props = new Value();
+            InitProps(props);
+            props["User Id"] = UserManager.Get.CurrentUser._id;
+            props["Duel Entry Fee"] = entryFee;
+            props["Duel Gain"] = gain;
+            props["Duel Gain Type"] = gainType;
             props["Action"] = action;
             SeembaMixpanel.Track(action, props);
         }
@@ -68,8 +78,19 @@ namespace SeembaSDK
             props["Action"] = action;
             SeembaMixpanel.Track(action, props);
         }
+        public void SendTournamentInfoEvent(string action, float entryFee, float gain, string gainType)
+        {
+            var props = new Value();
+            InitProps(props);
+            props["User Id"] = UserManager.Get.CurrentUser._id;
+            props["Tournament Entry Fee"] = entryFee;
+            props["Tournament Gain"] = gain;
+            props["Tournament Gain Type"] = gainType;
+            props["Action"] = action;
+            SeembaMixpanel.Track(action, props);
+        }
 
-        public void SendCreditEvent(string action, string amount)
+        public void SendCreditEvent(string action, float amount)
         {
             var props = new Value();
             InitProps(props);

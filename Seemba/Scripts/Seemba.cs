@@ -12,7 +12,7 @@ namespace SeembaSDK
     {
 
         #region Static
-        public static Seemba Get { get { return sInstance; } }
+        public static Seemba Get => sInstance;
         private static Seemba sInstance;
 
         public static bool gameOver = false;
@@ -45,8 +45,7 @@ namespace SeembaSDK
             {
                 IsSeemba = true;
             }
-            SeembaAnalyticsManager.Get.GameOpened("Game opened" + Application.productName);
-            Debug.LogWarning(Application.productName);
+            SeembaAnalyticsManager.Get.GameOpened("Game opened");
         }
         public void Enter()
         {
@@ -151,7 +150,7 @@ namespace SeembaSDK
                     {
                         IsSeemba = true;
                         InstantiateSentry();
-                        SeembaAnalyticsManager.Get.SendGameEvent("Enter Seemba from " + GamesManager.GAME_NAME);
+                        SeembaAnalyticsManager.Get.SendGameEvent("Enter Seemba");
                         SceneManager.LoadSceneAsync("SeembaEsports");
                     }
                 }
@@ -166,7 +165,7 @@ namespace SeembaSDK
         {
             if (EventsController.ChallengeType == ChallengeManager.CHALLENGE_TYPE_1V1)
             {
-                SeembaAnalyticsManager.Get.SendDuelEvent("Duel Finished", ChallengeManager.CurrentChallengeId, score);
+                SeembaAnalyticsManager.Get.SendUserDuelEvent("Duel Finished", ChallengeManager.CurrentChallengeId, score);
                 LoaderManager.Get.LoaderController.ShowLoader(null);
                 var resAddScore = await ChallengeManager.Get.addScore(ChallengeManager.CurrentChallengeId, score);
                 ChallengeManager.Get.ShowResult();
@@ -178,6 +177,7 @@ namespace SeembaSDK
                 LoaderManager.Get.LoaderController.ShowLoader(null);
                 await TournamentManager.Get.addScore(TournamentController.getCurrentTournamentID(), score);
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);
+                SeembaAnalyticsManager.Get.SendTournamentEvent("Return to tournament", TournamentController.getCurrentTournamentID(), score);
                 ViewsEvents.Get.Brackets.OnEnable();
             }
             SceneManager.UnloadSceneAsync(GamesManager.GAME_SCENE_NAME);

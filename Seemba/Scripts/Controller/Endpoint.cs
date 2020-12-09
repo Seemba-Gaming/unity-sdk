@@ -6,7 +6,7 @@ namespace SeembaSDK
     public class Endpoint : MonoBehaviour
     {
         public static string stripeURL = "https://api.stripe.com/v1";
-        public static string locationURL = "http://ipinfo.io/json/";
+        public static string locationURL = "https://ipinfo.io/json/";
         public static string laguagesURL = "https://seemba-1556155050.s3.amazonaws.com/sdk/laguages_files";
 
         //#region Live

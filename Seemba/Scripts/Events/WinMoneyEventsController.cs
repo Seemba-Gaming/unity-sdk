@@ -48,31 +48,37 @@ namespace SeembaSDK
             });
             _1v1_cash_confident.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Money", ChallengeManager.FEE_1V1_CASH_CONFIDENT, ChallengeManager.WIN_1V1_CASH_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2"), ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _1v1_cash_champion.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Money", ChallengeManager.FEE_1V1_CASH_CHAMPION, ChallengeManager.WIN_1V1_CASH_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2"), ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _1v1_cash_legend.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Money", ChallengeManager.FEE_1V1_CASH_LEGEND, ChallengeManager.WIN_1V1_CASH_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2"), ChallengeManager.WIN_1V1_CASH_LEGEND.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _bracket_cash_confident.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_AMATEUR, TournamentManager.WIN_BRACKET_CASH_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { TournamentManager.FEE_BRACKET_CASH_AMATEUR.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_AMATEUR.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _bracket_cash_champion.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_NOVICE, TournamentManager.WIN_BRACKET_CASH_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { TournamentManager.FEE_BRACKET_CASH_NOVICE.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_NOVICE.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _bracket_cash_legend.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_CONFIRMED, TournamentManager.WIN_BRACKET_CASH_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { TournamentManager.FEE_BRACKET_CASH_CONFIRMED.ToString("N2"), TournamentManager.WIN_BRACKET_CASH_CONFIRMED.ToString("N2"), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
@@ -80,6 +86,7 @@ namespace SeembaSDK
 
         private void MoreDuels()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("More Money Duels");
             ShowAvailableChallenges(SHOW_MORE);
             less_duels.gameObject.SetActive(true);
             more_duels.gameObject.SetActive(false);
@@ -94,6 +101,7 @@ namespace SeembaSDK
 
         private void MoreTournaments()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("More Money Tournaments");
             ShowAvailableTournaments(SHOW_MORE);
             less_tournaments.gameObject.SetActive(true);
             more_tournaments.gameObject.SetActive(false);

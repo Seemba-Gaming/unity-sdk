@@ -8,7 +8,7 @@ namespace SeembaSDK
         {
             if (Config.ShowDebug)
             {
-                Debug.Log("[Mixpanel] " + s);
+                //Debug.Log("[Mixpanel] " + s);
             }
         }
 

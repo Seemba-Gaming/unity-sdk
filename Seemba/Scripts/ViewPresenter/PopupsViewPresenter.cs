@@ -195,6 +195,7 @@ namespace SeembaSDK
 
             PopupPaymentConfirmButton.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendCreditEvent("Go to BankingInfo", WalletScript.LastCredit);
                 EventsController.Get.continuePayment();
             });
 
@@ -453,6 +454,15 @@ namespace SeembaSDK
                     }
                 });
             }
+            if (_params[3].ToString().Equals(ChallengeManager.CHALLENGE_TYPE_1V1))
+            {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Popup", float.Parse(_param[0].ToString()), float.Parse(_param[1].ToString()), _param[2].ToString());
+            }
+            else
+            {
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Popup", float.Parse(_param[0].ToString()), float.Parse(_param[1].ToString()), _param[2].ToString());
+            }
+
         }
         public void ShowCurrentPasswordPopup(object[] _param)
         {
@@ -496,6 +506,7 @@ namespace SeembaSDK
             PopupPaymentConfirmButtonText.text = _param[2].ToString();
             //VisaToggleText.text = _param[3].ToString();
             //MasterCardText.text = _param[4].ToString();
+            SeembaAnalyticsManager.Get.SendCreditEvent("Popup Payment Method", WalletScript.LastCredit);
         }
         public void ShowAgeVerificationPopup(object[] _param)
         {
@@ -507,6 +518,7 @@ namespace SeembaSDK
             PopupAgeMessage.text = _param[2].ToString();
             PopupAgeConfirmButtonText.text = _param[3].ToString();
             PopupAgePlaceHolder.text = _param[4].ToString();
+            SeembaAnalyticsManager.Get.SendCreditEvent("Popup Age verification", WalletScript.LastCredit);
         }
         public void ShowWinPopup(object[] _param, string gain)
         {
@@ -597,6 +609,7 @@ namespace SeembaSDK
         }
         public void HidePopupContent(Animator animator)
         {
+            SeembaAnalyticsManager.Get.SendGameEvent(animator.gameObject.name + " Closed");
             StartCoroutine(WaitforAnimation(animator));
         }
         #endregion
@@ -635,12 +648,14 @@ namespace SeembaSDK
             popup_duels_animator.SetBool("Show", false);
             yield return new WaitForSeconds(0.5f);
             ChallengeController.Get.Play(_params);
+            SeembaAnalyticsManager.Get.SendDuelInfoEvent("Start Duel", float.Parse(_params[0].ToString()), float.Parse(_params[1].ToString()), _params[2].ToString());
         }
         private IEnumerator StartTournament()
         {
             popup_duels_animator.SetBool("Show", false);
             yield return new WaitForSeconds(0.5f);
             ViewsEvents.Get.Brackets.GetComponent<TournamentController>().Play(_params);
+            SeembaAnalyticsManager.Get.SendDuelInfoEvent("Start Tournament", float.Parse(_params[0].ToString()), float.Parse(_params[1].ToString()), _params[2].ToString());
         }
         #endregion
     }

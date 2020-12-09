@@ -77,7 +77,7 @@ namespace SeembaSDK
             WalletScript.LastCredit = int.Parse(amountToAdd);
             LoaderManager.Get.LoaderController.ShowLoader(null);
             User user = await UserManager.Get.getUser();
-
+            SeembaAnalyticsManager.Get.SendCreditEvent("Try to credit", float.Parse(amountToAdd));
             if (EventsController.Get.checkUserBirthday(user))
             {
                 PopupManager.Get.PopupController.ShowPopup(PopupType.AGE_VERIFICATION, PopupsText.Get.AgeVerification());
@@ -91,6 +91,7 @@ namespace SeembaSDK
         public async System.Threading.Tasks.Task AddOtherAmountAsync()
         {
             WalletScript.LastCredit = float.Parse(OtherAmount.text.Replace(".", ","), System.Globalization.NumberStyles.Float);
+            Debug.LogWarning(WalletScript.LastCredit);
             LoaderManager.Get.LoaderController.ShowLoader(null);
             User user = await UserManager.Get.getUser();
 

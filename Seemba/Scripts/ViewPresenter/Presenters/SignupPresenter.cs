@@ -7,12 +7,17 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using Facebook.Unity;
+using System.Collections.Generic;
+using SimpleJSON;
+
 [CLSCompliant(false)]
 public class SignupPresenter : MonoBehaviour
 {
     #region Script Parameters
     public InputField username, email, password, confirmPassword;
     public Button Signup;
+    public Button FBLogin;
     public Button Signin;
     public Sprite[] spriteArray;
     public Button changeCharacter;
@@ -38,7 +43,10 @@ public class SignupPresenter : MonoBehaviour
 
     #region Unity Methods
     void Start()
-    {
+    {   
+        //Init FB SDK
+        FB.Init(this.OnFBInitComplete, this.OnFBHideUnity);
+
         Signin.onClick.AddListener(delegate {
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
         });
@@ -135,6 +143,11 @@ public class SignupPresenter : MonoBehaviour
         {
             GetComponent<SignupController>().Signup(username.text, email.text, password.text, Avatar);
         });
+        FBLogin.onClick.AddListener(delegate
+        {
+            FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email", "user_friends" }, this.HandleFBLoginResult);
+        });
+
     }
     void Update()
     {
@@ -157,6 +170,59 @@ public class SignupPresenter : MonoBehaviour
             Avatar.sprite = image.sprite;
         }
     }
+    private void OnFBInitComplete()
+    {
+        if (AccessToken.CurrentAccessToken != null)
+        {
+            Debug.Log("FB CurrentAccessToken: " + AccessToken.CurrentAccessToken.ToString());
+        }
+    }
+    private void OnFBHideUnity(bool isGameShown)
+    {
+        Debug.Log("FB Is game shown: " + isGameShown);
+    }
+    protected void HandleFBLoginResult(IResult result)
+    {
+        if (result == null)
+        {
+            return;
+        }
+        // Some platforms return the empty string instead of null.
+        if (!string.IsNullOrEmpty(result.Error))
+        {
+        }
+        else if (result.Cancelled)
+        {
+        }
+        else if (!string.IsNullOrEmpty(result.RawResult))
+        {
+        }
+        else
+        {
+        }
+        Debug.Log(result.ToString());
+        /*  foreach (string perm in AccessToken.CurrentAccessToken.Permissions)
+          {
+              // log each granted permission
+              Debug.Log(perm);
+          }*/
+        FB.API("/me/picture", HttpMethod.GET, this.HandleFBProfilePhotoResult);
+        FB.API("/me", HttpMethod.GET, this.HandleFBInfoResult);
+    }
+    protected void HandleFBProfilePhotoResult(IGraphResult result)
+    {
+        Texture2D RoundTxt = ImagesManager.RoundCrop(result.Texture);
+        Avatar.sprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
+    }
+    protected void HandleFBInfoResult(IResult result)
+    {
+        if (result.Error == null)
+        {
+            var N = JSON.Parse(result.RawResult);
+            username.text = N["name"].Value;
+        }
+    }
+
     #endregion
 
     #region Implementations

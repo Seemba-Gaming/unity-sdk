@@ -20,6 +20,7 @@ namespace SeembaSDK
     {
         #region Static 
         public static float WithdrawMoney;
+        public static float AmountToWithdraw;
         #endregion
 
         #region Script Parameters
@@ -49,6 +50,7 @@ namespace SeembaSDK
 
             WithdrawButton.onClick.AddListener(() =>
             {
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Click On Withdrawal", AmountToWithdraw);
                 CheckAndWithdraw();
             });
 
@@ -62,6 +64,7 @@ namespace SeembaSDK
                 else
                 {
                     TextEuro.text = CurrencyManager.CURRENT_CURRENCY;
+                    AmountToWithdraw = float.Parse(Amount.text);
                     if ((float.Parse(Amount.text, CultureInfo.InvariantCulture) > 0) &&
                     (float.Parse(Amount.text, CultureInfo.InvariantCulture) <= (float.Parse(UserManager.Get.GetCurrentMoneyCredit()))))
                     {
@@ -76,6 +79,7 @@ namespace SeembaSDK
         }
         private void OnEnable()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Go to Withdraw");
             balance.text = UserManager.Get.CurrentUser.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
         }
 
@@ -105,14 +109,17 @@ namespace SeembaSDK
                 if (accountStatus.payouts_enabled)
                 {
                     controller.Withdraw(float.Parse(Amount.text, CultureInfo.InvariantCulture));
+                    Amount.text = string.Empty;
                 }
                 else
                 {
+                    SeembaAnalyticsManager.Get.SendWithdrawalEvent("Popup Missing Iban", AmountToWithdraw);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_MISSING_INFO, PopupsText.Get.MissingInfo(), "withdraw");
                 }
             }
             else
             {
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Popup prohibited location withdraw", AmountToWithdraw);
                 PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_PROHIBITED_LOCATION_WITHDRAW, PopupsText.Get.ProhibitedLocationWithdraw());
             }
         }

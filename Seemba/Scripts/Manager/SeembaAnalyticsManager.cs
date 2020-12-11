@@ -100,6 +100,17 @@ namespace SeembaSDK
             SeembaMixpanel.Track(action, props);
         }
 
+        public void SendWithdrawalEvent(string action, float amount)
+        {
+            Debug.LogWarning(action);
+            var props = new Value();
+            InitProps(props);
+            props["User Id"] = UserManager.Get.CurrentUser._id;
+            props["Withdrawn Amount"] = amount;
+            props["Action"] = action;
+            SeembaMixpanel.Track(action, props);
+        }
+
         public void InitProps(Value value)
         {
             value["Game Name"] = GamesManager.GAME_NAME;

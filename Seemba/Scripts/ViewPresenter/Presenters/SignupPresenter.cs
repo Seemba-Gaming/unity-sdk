@@ -43,11 +43,12 @@ public class SignupPresenter : MonoBehaviour
 
     #region Unity Methods
     void Start()
-    {   
+    {
         //Init FB SDK
         FB.Init(this.OnFBInitComplete, this.OnFBHideUnity);
 
-        Signin.onClick.AddListener(delegate {
+        Signin.onClick.AddListener(delegate
+        {
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
         });
 
@@ -89,22 +90,22 @@ public class SignupPresenter : MonoBehaviour
             LoaderEmail.enabled = true;
             AcceptedEmail.enabled = false;
             DeclinedEmail.enabled = false;
-                bool valide = await UserManager.Get.checkMailAsync(email.text);
-                if (valide && IsValidEmail(email.text))
-                {
-                    LoaderEmail.enabled = false;
-                    AcceptedEmail.enabled = true;
-                    DeclinedEmail.enabled = false;
-                    isEmailValid = true;
+            bool valide = await UserManager.Get.checkMailAsync(email.text);
+            if (valide && IsValidEmail(email.text))
+            {
+                LoaderEmail.enabled = false;
+                AcceptedEmail.enabled = true;
+                DeclinedEmail.enabled = false;
+                isEmailValid = true;
 
-                }
-                else
-                {
-                    LoaderEmail.enabled = false;
-                    AcceptedEmail.enabled = false;
-                    DeclinedEmail.enabled = true;
-                    isEmailValid = false;
-                }
+            }
+            else
+            {
+                LoaderEmail.enabled = false;
+                AcceptedEmail.enabled = false;
+                DeclinedEmail.enabled = true;
+                isEmailValid = false;
+            }
         });
 
         password.onValueChanged.AddListener(delegate
@@ -126,7 +127,7 @@ public class SignupPresenter : MonoBehaviour
             {
                 AcceptedConfirmPassword.enabled = false;
                 DeclinedConfirmPassword.enabled = true;
-                LoaderConfirmPassword.enabled = false; 
+                LoaderConfirmPassword.enabled = false;
                 isPasswordConfirmed = false;
             }
 
@@ -145,7 +146,8 @@ public class SignupPresenter : MonoBehaviour
         });
         FBLogin.onClick.AddListener(delegate
         {
-            FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email", "user_friends" }, this.HandleFBLoginResult);
+            LoaderManager.Get.LoaderController.ShowLoader(null);
+            FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email" }, this.HandleFBLoginResult);
         });
 
     }
@@ -183,43 +185,64 @@ public class SignupPresenter : MonoBehaviour
     }
     protected void HandleFBLoginResult(IResult result)
     {
-        if (result == null)
+        if (!string.IsNullOrEmpty(result.RawResult))
         {
-            return;
-        }
-        // Some platforms return the empty string instead of null.
-        if (!string.IsNullOrEmpty(result.Error))
-        {
-        }
-        else if (result.Cancelled)
-        {
-        }
-        else if (!string.IsNullOrEmpty(result.RawResult))
-        {
+            Debug.Log(result.RawResult);
+            Debug.Log(result.ToString());
+            /*  foreach (string perm in AccessToken.CurrentAccessToken.Permissions)
+              {
+                  // log each granted permission
+                  Debug.Log(perm);
+              }*/
+            FB.API("/me/picture", HttpMethod.GET, this.HandleFBProfilePhotoResult);
+            FB.API("/me?fields=id,name,email", HttpMethod.GET, this.HandleFBInfoResult);
+
         }
         else
         {
+            LoaderManager.Get.LoaderController.HideLoader();
+            if (result == null)
+            {
+                return;
+            }
+            // Some platforms return the empty string instead of null.
+            if (!string.IsNullOrEmpty(result.Error))
+            {
+                Debug.Log(result.Error);
+
+            }
+            else if (result.Cancelled)
+            {
+                Debug.Log(result.Error);
+            }
+            else if (!string.IsNullOrEmpty(result.RawResult))
+            {
+
+            }
+            else
+            {
+                //Empty Response
+            }
         }
-        Debug.Log(result.ToString());
-        /*  foreach (string perm in AccessToken.CurrentAccessToken.Permissions)
-          {
-              // log each granted permission
-              Debug.Log(perm);
-          }*/
-        FB.API("/me/picture", HttpMethod.GET, this.HandleFBProfilePhotoResult);
-        FB.API("/me", HttpMethod.GET, this.HandleFBInfoResult);
     }
     protected void HandleFBProfilePhotoResult(IGraphResult result)
     {
         Texture2D RoundTxt = ImagesManager.RoundCrop(result.Texture);
         Avatar.sprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
+        LoaderManager.Get.LoaderController.HideLoader();
+        FBLogin.interactable = false;
+
     }
     protected void HandleFBInfoResult(IResult result)
     {
         if (result.Error == null)
         {
+            Debug.Log(result.RawResult.ToString());
+
             var N = JSON.Parse(result.RawResult);
-            username.text = N["name"].Value;
+            if(!string.IsNullOrEmpty(N["name"].Value)) username.text = N["name"].Value;
+            if(!string.IsNullOrEmpty(N["email"].Value)) email.text = N["email"].Value;
+
         }
     }
 

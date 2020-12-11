@@ -46,7 +46,7 @@ public class IntegrationGUI : EditorWindow
             }
         }
         catch (Exception) { }
-        GetScenes();
+        //GetScenes();
     }
     #endregion
     #region METHOD

@@ -62,44 +62,28 @@ namespace SeembaSDK.Kakera
             return Application.persistentDataPath;
 #endif
         }
-        private void setAvatar(Texture2D texture)
-        {
-            Texture2D RoundTxt = ImagesManager.RoundCrop(texture);
-            Sprite newSprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
-            //Create Sprite and change ProfilePresenter Avatar
-            try
-            {
-                imageRenderer.sprite = newSprite;
-            }
-            catch (NullReferenceException)
-            {
-            }
-            imageRenderer.sprite = newSprite;
-        }
         private async void LoadImage(string path, Image output)
         {
             var url = "file://" + path;
             var www = UnityWebRequestTexture.GetTexture(url);
+            LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
             await www.SendWebRequest();
             var texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
             Debug.LogWarning("Load Image at : " + url);
-            Debug.LogWarning(imageToUpload);
             if (texture != null)
             {
-                if (imageToUpload == "avatar")
+                byte[] bytes;
+                bytes = texture.EncodeToPNG();
+                var avatarUrl = await ImagesManager.FixImage(bytes);
+                if (!string.IsNullOrEmpty(avatarUrl) && !avatarUrl.Equals("error"))
                 {
-                    byte[] bytes;
-                    bytes = texture.EncodeToPNG();
-                    var avatarUrl = await ImagesManager.FixImage(bytes);
-                    if (!string.IsNullOrEmpty(avatarUrl) && !avatarUrl.Equals("error"))
-                    {
-                        Texture2D RoundTxt = ImagesManager.RoundCrop(texture);
-                        Sprite newSprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
-                        imageRenderer.sprite = newSprite;
-                        UserManager.Get.CurrentAvatarBytesString = newSprite;
-                    }
+                    Texture2D RoundTxt = ImagesManager.RoundCrop(texture);
+                    Sprite newSprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
+                    imageRenderer.sprite = newSprite;
+                    UserManager.Get.CurrentAvatarBytesString = newSprite;
                 }
             }
+            LoaderManager.Get.LoaderController.HideLoader();
         }
     }
 }

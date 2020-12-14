@@ -29,11 +29,11 @@ namespace SeembaSDK
 
         internal string Token {
             get {
-                #if UNITY_EDITOR || DEBUG
+#if UNITY_EDITOR || DEBUG
                 return TestToken;
-                #else
-                return RuntimeToken;
-                #endif
+#else
+                return LiveToken;
+#endif
             }
         }
 

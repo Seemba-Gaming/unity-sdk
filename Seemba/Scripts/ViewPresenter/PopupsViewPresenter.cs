@@ -596,10 +596,13 @@ namespace SeembaSDK
             {
                 var toggle = child.GetComponent<Toggle>();
                 var image = child.GetComponent<Image>();
-                toggle.onValueChanged.AddListener((value) =>
+                if(toggle != null)
                 {
-                    ViewsEvents.Get.Signup.GetComponent<SignupPresenter>().OnToggleSelected(value, image);
-                });
+                    toggle.onValueChanged.AddListener((value) =>
+                    {
+                        ViewsEvents.Get.Signup.GetComponent<SignupPresenter>().OnToggleSelected(value, image);
+                    });
+                }
             }
         }
         public void ShowPopupContent(GameObject gameObject)

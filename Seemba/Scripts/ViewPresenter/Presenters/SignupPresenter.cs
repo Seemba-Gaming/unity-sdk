@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
 using TMPro;
-
 namespace SeembaSDK
 {
     [CLSCompliant(false)]
@@ -52,12 +51,12 @@ namespace SeembaSDK
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
             });
 
-            //changeCharacter.onClick.AddListener(() =>
-            //{
-            //    TranslationManager.scene = "Signup";
-            //    object[] _params = { TranslationManager.Get("choose_your_character") };
-            //    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CHOOSE_CHARACTER, _params);
-            //});
+            changeCharacter.onClick.AddListener(() =>
+            {
+                TranslationManager.scene = "Signup";
+                object[] _params = { TranslationManager.Get("choose_your_character") };
+                PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CHOOSE_CHARACTER, _params);
+            });
 
             System.Random rnd = new System.Random();
             RandomValue = rnd.Next(0, 20);

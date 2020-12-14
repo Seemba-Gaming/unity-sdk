@@ -1,35 +1,49 @@
 ﻿using System;
 using UnityEngine;
+
 namespace SeembaSDK.Kakera
 {
-	[CLSCompliant(false)]
     public class Unimgpicker : MonoBehaviour
     {
         public delegate void ImageDelegate(string path);
+
         public delegate void ErrorDelegate(string message);
+
         public event ImageDelegate Completed;
+
         public event ErrorDelegate Failed;
-        private IPicker picker = 
-        #if UNITY_IOS && !UNITY_EDITOR
+
+        private IPicker picker =
+#if UNITY_EDITOR
+            new Picker_editor();
+#elif UNITY_IOS
             new PickeriOS();
-        #elif UNITY_ANDROID && !UNITY_EDITOR
+#elif UNITY_ANDROID
             new PickerAndroid();
-        #else
+#else
             new PickerUnsupported();
-        #endif
+#endif
+
+        [Obsolete("Resizing is deprecated. Use Show(title, outputFileName)")]
         public void Show(string title, string outputFileName, int maxSize)
         {
-			//Debug.Log ("L27 outputFileName : "+outputFileName);
-            picker.Show(title, outputFileName, maxSize);
+            Show(title, outputFileName);
         }
+
+        public void Show(string title, string outputFileName)
+        {
+            picker.Show(title, outputFileName);
+        }
+
         private void OnComplete(string path)
-		{    //Debug.Log ("OnComplete : "+path);
+        {
             var handler = Completed;
             if (handler != null)
             {
                 handler(path);
             }
         }
+
         private void OnFailure(string message)
         {
             var handler = Failed;

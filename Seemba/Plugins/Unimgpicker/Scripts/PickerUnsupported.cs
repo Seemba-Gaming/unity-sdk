@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
+
 namespace SeembaSDK.Kakera
 {
     internal class PickerUnsupported : IPicker
     {
-        public void Show(string title, string outputFileName, int maxSize)
+        public void Show(string title, string outputFileName)
         {
             var message = "Unimgpicker is not supported on this platform.";
-            //Debug.LogError(message);
+            Debug.LogError(message);
+
             var receiver = GameObject.Find("Unimgpicker");
             if (receiver != null)
             {

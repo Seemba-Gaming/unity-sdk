@@ -52,6 +52,7 @@ namespace SeembaSDK
 
                         if (Res["success"].AsBool)
                         {
+                            SeembaAnalyticsManager.Get.SendGameEvent("Signed up");
                             var deviceToken = PlayerPrefs.GetString("DeviceToken");
                             var userid = UserManager.Get.getCurrentUserId();
                             var platform = "";
@@ -77,12 +78,14 @@ namespace SeembaSDK
                             ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
                             LoaderManager.Get.LoaderController.HideLoader();
                             EventsController.Get.startFirstChallenge(Res["token"].Value);
+                            SeembaAnalyticsManager.Get.SendUserEvent("Signed up with Email");
                         }
                         else
                         {
                             ConnectivityController.CURRENT_ACTION = "";
                             LoaderManager.Get.LoaderController.HideLoader();
                             PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+                            SeembaAnalyticsManager.Get.SendGameEvent("weak network");
                         }
                     }
                 }));

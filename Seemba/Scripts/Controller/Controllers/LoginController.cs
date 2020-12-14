@@ -42,6 +42,7 @@ namespace SeembaSDK
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Menu.gameObject);
                 ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Home);
                 //ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.HaveFun);
+                SeembaAnalyticsManager.Get.SendUserEvent("Logged In");
 
                 return true;
             }
@@ -49,6 +50,7 @@ namespace SeembaSDK
             {
                 print("auth failed");
                 ShowLoginFailedAnimation();
+                SeembaAnalyticsManager.Get.SendUserEvent("Auth Failed");
                 return false;
             }
             else

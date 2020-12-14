@@ -82,31 +82,26 @@ namespace SeembaSDK
         #endregion
 
         //Set The Game Name*
-        public static string GAME_NAME = "Desert Dash";
+        public static string GAME_NAME;
         //
         public static string GAME_ANDROID_URL = "https://play.google.com/store/apps/details?id=com.seemba.desertdashmexico";
-        public static string GAME_IOS_URL = "Desert Dash";
+        public static string GAME_IOS_URL;
         //Set Scene name of game , Entry point to the game
-        public static string GAME_SCENE_NAME = "main";
+        public static string GAME_SCENE_NAME;
         public static bool GAME_SCENE_SEPERATED = false;
         public static string EDITOR_ID;
         //The game level number used for your matchmaking. Otherwise, keep it null.
         public static int? GAME_LEVEL = null;
 
         //Set The Game Id shown in your Dashboard ,you can't start without setting the correct id
-        //internal static string GAME_ID = "5aa62f71e7c48800057cab19"; //prod 
-        internal static string GAME_ID = "5a80e1f3230fac86d8f6f2c7"; //staging
-
+        internal static string GAME_ID; //staging
 
         public static string ICON_URL;
         public static string BACKGROUND_IMAGE_URL;
 
-
         public static bool? backgroundSaved = null;
         public static bool? iconSaved = null;
         public static Sprite CurrentIcon;
-        public const string FREE_BUBBLES_PUSH = "free_bubbles_push";
-        public const string ADS_WATCHED = "ads_watched";
         public bool AutoPlayActivated;
         private void Awake()
         {

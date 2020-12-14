@@ -99,6 +99,7 @@ namespace SeembaSDK
                 {
                     ChallengeManager.CurrentChallengeId = challenge._id;
                     ReplayChallengePresenter.ChallengeToReplay = challenge;
+                    SeembaAnalyticsManager.Get.SendDuelInfoEvent("Bug Challenge", ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type), float.Parse(challenge.gain), challenge.gain_type);
                     ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject);
                     return;
                 }

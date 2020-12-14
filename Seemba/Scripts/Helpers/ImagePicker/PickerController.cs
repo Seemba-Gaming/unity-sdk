@@ -15,40 +15,22 @@ namespace SeembaSDK.Kakera
         private Image imageRenderer;
         public static string pathID1, pathAddress, pathBank, pathPassport, imageToUpload;
 
-        private void Awake()
+        private void Start()
         {
-            try
+            imagePicker.Completed += (string path) =>
             {
-                imagePicker.Completed += (string path) =>
-                {
-                    LoadImage(path, imageRenderer);
-                };
-            }
-            catch (NullReferenceException)
-            {
-            }
+                Debug.LogWarning("call back added");
+                LoadImage(path, imageRenderer);
+            };
         }
         public void OnPressShowPicker()
         {
-            try
-            {
-                imagePicker.Show("Select Image", "unimgpicker", 1024);
-            }
-            catch (NullReferenceException)
-            {
-            }
+            imagePicker.Show("Select Image", "unimgpicker", 1024);
         }
         public void OnPressShowPicker(string name)
         {
-            try
-            {
-                imagePicker.Show("Select Image", "unimgpicker", 1024);
-                imageToUpload = name;
-                //Debug.Log ("imageToUpload : "+imageToUpload);
-            }
-            catch (NullReferenceException)
-            {
-            }
+            imagePicker.Show("Select Image", "unimgpicker", 1024);
+            imageToUpload = name;
         }
 
         private string getDataPath()
@@ -100,71 +82,23 @@ namespace SeembaSDK.Kakera
             var www = UnityWebRequestTexture.GetTexture(url);
             await www.SendWebRequest();
             var texture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            Debug.LogWarning("Load Image at : " + url);
+            Debug.LogWarning(imageToUpload);
             if (texture != null)
             {
-                //if (imageToUpload == "avatar")
-                //{
-                //    byte[] bytes;
-                //    bytes = texture.EncodeToPNG();
-                //    var avatarUrl = await ImagesManager.FixImage(bytes);
-                //    if (!string.IsNullOrEmpty(avatarUrl) && !avatarUrl.Equals("error"))
-                //    {
-
-                //        Texture2D RoundTxt = ImagesManager.RoundCrop(texture);
-                //        Sprite newSprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
-                //        //Create Sprite and change ProfilePresenter Avatar
-                //        try
-                //        {
-                //            GameObject.Find("_Avatar").GetComponent<Image>().sprite = newSprite;
-                //        }
-                //        catch (NullReferenceException ex)
-                //        {
-                //        }
-                //        GameObject.Find("Avatar").GetComponent<Image>().sprite = newSprite;
-                //        //Update Current user Avatar in Views
-                //        UserManager.Get.CurrentAvatarBytesString = newSprite;
-                //    }
-                //}
-                //else if (imageToUpload == "IDFront")
-                //{
-                //    Texture2D ScaledTxt = ImagesManager.ScaleTexture(texture, texture.width, texture.height);
-                //    byte[] bytes = ScaledTxt.EncodeToPNG();
-                //    System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "ImageIDFront.png", bytes);
-                //    pathID1 = Application.persistentDataPath + '/' + "ImageIDFront.png";
-                //    EventsController.Get.uploadDoc(pathID1, "IDFront");
-                //}
-                //else if (imageToUpload == "IDBack")
-                //{
-                //    Texture2D ScaledTxt = ImagesManager.ScaleTexture(texture, texture.width, texture.height);
-                //    byte[] bytes = ScaledTxt.EncodeToPNG();
-                //    System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "ImageIDBack.png", bytes);
-                //    pathID1 = Application.persistentDataPath + '/' + "ImageIDBack.png";
-                //    EventsController.Get.uploadDoc(pathID1, "IDBack");
-                //}
-                //else if (imageToUpload == "passport")
-                //{
-                //    Texture2D ScaledTxt = ImagesManager.ScaleTexture(texture, texture.width, texture.height);
-                //    byte[] bytes = ScaledTxt.EncodeToPNG();
-                //    System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "ImagePassport.png", bytes);
-                //    pathPassport = Application.persistentDataPath + '/' + "ImagePassport.png";
-                //    EventsController.Get.uploadDoc(pathPassport, "Passport");
-                //}
-                //else if (imageToUpload == "address")
-                //{
-                //    Texture2D ScaledTxt = ImagesManager.ScaleTexture(texture, texture.width, texture.height);
-                //    byte[] bytes = ScaledTxt.EncodeToPNG();
-                //    System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "ImageAddress.png", bytes);
-                //    pathAddress = Application.persistentDataPath + '/' + "ImageAddress.png";
-                //    EventsController.Get.uploadDoc(pathAddress, "Address");
-                //}
-                //else if (imageToUpload == "bank")
-                //{
-                //    Texture2D ScaledTxt = ImagesManager.ScaleTexture(texture, texture.width, texture.height);
-                //    byte[] bytes = ScaledTxt.EncodeToPNG();
-                //    System.IO.File.WriteAllBytes(Application.persistentDataPath + '/' + "ImageBank.png", bytes);
-                //    pathBank = Application.persistentDataPath + '/' + "ImageBank.png";
-                //    EventsController.Get.uploadDoc(pathBank, "Iban");
-                //}
+                if (imageToUpload == "avatar")
+                {
+                    byte[] bytes;
+                    bytes = texture.EncodeToPNG();
+                    var avatarUrl = await ImagesManager.FixImage(bytes);
+                    if (!string.IsNullOrEmpty(avatarUrl) && !avatarUrl.Equals("error"))
+                    {
+                        Texture2D RoundTxt = ImagesManager.RoundCrop(texture);
+                        Sprite newSprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
+                        imageRenderer.sprite = newSprite;
+                        UserManager.Get.CurrentAvatarBytesString = newSprite;
+                    }
+                }
             }
         }
     }

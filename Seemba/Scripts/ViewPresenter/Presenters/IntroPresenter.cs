@@ -26,6 +26,7 @@ namespace SeembaSDK
             Continue.onClick.AddListener(delegate
             {
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
+                SeembaAnalyticsManager.Get.SendGameEvent("Go to Signup");
             });
         }
 

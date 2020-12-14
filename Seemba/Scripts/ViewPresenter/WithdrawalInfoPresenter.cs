@@ -36,6 +36,7 @@ namespace SeembaSDK
         {
             Continue.onClick.AddListener(async delegate
             {
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Create Connect Account", WithdrawPresenter.AmountToWithdraw);
                 await CreateConnectAccount();
             });
         }
@@ -48,10 +49,11 @@ namespace SeembaSDK
             LoaderManager.Get.LoaderController.HideLoader();
 
             init_iban(user);
-
+            Debug.LogWarning(user.payment_account_id);
             if (!string.IsNullOrEmpty(user.payment_account_id))
             {
                 var account = await controller.GetAccountStatus();
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Checking Account Status", WithdrawPresenter.AmountToWithdraw);
                 CheckAccountStatus(account);
             }
         }
@@ -60,14 +62,17 @@ namespace SeembaSDK
             Debug.Log("verification_status: " + account.verification_status);
             if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_UNVERIFIED))
             {
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Unverified Account Status", WithdrawPresenter.AmountToWithdraw);
                 Unverified(account.verification_link);
             }
             if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING))
             {
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Pending Account Status", WithdrawPresenter.AmountToWithdraw);
                 Pending();
             }
             if (account.verification_status.Equals(WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED))
             {
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Verified Account Status", WithdrawPresenter.AmountToWithdraw);
                 Verified();
             }
         }
@@ -77,11 +82,14 @@ namespace SeembaSDK
             {
                 ViewsEvents.Get.GoBack();
                 Application.OpenURL(verification_link);
+                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Open Documents Verification Link", WithdrawPresenter.AmountToWithdraw);
             }
         }
         private void Pending()
         {
-            Iban.placeholder.GetComponent<Text>().text = "Already Uploaded! Waiting for verification...";
+            TranslationManager.scene = "WithdrawalInfo";
+            Iban.text = string.Empty;
+            Iban.placeholder.GetComponent<Text>().text = TranslationManager.Get("already_uploaded");
         }
         private void Verified()
         {
@@ -98,6 +106,7 @@ namespace SeembaSDK
             {
                 if (!string.IsNullOrEmpty(account.verification_link))
                 {
+                    SeembaAnalyticsManager.Get.SendWithdrawalEvent("Open Info Verification Link", WithdrawPresenter.AmountToWithdraw);
                     Application.OpenURL(account.verification_link);
                 }
             }

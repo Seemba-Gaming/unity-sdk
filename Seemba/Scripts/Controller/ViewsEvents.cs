@@ -64,6 +64,7 @@ namespace SeembaSDK
                 var user = await UserManager.Get.getUser();
                 UserManager.Get.CurrentUser = user;
                 UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(user.avatar);
+                SeembaAnalyticsManager.Get.SendUserEvent("Login with Token");
                 GoToMenu(Menu.gameObject);
                 ShowScene(Menu.Home);
                 //ShowScene(Menu.HaveFun);
@@ -76,55 +77,66 @@ namespace SeembaSDK
         }
         public void WalletClick(string last_view)
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Wallet Click");
             ShowScene(Menu.Wallet);
         }
         public void WinMoneyClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Win Money Click");
             BottomMenuController._currentPage = 0;
             BottomMenuController.Show();
             ShowScene(Menu.winMoney);
         }
         public void HaveFunClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Have fun Click");
             BottomMenuController.Show();
             ShowScene(Menu.HaveFun);
         }
         public void HomeClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Home Click");
             BottomMenuController.Show();
             ShowScene(Menu.Home);
         }
         public void MarketClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Market Click");
             BottomMenuController.Show();
             ShowScene(Menu.Market);
         }
         public void SettingsClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Settings Click");
             ProfilLastResultListController.profileSceneOpened = false;
             //BottomMenuController.Show();
             ShowScene(Menu.Settings);
         }
         public void SecurityClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Security Click");
             ShowScene(Menu.Security);
         }
         public void PersonalInfoclick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Personal Info Click");
             GoToMenu(PersonalInfo.gameObject);
         }
         public void LegalClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Legal Click");
             BottomMenuController.Hide();
             ShowScene(Menu.Legal);
         }
         public void ContactClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Contact Click");
             BottomMenuController.Hide();
             ShowScene(Menu.Contact);
         }
         public void HistoryClick()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("History Click");
             GoToMenu(History.gameObject);
         }
         public void ShowScene(GameObject gameObject)
@@ -163,6 +175,7 @@ namespace SeembaSDK
         }
         public void GoBack()
         {
+            SeembaAnalyticsManager.Get.SendUserEvent("Back Button");
             var current = mHistory.Pop();
             Show(current, mHistory.First(), false);
             mCurrentMenu = mHistory.First();

@@ -48,6 +48,7 @@ namespace SeembaSDK
 
             Signin.onClick.AddListener(delegate
             {
+                SeembaAnalyticsManager.Get.SendGameEvent("Go to Login");
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
             });
 

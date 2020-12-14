@@ -70,38 +70,38 @@ namespace SeembaSDK
                 var responseJson = JSON.Parse(www.downloadHandler.text);
                 if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_number"))
                 {
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect Card Number", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_NUMBER, PopupsText.Get.StripeIncorrectNumber());
                     return;
                 }
                 if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("card_declined"))
                 {
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Card Declined", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_CARD_DECLINED, PopupsText.Get.StripeCardDeclined());
                     return;
                 }
                 if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_cvc"))
                 {
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect CVC", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_CVC, PopupsText.Get.StripeIncorrectCVC());
                     return;
                 }
                 if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("balance_insufficient"))
                 {
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Card Balance Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
                     return;
                 }
                 if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("insufficient_funds"))
                 {
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Card funds Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
                     return;
                 }
-                //if(responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("try_again_later"))
-                //{
-                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_TRY_AGAIN_LATER, PopupsText.Get.StripeTryAgainLater());
-                return;
-                //}
-                //else
-                //{
 
-                //}
+                PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_TRY_AGAIN_LATER, PopupsText.Get.StripeTryAgainLater());
+                SeembaAnalyticsManager.Get.SendCreditEvent("Stripe Error Try Later", WalletScript.LastCredit);
+                return;
             }
             else
             {
@@ -327,6 +327,8 @@ namespace SeembaSDK
             ViewsEvents.Get.GetCurrentMenu().SetActive(false);
             AudioListener.enabled = false;
             ViewsEvents.Get.Matchmaking.GetComponent<OpponentFound>().ResetOpponent();
+            var fee = ChallengeManager.Get.GetChallengeFee(float.Parse(ChallengeManager.CurrentChallengeGain), ChallengeManager.CurrentChallengeGainType);
+            SeembaAnalyticsManager.Get.SendDuelInfoEvent("Play Duel Now", fee, float.Parse(ChallengeManager.CurrentChallengeGain), ChallengeManager.CurrentChallengeGainType);
             SceneManager.LoadSceneAsync(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
         }
         public bool checkUserBirthday(User user)
@@ -402,6 +404,7 @@ namespace SeembaSDK
             ChallengeManager.CurrentChallenge = await ChallengeManager.Get.AddChallenge("headTohead", ChallengeManager.CurrentChallengeGain, ChallengeManager.CurrentChallengeGainType, 0, token);
             LoaderManager.Get.LoaderController.HideLoader();
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Matchmaking.gameObject);
+            SeembaAnalyticsManager.Get.SendUserEvent("Start First Challenge");
         }
         public void WalletBack()
         {

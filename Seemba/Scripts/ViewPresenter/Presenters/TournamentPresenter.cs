@@ -59,6 +59,8 @@ namespace SeembaSDK
                 Destroy(mCurrentBracket);
             }
             ViewsEvents.Get.GetCurrentMenu().SetActive(false);
+            var fee = TournamentManager.Get.GetChallengeFee(TournamentController.CURRENT_TOURNAMENT_GAIN, TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE);
+            SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Play Tournament", fee, TournamentController.CURRENT_TOURNAMENT_GAIN, TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE);
             SceneManager.LoadScene(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
         }
         public JSONArray getChallenges(JSONArray rounds)

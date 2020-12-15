@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace SeembaSDK.Kakera
 {
+#pragma warning disable 0649
     [CLSCompliant(false)]
     public class PickerController : MonoBehaviour
     {
@@ -13,6 +14,7 @@ namespace SeembaSDK.Kakera
         public static PickerController Get { get { return sInstance; } }
         private static PickerController sInstance;
         #endregion
+
 
         [SerializeField]
         private Unimgpicker imagePicker;

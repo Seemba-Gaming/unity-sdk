@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SeembaSDK.Kakera
 {
+    [CLSCompliant(false)]
     public class Unimgpicker : MonoBehaviour
     {
         public delegate void ImageDelegate(string path);

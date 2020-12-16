@@ -207,7 +207,7 @@ namespace SeembaSDK
                         properties["$ios_device_model"] = SystemInfo.deviceModel;
                         // properties["$ios_app_version"] = Application.version;
 #elif UNITY_ANDROID
-                properties["$android_lib_version"] = SeembaMixpanel.MixpanelUnityVersion;
+                        properties["$android_lib_version"] = SeembaMixpanel.MixpanelUnityVersion;
                         properties["$android_os"] = "Android";
                         properties["$android_os_version"] = SystemInfo.operatingSystem;
                         properties["$android_model"] = SystemInfo.deviceModel;

@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
 using TMPro;
-
 namespace SeembaSDK
 {
     [CLSCompliant(false)]

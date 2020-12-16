@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using SeembaSDK.Kakera;
 
 namespace SeembaSDK
 {
@@ -94,6 +95,10 @@ namespace SeembaSDK
         #endregion
 
         #region Methods
+        public void OnClickAddImage()
+        {
+            PickerController.Get.OnPressShowPicker();
+        }
         public void ShowPopup(PopupType popupType, object[] _params, string note = null, Image cover = null)
         {
             //LoadPopup();

@@ -31,6 +31,7 @@ namespace SeembaSDK
         public PersonalInfoPresenter PersonalInfo;
         public HistoryPresenter History;
         public WithdrawalInfoPresenter WithdrawalInfo;
+        public LeaderboardPresenter Leaderboard;
 
         public GameObject Overlay;
         #endregion
@@ -104,6 +105,12 @@ namespace SeembaSDK
             SeembaAnalyticsManager.Get.SendUserEvent("Market Click");
             BottomMenuController.Show();
             ShowScene(Menu.Market);
+        }
+        public void LeaderboardClick()
+        {
+            SeembaAnalyticsManager.Get.SendUserEvent("Leaderboard Click");
+            BottomMenuController.Show();
+            ShowScene(Menu.Leaderboard);
         }
         public void SettingsClick()
         {

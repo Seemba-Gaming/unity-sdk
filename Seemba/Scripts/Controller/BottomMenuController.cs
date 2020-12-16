@@ -11,7 +11,7 @@ namespace SeembaSDK
         private static BottomMenuController sInstance;
         #endregion
         private static BottomMenuController _Instance;
-        public GameObject home, haveFun, WinMoney, settings, Market;
+        public GameObject home, haveFun, WinMoney, settings, Market, Leaderboard;
         public static int _currentPage = 0;
         public string selectedMenu = "Home";
         void Awake()
@@ -95,6 +95,15 @@ namespace SeembaSDK
         public void unselectMarket()
         {
             if (menu == "Market") { Market.GetComponent<Animator>().SetBool("focused", false); }
+        }
+        public void SelecLeaderboard()
+        {
+            Leaderboard.GetComponent<Animator>().SetBool("focused", true);
+            menu = "Leaderboard";
+        }
+        public void unselectLeaderboard()
+        {
+            if (menu == "Leaderboard") { Leaderboard.GetComponent<Animator>().SetBool("focused", false); }
         }
     }
 }

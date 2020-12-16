@@ -20,6 +20,7 @@ namespace SeembaSDK
         public GameObject BottomBar;
         public GameObject Header;
         public GameObject Market;
+        public GameObject Leaderboard;
         public ScrollSnapRect ScrollSnap;
         public WalletScript SettingsWallet;
         #endregion
@@ -42,6 +43,7 @@ namespace SeembaSDK
             mSubMenus.Add(Legal);
             mSubMenus.Add(Wallet);
             mSubMenus.Add(Market);
+            mSubMenus.Add(Leaderboard);
         }
         #endregion
 

@@ -89,8 +89,6 @@ public class SignupController : MonoBehaviour
                 }
             }));
     }
-    public void FBLogin()
-    {
-        }
+    
     
 }

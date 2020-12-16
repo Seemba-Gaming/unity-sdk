@@ -10,6 +10,7 @@ using UnityEditor;
 using Facebook.Unity;
 using System.Collections.Generic;
 using SimpleJSON;
+using UnityEngine.SignInWithApple;
 
 [CLSCompliant(false)]
 public class SignupPresenter : MonoBehaviour
@@ -18,6 +19,7 @@ public class SignupPresenter : MonoBehaviour
     public InputField username, email, password, confirmPassword;
     public Button Signup;
     public Button FBLogin;
+    public Button AppleLogin;
     public Button Signin;
     public Sprite[] spriteArray;
     public Button changeCharacter;
@@ -150,6 +152,17 @@ public class SignupPresenter : MonoBehaviour
             FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email" }, this.HandleFBLoginResult);
         });
 
+#if UNITY_IOS
+        AppleLogin.gameObject.SetActive(true);
+        AppleLogin.onClick.AddListener(delegate
+        {
+            LoaderManager.Get.LoaderController.ShowLoader(null);
+            var siwa = AppleLogin.GetComponent<SignInWithApple>();
+            siwa.Login(OnLogin);
+        });
+#else
+        AppleLogin.gameObject.SetActive(false);
+#endif
     }
     void Update()
     {
@@ -172,6 +185,7 @@ public class SignupPresenter : MonoBehaviour
             Avatar.sprite = image.sprite;
         }
     }
+    #region Facebook_Login
     private void OnFBInitComplete()
     {
         if (AccessToken.CurrentAccessToken != null)
@@ -240,11 +254,32 @@ public class SignupPresenter : MonoBehaviour
             Debug.Log(result.RawResult.ToString());
 
             var N = JSON.Parse(result.RawResult);
-            if(!string.IsNullOrEmpty(N["name"].Value)) username.text = N["name"].Value;
-            if(!string.IsNullOrEmpty(N["email"].Value)) email.text = N["email"].Value;
+            if (!string.IsNullOrEmpty(N["name"].Value)) username.text = N["name"].Value;
+            if (!string.IsNullOrEmpty(N["email"].Value)) email.text = N["email"].Value;
 
         }
     }
+    #endregion
+    #region Apple_Login
+#if UNITY_IOS
+    public void OnLogin(SignInWithApple.CallbackArgs args)
+    {
+        Debug.Log("Sign in with Apple login has completed.");
+        UserInfo userInfo = args.userInfo;
+        //Fill UI
+        username.text = userInfo.displayName;
+        email.text = userInfo.email;
+        // Print out information about the user who logged in.
+        Debug.Log(
+            string.Format("Display Name: {0}\nEmail: {1}\nUser ID: {2}\nID Token: {3}", userInfo.displayName,
+                userInfo.email, userInfo.userId, userInfo.idToken));
+        //Hide Button 
+        AppleLogin.interactable = false;
+        //Hide Loader
+        LoaderManager.Get.LoaderController.HideLoader();
+    }
+#endif
+    #endregion
 
     #endregion
 

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace SeembaSDK
 {
@@ -12,24 +15,55 @@ namespace SeembaSDK
     [CLSCompliant(false)]
     public class LeaderboardController : MonoBehaviour
     {
-        private LeaderBoardItem[] LeaderBoardItems;
-        private GameObject LeaderboarditemPrefab;
-        private Transform Content;
+        #region Script Parameters
+        public GameObject LeaderboarditemPrefab;
+        public Transform Content;
+        #endregion
 
-        public void GetLeaderBoard(string period)
+        #region Fields
+        private LeaderBoardItem[] mLeaderBoardItems;
+        #endregion
+
+        #region Methods
+        public async Task GetLeaderBoardAsync(string period)
         {
             LoaderManager.Get.LoaderController.ShowLoader();
             //await some shit
-            FillLeaderboard(LeaderBoardItems);
+            mLeaderBoardItems = await GetLeaberboard(period);
+            FillLeaderboardAsync(mLeaderBoardItems);
             LoaderManager.Get.LoaderController.HideLoader();
         }
-
-        private void FillLeaderboard(LeaderBoardItem[] LeaderBoardItems)
+        public async Task<LeaderBoardItem[]> GetLeaberboard(string period)
         {
+            string url = Endpoint.classesURL + "/analytics/leaderboard-"+ period + "/" + GamesManager.GAME_ID;
+            WWWForm form = new WWWForm();
+            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+            Debug.LogWarning(response);
+            SeembaResponse<LeaderBoardItem[]> responseData = JsonConvert.DeserializeObject<SeembaResponse<LeaderBoardItem[]>>(response);
+            return responseData.data;
+        }
+        #endregion
+
+        #region Implementation
+        private void FillLeaderboardAsync(LeaderBoardItem[] LeaderBoardItems)
+        {
+            ResetContent();
             foreach(LeaderBoardItem item in LeaderBoardItems)
             {
-                 Instantiate(LeaderboarditemPrefab, Content);
+                var leaderboardItem = Instantiate(LeaderboarditemPrefab, Content);
+                leaderboardItem.GetComponent<LeaderboardItemController>().InitAsync(item);
             }
         }
+
+        private void ResetContent()
+        {
+            foreach (Transform item in Content)
+            {
+                Destroy(item.gameObject);
+            }
+        }
+        #endregion
+
+
     }
 }

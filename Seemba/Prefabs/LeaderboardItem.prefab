@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 114000013799155776}
   - component: {fileID: 114000010628796162}
   - component: {fileID: 3157365261722117860}
+  - component: {fileID: 937564630521135386}
   m_Layer: 5
   m_Name: LeaderboardItem
   m_TagString: Untagged
@@ -112,6 +113,21 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &937564630521135386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013132555054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9234f2ed45dee5949b5462fadebda7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Avatar: {fileID: 2184937215186960667}
+  Username: {fileID: 7220350553244217103}
+  Score: {fileID: 2813094065425457538}
 --- !u!1 &1370608780694174947
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +283,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: 
 --- !u!1 &2192409675481273774
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,7 +495,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'bada '
+  m_Text: 
 --- !u!1 &8972144206898151299
 GameObject:
   m_ObjectHideFlags: 0

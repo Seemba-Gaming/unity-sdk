@@ -12,47 +12,36 @@ namespace SeembaSDK
         public Toggle Monthly;
         void OnEnable()
         {
-            Daily.GetComponent<Text>().color = new Color(Daily.GetComponent<Text>().color.r,
-                                                        Daily.GetComponent<Text>().color.b,
-                                                        Daily.GetComponent<Text>().color.g, 
-                                                        1);
-            Weekly.GetComponent<Text>().color = new Color(Weekly.GetComponent<Text>().color.r,
-                                                        Weekly.GetComponent<Text>().color.b,
-                                                        Weekly.GetComponent<Text>().color.g,
-                                                        0.6f);
-            Monthly.GetComponent<Text>().color = new Color(Monthly.GetComponent<Text>().color.r,
-                                                        Monthly.GetComponent<Text>().color.b,
-                                                        Monthly.GetComponent<Text>().color.g,
-                                                        0.6f);
+            OnClickDailyAsync();
         }
-        public void OnClickDaily()
+        public async void OnClickDailyAsync()
         {
             if(Daily.isOn)
             {
                 ChangeAlpha(Daily.GetComponent<Text>(), 1);
                 ChangeAlpha(Weekly.GetComponent<Text>(), 0.6f);
                 ChangeAlpha(Monthly.GetComponent<Text>(), 0.6f);
-                GetComponent<LeaderboardController>().GetLeaderBoard("day");
+                await GetComponent<LeaderboardController>().GetLeaderBoardAsync("daily");
             }
         }
-        public void OnClickWeekly()
+        public async void OnClickWeeklyAsync()
         {
             if (Weekly.isOn)
             {
                 ChangeAlpha(Daily.GetComponent<Text>(), 0.6f);
                 ChangeAlpha(Weekly.GetComponent<Text>(), 1);
                 ChangeAlpha(Monthly.GetComponent<Text>(), 0.6f);
-                GetComponent<LeaderboardController>().GetLeaderBoard("week");
+                await GetComponent<LeaderboardController>().GetLeaderBoardAsync("weekly");
             }
         }
-        public void OnClickMonthly()
+        public async void OnClickMonthlyAsync()
         {
             if(Monthly.isOn)
             {
                 ChangeAlpha(Daily.GetComponent<Text>(), 0.6f);
                 ChangeAlpha(Weekly.GetComponent<Text>(), 0.6f);
                 ChangeAlpha(Monthly.GetComponent<Text>(), 1);
-                GetComponent<LeaderboardController>().GetLeaderBoard("month");
+                await GetComponent<LeaderboardController>().GetLeaderBoardAsync("monthly");
             }
         }
         public void ChangeAlpha(Text text, float alpha)

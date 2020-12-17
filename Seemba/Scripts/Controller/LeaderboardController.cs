@@ -38,7 +38,6 @@ namespace SeembaSDK
             string url = Endpoint.classesURL + "/analytics/leaderboard-"+ period + "/" + GamesManager.GAME_ID;
             WWWForm form = new WWWForm();
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            Debug.LogWarning(response);
             SeembaResponse<LeaderBoardItem[]> responseData = JsonConvert.DeserializeObject<SeembaResponse<LeaderBoardItem[]>>(response);
             return responseData.data;
         }

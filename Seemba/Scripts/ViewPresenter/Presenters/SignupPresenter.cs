@@ -3,6 +3,9 @@ using UnityEngine.UI;
 using System;
 using System.Text.RegularExpressions;
 using TMPro;
+using SeembaSDK.AppleAuth;
+using SeembaSDK.AppleAuth.Enums;
+
 namespace SeembaSDK
 {
     [CLSCompliant(false)]
@@ -36,6 +39,7 @@ namespace SeembaSDK
         private bool isEmailValid, isUsernameValid, isPasswordValid, isPasswordConfirmed;
         private string mTermsConditions;
         private string mPrivacyPolicy;
+        private IAppleAuthManager _appleAuthManager;
         #endregion
 
         #region Unity Methods
@@ -217,6 +221,24 @@ namespace SeembaSDK
             {
                 return false;
             }
+        }
+        #endregion
+
+        #region Apple Signup
+        public void SignInWithApple()
+        {
+            var loginArgs = new AppleAuthLoginArgs(LoginOptions.IncludeEmail | LoginOptions.IncludeFullName);
+
+            this._appleAuthManager.LoginWithAppleId(
+                loginArgs,
+                credential =>
+                {
+                    Debug.LogWarning("login with apple succeded");
+                },
+                error =>
+                {
+                    Debug.LogWarning("login with apple failed");
+                });
         }
         #endregion
     }

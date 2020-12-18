@@ -1,6 +1,6 @@
 {
     "name": "Seemba",
-    "references": ["NativeShare.Editor", "NativeShare.Runtime", "Unity.TextMeshPro", "Unity.TextMeshPro.Editor", "SeembaSDKMixPanel"],
+    "references": ["NativeShare.Editor", "NativeShare.Runtime", "Unity.TextMeshPro", "Unity.TextMeshPro.Editor", "SeembaSDKMixPanel", "SeembaSDKAppleAuth"],
     "includePlatforms": [],
     "excludePlatforms": [
         "LinuxStandalone64",

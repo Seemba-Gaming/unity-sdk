@@ -7,9 +7,10 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEditor;
-using Facebook.Unity;
+using Seemba.Facebook.Unity;
 using System.Collections.Generic;
 using SimpleJSON;
+using System.Net.Http;
 
 [CLSCompliant(false)]
 public class SignupPresenter : MonoBehaviour
@@ -45,7 +46,7 @@ public class SignupPresenter : MonoBehaviour
     void Start()
     {
         //Init FB SDK
-        FB.Init(this.OnFBInitComplete, this.OnFBHideUnity);
+        Seemba.Facebook.Unity.FB.Init(this.OnFBInitComplete, this.OnFBHideUnity);
 
         Signin.onClick.AddListener(delegate
         {
@@ -147,7 +148,7 @@ public class SignupPresenter : MonoBehaviour
         FBLogin.onClick.AddListener(delegate
         {
             LoaderManager.Get.LoaderController.ShowLoader(null);
-            FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email" }, this.HandleFBLoginResult);
+            Seemba.Facebook.Unity.FB.LogInWithReadPermissions(new List<string>() { "public_profile", "email" }, this.HandleFBLoginResult);
         });
 
     }
@@ -174,16 +175,16 @@ public class SignupPresenter : MonoBehaviour
     }
     private void OnFBInitComplete()
     {
-        if (AccessToken.CurrentAccessToken != null)
+        if (Seemba.Facebook.Unity.AccessToken.CurrentAccessToken != null)
         {
-            Debug.Log("FB CurrentAccessToken: " + AccessToken.CurrentAccessToken.ToString());
+            Debug.Log("FB CurrentAccessToken: " + Seemba.Facebook.Unity.AccessToken.CurrentAccessToken.ToString());
         }
     }
     private void OnFBHideUnity(bool isGameShown)
     {
         Debug.Log("FB Is game shown: " + isGameShown);
     }
-    protected void HandleFBLoginResult(IResult result)
+    protected void HandleFBLoginResult(Seemba.Facebook.Unity.IResult result)
     {
         if (!string.IsNullOrEmpty(result.RawResult))
         {
@@ -194,8 +195,8 @@ public class SignupPresenter : MonoBehaviour
                   // log each granted permission
                   Debug.Log(perm);
               }*/
-            FB.API("/me/picture", HttpMethod.GET, this.HandleFBProfilePhotoResult);
-            FB.API("/me?fields=id,name,email", HttpMethod.GET, this.HandleFBInfoResult);
+            Seemba.Facebook.Unity.FB.API("/me/picture", Seemba.Facebook.Unity.HttpMethod.GET, this.HandleFBProfilePhotoResult);
+            Seemba.Facebook.Unity.FB.API("/me?fields=id,name,email", Seemba.Facebook.Unity.HttpMethod.GET, this.HandleFBInfoResult);
 
         }
         else
@@ -225,7 +226,7 @@ public class SignupPresenter : MonoBehaviour
             }
         }
     }
-    protected void HandleFBProfilePhotoResult(IGraphResult result)
+    protected void HandleFBProfilePhotoResult(Seemba.Facebook.Unity.IGraphResult result)
     {
         Texture2D RoundTxt = ImagesManager.RoundCrop(result.Texture);
         Avatar.sprite = Sprite.Create(RoundTxt, new Rect(0, 0, RoundTxt.width, RoundTxt.height), new Vector2(0, 0));
@@ -233,7 +234,7 @@ public class SignupPresenter : MonoBehaviour
         FBLogin.interactable = false;
 
     }
-    protected void HandleFBInfoResult(IResult result)
+    protected void HandleFBInfoResult(Seemba.Facebook.Unity.IResult result)
     {
         if (result.Error == null)
         {

@@ -1,4 +1,4 @@
-﻿using Facebook.Unity;
+﻿using Seemba.Facebook.Unity;
 using SimpleJSON;
 using System;
 using System.Collections;

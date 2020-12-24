@@ -24,8 +24,8 @@ namespace SeembaSDK
             if (UserManager.Get.CurrentUser == null)
             {
                 StartCoroutine(CheckHeader());
+                StartCoroutine(CheckOngoingAndLastResult());
             }
-            StartCoroutine(CheckOngoingAndLastResult());
         }
         private IEnumerator CheckHeader()
         {

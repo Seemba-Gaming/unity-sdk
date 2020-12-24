@@ -34,8 +34,6 @@ namespace SeembaSDK
         #region Script Parameters
         public GameObject GiftPrefab;
         public Transform GiftContainer;
-        public Button GoUp;
-        public Button GoDown;
         #endregion
 
         #region Fields

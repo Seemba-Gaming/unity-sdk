@@ -4,7 +4,7 @@ using UnityEngine;
 namespace SeembaSDK
 {
     [CLSCompliant(false)]
-    public class HomeBottomBarController : MonoBehaviour
+    public class LeaderboardBottomBarController : MonoBehaviour
     {
         // Start is called before the first frame update
         void OnEnable()
@@ -12,10 +12,10 @@ namespace SeembaSDK
             BottomMenuController.Show();
             BottomMenuController.Get.unselectHaveFun();
             BottomMenuController.Get.unselectWinMoney();
-            BottomMenuController.Get.unselectMarket();
             BottomMenuController.Get.unselectSettings();
-            BottomMenuController.Get.unselectLeaderboard();
-            BottomMenuController.Get.selectHome();
+            BottomMenuController.Get.unselectHome();
+            BottomMenuController.Get.unselectMarket();
+            BottomMenuController.Get.SelecLeaderboard();
         }
     }
 }

@@ -13938,7 +13938,6 @@ GameObject:
   - component: {fileID: 4092294789847591693}
   - component: {fileID: 4092294789847591692}
   - component: {fileID: 4092294789847591731}
-  - component: {fileID: 4092294789847591730}
   - component: {fileID: 4092294789847591694}
   - component: {fileID: 4092294789847591695}
   m_Layer: 5
@@ -14059,19 +14058,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &4092294789847591730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4092294789847591728}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AudioListener: {fileID: 0}
 --- !u!95 &4092294789847591694
 Animator:
   serializedVersion: 3
@@ -19319,7 +19305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 519.66223}
+  m_AnchoredPosition: {x: 0, y: 827.15784}
   m_SizeDelta: {x: 0, y: 647}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &5761309054952936794

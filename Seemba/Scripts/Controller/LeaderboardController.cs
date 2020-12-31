@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 
 namespace SeembaSDK
 {
+    #pragma warning disable CS4014
     [CLSCompliant(false)]
     public class LeaderBoardItem
     {

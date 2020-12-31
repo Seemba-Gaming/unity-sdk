@@ -15,7 +15,7 @@ namespace SeembaSDK
 
         public static void Init()
         {
-            if(Seemba.Get.DevMode)
+            if(Seemba.Get.DevelopmentMode)
             {
                 stripeURL = "https://api.stripe.com/v1";
                 locationURL = "https://ipinfo.io/json/";

@@ -23,7 +23,7 @@ namespace SeembaSDK
         [HideInInspector]
         public bool IsSeemba = false;
         public bool OverlayActivated = false;
-        public bool DevMode = false;
+        public bool DevelopmentMode = false;
         #endregion
 
         #region Fields

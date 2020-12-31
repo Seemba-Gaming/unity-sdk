@@ -23,6 +23,7 @@ namespace SeembaSDK
         [HideInInspector]
         public bool IsSeemba = false;
         public bool OverlayActivated = false;
+        public bool DevMode = false;
         #endregion
 
         #region Fields
@@ -133,6 +134,7 @@ namespace SeembaSDK
         }
         private void OpenSeemba()
         {
+            Endpoint.Init();
             ConnectivityController.CURRENT_ACTION = ConnectivityController.ENTER_ESPORT_TOURNAMENT_ACTION;
             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.CHECKING_CONNECTION);
             StartCoroutine(checkInternetConnection(async (isConnected) =>

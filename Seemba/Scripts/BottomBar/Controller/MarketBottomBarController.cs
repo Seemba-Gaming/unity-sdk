@@ -14,6 +14,7 @@ namespace SeembaSDK
             BottomMenuController.Get.unselectWinMoney();
             BottomMenuController.Get.unselectSettings();
             BottomMenuController.Get.unselectHome();
+            BottomMenuController.Get.unselectAchievements();
             BottomMenuController.Get.unselectLeaderboard();
             BottomMenuController.Get.SelectMarket();
         }

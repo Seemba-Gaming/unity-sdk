@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SeembaSDK
 {
@@ -18,11 +19,11 @@ namespace SeembaSDK
 
         #region Static
         public static UserManager Get { get { return sInstance; } }
-
         private static UserManager sInstance;
         #endregion
 
         #region Script Parameters
+        public Dictionary<int, Sprite> Images = new Dictionary<int, Sprite>();
         public string CurrentFlagBytesString;
         public Sprite CurrentAvatarBytesString;
         public User CurrentUser;
@@ -117,24 +118,35 @@ namespace SeembaSDK
         }
         public async Task<Sprite> getAvatar(string url)
         {
-            Texture2D texture = new Texture2D(100, 100);
-            string prefsURL = PlayerPrefs.GetString(url);
-            if (string.IsNullOrEmpty(url))
+            var hashCode = url.GetHashCode();
+            Sprite sprite = null;
+            if (!Images.TryGetValue(hashCode, out sprite))
             {
-                return null;
-            }
-            UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
-            await www.SendWebRequest();
+                Texture2D texture = new Texture2D(100, 100);
+                string prefsURL = PlayerPrefs.GetString(url);
+                if (string.IsNullOrEmpty(url))
+                {
+                    return null;
+                }
+                UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+                await www.SendWebRequest();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.LogWarning(www.error);
-                return null;
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    Debug.LogWarning(www.error);
+                    return null;
+                }
+                var avatarTexture = DownloadHandlerTexture.GetContent(www);
+                texture = ImagesManager.RoundCrop(avatarTexture);
+                PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
+                sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
+                Images.Add(hashCode, sprite);
+                return sprite;
             }
-            var avatarTexture = DownloadHandlerTexture.GetContent(www);
-            texture = ImagesManager.RoundCrop(avatarTexture);
-            PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
-            return Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
+            else
+            {
+                return sprite;
+            }
         }
         public void saveUserId(string user)
         {

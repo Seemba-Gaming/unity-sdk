@@ -90,11 +90,10 @@ namespace SeembaSDK
             TranslationManager.scene = "Home";
             foreach (Challenge item in proItems)
             {
-                //JSONNode Result = ChallengeManager.Get.getChallengeResult (item.ChallengeId);
                 if ((item.user_1_score != null && item.user_2_score != null) || item.status == "results pending")
                 {
                     GameObject newItem = Instantiate(ListItemPrefab);
-                    HistoryListItemController controller = newItem.GetComponent<HistoryListItemController>();
+                    var controller = newItem.GetComponent<HistoryListItemController>();
                     float? adv2score, adv1score;
                     adv1score = item.user_1_score;
                     adv2score = item.user_2_score;
@@ -102,6 +101,7 @@ namespace SeembaSDK
                     controller.Date.text = DateTime.Parse(item.CreatedAt).ToString("yyyy/MM/dd HH:mm:ss");
                     controller.ChallengeID.text = "ID: " + item._id;
                     controller.Icon.sprite = GamesManager.CurrentIcon;
+
 
                     if (item.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
                     {

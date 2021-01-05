@@ -6,19 +6,18 @@ using UnityEngine;
 namespace SeembaSDK
 {
     [CLSCompliant(false)]
-    public class WinMoneyBottomBarController : MonoBehaviour
+    public class AchievementsBottomBarController : MonoBehaviour
     {
-        // Start is called before the first frame update
         void OnEnable()
         {
             BottomMenuController.Show();
-            BottomMenuController.Get.unselectHome();
             BottomMenuController.Get.unselectHaveFun();
+            BottomMenuController.Get.unselectWinMoney();
             BottomMenuController.Get.unselectSettings();
-            BottomMenuController.Get.unselectMarket();
+            BottomMenuController.Get.unselectHome();
             BottomMenuController.Get.unselectLeaderboard();
-            BottomMenuController.Get.unselectAchievements();
-            BottomMenuController.Get.selectWinMoney();
+            BottomMenuController.Get.unselectMarket();
+            BottomMenuController.Get.SelectAchievements();
         }
     }
 }

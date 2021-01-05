@@ -112,6 +112,12 @@ namespace SeembaSDK
             BottomMenuController.Show();
             ShowScene(Menu.Leaderboard);
         }
+        public void AchievementsClick()
+        {
+            SeembaAnalyticsManager.Get.SendUserEvent("Achivements Click");
+            BottomMenuController.Show();
+            ShowScene(Menu.Achievements);
+        }
         public void SettingsClick()
         {
             SeembaAnalyticsManager.Get.SendUserEvent("Settings Click");

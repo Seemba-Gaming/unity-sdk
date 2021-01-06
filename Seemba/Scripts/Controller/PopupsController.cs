@@ -62,25 +62,24 @@ namespace SeembaSDK
         public static PopupType CURRENT_POPUP;
         #endregion
 
+        #region Script Parameters
+        public Animator                                 PopupDuels;
+        public Animator                                 PopupAds;
+        public Animator                                 PopupError;
+        public Animator                                 PopupInfo;
+        public Animator                                 PopupAgeVerification;
+        public Animator                                 PopupUpdatePassword;
+        public Animator                                 PopupForgetPassword;
+        public Animator                                 PopupCurrentPassword;
+        public Animator                                 PopupWin;
+        public Animator                                 PopupCongrats;
+        public Animator                                 PopupPayment;
+        public Animator                                 PopupChooseCharacter;
+        public Animator                                 PopupCongratsWithdrawal;
+        public Animator                                 PopupPrivacyPolicy;
+        public Animator                                 PopupGiftCard;
 
-    #region Script Parameters
-    public Animator                                 PopupDuels;
-    public Animator                                 PopupAds;
-    public Animator                                 PopupError;
-    public Animator                                 PopupInfo;
-    public Animator                                 PopupAgeVerification;
-    public Animator                                 PopupUpdatePassword;
-    public Animator                                 PopupForgetPassword;
-    public Animator                                 PopupCurrentPassword;
-    public Animator                                 PopupWin;
-    public Animator                                 PopupCongrats;
-    public Animator                                 PopupPayment;
-    public Animator                                 PopupChooseCharacter;
-    public Animator                                 PopupCongratsWithdrawal;
-    public Animator                                 PopupPrivacyPolicy;
-    public Animator                                 PopupGiftCard;
-
-        #endregion
+            #endregion
 
         #region Fields
         private GameObject mPopupContent;

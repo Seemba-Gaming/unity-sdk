@@ -25,7 +25,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5479849061761730969}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -774,21 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769d878ebcba04e17a46341a92e5dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toggleGroup: {fileID: 0}
-  currentScene: 
-  CurrentChallengeId: 
-  mImage: {fileID: 0}
-  Tournoi8Gain: 
-  Tournoi8GainType: 
-  CurrentTourInTournoi8: 
-  NbPlayer: {fileID: 0}
-  CoachPanel: {fileID: 0}
-  Pro1vs1More: {fileID: 0}
-  Pro1BracketMore: {fileID: 0}
-  Pro1vs1Less: {fileID: 0}
-  Pro1BracketLess: {fileID: 0}
-  Loading: {fileID: 0}
-  AgeText: {fileID: 0}
+  AudioListener: {fileID: 0}
 --- !u!95 &5479849063075118233
 Animator:
   serializedVersion: 3

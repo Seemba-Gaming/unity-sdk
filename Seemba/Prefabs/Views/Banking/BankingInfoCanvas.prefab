@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3530551454463308770}
   m_Layer: 5
-  m_Name: container
+  m_Name: SafeArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,10 +149,10 @@ RectTransform:
   m_Father: {fileID: 7789350778180637377}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 188.5087, y: 0}
+  m_SizeDelta: {x: 312.9826, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3432499835664191322
 MonoBehaviour:
@@ -847,13 +847,14 @@ GameObject:
   - component: {fileID: 7789350776895249994}
   - component: {fileID: 7789350776895249995}
   - component: {fileID: 7789350776895249996}
+  - component: {fileID: 3349535523749257933}
   m_Layer: 5
   m_Name: BankingInfoCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7789350776895250036
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1044,6 +1045,19 @@ MonoBehaviour:
   card_CVV: {fileID: 7789350778634219358}
   _paymentIntentID: 
   paymentCard: 
+--- !u!114 &3349535523749257933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7789350776895249997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335cec501cb4dd1459ca7802e2739fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  safeAreaTransform: {fileID: 3530551454463308770}
 --- !u!1 &7789350776956468069
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,10 +1894,10 @@ RectTransform:
   m_Father: {fileID: 5479616663583103687}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 155.84131, y: -10}
+  m_SizeDelta: {x: 107.39179, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7789350777314215705
 CanvasRenderer:
@@ -2585,10 +2599,10 @@ RectTransform:
   m_Father: {fileID: 5479616663583103687}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50.07271, y: -10}
+  m_SizeDelta: {x: 100.14542, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7789350777532672441
 CanvasRenderer:
@@ -3327,10 +3341,10 @@ RectTransform:
   m_Father: {fileID: 7789350778180637377}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 20}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 11.0086975, y: 0}
+  m_SizeDelta: {x: 22.017395, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7789350777699194243
 MonoBehaviour:
@@ -3758,10 +3772,10 @@ RectTransform:
   m_Father: {fileID: 5479616663583103687}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 274.83624, y: -10}
+  m_SizeDelta: {x: 76.292755, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7789350777811580238
 CanvasRenderer:
@@ -4936,10 +4950,10 @@ RectTransform:
   m_Father: {fileID: 5479616663583103687}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 223.11353, y: -10}
+  m_SizeDelta: {x: 23.15266, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7789350778156896174
 CanvasRenderer:
@@ -5127,7 +5141,7 @@ GameObject:
   - component: {fileID: 7789350778179490593}
   - component: {fileID: 7789350778179490594}
   - component: {fileID: 7789350778179490595}
-  - component: {fileID: 7789350778179490596}
+  - component: {fileID: 4447733078288190217}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -5212,7 +5226,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7789350778179490596
+--- !u!114 &4447733078288190217
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5221,17 +5235,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7789350778179490598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af7249bb27db44640b0f7ae4f9926fc2, type: 3}
+  m_Script: {fileID: 11500000, guid: c79b8796fc143364595c60f570348bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GradientType: 1
+  GradientType: 0
   Offset: 0.4
   StartColor:
     serializedVersion: 2
-    rgba: 4281086007
+    rgba: 4278190080
   EndColor:
     serializedVersion: 2
-    rgba: 4283124555
+    rgba: 4288190616
 --- !u!1 &7789350778180637378
 GameObject:
   m_ObjectHideFlags: 0

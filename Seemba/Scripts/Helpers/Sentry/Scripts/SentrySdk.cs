@@ -1,11 +1,8 @@
 using System;
-#if UNITY_5
-using System.Collections;
-#endif
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using Sentry;
+using SeembaSDK.Sentry;
 using UnityEngine.Networking;
 using UnityDebug = UnityEngine.Debug;
 

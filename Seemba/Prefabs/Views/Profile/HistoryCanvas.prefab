@@ -167,7 +167,8 @@ GameObject:
   - component: {fileID: 3569990865450653753}
   - component: {fileID: 3569990865450653754}
   - component: {fileID: 3569990865450653755}
-  - component: {fileID: 3569990865450653752}
+  - component: {fileID: 1755087565884351119}
+  - component: {fileID: 3569990866580565756}
   m_Layer: 5
   m_Name: 'VICTOIRE MAIN PANEL '
   m_TagString: Untagged
@@ -235,7 +236,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3569990865450653752
+--- !u!114 &1755087565884351119
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -244,14 +245,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 3569990865450653766}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af7249bb27db44640b0f7ae4f9926fc2, type: 3}
+  m_Script: {fileID: 11500000, guid: c79b8796fc143364595c60f570348bcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   GradientType: 0
-  Offset: 0.04
+  Offset: 0
   StartColor:
     serializedVersion: 2
     rgba: 4288888924
+  EndColor:
+    serializedVersion: 2
+    rgba: 4291264583
+--- !u!114 &3569990866580565756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569990865450653766}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c79b8796fc143364595c60f570348bcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GradientType: 0
+  Offset: 0
+  StartColor:
+    serializedVersion: 2
+    rgba: 4288954716
   EndColor:
     serializedVersion: 2
     rgba: 4291264583
@@ -1088,7 +1109,7 @@ GameObject:
   - component: {fileID: 3569990866140797183}
   - component: {fileID: 3569990866140797180}
   m_Layer: 5
-  m_Name: Container_History
+  m_Name: SafeArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1466,6 +1487,7 @@ GameObject:
   - component: {fileID: 3569990866425782136}
   - component: {fileID: 3569990866425782137}
   - component: {fileID: 3569990866580565755}
+  - component: {fileID: 3569990866580565757}
   m_Layer: 5
   m_Name: HistoryCanvas
   m_TagString: Untagged
@@ -1482,7 +1504,7 @@ RectTransform:
   m_GameObject: {fileID: 3569990866425782150}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3569990866140797181}
   m_Father: {fileID: 0}
@@ -1597,6 +1619,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01a5051878695b44aabf08a243d61455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3569990866580565757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3569990866425782150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 335cec501cb4dd1459ca7802e2739fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  safeAreaTransform: {fileID: 3569990866140797181}
 --- !u!1 &3569990866455012177
 GameObject:
   m_ObjectHideFlags: 0
@@ -2495,7 +2530,7 @@ PrefabInstance:
     - target: {fileID: 601077975840892187, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 70.43158
+      value: 66.68158
       objectReference: {fileID: 0}
     - target: {fileID: 601077975840892187, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
         type: 3}
@@ -2515,7 +2550,7 @@ PrefabInstance:
     - target: {fileID: 601077977191705147, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 7.431576
+      value: 6.181576
       objectReference: {fileID: 0}
     - target: {fileID: 601077977191705147, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
         type: 3}

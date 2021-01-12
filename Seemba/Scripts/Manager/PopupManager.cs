@@ -3,39 +3,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CLSCompliant(false)]
-public class PopupManager : MonoBehaviour
+namespace SeembaSDK
 {
-    #region Static
-    public static PopupManager Get { get { return sInstance; } }
-    private static PopupManager sInstance;
-    #endregion
-
-    #region Script Parameters
-    public GameObject PopupPrefab;
-    public PopupsController PopupController;
-    public PopupsViewPresenter PopupViewPresenter;
-    public PopupsTranslationController PopupsTranslationController;
-    #endregion
-
-    #region Unity Methods
-    private void Awake()
+    [CLSCompliant(false)]
+    public class PopupManager : MonoBehaviour
     {
-        sInstance = this;
-        //DontDestroyOnLoad(this.gameObject);
-    }
-    void Start()
-    {
-        var popup = Instantiate(PopupPrefab) as GameObject;
-        PopupController = popup.GetComponent<PopupsController>();
-        PopupViewPresenter = popup.GetComponent<PopupsViewPresenter>();
-        PopupsTranslationController = popup.GetComponent<PopupsTranslationController>();
-    }
-    #endregion
+        #region Static
+        public static PopupManager Get { get { return sInstance; } }
+        private static PopupManager sInstance;
+        #endregion
 
-    #region Methods
-    #endregion
+        #region Script Parameters
+        public GameObject PopupPrefab;
+        public PopupsController PopupController;
+        public PopupsViewPresenter PopupViewPresenter;
+        public PopupsTranslationController PopupsTranslationController;
+        #endregion
 
-    #region Implementation
-    #endregion
+        #region Fields
+        private GameObject mPopupPrefab;
+        #endregion
+        #region Unity Methods
+        private void Awake()
+        {
+            sInstance = this;
+        }
+        void Start()
+        {
+            InitPopup();
+        }
+        #endregion
+
+        #region Methods
+        public void InitPopup()
+        {
+            if(mPopupPrefab != null)
+            {
+                Destroy(mPopupPrefab);
+            }
+            mPopupPrefab = Instantiate(PopupPrefab);
+            PopupController = mPopupPrefab.GetComponent<PopupsController>();
+            PopupViewPresenter = mPopupPrefab.GetComponent<PopupsViewPresenter>();
+            PopupsTranslationController = mPopupPrefab.GetComponent<PopupsTranslationController>();
+        }
+        #endregion
+
+        #region Implementation
+        #endregion
+    }
 }

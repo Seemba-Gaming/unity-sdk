@@ -1,38 +1,40 @@
 ﻿using System;
-using System.Net;
 using UnityEngine;
 
-[CLSCompliant(false)]
-public class ConnectivityPresenter : MonoBehaviour
+namespace SeembaSDK
 {
-    public static bool beginPing;
-
-    public ConnectivityController connectivity;
-    public GameObject Home;
-
-    private void OnEnable()
+    [CLSCompliant(false)]
+    public class ConnectivityPresenter : MonoBehaviour
     {
-        if (beginPing == true)
-        {
-            check_connection();
-        }
-        else
-        {
-            InvokeRepeating("checkStartPinging", 0f, 1f);
-        }
-    }
+        public static bool beginPing;
 
-    private void checkStartPinging()
-    {
-        if (beginPing == true)
+        public ConnectivityController connectivity;
+        public GameObject Home;
+
+        private void OnEnable()
         {
-            CancelInvoke();
-            check_connection();
+            if (beginPing == true)
+            {
+                check_connection();
+            }
+            else
+            {
+                InvokeRepeating("checkStartPinging", 0f, 1f);
+            }
         }
-    }
-    public void check_connection()
-    {
-        LoaderManager.Get.LoaderController.ShowLoader(null);
-        InvokeRepeating("ping", 0f, 1f);
+
+        private void checkStartPinging()
+        {
+            if (beginPing == true)
+            {
+                CancelInvoke();
+                check_connection();
+            }
+        }
+        public void check_connection()
+        {
+            LoaderManager.Get.LoaderController.ShowLoader(null);
+            InvokeRepeating("ping", 0f, 1f);
+        }
     }
 }

@@ -147,7 +147,6 @@ namespace SeembaSDK
                             controller1.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
                             newItem1.transform.SetParent(ContentPanelPro.transform);
                             RectTransform myLayoutElement1 = newItem1.GetComponent<RectTransform>();
-                            myLayoutElement1.sizeDelta = new Vector2(391, 60);
                             myLayoutElement1.transform.localScale = Vector3.one;
                         }
                         else if (item.matched_user_2 != null && item.matched_user_2._id == UserManager.Get.getCurrentUserId() && adv2score > adv1score)
@@ -176,7 +175,6 @@ namespace SeembaSDK
                             controller2.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
                             newItem2.transform.SetParent(ContentPanelPro.transform);
                             RectTransform myLayoutElement2 = newItem2.GetComponent<RectTransform>();
-                            myLayoutElement2.sizeDelta = new Vector2(391, 60);
                             myLayoutElement2.transform.localScale = Vector3.one;
                         }
                         else
@@ -242,7 +240,6 @@ namespace SeembaSDK
                                 controller3.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
                                 newItem3.transform.SetParent(ContentPanelPro.transform);
                                 RectTransform myLayoutElement3 = newItem3.GetComponent<RectTransform>();
-                                myLayoutElement3.sizeDelta = new Vector2(391, 60);
                                 myLayoutElement3.transform.localScale = Vector3.one;
                             }
                             else if (item.matched_user_2 != null && item.matched_user_2._id == UserManager.Get.getCurrentUserId() && adv2score > adv1score)
@@ -271,7 +268,6 @@ namespace SeembaSDK
                                 controller4.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
                                 newItem4.transform.SetParent(ContentPanelPro.transform);
                                 RectTransform myLayoutElement4 = newItem4.GetComponent<RectTransform>();
-                                myLayoutElement4.sizeDelta = new Vector2(391, 60);
                                 myLayoutElement4.transform.localScale = Vector3.one;
                             }
                             else
@@ -294,7 +290,6 @@ namespace SeembaSDK
                     }
                     newItem.transform.SetParent(ContentPanelPro.transform);
                     RectTransform myLayoutElement = newItem.GetComponent<RectTransform>();
-                    myLayoutElement.sizeDelta = new Vector2(391, 60);
                     myLayoutElement.transform.localScale = Vector3.one;
                 }
             }

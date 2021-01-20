@@ -51,6 +51,17 @@ namespace SeembaSDK
         }
         #endregion
         #region METHOD
+        [MenuItem("Seemba/Insatll package")]
+        public static void InstallPackage()
+        {
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "openupm add com.seemba.unitysdk";
+            process.StartInfo = startInfo;
+            process.Start();
+        }
         [MenuItem("Seemba/Integration Parameters")]
         public static void ShowWindow()
         {

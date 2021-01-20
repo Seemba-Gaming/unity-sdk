@@ -141,7 +141,15 @@ namespace SeembaSDK
             LoaderManager.Get.LoaderController.HideLoader();
             UserManager.Get.logingOut();
             PopupManager.Get.InitPopup();
-            SceneManager.LoadSceneAsync("SeembaEsports");
+            if (Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight)
+            {
+                SceneManager.LoadSceneAsync("SeembaEsportsH");
+
+            }
+            else
+            {
+                SceneManager.LoadSceneAsync("SeembaEsports");
+            }
         }
         #endregion
 

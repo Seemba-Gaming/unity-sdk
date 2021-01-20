@@ -29,13 +29,39 @@ namespace SeembaSDK
         }
         public static void Hide()
         {
-            ViewsEvents.Get.Menu.BottomBar.SetActive(false);
+            if (ViewsEvents.Get.Menu.BottomBar)
+            {
+                ViewsEvents.Get.Menu.BottomBar.SetActive(false);
+
+            }
+            if (ViewsEvents.Get.Menu.BottomBarLeft)
+            {
+                ViewsEvents.Get.Menu.BottomBarLeft.SetActive(false);
+
+            }
+            if (ViewsEvents.Get.Menu.BottomBarRight)
+            {
+                ViewsEvents.Get.Menu.BottomBarRight.SetActive(false);
+            }
             ViewsEvents.Get.Menu.Header.SetActive(false);
         }
         public static void Show()
         {
             ViewsEvents.Get.Menu.Header.SetActive(true);
-            ViewsEvents.Get.Menu.BottomBar.SetActive(true);
+            if (ViewsEvents.Get.Menu.BottomBar)
+            {
+                ViewsEvents.Get.Menu.BottomBar.SetActive(true);
+
+            }
+            if (ViewsEvents.Get.Menu.BottomBarLeft)
+            {
+                ViewsEvents.Get.Menu.BottomBarLeft.SetActive(true);
+
+            }
+            if (ViewsEvents.Get.Menu.BottomBarRight)
+            {
+                ViewsEvents.Get.Menu.BottomBarRight.SetActive(true);
+            }
         }
         public void hideOrShowToolbar()
         {

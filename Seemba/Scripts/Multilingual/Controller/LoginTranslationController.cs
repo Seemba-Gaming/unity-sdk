@@ -59,8 +59,14 @@ namespace SeembaSDK
         {
             TranslationManager.scene = "Login";
             //--------------Signin------------
-            welcome.text = TranslationManager.Get("welcome") != string.Empty ? TranslationManager.Get("welcome") : welcome.text;
-            back.text = TranslationManager.Get("back") != string.Empty ? TranslationManager.Get("back") : back.text;
+            if(welcome != null)
+            {
+                welcome.text = TranslationManager.Get("welcome") != string.Empty ? TranslationManager.Get("welcome") : welcome.text;
+            }
+            if (welcome != null)
+            {
+                back.text = TranslationManager.Get("back") != string.Empty ? TranslationManager.Get("back") : back.text;
+            }
             incorrect.text = TranslationManager.Get("incorrect") != string.Empty ? TranslationManager.Get("incorrect") : incorrect.text;
             email_or_username.text = TranslationManager.Get("email_or_username") != string.Empty ? TranslationManager.Get("email_or_username") : email_or_username.text;
             password.text = TranslationManager.Get("password") != string.Empty ? TranslationManager.Get("password") : password.text;

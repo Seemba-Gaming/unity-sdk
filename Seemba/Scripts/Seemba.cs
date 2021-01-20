@@ -37,7 +37,17 @@ namespace SeembaSDK
         {
             if (UserManager.Get == null)
             {
-                mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
+                if (Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight)
+                {
+                    mSeembaManagers = Instantiate(Resources.Load("SeembaManagers_H") as GameObject);
+                    SeembaAnalyticsManager.Get.GameOpened("Seemba Horizental");
+
+                }
+                else
+                {
+                    mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
+                    SeembaAnalyticsManager.Get.GameOpened("Seemba Vertical");
+                }
                 DontDestroyOnLoad(mSeembaManagers);
             }
 
@@ -151,7 +161,14 @@ namespace SeembaSDK
                         IsSeemba = true;
                         InstantiateSentry();
                         SeembaAnalyticsManager.Get.SendGameEvent("Enter Seemba");
-                        SceneManager.LoadSceneAsync("SeembaEsports");
+                        if(Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight)
+                        {
+                            SceneManager.LoadSceneAsync("SeembaEsportsH");
+                        }
+                        else
+                        {
+                            SceneManager.LoadSceneAsync("SeembaEsports");
+                        }
                     }
                 }
                 else

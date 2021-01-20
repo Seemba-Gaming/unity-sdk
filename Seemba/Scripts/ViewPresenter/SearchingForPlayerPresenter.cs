@@ -16,10 +16,8 @@ namespace SeembaSDK
         public Text fee;
         public Text username;
         public Text gain;
-        public Text nb_players;
-        public Text counter;
         public Image user_flag, user_avatar;
-        public Text looking_for_opponent, start_now, same_game;
+        public Text looking_for_opponent;
         public Button Continue;
         public static string nbPlayer, GameMontant;
         #endregion
@@ -27,7 +25,6 @@ namespace SeembaSDK
         #region Unity Methods
         private void OnEnable()
         {
-            nb_players.text = nbPlayer;
             username.text = UserManager.Get.CurrentUser.username;
             var mTexture = new Texture2D(1, 1);
             var flagBytes = Convert.FromBase64String(PlayerPrefs.GetString("CurrentFlagBytesString"));
@@ -41,7 +38,6 @@ namespace SeembaSDK
 
             try
             {
-
                 int count = 10;
                 UnityThreadHelper.CreateThread(() =>
                  {
@@ -62,17 +58,8 @@ namespace SeembaSDK
                              }
                              if ((10 - count) == 9)
                              {
-                                 try
-                                 {
-                                     looking_for_opponent.transform.localScale = Vector3.one;
-                                     start_now.transform.localScale = Vector3.zero;
-                                     same_game.transform.localScale = Vector3.zero;
-                                 }
-                                 catch (NullReferenceException)
-                                 {
-                                 }
+                                looking_for_opponent.transform.localScale = Vector3.one;
                              }
-                             counter.text = count.ToString();
                          });
                          count--;
                      }

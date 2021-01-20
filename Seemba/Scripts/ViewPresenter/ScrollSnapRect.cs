@@ -102,6 +102,8 @@ namespace SeembaSDK
         {
             _scrollRectComponent = GetComponent<ScrollRect>();
             _scrollRectRect = GetComponent<RectTransform>();
+            //Debug.LogWarning(_scrollRectRect.rect.width);
+            //_scrollRectRect.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(_scrollRectRect.rect.height, _scrollRectRect.rect.width);
             _container = _scrollRectComponent.content;
             _pageCount = _container.childCount;
             // is it horizontal or vertical scrollrect
@@ -544,6 +546,26 @@ namespace SeembaSDK
                     SetPageSelection(GetNearestPage());
                 }
             }
+        }
+
+        public void OnClickAccount()
+        {
+            Debug.LogWarning("Account Click");
+        }
+
+        public void OnClickWallet()
+        {
+            Debug.LogWarning("Wallet Click");
+        }
+
+        public void OnClickWithdraw()
+        {
+            Debug.LogWarning("Withdraw Click");
+        }
+
+        public void OnClickHelpCenter()
+        {
+            Debug.LogWarning("HelpCenter Click");
         }
     }
 }

@@ -18,6 +18,8 @@ namespace SeembaSDK
         public GameObject Legal;
         public GameObject Wallet;
         public GameObject BottomBar;
+        public GameObject BottomBarLeft;
+        public GameObject BottomBarRight;
         public GameObject Header;
         public GameObject Market;
         public ScrollSnapRect ScrollSnap;
@@ -60,7 +62,18 @@ namespace SeembaSDK
         }
         public void ShowBottomBar(bool show)
         {
-            BottomBar.SetActive(show);
+            if(BottomBar)
+            {
+                BottomBar.SetActive(show);
+            }
+            if (BottomBarLeft)
+            {
+                BottomBarLeft.SetActive(show);
+            }
+            if (BottomBarRight)
+            {
+                BottomBarRight.SetActive(show);
+            }
         }
         public void ShowHeader(bool show)
         {

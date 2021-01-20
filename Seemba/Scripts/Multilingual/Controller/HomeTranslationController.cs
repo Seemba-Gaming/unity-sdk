@@ -195,7 +195,6 @@ namespace SeembaSDK
             //Account
             personal_info.text = TranslationManager.Get("personal_info") != string.Empty ? TranslationManager.Get("personal_info") : personal_info.text;
             security.text = TranslationManager.Get("security") != string.Empty ? TranslationManager.Get("security") : security.text;
-            id_proof.text = TranslationManager.Get("id_proof") != string.Empty ? TranslationManager.Get("id_proof") : id_proof.text;
             //Security
             email.text = TranslationManager.Get("email") != string.Empty ? TranslationManager.Get("email") : email.text;
             //----> "Security" COMMUN TEXT BETWEEN SECURITY POPUPS

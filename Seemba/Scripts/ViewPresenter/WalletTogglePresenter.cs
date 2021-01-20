@@ -58,6 +58,7 @@ namespace SeembaSDK
         }
         public void OtherAmountToggleSelected(bool selected)
         {
+            Debug.LogWarning("click " + selected);
             if (selected)
             {
                 IsSelected = true;

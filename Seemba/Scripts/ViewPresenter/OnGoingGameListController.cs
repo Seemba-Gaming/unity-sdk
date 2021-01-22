@@ -29,7 +29,7 @@ namespace SeembaSDK
                 page = 1;
                 initialized = true;
                 HomeController.NoOngoing = false;
-                InvokeRepeating("removeDuplication", 0f, 0.2f);
+                StartCoroutine(removeDuplicationCoroutine());
                 token = UserManager.Get.getCurrentSessionToken();
                 if (token != null)
                 {
@@ -260,6 +260,14 @@ namespace SeembaSDK
                 {
                     controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_LEGEND + " " + HomeTranslationController.BUBBLES;
                 }
+            }
+        }
+        public IEnumerator removeDuplicationCoroutine()
+        {
+            while(ContentPanel.transform.childCount > nbElement)
+            {
+                removeDuplication();
+                yield return new WaitForSeconds(0.2f);
             }
         }
         void removeDuplication()

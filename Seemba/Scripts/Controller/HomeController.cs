@@ -73,17 +73,13 @@ namespace SeembaSDK
                         LoadingHomeBloc.SetActive(true);
                         ReconnectMessage.SetActive(true);
                     }
-                    InvokeRepeating("tryingtoreconnect", 0f, 1f); ;
                     break;
                 }
                 timer += Time.deltaTime;
                 yield return null;
             }
         }
-        private void tryingtoreconnect()
-        {
-            StartCoroutine(checkInternetConnection());
-        }
+
         public IEnumerator checkInternetConnection()
         {
             UnityWebRequest www = new UnityWebRequest("https://www.google.fr");
@@ -97,18 +93,17 @@ namespace SeembaSDK
             {
                 if (www.error == null)
                 {
-                    CancelInvoke();
                     ReconnectMessage.SetActive(false);
-                    InvokeRepeating("unloadLoader", 0f, 0.5f);
+                    StartCoroutine(UnloadLoaderCoroutine());
                 }
             }
         }
-        public void unloadLoader()
+        public IEnumerator UnloadLoaderCoroutine()
         {
-            if (Ongoing.transform.childCount != 0 || LastResult.transform.childCount != 0 || (NoOngoing == true && NoLastResult == true))
+            while(Ongoing.transform.childCount != 0 || LastResult.transform.childCount != 0 || (NoOngoing == true && NoLastResult == true))
             {
+                yield return new WaitForSeconds(0.5f);
                 LoadingHomeBloc.SetActive(false);
-                CancelInvoke();
             }
         }
     }

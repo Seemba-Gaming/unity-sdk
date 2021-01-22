@@ -10,17 +10,12 @@ namespace SeembaSDK
         public static BottomMenuController Get { get { return sInstance; } }
         private static BottomMenuController sInstance;
         #endregion
-        private static BottomMenuController _Instance;
         public GameObject home, haveFun, WinMoney, settings, Market, Leaderboard, Achievements;
         public static int _currentPage = 0;
         public string selectedMenu = "Home";
         void Awake()
         {
             sInstance = this;
-        }
-        private void Start()
-        {
-            InvokeRepeating("hideOrShowToolbar", 0f, 0.01f);
         }
         public string menu
         {
@@ -36,20 +31,6 @@ namespace SeembaSDK
         {
             ViewsEvents.Get.Menu.Header.SetActive(true);
             ViewsEvents.Get.Menu.BottomBar.SetActive(true);
-        }
-        public void hideOrShowToolbar()
-        {
-            if ((ScrollSnapRect.currentView == "Settings" && ScrollSnapRect.focusedPage != 0) || ScrollSnapRect.currentView == "Wallet")
-            {
-                Hide();
-            }
-            else
-            {
-                if (ScrollSnapRect.currentView != "WinMoney" && ScrollSnapRect.currentView != "HaveFun")
-                {
-
-                }
-            }
         }
         public void selectHome()
         {

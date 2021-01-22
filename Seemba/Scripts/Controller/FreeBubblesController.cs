@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,8 @@ namespace SeembaSDK
         public Button TimerButton;
         public Animator Shadow;
         public ParticleSystem FreeBubbleEffect;
+
+        private Coroutine mSetTimerGui;
 
         private void Start()
         {
@@ -43,7 +46,7 @@ namespace SeembaSDK
                 updateHeader();
                 TimerButton.gameObject.SetActive(false);
                 WaitingPanel.SetActive(true);
-                InvokeRepeating("setGUITimer", 0f, 0.1f);
+                mSetTimerGui = StartCoroutine(SetTimeCoroutine());
             }
             Loader.gameObject.SetActive(false);
         }
@@ -76,6 +79,14 @@ namespace SeembaSDK
                 checkTimer();
             }
         }
+        public IEnumerator SetTimeCoroutine()
+        {
+            while(nextRewardTime.Subtract(DateTime.UtcNow) >= TimeSpan.Zero)
+            {
+                yield return new WaitForSeconds(0.1f);
+                setGUITimer();
+            }
+        }
         private void setGUITimer()
         {
             if (nextRewardTime.Subtract(DateTime.UtcNow) >= TimeSpan.Zero)
@@ -88,6 +99,7 @@ namespace SeembaSDK
             }
             else
             {
+                mSetTimerGui = null;
                 TimerButton.gameObject.SetActive(true);
                 WaitingPanel.SetActive(false);
                 Shadow.SetBool("showShadow", true);
@@ -99,7 +111,10 @@ namespace SeembaSDK
             {
                 TimerButton.gameObject.SetActive(false);
                 WaitingPanel.SetActive(true);
-                InvokeRepeating("setGUITimer", 0f, 0.1f);
+                if(mSetTimerGui == null)
+                {
+                    StartCoroutine(SetTimeCoroutine());
+                }
             }
             else
             {

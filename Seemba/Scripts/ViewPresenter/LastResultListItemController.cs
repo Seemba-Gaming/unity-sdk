@@ -30,11 +30,8 @@ namespace SeembaSDK
         int pageSize = 4;
         void Update()
         {
-            nbChild = 0;
-            foreach (Transform child in ContentPanel.transform)
-            {
-                nbChild++;
-            }
+            nbChild = ContentPanel.transform.childCount;
+
             if (nbChild > nbElement)
             {
                 Debug.Log("-Duplication Detected-");
@@ -43,7 +40,7 @@ namespace SeembaSDK
                 {
                     if (count == (nbChild / 2))
                     {
-                        DestroyImmediate(child.gameObject, true);
+                        Destroy(child.gameObject);
                     }
                     count++;
                 }

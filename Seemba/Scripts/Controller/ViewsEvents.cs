@@ -80,6 +80,7 @@ namespace SeembaSDK
         {
             SeembaAnalyticsManager.Get.SendUserEvent("Wallet Click");
             ShowScene(Menu.Wallet);
+            BottomMenuController.Hide();
         }
         public void WinMoneyClick()
         {

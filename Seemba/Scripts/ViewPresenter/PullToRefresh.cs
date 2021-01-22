@@ -34,11 +34,11 @@ namespace SeembaSDK
             walletFinished = false;
             foreach (Transform child in PanelLastResults.transform)
             {
-                DestroyImmediate(child.gameObject, true);
+                Destroy(child.gameObject);
             }
             foreach (Transform child in PanelOngoing.transform)
             {
-                DestroyImmediate(child.gameObject, true);
+                Destroy(child.gameObject);
             }
             ContentHome.SetActive(false);
             ContentHome.SetActive(true);

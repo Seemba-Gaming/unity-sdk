@@ -51,6 +51,7 @@ namespace SeembaSDK
         }
         #endregion
         #region METHOD
+
         [MenuItem("Seemba/Integration Parameters")]
         public static void ShowWindow()
         {
@@ -201,6 +202,18 @@ namespace SeembaSDK
                 newScenes[j] = new EditorBuildSettingsScene(pathOfSceneToAdd, true);
             }
             EditorBuildSettings.scenes = newScenes;
+        }
+
+        [MenuItem("Seemba/Install Package")]
+        public static void InstallPackge()
+        {
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "/C openupm add com.seemba.unitysdk";
+            process.StartInfo = startInfo;
+            process.Start();
         }
         #endregion
     }

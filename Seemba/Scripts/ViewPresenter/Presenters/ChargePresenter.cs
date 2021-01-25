@@ -1,5 +1,6 @@
 ﻿using SimpleJSON;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -52,6 +53,7 @@ namespace SeembaSDK
         private GradientColor Lagoon = new GradientColor(new Color32(67, 198, 172, 255), new Color32(25, 22, 84, 255));
         private GradientColor Roseanna = new GradientColor(new Color32(255, 175, 189, 255), new Color32(255, 195, 160, 255));
         private List<GradientColor> CardColors = new List<GradientColor>();
+        private int mChargeStatus =  0; //0 = pending, 1 = succeeded, -1 = canceled
         #endregion
 
         #region Unity Methods
@@ -222,6 +224,7 @@ namespace SeembaSDK
             }
             if (confirmData == true)
             {
+                mChargeStatus = 0;
                 LoaderManager.Get.LoaderController.ShowLoader(null);
                 await CreatePaymentMethodAsync(CardNumber.text, CVV.text, int.Parse(valueMonths), int.Parse(valueYears));
             }
@@ -302,10 +305,12 @@ namespace SeembaSDK
                         {
                             if (_paymentIntent["status"].Value == ChargeManager.PAYMENT_STATUS_SUCCEEDED)
                             {
+                                mChargeStatus = 1;
                                 ChargeSucceeded();
                             }
                             else
                             {
+                                mChargeStatus = -1;
                                 ChargeCanceled();
                             }
                         }
@@ -336,35 +341,36 @@ namespace SeembaSDK
         private void OpenBrowserFor3dSecure(string url)
         {
             Application.OpenURL(url);
-            InvokeRepeating("IsChargeCompleted", 0.0f, 1f);
+            StartCoroutine(IsChargeCompletedCoroutine());
         }
-
+        public IEnumerator IsChargeCompletedCoroutine()
+        {
+            while(mChargeStatus == 0)
+            {
+                yield return new WaitForSeconds(1f);
+                IsChargeCompleted();
+            }
+        }
         private void SelectWinMoney()
         {
             ViewsEvents.Get.WinMoneyClick();
         }
 
-        private void IsChargeCompleted()
+        private async void IsChargeCompleted()
         {
-            string token = UserManager.Get.getCurrentSessionToken();
-            UnityThreadHelper.CreateThread(async () =>
-            {
+                string token = UserManager.Get.getCurrentSessionToken();
                 string chargeConfirmed = await ChargeManager.Get.isChargeConfirmedAsync(_paymentIntentID, token);
                 Debug.Log("chargeConfirmed: " + chargeConfirmed);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
+                if (chargeConfirmed.Equals(ChargeManager.PAYMENT_STATUS_SUCCEEDED))
                 {
-                    if (chargeConfirmed.Equals(ChargeManager.PAYMENT_STATUS_SUCCEEDED))
-                    {
-                        CancelInvoke();
-                        ChargeSucceeded();
-                    }
-                    else if (chargeConfirmed.Equals(ChargeManager.PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD))
-                    {
-                        CancelInvoke();
-                        ChargeCanceled();
-                    }
-                });
-            });
+                    mChargeStatus = 1;
+                    ChargeSucceeded();
+                }
+                else if (chargeConfirmed.Equals(ChargeManager.PAYMENT_STATUS_REQUIRES_PAYMENT_METHOD))
+                {
+                    mChargeStatus = -1;
+                    ChargeCanceled();
+                }
         }
         private void ChargeSucceeded()
         {

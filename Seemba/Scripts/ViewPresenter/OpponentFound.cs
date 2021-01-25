@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,35 +17,38 @@ namespace SeembaSDK
         public Animator Versus_background;
         public void OnEnable()
         {
-            InvokeRepeating("init", 0f, 1f);
+            StartCoroutine(InitCoroutine());
+        }
+
+        public IEnumerator InitCoroutine()
+        {
+            while(!EventsController.advFound)
+            {
+                yield return new WaitForSeconds(1f);
+            }
+            yield return new WaitForSeconds(1f);
+            init();
         }
         public async void init()
         {
-
-            if (EventsController.advFound)
+            Texture2D txt = new Texture2D(1, 1);
+            Sprite newSprite;
+            PanelLookingForPlayer.SetActive(false);
+            PanelPlayerFound.SetActive(true);
+            opponent_username.text = adversaireName;
+            opponent_avatar.sprite = await UserManager.Get.getAvatar(Avatar);
+            try
             {
-                CancelInvoke();
-                Texture2D txt = new Texture2D(1, 1);
-                Sprite newSprite;
-                PanelLookingForPlayer.SetActive(false);
-                PanelPlayerFound.SetActive(true);
-                opponent_username.text = adversaireName;
-                opponent_avatar.sprite = await UserManager.Get.getAvatar(Avatar);
-                try
-                {
-                    var mTexture = await UserManager.Get.GetFlagBytes(AdvCountryCode);
-                    newSprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
-                    opponent_flag.sprite = newSprite;
-                }
-                catch (NullReferenceException)
-                {
-
-                }
-                Versus_background.SetBool("StopBG", true);
-                Versus_container.SetActive(true);
+                var mTexture = await UserManager.Get.GetFlagBytes(AdvCountryCode);
+                newSprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
+                opponent_flag.sprite = newSprite;
+            }
+            catch (NullReferenceException)
+            {
 
             }
-
+            Versus_background.SetBool("StopBG", true);
+            Versus_container.SetActive(true);
         }
 
         public void ResetOpponent()

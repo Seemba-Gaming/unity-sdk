@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,7 +38,7 @@ namespace SeembaSDK
 
             gain.text = ChallengeManager.CurrentChallenge.gain.ToString();
             gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ? " bubbles" : " €";
-            InvokeRepeating("CheckOpponent", .5f, 3f);
+            StartCoroutine(CheckOpponentCoroutine());
 
             try
             {
@@ -82,13 +83,20 @@ namespace SeembaSDK
             {
             }
         }
-        private void OnDisable()
-        {
-            CancelInvoke("CheckOpponent");
-        }
+
         #endregion
 
         #region Implementation
+
+        public IEnumerator CheckOpponentCoroutine()
+        {
+            yield return new WaitForSeconds(0.5f);
+            while(!EventsController.advFound)
+            {
+                yield return new WaitForSeconds(3f);
+                CheckOpponent();
+            }
+        }
         private async void CheckOpponent()
         {
             string token = UserManager.Get.getCurrentSessionToken();
@@ -109,7 +117,6 @@ namespace SeembaSDK
                     OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
                 }
                 EventsController.advFound = true;
-                CancelInvoke("CheckOpponent");
             }
         }
         #endregion

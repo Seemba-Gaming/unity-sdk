@@ -119,7 +119,6 @@ namespace SeembaSDK
         private async Task<bool> DownloadAssets()
         {
             var res = await GamesManager.Get.getGamebyId(GamesManager.GAME_ID);
-            Debug.LogWarning(res);
             if (res != null)
             {
                 LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.DONWLOADING);
@@ -129,7 +128,6 @@ namespace SeembaSDK
                 await TranslationManager.SavePreferedLanguage();
                 LoaderManager.Get.LoaderController.HideLoader();
                 GamesManager.GAME_ORIENTATION = res.game.orientation;
-                Debug.LogWarning(GamesManager.GAME_ORIENTATION);
                 return true;
             }
             else

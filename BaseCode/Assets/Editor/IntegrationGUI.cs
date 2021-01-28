@@ -216,6 +216,10 @@ namespace SeembaSDK
             GamesManager.GAME_ID = Game._id;
             GamesManager.GAME_NAME = Game.name;
             GamesManager.GAME_SCENE_NAME = Game.game_scene_name;
+            if(string.IsNullOrEmpty(Game._id))
+            {
+                Debug.LogError("Please Fill your game id in Seemba --> Integration Parameters");
+            }
             string url = Endpoint.classesURL +"/games/" + GamesManager.GAME_ID;
             Request(url);
             EditorApplication.update += EditorUpdate;

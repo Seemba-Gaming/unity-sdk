@@ -53,7 +53,6 @@ namespace SeembaSDK
                 }
             }
             catch (Exception) { }
-            GetScenes();
         }
         #endregion
         #region METHOD

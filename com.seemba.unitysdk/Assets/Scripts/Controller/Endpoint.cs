@@ -22,9 +22,9 @@ namespace SeembaSDK
                 locationURL = "https://ipinfo.io/json/";
                 laguagesURL = "https://seemba-1556155050.s3.amazonaws.com/sdk/laguages_files";
 
-                classesURL = "https://api.seemba.com/api/v1";
-                flagsURL = "https://api.seemba.com/flags/";
-                TokenizationAccount = "pk_live_0B1ByioGzmNDXyMt7QEgZJGA00S9D2jGro";
+                classesURL = "http://api-staging.seemba.com/api/v1";
+                flagsURL = "http://api-staging.seemba.com/flags/";
+                TokenizationAccount = "pk_test_A8fKBAogt5UIexspxnivPLGw00HslhmxSr";
             }
         }
     }

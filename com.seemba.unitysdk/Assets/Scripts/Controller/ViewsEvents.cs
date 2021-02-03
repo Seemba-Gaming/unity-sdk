@@ -32,13 +32,25 @@ namespace SeembaSDK
         public HistoryPresenter History;
         public WithdrawalInfoPresenter WithdrawalInfo;
         public LeaderboardPresenter Leaderboard;
-
+        public BugReportPresenter BugReport;
         public GameObject Overlay;
         #endregion
 
         #region fields
         private GameObject mCurrentMenu;
         private Stack<GameObject> mHistory = new Stack<GameObject>();
+        #endregion
+
+        #region Shake
+        private float accelerometerUpdateInterval = 1.0f / 60.0f;
+        // The greater the value of LowPassKernelWidthInSeconds, the slower the
+        // filtered value will converge towards current input sample (and vice versa).
+        private float lowPassKernelWidthInSeconds = 2.0f;
+        // This next parameter is initialized to 2.0 per Apple's recommendation,
+        // or at least according to Brady! ;)
+        private float shakeDetectionThreshold = 2.0f;
+        private float lowPassFilterFactor;
+        private Vector3 lowPassValue;
         #endregion
 
         private void Awake()
@@ -48,7 +60,14 @@ namespace SeembaSDK
 
         private async void Start()
         {
-            if(Seemba.Get.OverlayActivated)
+            if (Seemba.Get.DevelopmentMode)
+            {
+                lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
+                shakeDetectionThreshold *= shakeDetectionThreshold;
+                lowPassValue = Input.acceleration;
+            }
+
+            if (Seemba.Get.OverlayActivated)
             {
                 Overlay.SetActive(true);
             }
@@ -73,6 +92,58 @@ namespace SeembaSDK
             {
                 GoToMenu(Intro.gameObject);
             }
+        }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("space") || Input.GetKeyDown(KeyCode.A))
+            {
+                Debug.LogWarning("here"); 
+                if (!BugReport.gameObject.activeSelf)
+                {
+                    StartCoroutine(OpenBugReportPanel());
+                }
+            }
+            if (Seemba.Get.DevelopmentMode)
+            {
+                Vector3 acceleration = Input.acceleration;
+                lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
+                Vector3 deltaAcceleration = acceleration - lowPassValue;
+
+                if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
+                {
+                    // Perform your "shaking actions" here. If necessary, add suitable
+                    // guards in the if check above to avoid redundant handling during
+                    // the same shake (e.g. a minimum refractory period).
+                    if (!BugReport.gameObject.activeSelf)
+                    {
+                        StartCoroutine(OpenBugReportPanel());
+                    }
+                }
+            }
+        }
+        IEnumerator OpenBugReportPanel()
+        {
+            yield return new WaitForEndOfFrame();
+            Texture2D ScreenShot = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+            ScreenShot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+            ScreenShot.Apply();
+            var sprite = ImagesManager.getSpriteFromTexture(ScreenShot);
+            BugReport.gameObject.SetActive(true);
+            BugReport.Animator.SetBool("focused", true);
+            BugReport.Init(sprite);
+            Debug.LogWarning("Shake event .. Opening Bug Panel");
+        }
+
+        public void HideBugReportScreen()
+        {
+            StartCoroutine(HideBugReportPanel());
+        }
+
+        IEnumerator HideBugReportPanel()
+        {
+            BugReport.Animator.SetBool("focused", false);
+            yield return new WaitForSeconds(0.5f);
+            BugReport.gameObject.SetActive(false);
         }
         public void WalletClick(string last_view)
         {

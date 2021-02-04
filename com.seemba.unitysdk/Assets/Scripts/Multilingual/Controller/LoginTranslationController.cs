@@ -59,16 +59,26 @@ namespace SeembaSDK
         {
             TranslationManager.scene = "Login";
             //--------------Signin------------
-            welcome.text = TranslationManager.Get("welcome") != string.Empty ? TranslationManager.Get("welcome") : welcome.text;
-            back.text = TranslationManager.Get("back") != string.Empty ? TranslationManager.Get("back") : back.text;
-            incorrect.text = TranslationManager.Get("incorrect") != string.Empty ? TranslationManager.Get("incorrect") : incorrect.text;
-            email_or_username.text = TranslationManager.Get("email_or_username") != string.Empty ? TranslationManager.Get("email_or_username") : email_or_username.text;
-            password.text = TranslationManager.Get("password") != string.Empty ? TranslationManager.Get("password") : password.text;
-            forgot_your_password.text = TranslationManager.Get("forgot_your_password") != string.Empty ? TranslationManager.Get("forgot_your_password") : forgot_your_password.text;
-            magic_code.text = TranslationManager.Get("magic_code") != string.Empty ? TranslationManager.Get("magic_code") : magic_code.text;
-            new_player.text = TranslationManager.Get("new_player") != string.Empty ? TranslationManager.Get("new_player") : new_player.text;
-            create_account.text = TranslationManager.Get("create_account") != string.Empty ? TranslationManager.Get("create_account") : create_account.text;
-            _continue.text = TranslationManager.Get("continue") != string.Empty ? TranslationManager.Get("continue") : _continue.text;
+            if(welcome)
+                welcome.text = TranslationManager.Get("welcome") != string.Empty ? TranslationManager.Get("welcome") : welcome.text;
+            if(back)
+                back.text = TranslationManager.Get("back") != string.Empty ? TranslationManager.Get("back") : back.text;
+            if (incorrect)
+                incorrect.text = TranslationManager.Get("incorrect") != string.Empty ? TranslationManager.Get("incorrect") : incorrect.text;
+            if (email_or_username)
+                email_or_username.text = TranslationManager.Get("email_or_username") != string.Empty ? TranslationManager.Get("email_or_username") : email_or_username.text;
+            if (password)
+                password.text = TranslationManager.Get("password") != string.Empty ? TranslationManager.Get("password") : password.text;
+            if (forgot_your_password)
+                forgot_your_password.text = TranslationManager.Get("forgot_your_password") != string.Empty ? TranslationManager.Get("forgot_your_password") : forgot_your_password.text;
+            if (magic_code)
+                magic_code.text = TranslationManager.Get("magic_code") != string.Empty ? TranslationManager.Get("magic_code") : magic_code.text;
+            if (new_player)
+                new_player.text = TranslationManager.Get("new_player") != string.Empty ? TranslationManager.Get("new_player") : new_player.text;
+            if (create_account)
+                create_account.text = TranslationManager.Get("create_account") != string.Empty ? TranslationManager.Get("create_account") : create_account.text;
+            if (_continue)
+                _continue.text = TranslationManager.Get("continue") != string.Empty ? TranslationManager.Get("continue") : _continue.text;
             //--------------Email------------
             reset_password.text = TranslationManager.Get("reset_password") != string.Empty ? TranslationManager.Get("reset_password") : reset_password.text;
             enter_your_email_below_to_reset_password.text = TranslationManager.Get("enter_your_email_below_to_reset_password") != string.Empty ? TranslationManager.Get("enter_your_email_below_to_reset_password") : enter_your_email_below_to_reset_password.text;

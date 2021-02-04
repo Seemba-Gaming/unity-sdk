@@ -22,7 +22,8 @@ namespace SeembaSDK
             enter_your_email.text = TranslationManager.Get("enter_your_email") != string.Empty ? TranslationManager.Get("enter_your_email") : enter_your_email.text;
             enter_your_password.text = TranslationManager.Get("enter_your_password") != string.Empty ? TranslationManager.Get("enter_your_password") : enter_your_password.text;
             confirm_your_password.text = TranslationManager.Get("confirm_your_password") != string.Empty ? TranslationManager.Get("confirm_your_password") : confirm_your_password.text;
-            have_you_got_an_account.text = TranslationManager.Get("have_you_got_an_account") != string.Empty ? TranslationManager.Get("have_you_got_an_account") : have_you_got_an_account.text;
+            if(have_you_got_an_account)
+                have_you_got_an_account.text = TranslationManager.Get("have_you_got_an_account") != string.Empty ? TranslationManager.Get("have_you_got_an_account") : have_you_got_an_account.text;
             signin.text = TranslationManager.Get("signin") != string.Empty ? TranslationManager.Get("signin") : signin.text;
             create.text = TranslationManager.Get("create") != string.Empty ? TranslationManager.Get("create") : create.text;
             TermsText.text = TranslationManager.Get("by_creating_this_account") + " <color=#FAB986>" + TranslationManager.Get("terms_conditions") + "</color> "

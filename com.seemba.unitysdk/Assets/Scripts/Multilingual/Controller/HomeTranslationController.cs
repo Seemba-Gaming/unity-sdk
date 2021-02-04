@@ -109,6 +109,10 @@ namespace SeembaSDK
         [SerializeField]
         private Text BubblesMarket;
 
+        [Header("Achievements")]
+        public Text Achievements;
+        public Text Won;
+        public Text ToBeWon;
         //Extra Translation 
         public static string WIN = "";
         public static string BUBBLES = "";
@@ -248,6 +252,11 @@ namespace SeembaSDK
             available_balance.text = TranslationManager.Get("available_balance");
             enter_the_amount_to_withdraw.text = TranslationManager.Get("enter_the_amount_to_withdraw");
             BubblesMarket.text = TranslationManager.Get("bubbles_market");
+
+            //Achievements
+            Achievements.text = TranslationManager.Get("achievements");
+            Won.text = TranslationManager.Get("won");
+            ToBeWon.text = TranslationManager.Get("to_be_won");
         }
     }
 }

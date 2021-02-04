@@ -28,7 +28,7 @@ namespace SeembaSDK
             WWWForm form = new WWWForm();
             Texture2D mytexture = screenshot.sprite.texture;
             byte[] bytes;
-            bytes = mytexture.EncodeToPNG();
+            bytes = mytexture.EncodeToJPG();
             var screedShotUrl = await ImagesManager.FixImage(bytes);
             form.AddField("screenshot", screedShotUrl);
             form.AddField("game_id", game_id);

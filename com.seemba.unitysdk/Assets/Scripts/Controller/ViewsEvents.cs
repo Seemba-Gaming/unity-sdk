@@ -31,7 +31,6 @@ namespace SeembaSDK
         public PersonalInfoPresenter PersonalInfo;
         public HistoryPresenter History;
         public WithdrawalInfoPresenter WithdrawalInfo;
-        public LeaderboardPresenter Leaderboard;
         public BugReportPresenter BugReport;
         public GameObject Overlay;
         #endregion

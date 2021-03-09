@@ -38,17 +38,8 @@ namespace SeembaSDK
         {
             if (UserManager.Get == null)
             {
-                //if (GamesManager.GAME_ORIENTATION == "portrait")
-               // {
-                    mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
-                    SeembaAnalyticsManager.Get.GameOpened("Seemba Horizental");
-
-                //}
-                //else
-                //{
-                //    mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
-                //    SeembaAnalyticsManager.Get.GameOpened("Seemba Vertical");
-                //}
+                mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
+                DontDestroyOnLoad(mSeembaManagers);
             }
 
             if (EventsController.Get != null)

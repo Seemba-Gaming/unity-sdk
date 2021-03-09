@@ -36,8 +36,9 @@ namespace SeembaSDK
             user_flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
             user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
 
-            gain.text = ChallengeManager.CurrentChallenge.gain.ToString();
-            gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ? " bubbles" : " €";
+            TranslationManager.scene = "Home";
+            gain.text = ChallengeManager.CurrentChallenge.gain.ToString() +" " ;
+            gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ?  TranslationManager.Get("bubbles") : "€";
             StartCoroutine(CheckOpponentCoroutine());
 
             try

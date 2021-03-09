@@ -14,6 +14,7 @@ namespace SeembaSDK
         public string CardId;
         public string ProductId;
         public Image GiftImage;
+        public Sprite default_image;
         public Text Description;
         public Text Price;
         #endregion
@@ -43,15 +44,19 @@ namespace SeembaSDK
                 {
                     var texture = DownloadHandlerTexture.GetContent(www);
                     giftImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+                    if(texture == null)
+                        giftImage.sprite = default_image;
                 }
                 catch (InvalidOperationException ex)
                 {
                     Debug.LogWarning(ex.Message);
+                    giftImage.sprite = default_image;
                 }
             }
             else
             {
                 Debug.LogWarning("url : " + url);
+                giftImage.sprite = default_image;
             }
         }
         public void OnClickGift()

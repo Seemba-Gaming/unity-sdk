@@ -93,7 +93,7 @@ namespace SeembaSDK
                 }
                 else
                 {
-                    FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " Bubbles";
+                    FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + TranslationManager.Get("bubbles");
                 }
             }
         }

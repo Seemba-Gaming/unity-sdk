@@ -77,6 +77,7 @@ namespace SeembaSDK
 
             mCurrentMenu = Intro.gameObject;
             mHistory.Push(Intro.gameObject);
+            PopupManager.Get.PopupsTranslationController.Init();
 
             if (UserManager.Get.getCurrentUserId() != null)
             {
@@ -85,7 +86,6 @@ namespace SeembaSDK
                 SeembaAnalyticsManager.Get.SendUserEvent("Login with Token");
                 GoToMenu(Menu.gameObject);
                 ShowScene(Menu.Home);
-                PopupManager.Get.PopupsTranslationController.Init();
             }
             else
             {
@@ -94,14 +94,14 @@ namespace SeembaSDK
         }
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("space") || Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.LogWarning("here"); 
-                if (!BugReport.gameObject.activeSelf)
-                {
-                    StartCoroutine(OpenBugReportPanel());
-                }
-            }
+            //if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("space") || Input.GetKeyDown(KeyCode.A))
+            //{
+            //    Debug.LogWarning("here"); 
+            //    if (!BugReport.gameObject.activeSelf)
+            //    {
+            //        StartCoroutine(OpenBugReportPanel());
+            //    }
+            //}
             if (Seemba.Get.DevelopmentMode)
             {
                 Vector3 acceleration = Input.acceleration;

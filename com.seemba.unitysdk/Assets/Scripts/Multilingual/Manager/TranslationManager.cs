@@ -13,7 +13,7 @@ namespace SeembaSDK
         public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
         private static JSONNode Translations = null;
         public static bool? isDownloaded = null;
-        // static string systemLanguage = SystemLanguage.English.ToString();
+        //static string systemLanguage = SystemLanguage.English.ToString();
         static string systemLanguage = Application.systemLanguage.ToString();
 #if UNITY_EDITOR
         private static bool d_OverrideLanguage = true;

@@ -36,7 +36,7 @@ namespace SeembaSDK
         public string user_2_score;
         public string[] users_old_scores;
         public string tournament_id;
-        public string game;
+        public GenericGameInfo game;
         public int? game_level;
         public string status;
         public string challenge_type;
@@ -45,15 +45,77 @@ namespace SeembaSDK
         public string next_challenge_id;
         public string createdAt;
         public string updatedAt;
-        public string matched_user_1;
+        public GenericUser matched_user_1;
         public string matched_user_1_contry;
         public string user_1_joined_at;
-        public string matched_user_2;
+        public GenericUser matched_user_2;
         public string matched_user_2_contry;
         public string user_2_joined_at;
         public string winner_user;
         public string __v;
         public GenericTournament tournament;
+    }
+    [CLSCompliant(false)]
+    public class GenericUser
+    {
+        public string _id;
+        public bool username_changed;
+        public bool email_verified;
+        public string address;
+        public string country;
+        public string firstname;
+        public string lastname;
+        public int highest_victories_streak;
+        public int current_victories_count;
+        public string last_bubble_click;
+        public string level;
+        public string payment_account_id;
+        public string city;
+        public string state;
+        public string max_withdraw;
+        public bool is_bot;
+        public string[] games;
+        public string username;
+        public string email;
+        public string avatar;
+        public string country_code;
+        public string long_lat;
+        public string paymentGateway;
+        public string createdAt;
+        public string updatedAt;
+        public string bubbles;
+        public string coins;
+        public string customer_id;
+        public string last_connection;
+        public string zipcode;
+    }
+    [CLSCompliant(false)]
+    public class GenericGameInfo
+    {
+        public string _id;
+        public string play_store_link;
+        public string app_store_link;
+        public bool completed;
+        public bool deleted;
+        public string[] platforms;
+        public string name;
+        public string description;
+        public string editor;
+        public string team;
+        public string score_mode;
+        public string status;
+        public string engine;
+        public string orientation;
+        public string[] brackets;
+        public string[] tournaments;
+        public string icon;
+        public string background_image;
+        public string appstore_id;
+        public string bundle_id;
+        public string createdAt;
+        public string updatedAt;
+        public string __v;
+        public string secret;
     }
     [CLSCompliant(false)]
     public class ChallengeManager : MonoBehaviour

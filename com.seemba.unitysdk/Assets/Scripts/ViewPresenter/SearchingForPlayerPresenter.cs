@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -16,7 +17,7 @@ namespace SeembaSDK
         #region Script Parameters
         public Text fee;
         public Text username;
-        public Text gain;
+        public TextMeshProUGUI gain;
         public Text nb_players;
         public Text counter;
         public Image user_flag, user_avatar;
@@ -37,8 +38,8 @@ namespace SeembaSDK
             user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
 
             TranslationManager.scene = "Home";
-            gain.text = ChallengeManager.CurrentChallenge.gain.ToString() +" " ;
-            gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ?  TranslationManager.Get("bubbles") : "€";
+            gain.text = ChallengeManager.CurrentChallenge.gain.ToString() + " ";
+            gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ?  TranslationManager.Get("bubbles") : "<sprite=0>";
             StartCoroutine(CheckOpponentCoroutine());
 
             try

@@ -27,8 +27,9 @@ namespace SeembaSDK
         public void Init(GiftCard card)
         {
             mCurrentCard = card;
+            mCurrentCard.price = card.price * 100;  // a supprimer
             Description.text = card.name;
-            Price.text = card.price + CurrencyManager.CURRENT_CURRENCY;
+            Price.text = card.price.ToString();
             StartCoroutine(GetGiftImage(card.cover, GiftImage));
             CardId = card._id;
             ProductId = card.product;

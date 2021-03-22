@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -123,9 +124,12 @@ namespace SeembaSDK
         [Header("popup duels")]
         public Animator popup_duels_animator;
         public Text entry_fee;
-        public Text gain;
+        //public Text gain;
+        public TextMeshProUGUI Gain;
         public Text bubbles_text;
         public Image bubbles_image;
+        public Text crown_text;
+        public Image crown_image;
         public Button cancel_duels;
         public Button confirm_duels;
 
@@ -416,16 +420,17 @@ namespace SeembaSDK
             PopupManager.Get.PopupController.PopupDuels.SetBool("Show", true);
             TranslationManager.scene = "Home";
             entry_fee.text = TranslationManager.Get("entry_fee") + " " + _param[0];
-            gain.text = _param[1].ToString();
+            Gain.text = _param[1].ToString();
             if (_param[2].Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
                 bubbles_text.gameObject.SetActive(true);
                 bubbles_image.gameObject.SetActive(true);
+                crown_image.gameObject.SetActive(false);
             }
             else
             {
-                entry_fee.text += CurrencyManager.CURRENT_CURRENCY;
-                gain.text += CurrencyManager.CURRENT_CURRENCY;
+                Gain.text += " <sprite=0>";
+                crown_image.gameObject.SetActive(true);
                 bubbles_text.gameObject.SetActive(false);
                 bubbles_image.gameObject.SetActive(false);
             }

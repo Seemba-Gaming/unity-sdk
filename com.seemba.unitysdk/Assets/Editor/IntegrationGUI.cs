@@ -152,19 +152,19 @@ namespace SeembaSDK
             Game SavedGame = JsonUtility.FromJson<Game>(mConfigFile.ToString());
             return SavedGame;
         }
-        void GetScenes()
+        static void GetScenes(string path)
         {
-            string absolute = Path.GetFullPath("Packages/com.seemba.unitysdk/Seemba/Scenes");
+            string absolute = Path.GetFullPath(path);
             string[] filePaths = Directory.GetFiles(@absolute, "*.unity").Select(Path.GetFileName)
                                 .ToArray();
 
             foreach (var file in filePaths)
             {
 
-                AddSceneToBuildSettings("Packages/com.seemba.unitysdk/Seemba/Scenes/" + file);
+                AddSceneToBuildSettings(path + file);
             }
         }
-        void AddSceneToBuildSettings(string pathOfSceneToAdd)
+        static void AddSceneToBuildSettings(string pathOfSceneToAdd)
         {
             //Loop through and see if the scene already exist in the build settings
             int indexOfSceneIfExist = -1;
@@ -266,10 +266,12 @@ namespace SeembaSDK
                 if (GamesManager.GAME_ORIENTATION == "portrait")
                 {
                     startInfo.Arguments = "/C openupm add com.seemba.unitysdk-vertical";
+                    GetScenes("Packages/com.seemba.unitysdk-vertical/Seemba/Scenes");
                 }
                 else
                 {
                     startInfo.Arguments = "/C openupm add com.seemba.unitysdk-horizental";
+                    GetScenes("Packages/com.seemba.unitysdk-horizental/Seemba/Scenes");
                 }
                 process.StartInfo = startInfo;
                 process.Start();

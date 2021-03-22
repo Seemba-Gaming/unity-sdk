@@ -12,10 +12,13 @@ namespace SeembaSDK
 
         public Text SelectedText;
         public Text Amount;
+        public Text Equals;
+        public Text CrownsValue;
         public Color SelectedOffColor;
         public Color AmountOffColor;
         public bool IsSelected;
         public InputField OtherAmount;
+        public GameObject OtherAmountCrowns;
 
         #endregion
 
@@ -45,6 +48,8 @@ namespace SeembaSDK
             {
                 SelectedText.text = TranslationManager.Get("selected");
                 SelectedText.color = Color.white;
+                Equals.color = Color.white;
+                CrownsValue.color = Color.white;
                 Amount.color = Color.white;
                 IsSelected = true;
             }
@@ -53,6 +58,8 @@ namespace SeembaSDK
                 SelectedText.text = TranslationManager.Get("select");
                 SelectedText.color = SelectedOffColor;
                 Amount.color = AmountOffColor;
+                Equals.color = AmountOffColor;
+                CrownsValue.color = AmountOffColor;
                 IsSelected = false;
             }
         }
@@ -63,12 +70,14 @@ namespace SeembaSDK
                 IsSelected = true;
                 OtherAmount.enabled = true;
                 OtherAmount.ActivateInputField();
+                OtherAmountCrowns.SetActive(true);
             }
             else
             {
                 IsSelected = false;
                 OtherAmount.enabled = false;
                 OtherAmount.text = string.Empty;
+                OtherAmountCrowns.SetActive(false);
             }
         }
         public async System.Threading.Tasks.Task AddAmountAsync()
@@ -104,6 +113,18 @@ namespace SeembaSDK
                 PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT, PopupsText.Get.PopupPayment());
             }
             LoaderManager.Get.LoaderController.HideLoader();
+        }
+
+        public void UpdateCrownValue()
+        {
+            if(string.IsNullOrEmpty(OtherAmount.text))
+            {
+                CrownsValue.text = string.Empty;
+            }
+            else
+            {
+                CrownsValue.text = (int.Parse(OtherAmount.text) * 100).ToString();
+            }
         }
         #endregion
     }

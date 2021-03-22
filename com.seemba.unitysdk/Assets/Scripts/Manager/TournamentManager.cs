@@ -50,9 +50,9 @@ namespace SeembaSDK
         #region Methods
         public void InitFees(GameChallengesInfo fees)
         {
-            FEE_BRACKET_CASH_AMATEUR = fees.tournament.Amateur.cash;
-            FEE_BRACKET_CASH_NOVICE = fees.tournament.Novice.cash;
-            FEE_BRACKET_CASH_CONFIRMED = fees.tournament.Confirmed.cash;
+            FEE_BRACKET_CASH_AMATEUR = (int)fees.tournament.Amateur.cash * 100;
+            FEE_BRACKET_CASH_NOVICE = (int)fees.tournament.Novice.cash * 100;
+            FEE_BRACKET_CASH_CONFIRMED = (int)fees.tournament.Confirmed.cash * 100;
             FEE_BRACKET_BUBBLE_AMATEUR = fees.tournament.Amateur.bubbles;
             FEE_BRACKET_BUBBLE_NOVICE = fees.tournament.Novice.bubbles;
             WIN_BRACKET_BUBBLE_CONFIRMED = fees.tournament.Confirmed.bubbles;
@@ -61,9 +61,9 @@ namespace SeembaSDK
         public void InitGains(GameChallengesInfo gain)
         {
 
-            WIN_BRACKET_CASH_AMATEUR = gain.tournament.Amateur.cash;
-            WIN_BRACKET_CASH_NOVICE = gain.tournament.Novice.cash;
-            WIN_BRACKET_CASH_CONFIRMED = gain.tournament.Confirmed.cash;
+            WIN_BRACKET_CASH_AMATEUR = (int)gain.tournament.Amateur.cash * 100;
+            WIN_BRACKET_CASH_NOVICE = (int)gain.tournament.Novice.cash * 100;
+            WIN_BRACKET_CASH_CONFIRMED = (int)gain.tournament.Confirmed.cash * 100;
             WIN_BRACKET_BUBBLE_AMATEUR = gain.tournament.Amateur.bubbles;
             WIN_BRACKET_BUBBLE_NOVICE = gain.tournament.Novice.bubbles;
             WIN_BRACKET_BUBBLE_CONFIRMED = gain.tournament.Confirmed.bubbles;

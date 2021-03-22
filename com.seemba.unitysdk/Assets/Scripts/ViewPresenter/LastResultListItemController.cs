@@ -113,7 +113,7 @@ namespace SeembaSDK
             }
             foreach (GenericChallenge challenge in list)
             {
-                if ((challenge.matched_user_1 == UserManager.Get.CurrentUser._id && challenge.user_1_score == null) || (challenge.matched_user_2 == UserManager.Get.CurrentUser._id && challenge.user_2_score == null))
+                if ((challenge.matched_user_1._id == UserManager.Get.CurrentUser._id && challenge.user_1_score == null) || (challenge.matched_user_2._id == UserManager.Get.CurrentUser._id && challenge.user_2_score == null))
                 {
                     ChallengeManager.CurrentChallengeId = challenge._id;
                     ReplayChallengePresenter.ChallengeToReplay = challenge;
@@ -185,12 +185,12 @@ namespace SeembaSDK
 
             if (challenge.matched_user_1.Equals(UserManager.Get.CurrentUser._id))
             {
-                mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_2);
+                mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_2._id);
                 await SetOpponentDetailsAsync(controller, mOpponent);
             }
             else
             {
-                mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_1);
+                mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_1._id);
                 await SetOpponentDetailsAsync(controller, mOpponent);
             }
 

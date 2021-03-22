@@ -26,6 +26,7 @@ namespace SeembaSDK
         };
         private Text _selfText { get { return GetComponent<Text>(); } }
         public ChallengesType challenges_type;
+        public Image CrownImage;
         private string _pretext = "";
         // Start is called before the first frame update
         void OnEnable()
@@ -45,13 +46,16 @@ namespace SeembaSDK
                     _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_BUBBLES_LEGEND + " " + HomeTranslationController.BUBBLES;    //1V1_BUBBLES_LEGEND
                     break;
                 case ChallengesType._1V1_PRO_CONFIDENT:
-                    _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;   //1V1_PRO_CONFIDENT
+                    _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString();// + " " + HomeTranslationController.CROWNS; //1V1_PRO_CONFIDENT
+                    CrownImage.gameObject.SetActive(true);
                     break;
                 case ChallengesType._1V1_PRO_CHAMPION:
-                    _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;    //1V1_PRO_CHAMPION
+                    _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString();// + " " + HomeTranslationController.CROWNS;    //1V1_PRO_CHAMPION
+                    CrownImage.gameObject.SetActive(true);
                     break;
                 case ChallengesType._1V1_PRO_LEGEND:
-                    _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;  //1V1_PRO_LEGEND
+                    _selfText.text = _pretext + " " + ChallengeManager.WIN_1V1_CASH_LEGEND.ToString();// + " " + HomeTranslationController.CROWNS;  //1V1_PRO_LEGEND
+                    CrownImage.gameObject.SetActive(true);
                     break;
                 case ChallengesType._BRACKET_BUBBLES_CONFIDENT:
                     _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR + " " + HomeTranslationController.BUBBLES;   //BRACKET_BUBBLES_CONFIDENT  
@@ -63,13 +67,16 @@ namespace SeembaSDK
                     _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED + " " + HomeTranslationController.BUBBLES;    //BRACKET_BUBBLES_LEGEND
                     break;
                 case ChallengesType._BRACKET_CASH_CONFIDENT:
-                    _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_AMATEUR.ToString("N2") + CurrencyManager.CURRENT_CURRENCY; //BRACKET_CASH_CONFIDENT
+                    _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_AMATEUR.ToString();// + " " + HomeTranslationController.CROWNS; //BRACKET_CASH_CONFIDENT
+                    CrownImage.gameObject.SetActive(true);
                     break;
                 case ChallengesType._BRACKET_CASH_CHAMPION:
-                    _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_NOVICE.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;  //BRACKET_CASH_CHAMPION
+                    _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_NOVICE.ToString();// + " " + HomeTranslationController.CROWNS;  //BRACKET_CASH_CHAMPION
+                    CrownImage.gameObject.SetActive(true);
                     break;
                 case ChallengesType._BRACKET_CASH_LEGEND:
-                    _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_CONFIRMED.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;    //BRACKET_CASH_LEGEND
+                    _selfText.text = _pretext + " " + TournamentManager.WIN_BRACKET_CASH_CONFIRMED.ToString();// + " " + HomeTranslationController.CROWNS;    //BRACKET_CASH_LEGEND
+                    CrownImage.gameObject.SetActive(true);
                     break;
             }
         }

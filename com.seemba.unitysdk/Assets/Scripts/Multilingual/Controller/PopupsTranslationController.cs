@@ -29,7 +29,6 @@ namespace SeembaSDK
             Selection.text = TranslationManager.Get("selection") != string.Empty ? TranslationManager.Get("selection") : Selection.text;
             WinAndGet.text = TranslationManager.Get("win_and_get") != string.Empty ? TranslationManager.Get("win_and_get") : WinAndGet.text;
             EntryFee.text = TranslationManager.Get("entry_fee") != string.Empty ? TranslationManager.Get("entry_fee") : EntryFee.text;
-            Debug.LogWarning(TranslationManager.Get("bubbles"));
             Bubbles.text = TranslationManager.Get("bubbles") != string.Empty ? TranslationManager.Get("bubbles") : Bubbles.text;
             DuelConfirmButtonText.text = TranslationManager.Get("go") != string.Empty ? TranslationManager.Get("go") : DuelConfirmButtonText.text;
 

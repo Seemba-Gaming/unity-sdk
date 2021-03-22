@@ -167,6 +167,11 @@ namespace SeembaSDK
             TranslationManager.scene = "Popups";
             return new object[] { TranslationManager.Get("congratulations"), TranslationManager.Get("payment_succeeded"), TranslationManager.Get("payment_succeeded_desc"), TranslationManager.Get("i_understand") };
         }
+        public object[] GiftCardIf()
+        {
+            TranslationManager.scene = "Popups";
+            return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_balance_insufficient"), TranslationManager.Get("i_understand") };
+        }
         public object[] PaymentNotConfirmed()
         {
             return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };

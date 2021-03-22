@@ -126,6 +126,8 @@ namespace SeembaSDK
         public Text gain;
         public Text bubbles_text;
         public Image bubbles_image;
+        public Text crown_text;
+        public Image crown_image;
         public Button cancel_duels;
         public Button confirm_duels;
 
@@ -421,11 +423,13 @@ namespace SeembaSDK
             {
                 bubbles_text.gameObject.SetActive(true);
                 bubbles_image.gameObject.SetActive(true);
+                crown_image.gameObject.SetActive(false);
+                crown_text.gameObject.SetActive(false);
             }
             else
             {
-                entry_fee.text += CurrencyManager.CURRENT_CURRENCY;
-                gain.text += CurrencyManager.CURRENT_CURRENCY;
+                crown_image.gameObject.SetActive(true);
+                crown_text.gameObject.SetActive(true);
                 bubbles_text.gameObject.SetActive(false);
                 bubbles_image.gameObject.SetActive(false);
             }

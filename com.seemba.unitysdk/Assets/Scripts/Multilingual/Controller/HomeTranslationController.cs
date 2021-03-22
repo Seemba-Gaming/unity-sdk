@@ -50,6 +50,7 @@ namespace SeembaSDK
             history,
             help_center,
             back_to_game_menu,
+            My_Gifts,
             log_out;
         [Space]
         [Header("Account")]
@@ -116,6 +117,7 @@ namespace SeembaSDK
         //Extra Translation 
         public static string WIN = "";
         public static string BUBBLES = "";
+        public static string CROWNS = "";
         public static string AT = "";
         public static string GAME_FINISHED = "";
         public static string DUEL = "";
@@ -139,6 +141,7 @@ namespace SeembaSDK
             AccountBackButton.text = TranslationManager.Get("back_button");
             WIN = TranslationManager.Get("win") != string.Empty ? TranslationManager.Get("win") : "WIN";
             BUBBLES = TranslationManager.Get("bubbles") != string.Empty ? TranslationManager.Get("bubbles") : "bubbles";
+            CROWNS = TranslationManager.Get("crowns") != string.Empty ? TranslationManager.Get("crowns") : "crowns";
             AT = TranslationManager.Get("at") != string.Empty ? TranslationManager.Get("at") : "at";
             GAME_FINISHED = TranslationManager.Get("game_finished") != string.Empty ? TranslationManager.Get("game_finished") : "game finished";
             DUEL = TranslationManager.Get("duel") != string.Empty ? TranslationManager.Get("duel") : "duel";

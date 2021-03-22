@@ -32,6 +32,7 @@ namespace SeembaSDK
         public HistoryPresenter History;
         public WithdrawalInfoPresenter WithdrawalInfo;
         public BugReportPresenter BugReport;
+        public GiftHistoryController GiftOrderHistory;
         public GameObject Overlay;
         #endregion
 
@@ -220,6 +221,11 @@ namespace SeembaSDK
         {
             SeembaAnalyticsManager.Get.SendUserEvent("History Click");
             GoToMenu(History.gameObject);
+        }
+        public void GiftOrdersClick()
+        {
+            SeembaAnalyticsManager.Get.SendUserEvent("Gift Orders Click");
+            GoToMenu(GiftOrderHistory.gameObject);
         }
         public void ShowScene(GameObject gameObject)
         {

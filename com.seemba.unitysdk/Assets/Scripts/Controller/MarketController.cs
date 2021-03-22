@@ -19,13 +19,18 @@ namespace SeembaSDK
         public string altText;
         public string __v;
     }
-    public class OrderResponse
+    [CLSCompliant(false)]
+    public class GiftsOrder
     {
-        public string result;
-        public float buyPrice;
-        public string orderId;
-        public string code;
-        public string error;
+        public string status;
+        public string _id;
+        public string user;
+        public string product;
+        public string transaction_id;
+        public string transaction_amount;
+        public string createdAt;
+        public string updatedAt;
+        public string __v;
     }
 
     [CLSCompliant(false)]
@@ -65,17 +70,16 @@ namespace SeembaSDK
             WWWForm form = new WWWForm();
             form.AddField("product", mCurrentGiftCard.product);
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            SeembaResponse<OrderResponse> responseData = JsonConvert.DeserializeObject<SeembaResponse<OrderResponse>>(response);
-            Debug.LogWarning(responseData.data.code);
-            if (responseData.data.code.Equals("su"))
+            SeembaResponse<GiftsOrder> responseData = JsonConvert.DeserializeObject<SeembaResponse<GiftsOrder>>(response);
+            if (responseData.message.Equals("order created !"))
             {
                 PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_SUCCESS, PopupsText.Get.GiftCardSuccess());
             }
             else
             {
-                if (responseData.data.code.Equals("if"))
+                if (responseData.message.Equals("insufficient balance"))
                 {
-                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_SUCCESS, PopupsText.Get.GiftCardSuccess());
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_SUCCESS, PopupsText.Get.GiftCardIf());
                 }
             }
             return true;
@@ -87,7 +91,6 @@ namespace SeembaSDK
         {
             foreach (GiftCard giftCard in giftCards)
             {
-                Debug.LogWarning(giftCard.name);
                 GameObject newGiftCard = Instantiate(GiftPrefab, GiftContainer);
                 newGiftCard.GetComponent<RectTransform>().localScale = Vector3.one;
                 newGiftCard.GetComponent<GiftCardController>().Init(giftCard);
@@ -96,8 +99,9 @@ namespace SeembaSDK
 
         private async Task<GiftCard[]> GetGiftCards()
         {
-            string url = Endpoint.classesURL + "/products";
+            string url = Endpoint.classesURL + "/products?page=1&pagesize=30";
             GiftCard[] giftCards = await SeembaWebRequest.Get.HttpsGetJSON<GiftCard[]>(url);
+            Debug.LogWarning(giftCards.Length);
             return giftCards;
         }
         #endregion

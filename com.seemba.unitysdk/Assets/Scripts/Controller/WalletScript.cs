@@ -47,23 +47,23 @@ namespace SeembaSDK
 					{
 						if (Add5Euro.IsSelected)
 						{
-							await Add5Euro.AddAmountAsync();
+							Add5Euro.AddAmountAsync();
 						}
 						else if (Add10Euro.IsSelected)
 						{
-							await Add10Euro.AddAmountAsync();
+							Add10Euro.AddAmountAsync();
 						}
 						else if (Add15Euro.IsSelected)
 						{
-							await Add15Euro.AddAmountAsync();
+							Add15Euro.AddAmountAsync();
 						}
 						else if (Add20Euro.IsSelected)
 						{
-							await Add20Euro.AddAmountAsync();
+							Add20Euro.AddAmountAsync();
 						}
 						else
 						{
-							await AddOtherAmount.AddOtherAmountAsync();
+							AddOtherAmount.AddOtherAmountAsync();
 						}
 					}
 					else

@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -23,8 +24,8 @@ namespace SeembaSDK
         public Text IdValue;
         public Text CurrentUserScore;
         public Text OpponentScore;
-        public Text EntryFee;
-        public Text Gain;
+        public TextMeshProUGUI EntryFee;
+        public TextMeshProUGUI Gain;
         public Text CurrentUserName;
         public Text OpponentUserName;
         public Text CurrentUserScoreText;
@@ -167,8 +168,8 @@ namespace SeembaSDK
             IdValue.text = challenge._id;
             CurrentUserScore.text = (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId()) ? challenge.user_1_score.ToString() : challenge.user_2_score.ToString();
             TranslationManager.scene = "Home";
-            Gain.text = HtmlOpenOrangeColor + TranslationManager.Get("gain") + " : " + HtmlCloseOrangeColor + challenge.gain;
-            EntryFee.text = HtmlOpenOrangeColor + TranslationManager.Get("entry_fee") + " : " + HtmlCloseOrangeColor + ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type).ToString();
+            Gain.text = HtmlOpenOrangeColor + TranslationManager.Get("gain") + " : " + HtmlCloseOrangeColor + (float.Parse(challenge.gain) * 100).ToString();
+            EntryFee.text = HtmlOpenOrangeColor + TranslationManager.Get("entry_fee") + " : " + HtmlCloseOrangeColor + (ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type) * 100).ToString();
             PlayAgainButton.GetComponentInChildren<Text>().text = ResultController.PLAY_AGAIN_TEXT;
             ContinueButton.GetComponentInChildren<Text>().text = ResultController.CONTINUE_TEXT;
             CurrentUserName.text = UserManager.Get.CurrentUser.username;
@@ -180,8 +181,8 @@ namespace SeembaSDK
             }
             else
             {
-                EntryFee.text += CurrencyManager.CURRENT_CURRENCY;
-                Gain.text += CurrencyManager.CURRENT_CURRENCY;
+                EntryFee.text += "<sprite=0>";
+                Gain.text += "<sprite=0>";
             }
         }
 

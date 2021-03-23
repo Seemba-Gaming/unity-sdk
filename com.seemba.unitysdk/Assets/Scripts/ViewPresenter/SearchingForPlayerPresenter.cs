@@ -38,7 +38,7 @@ namespace SeembaSDK
             user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
 
             TranslationManager.scene = "Home";
-            gain.text = ChallengeManager.CurrentChallenge.gain.ToString() + " ";
+            gain.text = (float.Parse(ChallengeManager.CurrentChallenge.gain) * 100).ToString() + " ";
             gain.text += (ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)) ?  TranslationManager.Get("bubbles") : "<sprite=0>";
             StartCoroutine(CheckOpponentCoroutine());
 

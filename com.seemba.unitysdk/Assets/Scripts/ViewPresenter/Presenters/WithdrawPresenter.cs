@@ -40,13 +40,9 @@ namespace SeembaSDK
         {
             controller = new WithdrawController();
             string token = UserManager.Get.getCurrentSessionToken();
-
-            User user = null;
-
-            user = await UserManager.Get.getUser();
             var accountStatus = await withdrawManager.accountVerificationStatus(token);
 
-            balance.text = user.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+            balance.text = UserManager.Get.CurrentUser.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
 
             WithdrawButton.onClick.AddListener(() =>
             {

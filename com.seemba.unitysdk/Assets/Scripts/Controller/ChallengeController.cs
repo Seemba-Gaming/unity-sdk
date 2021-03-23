@@ -25,7 +25,6 @@ namespace SeembaSDK
             float entry_fee = float.Parse(_duel_params[0].ToString().Replace(",", "."), CultureInfo.InvariantCulture.NumberFormat);
             float gain = float.Parse(_duel_params[1].ToString().Replace(",", "."), CultureInfo.InvariantCulture.NumberFormat);
             string gain_type = _duel_params[2].ToString();
-
             if (isCreditSuffisant(entry_fee, gain_type))
             {
                 SearchingForPlayerPresenter.nbPlayer = "duel";
@@ -38,6 +37,7 @@ namespace SeembaSDK
 
                 if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
                 {
+                    Debug.LogWarning("here");
                     await StartCashChallengeAsync(entry_fee, gain, gain_type);
                 }
                 else
@@ -83,6 +83,8 @@ namespace SeembaSDK
         #region Implementation
         private async void JoinChallenge(float entry_fee, float gain, string gain_type)
         {
+            Debug.LogWarning("here");
+
             LoaderManager.Get.LoaderController.ShowLoader(null);
             ChallengeManager.CurrentChallenge = await ChallengeManager.Get.AddChallenge("headTohead", gain.ToString(), gain_type.ToString(), 0);
             LoaderManager.Get.LoaderController.HideLoader();
@@ -90,6 +92,10 @@ namespace SeembaSDK
             if (ChallengeManager.CurrentChallenge != null)
             {
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Matchmaking.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("Bug : Current Challenge  = " + ChallengeManager.CurrentChallenge);
             }
         }
         private bool isDeveloperModeEnabled()
@@ -129,6 +135,7 @@ namespace SeembaSDK
         {
             VPNManager vpn = new VPNManager();
             return await vpn.isVpnConnectedAsync();
+            Debug.LogWarning("here");
         }
 
         private bool isCreditSuffisant(float entry_fee, string win_type)

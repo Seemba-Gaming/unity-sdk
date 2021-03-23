@@ -176,9 +176,9 @@ namespace SeembaSDK
 
         public void InitFees(GameChallengesInfo fees)
         {
-            FEE_1V1_CASH_CONFIDENT = (int)(fees.duels.Confident.cash * 100);
-            FEE_1V1_CASH_CHAMPION = (int)(fees.duels.Champion.cash * 100);
-            FEE_1V1_CASH_LEGEND = (int)(fees.duels.Legend.cash * 100);
+            FEE_1V1_CASH_CONFIDENT = (int)(fees.duels.Confident.cash);
+            FEE_1V1_CASH_CHAMPION = (int)(fees.duels.Champion.cash);
+            FEE_1V1_CASH_LEGEND = (int)(fees.duels.Legend.cash);
             FEE_1V1_BUBBLES_CONFIDENT = (int)fees.duels.Confident.bubbles;
             FEE_1V1_BUBBLES_CHAMPION = (int)fees.duels.Champion.bubbles;
             FEE_1V1_BUBBLES_LEGEND = (int)fees.duels.Legend.bubbles;
@@ -187,9 +187,9 @@ namespace SeembaSDK
         public void InitGains(GameChallengesInfo gain)
         {
 
-            WIN_1V1_CASH_CONFIDENT = (int)(gain.duels.Confident.cash * 100);
-            WIN_1V1_CASH_CHAMPION = (int)(gain.duels.Champion.cash * 100);
-            WIN_1V1_CASH_LEGEND = (int)(gain.duels.Legend.cash * 100);
+            WIN_1V1_CASH_CONFIDENT = (int)(gain.duels.Confident.cash);
+            WIN_1V1_CASH_CHAMPION = (int)(gain.duels.Champion.cash);
+            WIN_1V1_CASH_LEGEND = (int)(gain.duels.Legend.cash);
             WIN_1V1_BUBBLES_CONFIDENT = (int)gain.duels.Confident.bubbles;
             WIN_1V1_BUBBLES_CHAMPION = (int)gain.duels.Champion.bubbles;
             WIN_1V1_BUBBLES_LEGEND = (int)gain.duels.Legend.bubbles;
@@ -304,26 +304,6 @@ namespace SeembaSDK
                 finishedChallenges.Add(challenge);
             }
             return finishedChallenges;
-            //UnityWebRequest www = UnityWebRequest.Get(url);
-            //if (token != null)
-            //{
-            //    www.SetRequestHeader("x-access-token", token);
-            //    await www.SendWebRequest();
-
-            //    if (www.isNetworkError || www.isHttpError)
-            //    {
-            //        return null;
-            //    }
-
-            //    var challengeListData = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-            //    ArrayList finishedChallenges = new ArrayList();
-            //    foreach (Challenge challenge in challengeListData.data)
-            //    {
-            //        finishedChallenges.Add(challenge);
-            //    }
-            //    return finishedChallenges;
-            //}
-            //return null;
         }
         public async Task<ArrayList> listChallenges()
         {
@@ -358,6 +338,7 @@ namespace SeembaSDK
             {
                 if (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId())
                 {
+                    Debug.LogWarning("here " + UserManager.Get.CurrentUser.money_credit);
                     UserManager.Get.UpdateUserMoneyCredit(challenge.matched_user_1.money_credit.ToString());
                     UserManager.Get.UpdateUserBubblesCredit(challenge.matched_user_1.bubble_credit.ToString());
                 }
@@ -365,6 +346,7 @@ namespace SeembaSDK
                 {
                     if (challenge.matched_user_2._id == UserManager.Get.getCurrentUserId())
                     {
+                        Debug.LogWarning("here " + UserManager.Get.CurrentUser.money_credit);
                         UserManager.Get.UpdateUserMoneyCredit(challenge.matched_user_2.money_credit.ToString());
                         UserManager.Get.UpdateUserBubblesCredit(challenge.matched_user_2.bubble_credit.ToString());
                     }
@@ -382,48 +364,6 @@ namespace SeembaSDK
                 return false;
             }
         }
-        //public void updateChallenge(string challengeId, float score)
-        //{
-        //    //UserManager um = new UserManager ();
-        //    string url = Endpoint.classesURL + "/challenges";
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        //    request.Method = "PUT";
-        //    request.Headers["x-access-token"] = UserManager.Get.getCurrentSessionToken();
-        //    request.ContentType = "application/x-www-form-urlencoded";
-        //    using (var stream = request.GetRequestStream())
-        //    {
-        //        string json = "challenge_id=" + challengeId + "&score=" + score + "&is_finished=" + "false";
-        //        byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-        //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        //    }
-        //    try
-        //    {
-        //        HttpWebResponse response;
-        //        using (response = (HttpWebResponse)request.GetResponse())
-        //        {
-        //            System.IO.Stream s = response.GetResponseStream();
-        //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-        //            {
-        //                var jsonResponse = sr.ReadToEnd();
-        //                //Debug.Log(jsonResponse);
-        //            }
-        //        }
-        //    }
-        //    catch (WebException ex)
-        //    {
-        //        if (ex.Response != null)
-        //        {
-        //            using (var errorResponse = (HttpWebResponse)ex.Response)
-        //            {
-        //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-        //                {
-        //                    string error = reader.ReadToEnd();
-        //                    //Debug.Log(error);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
         public async Task<Challenge> AddChallenge(string challenge_type, string gain, string gain_type, int level, string token = null)
         {
             string url = Endpoint.classesURL + "/challenges";
@@ -435,6 +375,8 @@ namespace SeembaSDK
             form.AddField("level", level);
             form.AddField("game_level", GamesManager.GAME_LEVEL.ToString());
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+            Debug.LogWarning(response);
+            Debug.LogWarning("gain " + gain + " gain_type "+ gain_type + " challenge_type "+ challenge_type);
             ChallengeData challengeData = JsonConvert.DeserializeObject<ChallengeData>(response);
             if (challengeData.success)
             {
@@ -450,7 +392,6 @@ namespace SeembaSDK
         public async Task<ArrayList> getUserOngoingChallenges(string token)
         {
             ArrayList challenges = new ArrayList();
-            JSONArray challengesIDs = new JSONArray();
             challenges = await getSeeResultsChallenges(token);
             challenges.AddRange(await getPendingChallenges(token));
             return challenges;

@@ -73,10 +73,9 @@ namespace SeembaSDK
             Items = new ArrayList();
             string token = UserManager.Get.getCurrentSessionToken();
             StartCoroutine(CheckItems());
-            User user = await UserManager.Get.getUser();
             Items = await ChallengeManager.Get.getChallengesUserResults(token);
-            nbGameWon.text = user.victories_count.ToString();
-            nbGameWonInARow.text = user.current_victories_count.ToString();
+            nbGameWon.text = UserManager.Get.CurrentUser.victories_count.ToString();
+            nbGameWonInARow.text = UserManager.Get.CurrentUser.current_victories_count.ToString();
             if (Items != null)
             {
                 foreach (Challenge item in Items)

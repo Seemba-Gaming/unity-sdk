@@ -419,8 +419,8 @@ namespace SeembaSDK
             ShowPopupContent(PopupManager.Get.PopupController.PopupDuels.gameObject);
             PopupManager.Get.PopupController.PopupDuels.SetBool("Show", true);
             TranslationManager.scene = "Home";
-            entry_fee.text = TranslationManager.Get("entry_fee") + " " + _param[0];
-            Gain.text = _param[1].ToString();
+            entry_fee.text = TranslationManager.Get("entry_fee") + " " + float.Parse(_param[0].ToString()) * 100;
+            Gain.text = (float.Parse(_param[1].ToString()) * 100).ToString();
             if (_param[2].Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
                 bubbles_text.gameObject.SetActive(true);

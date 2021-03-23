@@ -80,14 +80,13 @@ namespace SeembaSDK
                 OtherAmountCrowns.SetActive(false);
             }
         }
-        public async System.Threading.Tasks.Task AddAmountAsync()
+        public void AddAmountAsync()
         {
             var amountToAdd = string.Join("", Amount.text.Where(char.IsDigit));
             WalletScript.LastCredit = int.Parse(amountToAdd);
             LoaderManager.Get.LoaderController.ShowLoader(null);
-            User user = await UserManager.Get.getUser();
             SeembaAnalyticsManager.Get.SendCreditEvent("Try to credit", float.Parse(amountToAdd));
-            if (EventsController.Get.checkUserBirthday(user))
+            if (EventsController.Get.checkUserBirthday(UserManager.Get.CurrentUser))
             {
                 PopupManager.Get.PopupController.ShowPopup(PopupType.AGE_VERIFICATION, PopupsText.Get.AgeVerification());
             }
@@ -97,14 +96,13 @@ namespace SeembaSDK
             }
             LoaderManager.Get.LoaderController.HideLoader();
         }
-        public async System.Threading.Tasks.Task AddOtherAmountAsync()
+        public void AddOtherAmountAsync()
         {
             WalletScript.LastCredit = float.Parse(OtherAmount.text.Replace(".", ","), System.Globalization.NumberStyles.Float);
             Debug.LogWarning(WalletScript.LastCredit);
             LoaderManager.Get.LoaderController.ShowLoader(null);
-            User user = await UserManager.Get.getUser();
 
-            if (EventsController.Get.checkUserBirthday(user))
+            if (EventsController.Get.checkUserBirthday(UserManager.Get.CurrentUser))
             {
                 PopupManager.Get.PopupController.ShowPopup(PopupType.AGE_VERIFICATION, PopupsText.Get.AgeVerification());
             }

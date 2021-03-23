@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace SeembaSDK
 {
@@ -73,6 +74,7 @@ namespace SeembaSDK
 			this.personal_id_number = personal_id_number;
 			this.lastname = lastname;
 			this.firstname = firstname;
+			Debug.LogWarning("here");
 			this.money_credit = money_credit;
 			this.bubble_credit = bubble_credit;
 			this.email = email;

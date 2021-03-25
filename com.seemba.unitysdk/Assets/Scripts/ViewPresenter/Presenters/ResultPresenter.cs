@@ -176,13 +176,13 @@ namespace SeembaSDK
             CurrentUserAvatar.sprite = UserManager.Get.CurrentAvatarBytesString;
             if (challenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
-                EntryFee.text += " " + ResultController.BUBBLES;
-                Gain.text += " " + ResultController.BUBBLES;
+                EntryFee.text += " " + "<sprite=0>";
+                Gain.text += " " + "<sprite=0>";
             }
             else
             {
-                EntryFee.text += "<sprite=0>";
-                Gain.text += "<sprite=0>";
+                EntryFee.text += " " + "<sprite=1>";
+                Gain.text += " " + "<sprite=1>";
             }
         }
 

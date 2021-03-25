@@ -84,7 +84,7 @@ namespace SeembaSDK
             {
                 var user = await UserManager.Get.getUser();
                 UserManager.Get.CurrentUser = user;
-                UserManager.Get.CurrentUser.money_credit = user.money_credit * 100;
+                UserManager.Get.CurrentUser.money_credit = user.money_credit;
 
                 SeembaAnalyticsManager.Get.SendUserEvent("Login with Token");
                 GoToMenu(Menu.gameObject);

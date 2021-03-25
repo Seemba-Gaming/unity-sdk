@@ -210,7 +210,6 @@ namespace SeembaSDK
             var N = JSON.Parse(response);
             var userData = JsonUtility.FromJson<UserData>(response);
             CurrentUser = userData.data;
-            CurrentUser.money_credit = userData.data.money_credit * 100;
             CurrentUser.token = N["token"].Value;
             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
 
@@ -261,7 +260,6 @@ namespace SeembaSDK
                 return null;
             }
             CurrentUser = userData.data;
-            CurrentUser.money_credit = userData.data.money_credit * 100;
             return CurrentUser;
         }
 

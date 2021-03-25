@@ -346,7 +346,6 @@ namespace SeembaSDK
                 {
                     if (challenge.matched_user_2._id == UserManager.Get.getCurrentUserId())
                     {
-                        Debug.LogWarning("here " + UserManager.Get.CurrentUser.money_credit);
                         UserManager.Get.UpdateUserMoneyCredit(challenge.matched_user_2.money_credit.ToString());
                         UserManager.Get.UpdateUserBubblesCredit(challenge.matched_user_2.bubble_credit.ToString());
                     }
@@ -375,8 +374,6 @@ namespace SeembaSDK
             form.AddField("level", level);
             form.AddField("game_level", GamesManager.GAME_LEVEL.ToString());
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            Debug.LogWarning(response);
-            Debug.LogWarning("gain " + gain + " gain_type "+ gain_type + " challenge_type "+ challenge_type);
             ChallengeData challengeData = JsonConvert.DeserializeObject<ChallengeData>(response);
             if (challengeData.success)
             {

@@ -37,7 +37,6 @@ namespace SeembaSDK
 
                 if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
                 {
-                    Debug.LogWarning("here");
                     await StartCashChallengeAsync(entry_fee, gain, gain_type);
                 }
                 else
@@ -83,8 +82,6 @@ namespace SeembaSDK
         #region Implementation
         private async void JoinChallenge(float entry_fee, float gain, string gain_type)
         {
-            Debug.LogWarning("here");
-
             LoaderManager.Get.LoaderController.ShowLoader(null);
             ChallengeManager.CurrentChallenge = await ChallengeManager.Get.AddChallenge("headTohead", gain.ToString(), gain_type.ToString(), 0);
             LoaderManager.Get.LoaderController.HideLoader();

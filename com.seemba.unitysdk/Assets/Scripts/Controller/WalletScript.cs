@@ -27,9 +27,30 @@ namespace SeembaSDK
 		{
 
 		}
+		public void OnEnable()
+		{
+			if (ChargeAmount != null)
+			{
+				ChargeAmount.onValueChanged.AddListener(delegate
+				{
+					if (string.IsNullOrEmpty(ChargeAmount.text))
+					{
+						EuroLabel.text = "";
+					}
+					else
+					{
+						EuroLabel.text = CurrencyManager.CURRENT_CURRENCY;
+					}
+				});
+			}
+		}
 		#endregion
 
 		#region Methods
+		public void OnClickStripeFees()
+        {
+			Application.OpenURL("https://stripe.com/fr/pricing");
+        }
 		public async void creditClick()
 		{
 			if (string.IsNullOrEmpty(UserManager.Get.CurrentUser.country_code))
@@ -83,23 +104,6 @@ namespace SeembaSDK
 					{
 						PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_PROHIBITED_LOCATION_WALLET, PopupsText.Get.ProhibitedLocationWallet());
 					});
-				});
-			}
-		}
-		public void OnEnable()
-		{
-			if (ChargeAmount != null)
-			{
-				ChargeAmount.onValueChanged.AddListener(delegate
-				{
-					if (string.IsNullOrEmpty(ChargeAmount.text))
-					{
-						EuroLabel.text = "";
-					}
-					else
-					{
-						EuroLabel.text = CurrencyManager.CURRENT_CURRENCY;
-					}
 				});
 			}
 		}

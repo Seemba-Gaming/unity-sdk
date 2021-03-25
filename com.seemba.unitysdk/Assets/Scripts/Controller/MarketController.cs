@@ -52,6 +52,11 @@ namespace SeembaSDK
             var GiftCards = await GetGiftCards();
             FillGifts(GiftCards);
         }
+
+        void OnDisable()
+        {
+            ClearGifts();
+        }
         #endregion
 
         #region Methods
@@ -73,6 +78,11 @@ namespace SeembaSDK
             SeembaResponse<GiftsOrder> responseData = JsonConvert.DeserializeObject<SeembaResponse<GiftsOrder>>(response);
             if (responseData.message.Equals("order created !"))
             {
+                User user = await UserManager.Get.getUser();
+                if (user != null)
+                {
+                    ViewsEvents.Get.Menu.Header.GetComponent<HeaderController>().UpdateHeaderInfo(user);
+                }
                 PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_SUCCESS, PopupsText.Get.GiftCardSuccess());
             }
             else
@@ -101,8 +111,15 @@ namespace SeembaSDK
         {
             string url = Endpoint.classesURL + "/products?page=1&pagesize=30";
             GiftCard[] giftCards = await SeembaWebRequest.Get.HttpsGetJSON<GiftCard[]>(url);
-            Debug.LogWarning(giftCards.Length);
             return giftCards;
+        }
+
+        private void ClearGifts()
+        {
+            foreach (Transform transform in GiftContainer)
+            {
+                Destroy(transform.gameObject);
+            }
         }
         #endregion
     }

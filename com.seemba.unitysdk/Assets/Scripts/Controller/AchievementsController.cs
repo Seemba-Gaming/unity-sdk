@@ -9,12 +9,17 @@ namespace SeembaSDK
     [CLSCompliant(false)]
     public class AchievementItem
     {
-        public string _id;
-        public Image image;
         public string name;
         public string description;
-        public int amount;
-        public int __v;
+        public bool done;
+        public int current_amount;
+        public int total_amount;
+    }
+    [CLSCompliant(false)]
+    public class AchievemenstsList
+    {
+        public string user_id;
+        public AchievementItem[] achievements;
     }
 
     [CLSCompliant(false)]
@@ -67,7 +72,7 @@ namespace SeembaSDK
                 mCanClickToBeWon = true;
                 mCanClickWon = false;
                 await GetMyAchivements();
-                FillAchievements(mMyAchievements);
+                FillAchievements(mMyAchievements, true);
             }
         }
         public async void OnClickToBeWonAsync(bool selected)
@@ -85,30 +90,41 @@ namespace SeembaSDK
 
         public async Task<bool> GetAllAchivements()
         {
-            string url = Endpoint.classesURL + "/gamifications/achievements/all";
-            var seembaResponse = await SeembaWebRequest.Get.HttpsGetJSON<AchievementItem[]>(url);
-            mAllAchievements = seembaResponse;
+            string url = Endpoint.classesURL + "/gamifications/achievements";
+            var seembaResponse = await SeembaWebRequest.Get.HttpsGetJSON<AchievemenstsList>(url);
+            mAllAchievements = seembaResponse.achievements;
             return true;
         }
 
-        private void FillAchievements(AchievementItem[] items)
+        private void FillAchievements(AchievementItem[] items, bool doneOnly = false)
         {
+            ClearContent();
             foreach (AchievementItem item in items)
             {
-                GameObject AchievementItem = Instantiate(AchievementPrefab, ItemsContainer);
-                AchievementItem.GetComponent<RectTransform>().localScale = Vector3.one;
-                AchievementItem.GetComponent<AchievementsItemController>().Init(item);
+                if(item.done == doneOnly)
+                {
+                    GameObject AchievementItem = Instantiate(AchievementPrefab, ItemsContainer);
+                    AchievementItem.GetComponent<RectTransform>().localScale = Vector3.one;
+                    AchievementItem.GetComponent<AchievementsItemController>().Init(item);
+                }
             }
         }
 
         public async Task<bool> GetMyAchivements()
         {
-            string url = Endpoint.classesURL + "/gamifications/achievements/done";
-            var seembaResponse = await SeembaWebRequest.Get.HttpsGetJSON<AchievementItem[]>(url);
-            mMyAchievements = seembaResponse;
+            string url = Endpoint.classesURL + "/gamifications/achievements";
+            var seembaResponse = await SeembaWebRequest.Get.HttpsGetJSON<AchievemenstsList>(url);
+            mMyAchievements = seembaResponse.achievements;
             return true;
         }
 
+        void ClearContent()
+        {
+            foreach (Transform transform in ItemsContainer)
+            {
+                Destroy(transform.gameObject);
+            }
+        }
         #endregion
     }
 }

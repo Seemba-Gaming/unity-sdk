@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -19,8 +20,8 @@ namespace SeembaSDK
         #region Script Parameters
         public GameObject Fav1V1;
         public GameObject FavTournament;
-        public Text Fav1V1Text;
-        public Text FavTournamentText;
+        public TextMeshProUGUI Fav1V1Text;
+        public TextMeshProUGUI FavTournamentText;
         #endregion
 
         #region Fields
@@ -75,11 +76,11 @@ namespace SeembaSDK
                 FavTournament.SetActive(false);
                 if (gainType.Contains("cash"))
                 {
-                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + gain + " €";
+                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=1>";
                 }
                 else
                 {
-                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + gain + " " + TranslationManager.Get("bubbles");
+                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + float.Parse(gain) + " <sprite=0>";
                 }
             }
             else
@@ -88,12 +89,12 @@ namespace SeembaSDK
                 FavTournament.SetActive(true);
                 if (gainType.Contains("cash"))
                 {
-                    FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + " €";
+                    FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=1>";
 
                 }
                 else
                 {
-                    FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + gain + TranslationManager.Get("bubbles");
+                    FavTournamentText.text = OpenHtmlColorBracket + "Win " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=0>";
                 }
             }
         }

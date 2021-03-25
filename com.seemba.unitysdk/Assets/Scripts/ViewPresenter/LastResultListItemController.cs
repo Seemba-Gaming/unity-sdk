@@ -139,11 +139,11 @@ namespace SeembaSDK
             LastResultTournamentListController controller = newItem.GetComponent<LastResultTournamentListController>();
             if (challenge.gain_type == TournamentManager.GAIN_TYPE_BUBBLE)
             {
-                controller.title.text = HomeTranslationController.WIN + " " + challenge.gain + " " + HomeTranslationController.BUBBLES;
+                controller.title.text = HomeTranslationController.WIN + " " + challenge.gain + " <sprite=0>";
             }
             else
             {
-                controller.title.text = HomeTranslationController.WIN + " " + challenge.gain + CurrencyManager.CURRENT_CURRENCY;
+                controller.title.text = HomeTranslationController.WIN + " " + challenge.gain + " <sprite=1>";
             }
             string date = challenge.createdAt.Substring(0, challenge.createdAt.IndexOf("T"));
             string hour = challenge.createdAt.Substring(challenge.createdAt.IndexOf("T") + 1, 5).Replace(":", "H") + "MIN";

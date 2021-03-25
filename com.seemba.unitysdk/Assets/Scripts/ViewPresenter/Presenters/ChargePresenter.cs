@@ -376,8 +376,11 @@ namespace SeembaSDK
         {
             SeembaAnalyticsManager.Get.SendCreditEvent("Credit Succeeded", WalletScript.LastCredit);
             float credit = float.Parse(UserManager.Get.GetCurrentMoneyCredit()) + WalletScript.LastCredit;
+            Debug.LogWarning(WalletScript.LastCredit);
+            Debug.LogWarning(credit);
+            Debug.LogWarning(UserManager.Get.GetCurrentMoneyCredit());
             TranslationManager.scene = "Home";
-            object[] _params = { TranslationManager.Get("congratulations"), TranslationManager.Get("transaction_accepted"), credit.ToString() + "€", "(+" + WalletScript.LastCredit + CurrencyManager.CURRENT_CURRENCY + ")", TranslationManager.Get("ok") + " !" };
+            object[] _params = { TranslationManager.Get("congratulations"), TranslationManager.Get("transaction_accepted"), (credit * 100).ToString() + "<sprite=1>", "( +" + WalletScript.LastCredit * 100 + "<sprite=1>"  + " )", TranslationManager.Get("ok") + " !" };
             LoaderManager.Get.LoaderController.HideLoader();
             PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS, _params);
             UserManager.Get.UpdateUserMoneyCredit(credit.ToString());

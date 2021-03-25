@@ -170,7 +170,7 @@ namespace SeembaSDK
         public object[] GiftCardIf()
         {
             TranslationManager.scene = "Popups";
-            return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("stripe_balance_insufficient"), TranslationManager.Get("i_understand") };
+            return new object[] { TranslationManager.Get("payment"), TranslationManager.Get("failed"), TranslationManager.Get("not_enough_crowns"), TranslationManager.Get("i_understand") };
         }
         public object[] PaymentNotConfirmed()
         {

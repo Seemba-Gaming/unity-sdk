@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -13,7 +14,7 @@ namespace SeembaSDK
         public Text SelectedText;
         public Text Amount;
         public Text Equals;
-        public Text CrownsValue;
+        public TextMeshProUGUI CrownsValue;
         public Color SelectedOffColor;
         public Color AmountOffColor;
         public bool IsSelected;
@@ -121,7 +122,7 @@ namespace SeembaSDK
             }
             else
             {
-                CrownsValue.text = (int.Parse(OtherAmount.text) * 100).ToString();
+                CrownsValue.text = (int.Parse(OtherAmount.text) * 100).ToString() + " <sprite=1>";
             }
         }
         #endregion

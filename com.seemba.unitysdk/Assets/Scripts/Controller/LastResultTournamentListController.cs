@@ -1,14 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using System;
+using TMPro;
 
 namespace SeembaSDK
 {
 	[CLSCompliant(false)]
 	public class LastResultTournamentListController : MonoBehaviour
 	{
-		public Text victory, defeat, tournamentID, date, title;
+		public TextMeshProUGUI title;
+		public Text victory, defeat, tournamentID, date;
 		public Button showResult;
 	}
 }

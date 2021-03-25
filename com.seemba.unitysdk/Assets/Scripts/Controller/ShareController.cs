@@ -59,7 +59,6 @@ namespace SeembaSDK
                 text = GamesManager.GAME_ANDROID_URL;
             }
             new NativeShare().SetText(text).Share();
-            Debug.Log(text);
         }
     }
 }

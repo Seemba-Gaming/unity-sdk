@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,10 +27,11 @@ namespace SeembaSDK
             replay_now.text = TranslationManager.Get("replay_now") != string.Empty ? TranslationManager.Get("replay_now") : replay_now.text;
             game_id.text = TranslationManager.Get("game_id") != string.Empty ? TranslationManager.Get("game_id") : game_id.text;
             date.text = TranslationManager.Get("date") != string.Empty ? TranslationManager.Get("date") : date.text;
-            prize.text = TranslationManager.Get("prize") != string.Empty ? TranslationManager.Get("prize") : prize.text;
             your_opponent.text = TranslationManager.Get("your_opponent") != string.Empty ? TranslationManager.Get("your_opponent") : your_opponent.text;
             is_waiting.text = TranslationManager.Get("is_waiting") != string.Empty ? TranslationManager.Get("is_waiting") : is_waiting.text;
             play_now.text = TranslationManager.Get("play_now") != string.Empty ? TranslationManager.Get("play_now") : play_now.text;
+            TranslationManager.scene = "Home";
+            prize.text = TranslationManager.Get("gain") != string.Empty ? TranslationManager.Get("gain") : prize.text;
         }
     }
 }

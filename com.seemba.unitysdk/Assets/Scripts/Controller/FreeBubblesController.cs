@@ -29,6 +29,11 @@ namespace SeembaSDK
         private void OnEnable()
         {
             ConfigNextRewardTime();
+            if(mSetTimerGui != null)
+            {
+                mSetTimerGui = null;
+            }
+            StartCoroutine(SetTimeCoroutine());
         }
         public async void SetNextTime()
         {
@@ -50,22 +55,22 @@ namespace SeembaSDK
             }
             Loader.gameObject.SetActive(false);
         }
-        public async void ConfigNextRewardTime()
+        public void ConfigNextRewardTime()
         {
             if (nextRewardTime == DateTime.MinValue)
             {
                 Loader.gameObject.SetActive(true);
-                User user = await UserManager.Get.getUser();
+
                 Loader.gameObject.SetActive(false);
-                if (user != null)
+                if (UserManager.Get.CurrentUser != null)
                 {
-                    if (string.IsNullOrEmpty(user.last_bubble_click))
+                    if (string.IsNullOrEmpty(UserManager.Get.CurrentUser.last_bubble_click))
                     {
                         nextRewardTime = DateTime.MinValue;
                     }
                     else
                     {
-                        nextRewardTime = Convert.ToDateTime(user.last_bubble_click).ToUniversalTime().AddHours(rewardIntervalHours);
+                        nextRewardTime = Convert.ToDateTime(UserManager.Get.CurrentUser.last_bubble_click).ToUniversalTime().AddHours(rewardIntervalHours);
                     }
                 }
                 else

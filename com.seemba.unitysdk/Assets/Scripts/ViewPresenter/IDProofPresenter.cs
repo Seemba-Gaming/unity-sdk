@@ -38,12 +38,11 @@ namespace SeembaSDK
             userToken = UserManager.Get.getCurrentSessionToken();
             LoaderManager.Get.LoaderController.ShowLoader(null);
 
-            User user = await UserManager.Get.getUser();
             var account = await wm.accountVerificationJSON(userToken);
 
             LoaderManager.Get.LoaderController.HideLoader();
 
-            if (string.IsNullOrEmpty(user.birthdate) || string.IsNullOrEmpty(user.address) || string.IsNullOrEmpty(user.firstname) || string.IsNullOrEmpty(user.lastname) || string.IsNullOrEmpty(user.zipcode) || string.IsNullOrEmpty(user.city) || string.IsNullOrEmpty(user.phone))
+            if (string.IsNullOrEmpty(UserManager.Get.CurrentUser.birthdate) || string.IsNullOrEmpty(UserManager.Get.CurrentUser.address) || string.IsNullOrEmpty(UserManager.Get.CurrentUser.firstname) || string.IsNullOrEmpty(UserManager.Get.CurrentUser.lastname) || string.IsNullOrEmpty(UserManager.Get.CurrentUser.zipcode) || string.IsNullOrEmpty(UserManager.Get.CurrentUser.city) || string.IsNullOrEmpty(UserManager.Get.CurrentUser.phone))
             {
                 showMissingInfoPopup();
             }
@@ -110,7 +109,7 @@ namespace SeembaSDK
                         IDBackDisabled.SetActive(true);
                     }
                 }
-                if (!string.IsNullOrEmpty(documentBackID) && user.id_proof_2_uploaded)
+                if (!string.IsNullOrEmpty(documentBackID) && UserManager.Get.CurrentUser.id_proof_2_uploaded)
                 {
                     IDBackWaiting.SetActive(true);
                     IDPassport.interactable = false;
@@ -118,7 +117,7 @@ namespace SeembaSDK
                     IDPassportDisabled.SetActive(true);
 
                 }
-                if (!string.IsNullOrEmpty(documentFrontID) && user.id_proof_1_uploaded)
+                if (!string.IsNullOrEmpty(documentFrontID) && UserManager.Get.CurrentUser.id_proof_1_uploaded)
                 {
                     IDFrontWaiting.SetActive(true);
                     IDPassport.interactable = false;
@@ -126,7 +125,7 @@ namespace SeembaSDK
                     IDPassportDisabled.SetActive(true);
 
                 }
-                if (!string.IsNullOrEmpty(documentBackID) && user.passport_uploaded)
+                if (!string.IsNullOrEmpty(documentBackID) && UserManager.Get.CurrentUser.passport_uploaded)
                 {
                     IDPassportWaiting.SetActive(true);
                     IDFront.interactable = false;

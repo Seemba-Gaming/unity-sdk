@@ -27,9 +27,30 @@ namespace SeembaSDK
 		{
 
 		}
+		public void OnEnable()
+		{
+			if (ChargeAmount != null)
+			{
+				ChargeAmount.onValueChanged.AddListener(delegate
+				{
+					if (string.IsNullOrEmpty(ChargeAmount.text))
+					{
+						EuroLabel.text = "";
+					}
+					else
+					{
+						EuroLabel.text = CurrencyManager.CURRENT_CURRENCY;
+					}
+				});
+			}
+		}
 		#endregion
 
 		#region Methods
+		public void OnClickStripeFees()
+        {
+			Application.OpenURL("https://stripe.com/fr/pricing");
+        }
 		public async void creditClick()
 		{
 			if (string.IsNullOrEmpty(UserManager.Get.CurrentUser.country_code))
@@ -47,23 +68,23 @@ namespace SeembaSDK
 					{
 						if (Add5Euro.IsSelected)
 						{
-							await Add5Euro.AddAmountAsync();
+							Add5Euro.AddAmountAsync();
 						}
 						else if (Add10Euro.IsSelected)
 						{
-							await Add10Euro.AddAmountAsync();
+							Add10Euro.AddAmountAsync();
 						}
 						else if (Add15Euro.IsSelected)
 						{
-							await Add15Euro.AddAmountAsync();
+							Add15Euro.AddAmountAsync();
 						}
 						else if (Add20Euro.IsSelected)
 						{
-							await Add20Euro.AddAmountAsync();
+							Add20Euro.AddAmountAsync();
 						}
 						else
 						{
-							await AddOtherAmount.AddOtherAmountAsync();
+							AddOtherAmount.AddOtherAmountAsync();
 						}
 					}
 					else
@@ -83,23 +104,6 @@ namespace SeembaSDK
 					{
 						PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_PROHIBITED_LOCATION_WALLET, PopupsText.Get.ProhibitedLocationWallet());
 					});
-				});
-			}
-		}
-		public void OnEnable()
-		{
-			if (ChargeAmount != null)
-			{
-				ChargeAmount.onValueChanged.AddListener(delegate
-				{
-					if (string.IsNullOrEmpty(ChargeAmount.text))
-					{
-						EuroLabel.text = "";
-					}
-					else
-					{
-						EuroLabel.text = CurrencyManager.CURRENT_CURRENCY;
-					}
 				});
 			}
 		}

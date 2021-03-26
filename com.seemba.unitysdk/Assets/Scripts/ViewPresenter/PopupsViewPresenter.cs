@@ -102,8 +102,8 @@ namespace SeembaSDK
         public Animator PopupCongrats;
         public Text PopupCongratsTitle;
         public Text PopupCongratsSubtitle;
-        public Text PopupCongratsTotal;
-        public Text PopupCongratsAddedValue;
+        public TextMeshProUGUI PopupCongratsTotal;
+        public TextMeshProUGUI PopupCongratsAddedValue;
         public Button PopupCongratsConfirmButton;
         public Text PopupCongratsConfirmButtonText;
 
@@ -419,19 +419,21 @@ namespace SeembaSDK
             ShowPopupContent(PopupManager.Get.PopupController.PopupDuels.gameObject);
             PopupManager.Get.PopupController.PopupDuels.SetBool("Show", true);
             TranslationManager.scene = "Home";
-            entry_fee.text = TranslationManager.Get("entry_fee") + " " + _param[0];
-            Gain.text = _param[1].ToString();
+
             if (_param[2].Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
-                bubbles_text.gameObject.SetActive(true);
+                entry_fee.text = TranslationManager.Get("entry_fee") + " " + float.Parse(_param[0].ToString());
+                Gain.text = (float.Parse(_param[1].ToString())).ToString();
+                Gain.text += " <sprite=0>";
                 bubbles_image.gameObject.SetActive(true);
                 crown_image.gameObject.SetActive(false);
             }
             else
             {
-                Gain.text += " <sprite=0>";
+                entry_fee.text = TranslationManager.Get("entry_fee") + " " + float.Parse(_param[0].ToString()) * 100;
+                Gain.text = (float.Parse(_param[1].ToString()) * 100).ToString();
+                Gain.text += " <sprite=1>";
                 crown_image.gameObject.SetActive(true);
-                bubbles_text.gameObject.SetActive(false);
                 bubbles_image.gameObject.SetActive(false);
             }
             confirm_duels.onClick.RemoveAllListeners();

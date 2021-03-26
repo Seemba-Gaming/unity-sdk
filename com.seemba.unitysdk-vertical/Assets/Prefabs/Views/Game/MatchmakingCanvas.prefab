@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -18.19, y: -28.009998}
+  m_AnchoredPosition: {x: 0, y: -28.009998}
   m_SizeDelta: {x: 192.607, y: 31.977676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5419338209202442153
@@ -85,7 +85,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: 1c1678fb82e321349bad72005abc807e, type: 2}
+  m_spriteAsset: {fileID: 11400000, guid: ae2eaf4deed20434bae4a95488d6687c, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -1863,13 +1863,14 @@ GameObject:
   - component: {fileID: 8646948456461522184}
   - component: {fileID: 8646948456461522186}
   - component: {fileID: 1976859123108078216}
+  - component: {fileID: 736760290}
   m_Layer: 5
   m_Name: MatchmakingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8646948456461522179
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2064,6 +2065,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   safeAreaTransform: {fileID: 4501376118789609119}
+--- !u!114 &736760290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646948456461522189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373cf95653297fc4e8c614b64fa53462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  YouCanWin: {fileID: 8646948457056985088}
+  LookingForYourOpponent: {fileID: 8646948456706122812}
+  PlayNow: {fileID: 8646948456370794258}
 --- !u!1 &8646948456706122814
 GameObject:
   m_ObjectHideFlags: 0

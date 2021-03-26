@@ -354,7 +354,6 @@ namespace SeembaSDK
         }
         public async void UpdateAge()
         {
-            User user = await UserManager.Get.getUser();
             Text mAge = PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder;
             string[] date = mAge.text.Split(new char[] { '-' }, 3);
             string Years = date[0];
@@ -542,7 +541,7 @@ namespace SeembaSDK
         public void ShowConfirmedArgentpopUp()
         {
             ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-            object[] _params = { ChallengeManager.FEE_1V1_CASH_LEGEND, ChallengeManager.WIN_1V1_CASH_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
+            object[] _params = { ChallengeManager.FEE_1V1_CASH_LEGEND , ChallengeManager.WIN_1V1_CASH_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_1V1 };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
         }
         public void ShowNoviceGouttepopUp()
@@ -584,7 +583,7 @@ namespace SeembaSDK
         public void ShowTournamentCashConfidentpopUp()
         {
             ViewsEvents.Get.HideOverlayMenu(ViewsEvents.Get.Profile.gameObject);
-            object[] _params = { TournamentManager.FEE_BRACKET_CASH_AMATEUR, TournamentManager.WIN_BRACKET_CASH_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_CONFIDENT };
+            object[] _params = { TournamentManager.FEE_BRACKET_CASH_AMATEUR, TournamentManager.WIN_BRACKET_CASH_AMATEUR , ChallengeManager.CHALLENGE_WIN_TYPE_CASH, TournamentManager.BRACKET_TYPE_CONFIDENT };
             PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
         }
         public void ShowTournamentCashChampionpopUp()

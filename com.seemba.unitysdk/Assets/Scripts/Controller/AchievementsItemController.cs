@@ -10,18 +10,22 @@ namespace SeembaSDK
     public class AchievementsItemController : MonoBehaviour
     {
         #region Script Parameters
-        public string AchivementId;
-        public string amount;
+        public Text Progress;
+        public Image ProgressBar;
         public Text Title;
         public Text description;
         public Image AchievementIcon;
+        public bool Done;
         #endregion
 
         #region Methods
         public void Init(AchievementItem item)
         {
-            Title.text = item.name;
-            description.text = item.description;
+            TranslationManager.scene = "Achievements";
+            Title.text = TranslationManager.Get(item.name);
+            description.text = TranslationManager.Get(item.name + "_description");
+            Progress.text = item.current_amount + "/" + item.total_amount;
+            ProgressBar.fillAmount = (float)item.current_amount / item.total_amount;
         }
         #endregion
     }

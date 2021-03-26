@@ -137,12 +137,12 @@ namespace SeembaSDK
         public static System.Timers.Timer t;
         public static string date;
         //Set All Challenges Details
-        public static int FEE_1V1_CASH_CONFIDENT;// = 1.20f;
-        public static int FEE_1V1_CASH_CHAMPION;// = 3.00f;
-        public static int FEE_1V1_CASH_LEGEND;// = 6.00f;
-        public static int WIN_1V1_CASH_CONFIDENT;// = 2.00f;
-        public static int WIN_1V1_CASH_CHAMPION;// = 5.00f;
-        public static int WIN_1V1_CASH_LEGEND;// = 10.00f;
+        public static float FEE_1V1_CASH_CONFIDENT;// = 1.20f;
+        public static float FEE_1V1_CASH_CHAMPION;// = 3.00f;
+        public static float FEE_1V1_CASH_LEGEND;// = 6.00f;
+        public static float WIN_1V1_CASH_CONFIDENT;// = 2.00f;
+        public static float WIN_1V1_CASH_CHAMPION;// = 5.00f;
+        public static float WIN_1V1_CASH_LEGEND;// = 10.00f;
         public static int FEE_1V1_BUBBLES_CONFIDENT;// = 1.00f;
         public static int FEE_1V1_BUBBLES_CHAMPION;// = 3.00f;
         public static int FEE_1V1_BUBBLES_LEGEND;// = 5.00f;
@@ -176,9 +176,9 @@ namespace SeembaSDK
 
         public void InitFees(GameChallengesInfo fees)
         {
-            FEE_1V1_CASH_CONFIDENT = (int)(fees.duels.Confident.cash * 100);
-            FEE_1V1_CASH_CHAMPION = (int)(fees.duels.Champion.cash * 100);
-            FEE_1V1_CASH_LEGEND = (int)(fees.duels.Legend.cash * 100);
+            FEE_1V1_CASH_CONFIDENT = fees.duels.Confident.cash;
+            FEE_1V1_CASH_CHAMPION = fees.duels.Champion.cash;
+            FEE_1V1_CASH_LEGEND = fees.duels.Legend.cash;
             FEE_1V1_BUBBLES_CONFIDENT = (int)fees.duels.Confident.bubbles;
             FEE_1V1_BUBBLES_CHAMPION = (int)fees.duels.Champion.bubbles;
             FEE_1V1_BUBBLES_LEGEND = (int)fees.duels.Legend.bubbles;
@@ -187,9 +187,9 @@ namespace SeembaSDK
         public void InitGains(GameChallengesInfo gain)
         {
 
-            WIN_1V1_CASH_CONFIDENT = (int)(gain.duels.Confident.cash * 100);
-            WIN_1V1_CASH_CHAMPION = (int)(gain.duels.Champion.cash * 100);
-            WIN_1V1_CASH_LEGEND = (int)(gain.duels.Legend.cash * 100);
+            WIN_1V1_CASH_CONFIDENT = gain.duels.Confident.cash;
+            WIN_1V1_CASH_CHAMPION = gain.duels.Champion.cash;
+            WIN_1V1_CASH_LEGEND = gain.duels.Legend.cash;
             WIN_1V1_BUBBLES_CONFIDENT = (int)gain.duels.Confident.bubbles;
             WIN_1V1_BUBBLES_CHAMPION = (int)gain.duels.Champion.bubbles;
             WIN_1V1_BUBBLES_LEGEND = (int)gain.duels.Legend.bubbles;
@@ -304,26 +304,6 @@ namespace SeembaSDK
                 finishedChallenges.Add(challenge);
             }
             return finishedChallenges;
-            //UnityWebRequest www = UnityWebRequest.Get(url);
-            //if (token != null)
-            //{
-            //    www.SetRequestHeader("x-access-token", token);
-            //    await www.SendWebRequest();
-
-            //    if (www.isNetworkError || www.isHttpError)
-            //    {
-            //        return null;
-            //    }
-
-            //    var challengeListData = JsonConvert.DeserializeObject<ChallengeListData>(www.downloadHandler.text);
-            //    ArrayList finishedChallenges = new ArrayList();
-            //    foreach (Challenge challenge in challengeListData.data)
-            //    {
-            //        finishedChallenges.Add(challenge);
-            //    }
-            //    return finishedChallenges;
-            //}
-            //return null;
         }
         public async Task<ArrayList> listChallenges()
         {
@@ -382,48 +362,6 @@ namespace SeembaSDK
                 return false;
             }
         }
-        //public void updateChallenge(string challengeId, float score)
-        //{
-        //    //UserManager um = new UserManager ();
-        //    string url = Endpoint.classesURL + "/challenges";
-        //    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-        //    request.Method = "PUT";
-        //    request.Headers["x-access-token"] = UserManager.Get.getCurrentSessionToken();
-        //    request.ContentType = "application/x-www-form-urlencoded";
-        //    using (var stream = request.GetRequestStream())
-        //    {
-        //        string json = "challenge_id=" + challengeId + "&score=" + score + "&is_finished=" + "false";
-        //        byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-        //        stream.Write(jsonAsBytes, 0, jsonAsBytes.Length);
-        //    }
-        //    try
-        //    {
-        //        HttpWebResponse response;
-        //        using (response = (HttpWebResponse)request.GetResponse())
-        //        {
-        //            System.IO.Stream s = response.GetResponseStream();
-        //            using (System.IO.StreamReader sr = new System.IO.StreamReader(s))
-        //            {
-        //                var jsonResponse = sr.ReadToEnd();
-        //                //Debug.Log(jsonResponse);
-        //            }
-        //        }
-        //    }
-        //    catch (WebException ex)
-        //    {
-        //        if (ex.Response != null)
-        //        {
-        //            using (var errorResponse = (HttpWebResponse)ex.Response)
-        //            {
-        //                using (var reader = new StreamReader(errorResponse.GetResponseStream()))
-        //                {
-        //                    string error = reader.ReadToEnd();
-        //                    //Debug.Log(error);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
         public async Task<Challenge> AddChallenge(string challenge_type, string gain, string gain_type, int level, string token = null)
         {
             string url = Endpoint.classesURL + "/challenges";
@@ -450,7 +388,6 @@ namespace SeembaSDK
         public async Task<ArrayList> getUserOngoingChallenges(string token)
         {
             ArrayList challenges = new ArrayList();
-            JSONArray challengesIDs = new JSONArray();
             challenges = await getSeeResultsChallenges(token);
             challenges.AddRange(await getPendingChallenges(token));
             return challenges;

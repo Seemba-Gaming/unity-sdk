@@ -95,7 +95,7 @@ namespace SeembaSDK
 
             foreach (GenericChallenge challenge in list)
             {
-                if ((challenge.matched_user_1._id == UserManager.Get.CurrentUser._id && challenge.user_1_score == null) || (challenge.matched_user_2._id == UserManager.Get.CurrentUser._id && challenge.user_2_score == null))
+                if ((challenge.matched_user_1 != null && challenge.matched_user_1._id == UserManager.Get.CurrentUser._id && challenge.user_1_score == null) || (challenge.matched_user_2 != null && challenge.matched_user_2._id == UserManager.Get.CurrentUser._id && challenge.user_2_score == null))
                 {
                     ChallengeManager.CurrentChallengeId = challenge._id;
                     ReplayChallengePresenter.ChallengeToReplay = challenge;
@@ -160,7 +160,6 @@ namespace SeembaSDK
                 {
                     LoaderManager.Get.LoaderController.ShowLoader(null);
                     ChallengeManager.CurrentChallengeId = challenge._id;
-                    Debug.LogWarning(ChallengeManager.CurrentChallengeId);
                     Challenge mCurrentChallenge = await ChallengeManager.Get.getChallenge(ChallengeManager.CurrentChallengeId);
                     ChallengeManager.CurrentChallenge = mCurrentChallenge;
                     ChallengeManager.Get.ShowResult();
@@ -202,30 +201,30 @@ namespace SeembaSDK
             {
                 if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_CASH_AMATEUR)
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_AMATEUR + CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_AMATEUR * 100 + " <sprite=1>";
                 }
                 else if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_CASH_NOVICE)
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_NOVICE + CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_NOVICE * 100 + " <sprite=1>";
                 }
                 else if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_CASH_CONFIRMED)
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CONFIRMED + CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_CASH_CONFIRMED * 100 + " <sprite=1>";
                 }
             }
             else
             {
                 if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR)
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR + " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR + " <sprite=0>";
                 }
                 else if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_BUBBLE_NOVICE)
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_NOVICE + " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_NOVICE + " <sprite=0>";
                 }
                 else if (float.Parse(item.gain) == TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED)
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED + " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED + " <sprite=0>";
                 }
             }
         }
@@ -235,30 +234,30 @@ namespace SeembaSDK
             {
                 if (item.gain == ChallengeManager.WIN_1V1_CASH_CONFIDENT.ToString())
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_CASH_CONFIDENT + CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_CASH_CONFIDENT * 100 + " <sprite=1>";
                 }
                 else if (item.gain == ChallengeManager.WIN_1V1_CASH_CHAMPION.ToString())
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_CASH_CHAMPION + CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_CASH_CHAMPION * 100 + " <sprite=1>";
                 }
                 else if (item.gain == ChallengeManager.WIN_1V1_CASH_LEGEND.ToString())
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_CASH_LEGEND + CurrencyManager.CURRENT_CURRENCY;
+                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_CASH_LEGEND * 100 + " <sprite=1>";
                 }
             }
             else
             {
                 if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT.ToString())
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT + " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT + " <sprite=0>";
                 }
                 else if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_CHAMPION.ToString())
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CHAMPION + " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_CHAMPION + " <sprite=0>";
                 }
                 else if (item.gain == ChallengeManager.WIN_1V1_BUBBLES_LEGEND.ToString())
                 {
-                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_LEGEND + " " + HomeTranslationController.BUBBLES;
+                    controller.titre.text = HomeTranslationController.WIN + " " + ChallengeManager.WIN_1V1_BUBBLES_LEGEND + " <sprite=0>";
                 }
             }
         }

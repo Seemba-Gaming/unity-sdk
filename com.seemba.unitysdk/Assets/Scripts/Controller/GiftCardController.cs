@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using UnityEngine; 
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -36,28 +35,41 @@ namespace SeembaSDK
         }
         public IEnumerator GetGiftImage(string url, Image giftImage)
         {
-            if (!string.IsNullOrEmpty(url))
+            var hashCode = url.GetHashCode();
+            Sprite sprite = null;
+            if (!UserManager.Get.Images.TryGetValue(hashCode, out sprite))
             {
-                UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
-                www.timeout = 5000;
-                yield return www.SendWebRequest();
-                try
+                if (!string.IsNullOrEmpty(url))
                 {
-                    var texture = DownloadHandlerTexture.GetContent(www);
-                    giftImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-                    if(texture == null)
+                    UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+                    www.timeout = 5000;
+                    yield return www.SendWebRequest();
+                    try
+                    {
+                        var texture = DownloadHandlerTexture.GetContent(www);
+                        giftImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+                        if (texture == null)
+                            giftImage.sprite = default_image;
+                        if (!UserManager.Get.Images.ContainsKey(hashCode))
+                        {
+                            UserManager.Get.Images.Add(hashCode, giftImage.sprite);
+                        }
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Debug.LogWarning(ex.Message);
                         giftImage.sprite = default_image;
+                    }
                 }
-                catch (InvalidOperationException ex)
+                else
                 {
-                    Debug.LogWarning(ex.Message);
+                    Debug.LogWarning("url : " + url);
                     giftImage.sprite = default_image;
                 }
             }
             else
             {
-                Debug.LogWarning("url : " + url);
-                giftImage.sprite = default_image;
+                giftImage.sprite = sprite;
             }
         }
         public void OnClickGift()

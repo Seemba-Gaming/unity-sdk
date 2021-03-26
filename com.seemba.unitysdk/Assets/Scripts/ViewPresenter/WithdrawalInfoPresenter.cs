@@ -45,12 +45,11 @@ namespace SeembaSDK
             Continue.interactable = false;
 
             LoaderManager.Get.LoaderController.ShowLoader();
-            User user = await UserManager.Get.getUser();
             LoaderManager.Get.LoaderController.HideLoader();
 
-            init_iban(user);
-            Debug.LogWarning(user.payment_account_id);
-            if (!string.IsNullOrEmpty(user.payment_account_id))
+            init_iban(UserManager.Get.CurrentUser);
+            Debug.LogWarning(UserManager.Get.CurrentUser.payment_account_id);
+            if (!string.IsNullOrEmpty(UserManager.Get.CurrentUser.payment_account_id))
             {
                 var account = await controller.GetAccountStatus();
                 SeembaAnalyticsManager.Get.SendWithdrawalEvent("Checking Account Status", WithdrawPresenter.AmountToWithdraw);

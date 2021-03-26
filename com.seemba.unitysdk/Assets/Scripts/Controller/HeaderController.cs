@@ -56,7 +56,7 @@ namespace SeembaSDK
                 ProLabel.enabled = false;
             }
             VirtualMoney.text = user.bubble_credit.ToString();
-            RealMoney.text = user.money_credit.ToString();
+            RealMoney.text = (user.money_credit *100).ToString();
             var mTexture = await UserManager.Get.GetFlagBytes(user.country_code);
             Flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
             Avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
@@ -65,7 +65,7 @@ namespace SeembaSDK
 
         public void UpdateHeaderInfo(User user)
         {
-            UserManager.Get.UpdateUserMoneyCredit((user.money_credit * 100).ToString("N2"));
+            UserManager.Get.UpdateUserMoneyCredit((user.money_credit).ToString());
             UserManager.Get.UpdateUserBubblesCredit(user.bubble_credit.ToString());
             Init(user);
         }

@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using SimpleJSON;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SeembaSDK
 {
@@ -15,11 +16,23 @@ namespace SeembaSDK
         public static bool? isDownloaded = null;
         //static string systemLanguage = SystemLanguage.English.ToString();
         static string systemLanguage = Application.systemLanguage.ToString();
+        public static Dictionary<string, string> ShortLanguages = new Dictionary<string, string>();
+
+        static string CurrentUserLanguage;
 #if UNITY_EDITOR
         private static bool d_OverrideLanguage = true;
         private static SystemLanguage d_Language = SystemLanguage.French;
 #endif
         private static SystemLanguage current_language;
+
+        private void Start()
+        {
+            ShortLanguages.Add(SystemLanguage.English.ToString(), "en");
+            ShortLanguages.Add(SystemLanguage.French.ToString(), "fr");
+            ShortLanguages.Add(SystemLanguage.German.ToString(), "de");
+            ShortLanguages.Add(SystemLanguage.Arabic.ToString(), "ar");
+            ShortLanguages.Add(SystemLanguage.Spanish.ToString(), "es");
+        }
 
         private static void CheckInstance()
         {

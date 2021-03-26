@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -9,8 +10,9 @@ namespace SeembaSDK
     public class ReplayChallengePresenter : MonoBehaviour
     {
         public static GenericChallenge ChallengeToReplay;
-        public Text GameId, Date, Prize, sorryText;
+        public Text GameId, Date, sorryText;
         public Button Replay;
+        public TextMeshProUGUI Prize;
 
         private static bool isReplay;
         private static int? old_game_level;
@@ -43,14 +45,14 @@ namespace SeembaSDK
         private void Init()
         {
             GameId.text = ChallengeToReplay._id;
-            Date.text = DateTime.Parse(ChallengeToReplay.createdAt).ToString("MM/dd/yyyy hh:mm:ss"); ;
+            Date.text = DateTime.Parse(ChallengeToReplay.createdAt).ToString("MM/dd/yyyy hh:mm:ss");
             if (ChallengeToReplay.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_CASH)
             {
-                Prize.text = float.Parse(ChallengeToReplay.gain).ToString("N2") + " " + CurrencyManager.CURRENT_CURRENCY;
+                Prize.text = (float.Parse(ChallengeToReplay.gain) * 100) + " <sprite=1>";
             }
             else if (ChallengeToReplay.gain_type == ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES)
             {
-                Prize.text = ChallengeToReplay.gain + " Bubbles";
+                Prize.text = ChallengeToReplay.gain + " <sprite=0>";
             }
         }
 

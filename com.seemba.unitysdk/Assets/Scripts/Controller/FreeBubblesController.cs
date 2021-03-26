@@ -29,6 +29,11 @@ namespace SeembaSDK
         private void OnEnable()
         {
             ConfigNextRewardTime();
+            if(mSetTimerGui != null)
+            {
+                mSetTimerGui = null;
+            }
+            StartCoroutine(SetTimeCoroutine());
         }
         public async void SetNextTime()
         {

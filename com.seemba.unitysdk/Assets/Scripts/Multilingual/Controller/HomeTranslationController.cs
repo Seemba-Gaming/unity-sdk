@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -81,11 +82,15 @@ namespace SeembaSDK
         [SerializeField]
         private Text WalletHeaderBackButton;
         [SerializeField]
-        private Text select1;
+        private Text select1,select11;
         [SerializeField]
         private Text select2, select3, select4;
         [SerializeField]
+        private Text select22, select33, select44;
+        [SerializeField]
         private Text[] accountTitle, creditTitle, creditWallet, other_amount, secured_payment;
+        [SerializeField]
+        private TextMeshProUGUI stripe_fees_settings, stripe_fees_wallet;
         [Space]
         [Header("Withdraw")]
         [SerializeField]
@@ -220,7 +225,8 @@ namespace SeembaSDK
             {
                 title.text = TranslationManager.Get("account") != string.Empty ? TranslationManager.Get("account") : title.text;
             }
-
+            stripe_fees_settings.text = TranslationManager.Get("stripe_fee_may_apply");
+            stripe_fees_wallet.text = TranslationManager.Get("stripe_fee_may_apply");
             foreach (Text title in creditTitle)
             {
                 title.text = TranslationManager.Get("creditTitle") != string.Empty ? TranslationManager.Get("creditTitle") : title.text;
@@ -230,6 +236,11 @@ namespace SeembaSDK
             select2.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select2.text;
             select3.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select3.text;
             select4.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select4.text;
+            
+            select11.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select11.text;
+            select22.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select22.text;
+            select33.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select33.text;
+            select44.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : select44.text;
 
             foreach (Text title in creditWallet)
             {

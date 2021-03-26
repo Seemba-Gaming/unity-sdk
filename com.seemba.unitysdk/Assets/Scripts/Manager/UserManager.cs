@@ -461,7 +461,6 @@ namespace SeembaSDK
         }
         public void UpdateUserCredit(string money_credit, string bubble_credit)
         {
-            Debug.LogWarning("here");
             CurrentUser.money_credit = float.Parse(money_credit);
             CurrentUser.bubble_credit = float.Parse(bubble_credit);
         }

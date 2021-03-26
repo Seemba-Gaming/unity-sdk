@@ -160,7 +160,6 @@ namespace SeembaSDK
                 {
                     LoaderManager.Get.LoaderController.ShowLoader(null);
                     ChallengeManager.CurrentChallengeId = challenge._id;
-                    Debug.LogWarning(ChallengeManager.CurrentChallengeId);
                     Challenge mCurrentChallenge = await ChallengeManager.Get.getChallenge(ChallengeManager.CurrentChallengeId);
                     ChallengeManager.CurrentChallenge = mCurrentChallenge;
                     ChallengeManager.Get.ShowResult();

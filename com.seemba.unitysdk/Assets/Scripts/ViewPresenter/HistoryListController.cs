@@ -109,32 +109,32 @@ namespace SeembaSDK
                             switch (item.gain)
                             {
                                 case "2":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT * 100 + " <sprite=1>";
                                     break;
                                 case "5":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION * 100 + " <sprite=1>";
                                     break;
                                 case "10":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND * 100 + " <sprite=1>";
                                     break;
                             }
                             controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
                         }
                         else if (item.matched_user_1._id == UserManager.Get.getCurrentUserId() && adv1score > adv2score)
                         {
-                            controller.Gain.text = "+" + float.Parse(item.gain).ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                            controller.Gain.text = "+" + float.Parse(item.gain) * 100 + " <sprite=1>";
                             GameObject newItem1 = Instantiate(ListItemPrefab);
                             HistoryListItemController controller1 = newItem1.GetComponent<HistoryListItemController>();
                             switch (item.gain)
                             {
                                 case "2":
-                                    controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT * 100 + " <sprite=1>";
                                     break;
                                 case "5":
-                                    controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION * 100 + " <sprite=1>";
                                     break;
                                 case "10":
-                                    controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller1.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND * 100 + " <sprite=1>";
                                     break;
                             }
                             //TODO
@@ -151,19 +151,19 @@ namespace SeembaSDK
                         }
                         else if (item.matched_user_2 != null && item.matched_user_2._id == UserManager.Get.getCurrentUserId() && adv2score > adv1score)
                         {
-                            controller.Gain.text = "+" + float.Parse(item.gain).ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                            controller.Gain.text = "+" + float.Parse(item.gain) * 100 + " <sprite=1>";
                             GameObject newItem2 = Instantiate(ListItemPrefab);
                             HistoryListItemController controller2 = newItem2.GetComponent<HistoryListItemController>();
                             switch (item.gain)
                             {
                                 case "2":
-                                    controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT * 100 + " <sprite=1>";
                                     break;
                                 case "5":
-                                    controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION * 100 + " <sprite=1>";
                                     break;
                                 case "10":
-                                    controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller2.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND * 100 + " <sprite=1>";
                                     break;
                             }
                             //TODO
@@ -183,13 +183,13 @@ namespace SeembaSDK
                             switch (item.gain)
                             {
                                 case "2":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CONFIDENT * 100 + " <sprite=1>";
                                     break;
                                 case "5":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_CHAMPION * 100 + " <sprite=1>";
                                     break;
                                 case "10":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_CASH_LEGEND * 100 + " <sprite=1>";
                                     break;
                             }
                             controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
@@ -202,13 +202,13 @@ namespace SeembaSDK
                             switch (item.gain)
                             {
                                 case "2":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " <sprite=0>";
                                     break;
                                 case "6":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " <sprite=0>";
                                     break;
                                 case "10":
-                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
+                                    controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " <sprite=0>";
                                     break;
                             }
                             controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);
@@ -217,19 +217,19 @@ namespace SeembaSDK
                         {
                             if (item.matched_user_1._id == UserManager.Get.getCurrentUserId() && adv1score > adv2score)
                             {
-                                controller.Gain.text = "+" + item.gain + " " + TranslationManager.Get("bubbles");
+                                controller.Gain.text = "+" + item.gain + " <sprite=0>";
                                 GameObject newItem3 = Instantiate(ListItemPrefab);
                                 HistoryListItemController controller3 = newItem3.GetComponent<HistoryListItemController>();
                                 switch (item.gain)
                                 {
                                     case "2":
-                                        controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
+                                        controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " <sprite=0>";
                                         break;
                                     case "6":
-                                        controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
+                                        controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " <sprite=0>";
                                         break;
                                     case "10":
-                                        controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
+                                        controller3.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " <sprite=0>";
                                         break;
                                 }
                                 //TODO
@@ -246,19 +246,19 @@ namespace SeembaSDK
                             }
                             else if (item.matched_user_2 != null && item.matched_user_2._id == UserManager.Get.getCurrentUserId() && adv2score > adv1score)
                             {
-                                controller.Gain.text = "+" + item.gain + " " + TranslationManager.Get("bubbles");
+                                controller.Gain.text = "+" + item.gain + " <sprite=0>";
                                 GameObject newItem4 = Instantiate(ListItemPrefab);
                                 HistoryListItemController controller4 = newItem4.GetComponent<HistoryListItemController>();
                                 switch (item.gain)
                                 {
                                     case "2":
-                                        controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
+                                        controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " <sprite=0>";
                                         break;
                                     case "6":
-                                        controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
+                                        controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " <sprite=0>";
                                         break;
                                     case "10":
-                                        controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
+                                        controller4.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " <sprite=0>";
                                         break;
                                 }
                                 //TODO
@@ -278,13 +278,13 @@ namespace SeembaSDK
                                 switch (item.gain)
                                 {
                                     case "2":
-                                        controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " " + TranslationManager.Get("bubbles");
+                                        controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT + " <sprite=0>";
                                         break;
                                     case "6":
-                                        controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " " + TranslationManager.Get("bubbles");
+                                        controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_CHAMPION + " <sprite=0>";
                                         break;
                                     case "10":
-                                        controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " " + TranslationManager.Get("bubbles");
+                                        controller.Gain.text = "-" + ChallengeManager.FEE_1V1_BUBBLES_LEGEND + " <sprite=0>";
                                         break;
                                 }
                                 controller.Gain.color = new Color(129 / 255f, 130 / 255f, 170 / 255f);

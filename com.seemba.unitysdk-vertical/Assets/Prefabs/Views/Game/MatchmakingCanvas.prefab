@@ -1863,13 +1863,14 @@ GameObject:
   - component: {fileID: 8646948456461522184}
   - component: {fileID: 8646948456461522186}
   - component: {fileID: 1976859123108078216}
+  - component: {fileID: 736760290}
   m_Layer: 5
   m_Name: MatchmakingCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8646948456461522179
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2064,6 +2065,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   safeAreaTransform: {fileID: 4501376118789609119}
+--- !u!114 &736760290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646948456461522189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 373cf95653297fc4e8c614b64fa53462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  YouCanWin: {fileID: 8646948457056985088}
+  LookingForYourOpponent: {fileID: 8646948456706122812}
+  PlayNow: {fileID: 8646948456370794258}
 --- !u!1 &8646948456706122814
 GameObject:
   m_ObjectHideFlags: 0

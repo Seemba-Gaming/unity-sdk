@@ -137,12 +137,12 @@ namespace SeembaSDK
         public static System.Timers.Timer t;
         public static string date;
         //Set All Challenges Details
-        public static int FEE_1V1_CASH_CONFIDENT;// = 1.20f;
-        public static int FEE_1V1_CASH_CHAMPION;// = 3.00f;
-        public static int FEE_1V1_CASH_LEGEND;// = 6.00f;
-        public static int WIN_1V1_CASH_CONFIDENT;// = 2.00f;
-        public static int WIN_1V1_CASH_CHAMPION;// = 5.00f;
-        public static int WIN_1V1_CASH_LEGEND;// = 10.00f;
+        public static float FEE_1V1_CASH_CONFIDENT;// = 1.20f;
+        public static float FEE_1V1_CASH_CHAMPION;// = 3.00f;
+        public static float FEE_1V1_CASH_LEGEND;// = 6.00f;
+        public static float WIN_1V1_CASH_CONFIDENT;// = 2.00f;
+        public static float WIN_1V1_CASH_CHAMPION;// = 5.00f;
+        public static float WIN_1V1_CASH_LEGEND;// = 10.00f;
         public static int FEE_1V1_BUBBLES_CONFIDENT;// = 1.00f;
         public static int FEE_1V1_BUBBLES_CHAMPION;// = 3.00f;
         public static int FEE_1V1_BUBBLES_LEGEND;// = 5.00f;
@@ -176,9 +176,9 @@ namespace SeembaSDK
 
         public void InitFees(GameChallengesInfo fees)
         {
-            FEE_1V1_CASH_CONFIDENT = (int)(fees.duels.Confident.cash);
-            FEE_1V1_CASH_CHAMPION = (int)(fees.duels.Champion.cash);
-            FEE_1V1_CASH_LEGEND = (int)(fees.duels.Legend.cash);
+            FEE_1V1_CASH_CONFIDENT = fees.duels.Confident.cash;
+            FEE_1V1_CASH_CHAMPION = fees.duels.Champion.cash;
+            FEE_1V1_CASH_LEGEND = fees.duels.Legend.cash;
             FEE_1V1_BUBBLES_CONFIDENT = (int)fees.duels.Confident.bubbles;
             FEE_1V1_BUBBLES_CHAMPION = (int)fees.duels.Champion.bubbles;
             FEE_1V1_BUBBLES_LEGEND = (int)fees.duels.Legend.bubbles;
@@ -187,9 +187,9 @@ namespace SeembaSDK
         public void InitGains(GameChallengesInfo gain)
         {
 
-            WIN_1V1_CASH_CONFIDENT = (int)(gain.duels.Confident.cash);
-            WIN_1V1_CASH_CHAMPION = (int)(gain.duels.Champion.cash);
-            WIN_1V1_CASH_LEGEND = (int)(gain.duels.Legend.cash);
+            WIN_1V1_CASH_CONFIDENT = gain.duels.Confident.cash;
+            WIN_1V1_CASH_CHAMPION = gain.duels.Champion.cash;
+            WIN_1V1_CASH_LEGEND = gain.duels.Legend.cash;
             WIN_1V1_BUBBLES_CONFIDENT = (int)gain.duels.Confident.bubbles;
             WIN_1V1_BUBBLES_CHAMPION = (int)gain.duels.Champion.bubbles;
             WIN_1V1_BUBBLES_LEGEND = (int)gain.duels.Legend.bubbles;
@@ -338,7 +338,6 @@ namespace SeembaSDK
             {
                 if (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId())
                 {
-                    Debug.LogWarning("here " + UserManager.Get.CurrentUser.money_credit);
                     UserManager.Get.UpdateUserMoneyCredit(challenge.matched_user_1.money_credit.ToString());
                     UserManager.Get.UpdateUserBubblesCredit(challenge.matched_user_1.bubble_credit.ToString());
                 }

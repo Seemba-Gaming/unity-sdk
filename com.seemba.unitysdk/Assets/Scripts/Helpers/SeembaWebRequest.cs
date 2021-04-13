@@ -115,7 +115,12 @@ namespace SeembaSDK
             return await HandleRequest(www);
         }
 
-
+        public async Task<DateTime> HttpsLastModifed(string uri)
+        {
+            UnityWebRequest www = UnityWebRequest.Get(uri);
+            await www.SendWebRequest();
+            return DateTime.Parse(www.GetResponseHeader("Last-Modified"));
+        }
 
         private async Task<string> HandleRequest(UnityWebRequest www)
         {

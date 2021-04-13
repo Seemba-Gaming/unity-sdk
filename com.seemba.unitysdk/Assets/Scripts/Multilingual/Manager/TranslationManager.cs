@@ -75,36 +75,45 @@ namespace SeembaSDK
         }
         public static async Task<bool> SavePreferedLanguage()
         {
-            if (!isLanguageSupported())
-            {
-                await GetUserLanguage(SystemLanguage.English.ToString());
-                isDownloaded = true;
-                return true;
-            }
-            else
-            {
-                var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
-                Debug.LogWarning(url);
-                var req = await SeembaWebRequest.Get.HttpsGet(url);
 
-                if (req == null)
+
+            var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
+            var lastmodified = await SeembaWebRequest.Get.HttpsLastModifed(url);
+            var mCurrentLastModifed = PlayerPrefs.GetString("Last-Modified");
+            Debug.LogWarning(lastmodified);
+            Debug.LogWarning(mCurrentLastModifed);
+
+            if (!string.IsNullOrEmpty(mCurrentLastModifed))
+            {
+                if (mCurrentLastModifed.Equals(lastmodified.ToString()))
                 {
-                    isDownloaded = false;
-                    return false;
+                    if (!isLanguageSupported())
+                    {
+                        await GetUserLanguage(SystemLanguage.English.ToString(), lastmodified);
+                        isDownloaded = true;
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("here");
+                        ParseFile(getTranslationFile());
+                        return true;
+                    }
                 }
                 else
                 {
-                    Debug.Log("File Downloaded.");
-                    string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, systemLanguage);
-                    System.IO.File.WriteAllText(savePath, req);
-                    PlayerPrefs.SetString(systemLanguage, systemLanguage);
-                    isDownloaded = true;
-                    return true;
+                    Debug.LogWarning("here");
+                    return await GetUserLanguage(systemLanguage, lastmodified);
                 }
+            }
+            else
+            {
+                Debug.LogWarning("here");
+                return await GetUserLanguage(systemLanguage, lastmodified);
             }
         }
 
-        public static async Task<bool> GetUserLanguage(string language)
+        public static async Task<bool> GetUserLanguage(string language, DateTime lastmodified)
         {
             var url = Endpoint.laguagesURL + "/" + language + ".json";
             var req = await SeembaWebRequest.Get.HttpsGet(url);
@@ -120,6 +129,7 @@ namespace SeembaSDK
                 string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, language);
                 System.IO.File.WriteAllText(savePath, req);
                 PlayerPrefs.SetString(systemLanguage, systemLanguage);
+                PlayerPrefs.SetString("Last-Modified", lastmodified.ToString());
                 isDownloaded = true;
                 return true;
             }

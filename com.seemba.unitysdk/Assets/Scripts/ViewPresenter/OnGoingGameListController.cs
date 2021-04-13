@@ -168,7 +168,7 @@ namespace SeembaSDK
                 });
                 controller.SeeResult.gameObject.SetActive(false);
             }
-            else if (challenge.status.Equals("see results for user 1"))
+            else if (challenge.status.Equals("see results for user 1") || challenge.status.Equals("see results for user 2"))
             {
                 controller.pending_text.text = HomeTranslationController.GAME_FINISHED;
                 controller.SeeResult.transform.localScale = Vector3.one;

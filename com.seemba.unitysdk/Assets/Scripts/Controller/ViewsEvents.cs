@@ -105,23 +105,25 @@ namespace SeembaSDK
             //        StartCoroutine(OpenBugReportPanel());
             //    }
             //}
-            if (Seemba.Get.DevelopmentMode)
-            {
-                Vector3 acceleration = Input.acceleration;
-                lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
-                Vector3 deltaAcceleration = acceleration - lowPassValue;
 
-                if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
-                {
-                    // Perform your "shaking actions" here. If necessary, add suitable
-                    // guards in the if check above to avoid redundant handling during
-                    // the same shake (e.g. a minimum refractory period).
-                    if (!BugReport.gameObject.activeSelf)
-                    {
-                        StartCoroutine(OpenBugReportPanel());
-                    }
-                }
-            }
+            // BUG BUG BUG 
+            //if (Seemba.Get.DevelopmentMode)
+            //{
+            //    Vector3 acceleration = Input.acceleration;
+            //    lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
+            //    Vector3 deltaAcceleration = acceleration - lowPassValue;
+
+            //    if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold)
+            //    {
+            //        // Perform your "shaking actions" here. If necessary, add suitable
+            //        // guards in the if check above to avoid redundant handling during
+            //        // the same shake (e.g. a minimum refractory period).
+            //        if (!BugReport.gameObject.activeSelf)
+            //        {
+            //            StartCoroutine(OpenBugReportPanel());
+            //        }
+            //    }
+            //}
         }
         IEnumerator OpenBugReportPanel()
         {

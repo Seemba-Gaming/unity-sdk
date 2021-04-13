@@ -26,6 +26,7 @@ namespace SeembaSDK
         public Dictionary<int, Sprite> Images = new Dictionary<int, Sprite>();
         public string CurrentFlagBytesString;
         public Sprite CurrentAvatarBytesString;
+        public Texture2D CurrentFlagBytes;
         public User CurrentUser;
         #endregion
 
@@ -207,13 +208,15 @@ namespace SeembaSDK
             }
             string url = Endpoint.classesURL + "/authenticate";
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
+            Debug.LogWarning(response);
             var userData = JsonUtility.FromJson<UserData>(response);
             CurrentUser = userData.data;
+            var N = JSON.Parse(response);
             CurrentUser.token = N["token"].Value;
             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
 
             CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
+            CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
             var mTexture = await GetFlagBytes(await GetGeoLoc());
             CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
             PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
@@ -260,6 +263,8 @@ namespace SeembaSDK
                 return null;
             }
             CurrentUser = userData.data;
+            CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
+
             return CurrentUser;
         }
 

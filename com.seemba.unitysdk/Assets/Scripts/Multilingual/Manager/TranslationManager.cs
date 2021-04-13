@@ -84,6 +84,7 @@ namespace SeembaSDK
             else
             {
                 var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
+                Debug.LogWarning(url);
                 var req = await SeembaWebRequest.Get.HttpsGet(url);
 
                 if (req == null)

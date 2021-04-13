@@ -44,6 +44,7 @@ namespace SeembaSDK
             props["User Id"] = UserManager.Get.CurrentUser._id;
             props["Action"] = action;
             SeembaMixpanel.Track(action, props);
+
         }
 
         public void SendUserDuelEvent(string action, string duelId, float score)

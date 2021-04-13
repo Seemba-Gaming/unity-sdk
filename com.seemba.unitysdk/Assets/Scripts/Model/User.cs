@@ -33,6 +33,7 @@ namespace SeembaSDK
 		public int champion_money;
 		public int losses_streak;
 		public int current_victories_count;
+		public int highest_victories_streak;
 		public string long_lat;
 		public string last_bubble_click;
 		public bool email_verified;
@@ -74,7 +75,6 @@ namespace SeembaSDK
 			this.personal_id_number = personal_id_number;
 			this.lastname = lastname;
 			this.firstname = firstname;
-			Debug.LogWarning("here");
 			this.money_credit = money_credit;
 			this.bubble_credit = bubble_credit;
 			this.email = email;

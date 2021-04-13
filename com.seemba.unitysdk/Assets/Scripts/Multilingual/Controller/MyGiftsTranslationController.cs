@@ -1,18 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class MyGiftsTranslationController : MonoBehaviour
+namespace SeembaSDK
 {
-    // Start is called before the first frame update
-    void Start()
+    [CLSCompliant(false)]
+    public class MyGiftsTranslationController : MonoBehaviour
     {
-        
-    }
+        public Text MyGifts;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+
+        public void Init()
+        {
+            TranslationManager.scene = "Home";
+            MyGifts.text = TranslationManager.Get("my_gifts");
+        }
     }
 }

@@ -203,6 +203,7 @@ namespace SeembaSDK
             history.text = TranslationManager.Get("history") != string.Empty ? TranslationManager.Get("history") : history.text;
             help_center.text = TranslationManager.Get("help_center") != string.Empty ? TranslationManager.Get("help_center") : help_center.text;
             back_to_game_menu.text = TranslationManager.Get("back_to_game_menu") != string.Empty ? TranslationManager.Get("back_to_game_menu") : back_to_game_menu.text;
+            My_Gifts.text = TranslationManager.Get("my_gifts") != string.Empty ? TranslationManager.Get("my_gifts") : My_Gifts.text;
             log_out.text = TranslationManager.Get("log_out") != string.Empty ? TranslationManager.Get("log_out") : log_out.text;
             //Account
             personal_info.text = TranslationManager.Get("personal_info") != string.Empty ? TranslationManager.Get("personal_info") : personal_info.text;

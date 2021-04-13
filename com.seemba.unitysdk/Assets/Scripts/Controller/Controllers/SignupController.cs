@@ -73,6 +73,7 @@ namespace SeembaSDK
                             UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);
                             var mTexture = await UserManager.Get.GetFlagBytes(await UserManager.Get.GetGeoLoc());
                             UserManager.Get.CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
+                            UserManager.Get.CurrentFlagBytes = mTexture;
                             PlayerPrefs.SetString("CurrentFlagBytesString", UserManager.Get.CurrentFlagBytesString);
                             ChallengeManager.CurrentChallengeGain = "2";
                             ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;

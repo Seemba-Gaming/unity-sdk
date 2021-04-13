@@ -32,6 +32,8 @@ namespace SeembaSDK
         public Text OpponentScoreText;
         public Image CurrentUserAvatar;
         public Image OpponentAvatar;
+        public Image CurrentUserFlag;
+        public Image OpponentFlag;
         public Image ResultImage;
         public Button PlayAgainButton;
         public Button ContinueButton;
@@ -91,6 +93,8 @@ namespace SeembaSDK
             {
                 OpponentUserName.text = challenge.matched_user_2.username;
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_2.country_code);
+                OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_2_score.ToString();
 
             }
@@ -98,6 +102,8 @@ namespace SeembaSDK
             {
                 OpponentUserName.text = challenge.matched_user_1.username;
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_1.country_code);
+                OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_1_score.ToString();
             }
             SeembaAnalyticsManager.Get.SendUserEvent("Challenge Lost");
@@ -114,6 +120,8 @@ namespace SeembaSDK
             {
                 OpponentUserName.text = challenge.matched_user_2.username;
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_2.country_code);
+                OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_2_score.ToString();
 
             }
@@ -138,6 +146,8 @@ namespace SeembaSDK
             {
                 OpponentUserName.text = challenge.matched_user_2.username;
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_2.country_code);
+                OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_2_score.ToString();
 
             }
@@ -145,12 +155,15 @@ namespace SeembaSDK
             {
                 OpponentUserName.text = challenge.matched_user_1.username;
                 OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_1.country_code);
+                OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_1_score.ToString();
             }
             SeembaAnalyticsManager.Get.SendUserEvent("Challenge Draw");
         }
         public void InitResultWaiting(Challenge challenge)
         {
+            ResetOpponent();
             Init(challenge);
             Title.text = ResultController.WAITING_FOR;
             Subtitle.text = ResultController.PLAYER_2;
@@ -172,6 +185,8 @@ namespace SeembaSDK
             ContinueButton.GetComponentInChildren<Text>().text = ResultController.CONTINUE_TEXT;
             CurrentUserName.text = UserManager.Get.CurrentUser.username;
             CurrentUserAvatar.sprite = UserManager.Get.CurrentAvatarBytesString;
+            var flag = UserManager.Get.CurrentFlagBytes;
+            CurrentUserFlag.sprite = Sprite.Create(flag, new Rect(0f, 0f, flag.width, flag.height), Vector2.zero);
             if (challenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
                 Gain.text = HtmlOpenOrangeColor + TranslationManager.Get("gain") + " : " + HtmlCloseOrangeColor + challenge.gain;
@@ -200,6 +215,7 @@ namespace SeembaSDK
             OpponentUserName.text = string.Empty;
             OpponentAvatar.sprite = SeembaNoPlayer;
             OpponentScore.text = string.Empty;
+            OpponentFlag.sprite = null;
             ChallengeManager.CurrentChallenge = null;
             EventsController.advFound = false;
         }

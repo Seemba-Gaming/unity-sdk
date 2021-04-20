@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SeembaSDK
 {
@@ -11,11 +10,11 @@ namespace SeembaSDK
     {
         #region Script Parameters
         public Image Avatar;
-        public Text Username;
+        public TextMeshProUGUI Username;
         public Image ProLabel;
         public Image Flag;
-        public Text VirtualMoney;
-        public Text RealMoney;
+        public TextMeshProUGUI VirtualMoney;
+        public TextMeshProUGUI RealMoney;
         public Animator Market;
         #endregion
 
@@ -24,19 +23,6 @@ namespace SeembaSDK
         #endregion
 
         #region Unity Methods
-        //private async void Start()
-        //{
-        //    if(UserManager.Get.CurrentUser == null)
-        //    {
-        //        mUser = await UserManager.Get.getUser();
-        //        Init(mUser);
-        //    }
-        //    else
-        //    {
-        //        Init(UserManager.Get.CurrentUser);
-        //    }
-
-        //}
 
         private async void OnEnable()
         {
@@ -55,8 +41,8 @@ namespace SeembaSDK
             {
                 ProLabel.enabled = false;
             }
-            VirtualMoney.text = user.bubble_credit.ToString();
-            RealMoney.text = (user.money_credit *100).ToString();
+            VirtualMoney.text = user.bubble_credit.ToString() + " <sprite=0>";
+            RealMoney.text = (user.money_credit *100).ToString() + " <sprite=1>";
             var mTexture = await UserManager.Get.GetFlagBytes(user.country_code);
             Flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
             Avatar.sprite = await UserManager.Get.getAvatar(user.avatar);

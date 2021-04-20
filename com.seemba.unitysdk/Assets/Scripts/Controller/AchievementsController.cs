@@ -67,8 +67,10 @@ namespace SeembaSDK
         {
             if (selected && mCanClickWon) 
             {
-                Won.GetComponent<RectTransform>().localScale = Vector3.one;
-                ToBeWon.GetComponent<RectTransform>().localScale -= new Vector3(0.2f, 0.2f, 0.2f);
+                //Won.GetComponent<RectTransform>().localScale = Vector3.one;
+                //ToBeWon.GetComponent<RectTransform>().localScale -= new Vector3(0.2f, 0.2f, 0.2f);
+                Won.targetGraphic.GetComponent<Image>().color = new Color(255/255f, 139/255f, 87/255f, 255/255f);
+                ToBeWon.targetGraphic.GetComponent<Image>().color = new Color(255/255f, 139/255f, 87/255f, 150/255f);
                 mCanClickToBeWon = true;
                 mCanClickWon = false;
                 await GetMyAchivements();
@@ -79,8 +81,10 @@ namespace SeembaSDK
         {
             if (selected && mCanClickToBeWon)
             {
-                ToBeWon.GetComponent<RectTransform>().localScale = Vector3.one;
-                Won.GetComponent<RectTransform>().localScale -= new Vector3(0.2f, 0.2f, 0.2f);
+                //ToBeWon.GetComponent<RectTransform>().localScale = Vector3.one;
+                //Won.GetComponent<RectTransform>().localScale -= new Vector3(0.2f, 0.2f, 0.2f);
+                Won.targetGraphic.GetComponent<Image>().color = new Color(255 / 255f, 139 / 255f, 87 / 255f, 150 / 255f);
+                ToBeWon.targetGraphic.GetComponent<Image>().color = new Color(255 / 255f, 139 / 255f, 87 / 255f, 255 / 255f);
                 mCanClickWon = true;
                 mCanClickToBeWon = false;
                 await GetAllAchivements();

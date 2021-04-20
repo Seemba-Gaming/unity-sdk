@@ -117,8 +117,8 @@ namespace SeembaSDK
 
         [Header("Achievements")]
         public Text Achievements;
-        public Text Won;
-        public Text ToBeWon;
+        public TextMeshProUGUI Won;
+        public TextMeshProUGUI ToBeWon;
         //Extra Translation 
         public static string WIN = "";
         public static string BUBBLES = "";

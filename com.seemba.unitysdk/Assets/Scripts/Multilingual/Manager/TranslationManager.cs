@@ -80,8 +80,6 @@ namespace SeembaSDK
             var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
             var lastmodified = await SeembaWebRequest.Get.HttpsLastModifed(url);
             var mCurrentLastModifed = PlayerPrefs.GetString("Last-Modified");
-            Debug.LogWarning(lastmodified);
-            Debug.LogWarning(mCurrentLastModifed);
 
             if (!string.IsNullOrEmpty(mCurrentLastModifed))
             {
@@ -95,20 +93,17 @@ namespace SeembaSDK
                     }
                     else
                     {
-                        Debug.LogWarning("here");
                         ParseFile(getTranslationFile());
                         return true;
                     }
                 }
                 else
                 {
-                    Debug.LogWarning("here");
                     return await GetUserLanguage(systemLanguage, lastmodified);
                 }
             }
             else
             {
-                Debug.LogWarning("here");
                 return await GetUserLanguage(systemLanguage, lastmodified);
             }
         }

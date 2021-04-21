@@ -10,9 +10,24 @@ using System.Net.Security;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
+    [CLSCompliant(false)]
+
+    public class GeoLocInfo
+    {
+        public string ip;
+        public string city;
+        public string region;
+        public string country;
+        public string loc;
+        public string org;
+        public string timezone;
+        public string readme;
+    }
+
     [CLSCompliant(false)]
     public class UserManager : MonoBehaviour
     {
@@ -98,8 +113,8 @@ namespace SeembaSDK
         {
             string url = Endpoint.locationURL;
             var req = await SeembaWebRequest.Get.HttpsGet(url);
-            var N = JSON.Parse(req);
-            return N["country"].Value.ToLower();
+            GeoLocInfo response = JsonConvert.DeserializeObject<GeoLocInfo>(req);
+            return response.country.ToLower();
         }
 
         //signup with the new api

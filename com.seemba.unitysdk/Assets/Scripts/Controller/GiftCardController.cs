@@ -37,6 +37,7 @@ namespace SeembaSDK
         {
             var hashCode = url.GetHashCode();
             Sprite sprite = null;
+
             if (!UserManager.Get.Images.TryGetValue(hashCode, out sprite))
             {
                 if (!string.IsNullOrEmpty(url))
@@ -63,7 +64,6 @@ namespace SeembaSDK
                 }
                 else
                 {
-                    Debug.LogWarning("url : " + url);
                     giftImage.sprite = default_image;
                 }
             }

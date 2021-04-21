@@ -14,7 +14,10 @@ namespace SeembaSDK
 
         public async System.Threading.Tasks.Task InitAsync(LeaderBoardItem item)
         {
-            Avatar.sprite = await UserManager.Get.getAvatar(item.user.avatar);
+            if(!string.IsNullOrEmpty(item.user.avatar))
+            {
+                Avatar.sprite = await UserManager.Get.getAvatar(item.user.avatar);
+            }
             Username.text = item.user.username;
             if(item.user._id == UserManager.Get.CurrentUser._id)
             {

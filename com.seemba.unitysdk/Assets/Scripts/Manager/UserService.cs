@@ -12,8 +12,8 @@ namespace SeembaSDK
     {
         #region Static
         public static string Seemba_Email = "noreply@seemba.com,djo@seemba.com,slim@seemba.com,geoffrey@seemba.com,jean-philippe@seemba.com,mohamed@seemba.com";
-        private static int sec, min;
-        private static DateTime dt = new DateTime();
+        public static UserService Get { get { return sInstance; } }
+        private static UserService sInstance;
         #endregion
 
         #region Script Parameters
@@ -25,15 +25,27 @@ namespace SeembaSDK
         public InputField Password;
         public Animator LoginAnimation;
         public Text chrono;
+        public GameObject SignIn;
+        public GameObject ResetPasswordEmail;
+        public GameObject ResetPasswordCode;
+        public GameObject ResetPasswordNewPassword;
         #endregion
 
         #region Fields
         private int code;
-        private Timer aTimer;
         private bool timeout;
+        private float timeRemaining = 120f;
+        private string minutes;
+        private string seconds;
+        private int remainingSeconds;
+        private int remainingMinutes;
         #endregion
 
         #region Unity Methods
+        private void Awake()
+        {
+            sInstance = this;
+        }
         private void Start()
         {
             Username.ActivateInputField();
@@ -118,8 +130,9 @@ namespace SeembaSDK
                     submitCode.interactable = false;
                 }
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException ex)
             {
+                Debug.LogWarning(ex.Message);
             }
             catch (FormatException)
             {
@@ -128,10 +141,55 @@ namespace SeembaSDK
                     submitCode.interactable = false;
                 }
             }
+            if (ResetPasswordCode.activeSelf)
+            {
+                if (timeRemaining > 0)
+                {
+                    timeRemaining -= Time.deltaTime;
+                    remainingMinutes = Mathf.FloorToInt(timeRemaining % 60);
+
+                    if (remainingMinutes < 10)
+                    {
+                        minutes = "0" + remainingMinutes;
+                    }
+                    else
+                    {
+                        minutes = remainingMinutes.ToString();
+                    }
+                    remainingSeconds = Mathf.FloorToInt(timeRemaining % 60);
+
+                    if (remainingSeconds < 10)
+                    {
+                        seconds = "0" + remainingSeconds;
+                    }
+                    else
+                    {
+                        seconds = remainingSeconds.ToString();
+                    }
+                    chrono.text = minutes + ":" + seconds;
+                }
+                else
+                {
+                    Debug.Log("Time has run out!");
+                    timeRemaining = 0f;
+                    timeout = true;
+                }
+            }
+            else
+            {
+                timeRemaining = 120f;
+            }
         }
         #endregion
 
         #region Methods
+        public void ResetScreens()
+        {
+            SignIn.SetActive(true);
+            ResetPasswordCode.SetActive(false);
+            ResetPasswordEmail.SetActive(false);
+            ResetPasswordNewPassword.SetActive(false);
+        }
         public async void Logout()
         {
             var userId = UserManager.Get.getCurrentUserId();
@@ -164,62 +222,12 @@ namespace SeembaSDK
                 }
                 else
                 {
+                    ResetPasswordEmail.SetActive(false);
+                    ResetPasswordCode.SetActive(true);
                     digits.ActivateInputField();
                     code = res;
-                    dt.AddMinutes(2).ToString("mm:ss");
-                    chrono.text = "02:00";
-                    sec = 59;
-                    min = 1;
-                    timeout = false;
-                    if (aTimer != null)
-                    {
-                        aTimer.Stop();
-                    }
-
-                    aTimer = null;
-                    aTimer = new System.Timers.Timer();
-                    aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-                    aTimer.Interval = 1000;
-                    aTimer.Enabled = true;
                 }
             }
-        }
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
-        {
-                try
-                {
-                    if (sec >= 0 && min >= 0)
-                    {
-                        if (sec >= 10)
-                        {
-                            chrono.text = "0" + min + ":" + sec;
-                        }
-                        else
-                        {
-                            chrono.text = "0" + min + ":0" + sec;
-                        }
-
-                        sec--;
-                        if (sec < 0)
-                        {
-                            sec = 59;
-                            min--;
-                        }
-                        if (sec < 0 && min < 0)
-                        {
-                            aTimer.Stop();
-                            chrono.text = "00:00";
-                            timeout = true;
-                        }
-                    }
-                    else
-                    {
-                        timeout = true;
-                    }
-                }
-                catch (MissingReferenceException)
-                {
-                }
         }
         private async void resetPassword()
         {

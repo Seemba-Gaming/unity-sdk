@@ -30,9 +30,9 @@ namespace SeembaSDK
             LoaderManager.Get.LoaderController.ShowLoader(null);
             ResetLoginFailedAnimation();
             var deviceToken = PlayerPrefs.GetString("DeviceToken");
-            string res = await UserManager.Get.logingIn(username, password);
+            bool res = await UserManager.Get.logingIn(username, password);
             LoaderManager.Get.LoaderController.HideLoader();
-            if (res == "success")
+            if (res)
             {
                 var platform = "";
                 if (Application.platform == RuntimePlatform.Android)
@@ -46,9 +46,9 @@ namespace SeembaSDK
 
                 return true;
             }
-            else if (res == "failed")
+            else if (!res)
             {
-                print("auth failed");
+                Debug.LogWarning("auth failed");
                 ShowLoginFailedAnimation();
                 SeembaAnalyticsManager.Get.SendUserEvent("Auth Failed");
                 return false;
@@ -57,7 +57,6 @@ namespace SeembaSDK
             {
                 ConnectivityController.CURRENT_ACTION = ConnectivityController.LOGIN_ACTION;
                 LoaderManager.Get.LoaderController.HideLoader();
-
                 return false;
             }
         }

@@ -33,6 +33,7 @@ namespace SeembaSDK
         {
             Signup.onClick.AddListener(delegate
             {
+                UserService.Get.ResetScreens();
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
             });
             Login.onClick.AddListener(delegate
@@ -97,6 +98,10 @@ namespace SeembaSDK
                 Password.contentType = InputField.ContentType.Password;
             }
             Password.ForceLabelUpdate();
+        }
+        public void CodeMagique()
+        {
+            Debug.LogWarning("please implement this method");
         }
         async void login()
         {

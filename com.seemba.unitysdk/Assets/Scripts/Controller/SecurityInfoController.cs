@@ -100,8 +100,8 @@ namespace SeembaSDK
 
         public async Task<bool> CurrentPasswordListener()
         {
-            string res = await UserManager.Get.logingIn(CurrentUser.email, CurrentPassword.text);
-            if (res == "success")
+            bool res = await UserManager.Get.logingIn(CurrentUser.email, CurrentPassword.text);
+            if (res)
             {
                 nextCurrentPassword.interactable = true;
             }

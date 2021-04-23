@@ -16,6 +16,40 @@ namespace SeembaSDK
 {
     [CLSCompliant(false)]
 
+    public class UserInfo
+    {
+        public bool username_changed;
+        public bool email_verified;
+        public string address;
+        public string country;
+        public string lastname;
+        public string firstname;
+        public int highest_victories_streak;
+        public int current_victories_count;
+        public string last_bubble_click;
+        public int level;
+        public string payment_account_id;
+        public string city;
+        public string state;
+        public float max_withdraw;
+        public bool is_bot;
+        public string[] games;
+        public string _id;
+        public string username;
+        public string email;
+        public string avatar;
+        public string country_code;
+        public string long_lat;
+        public string createdAt;
+        public string updatedAt;
+        public string customer_id;
+        public string last_connection;
+        public string birthdate;
+        public float money_credit;
+        public float bubble_credit;
+    }
+    [CLSCompliant(false)]
+
     public class GeoLocInfo
     {
         public string ip;
@@ -26,6 +60,13 @@ namespace SeembaSDK
         public string org;
         public string timezone;
         public string readme;
+    }
+    [CLSCompliant(false)]
+
+    public class EmailCode
+    {
+        public bool success;
+        public int code;
     }
 
     [CLSCompliant(false)]
@@ -208,7 +249,7 @@ namespace SeembaSDK
                 return false;
             }
         }
-        public async Task<string> logingIn(string email_username, string password)
+        public async Task<bool> logingIn(string email_username, string password)
         {
             WWWForm form = new WWWForm();
             form.AddField("game_id", GamesManager.GAME_ID);
@@ -222,12 +263,11 @@ namespace SeembaSDK
                 form.AddField("username", email_username.ToUpper());
             }
             string url = Endpoint.classesURL + "/authenticate";
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            Debug.LogWarning(response);
-            var userData = JsonUtility.FromJson<UserData>(response);
-            CurrentUser = userData.data;
-            var N = JSON.Parse(response);
-            CurrentUser.token = N["token"].Value;
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<UserInfo> response = JsonConvert.DeserializeObject<SeembaResponse<UserInfo>>(responseText);
+            var userData = JsonUtility.FromJson<UserData>(responseText); // à verifier et supprimer
+            CurrentUser = userData.data; // à verifier et supprimer
+            CurrentUser.token = response.token;
             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
 
             CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
@@ -237,17 +277,17 @@ namespace SeembaSDK
             PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
             LoaderManager.Get.LoaderController.HideLoader();
 
-            if (N["success"].AsBool == true)
+            if (response.success)
             {
-                saveSessionToken(N["token"].Value);
-                saveUserId(N["data"]["_id"].Value);
-                CurrentUser._id = N["data"]["_id"].Value;
-                CurrentUser.token = N["token"].Value;
-                return "success";
+                saveSessionToken(response.token);
+                saveUserId(response.data._id);
+                CurrentUser._id = response.data._id;
+                CurrentUser.token = response.token;
+                return true;
             }
             else
             {
-                return "failed";
+                return false;
             }
         }
         public void logingOut()
@@ -315,12 +355,11 @@ namespace SeembaSDK
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
             WWWForm form = new WWWForm();
             form.AddField("email", mail);
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
-            Debug.Log(response);
-            if (N["success"].AsBool == true)
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            EmailCode response = JsonConvert.DeserializeObject<EmailCode>(responseText);
+            if (response.success)
             {
-                return N["code"].AsInt;
+                return response.code;
             }
             else
             {

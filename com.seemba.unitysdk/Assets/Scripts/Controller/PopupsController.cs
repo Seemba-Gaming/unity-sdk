@@ -201,6 +201,9 @@ namespace SeembaSDK
                 case PopupType.POPUP_GIFT_CARD_SUCCESS:
                     PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
                     break;
+                case PopupType.INFO_POPUP_EMAIL_NOT_FOUND:
+                    PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                    break;
                 default:
                     Debug.LogWarning(popupType);
                     UnloadPopup();

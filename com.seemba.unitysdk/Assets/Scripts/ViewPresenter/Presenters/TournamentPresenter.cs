@@ -221,27 +221,27 @@ namespace SeembaSDK
             {
                 user_1_score = tournamentJson["current_challenge"]["user_1_score"].AsFloat;
             }
-            catch (NullReferenceException e) { Debug.LogWarning(e.Message); };
+            catch (NullReferenceException ) {};
             float? user_2_score = null;
             try
             {
                 user_2_score = tournamentJson["current_challenge"]["user_2_score"].AsFloat;
             }
-            catch (NullReferenceException e) { Debug.LogWarning(e.Message); };
+            catch (NullReferenceException ) { };
 
             string matched_user_1 = null;
             try
             {
                 matched_user_1 = tournamentJson["current_challenge"]["matched_user_1"]["_id"].Value;
             }
-            catch (NullReferenceException e) { Debug.LogWarning(e.Message); };
+            catch (NullReferenceException ) {};
 
             string matched_user_2 = null;
             try
             {
                 matched_user_2 = tournamentJson["current_challenge"]["matched_user_2"]["_id"].Value;
             }
-            catch (NullReferenceException e) { Debug.LogWarning(e.Message); };
+            catch (NullReferenceException ) { };
 
             if (matched_user_1 == userId && user_1_score != null && user_2_score == null)
             {

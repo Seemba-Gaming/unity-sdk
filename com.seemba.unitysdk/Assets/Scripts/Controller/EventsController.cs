@@ -352,7 +352,7 @@ namespace SeembaSDK
             else
                 return true;
         }
-        public async void UpdateAge()
+        public void UpdateAge()
         {
             Text mAge = PopupManager.Get.PopupViewPresenter.PopupAgePlaceHolder;
             string[] date = mAge.text.Split(new char[] { '-' }, 3);

@@ -25,7 +25,7 @@ namespace SeembaSDK
 
         #region UNITY_METHOD
         private void OnGUI()
-        {
+        { 
             SetLogo();
             SetFields();
             SetValidateButton();

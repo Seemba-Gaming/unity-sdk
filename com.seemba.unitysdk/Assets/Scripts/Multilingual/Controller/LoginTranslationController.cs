@@ -32,7 +32,8 @@ namespace SeembaSDK
         [SerializeField]
         private Text
                 enter_your_email_below_to_reset_password,
-                email, _continue_email;
+                email, _continue_email,
+                back_email;
         [Header("--------------Code------------")]
         [SerializeField]
         private Text
@@ -97,6 +98,8 @@ namespace SeembaSDK
             code_expired_change.text = TranslationManager.Get("code_expired") != string.Empty ? TranslationManager.Get("code_expired") : code_expired_change.text;
             resend_change.text = TranslationManager.Get("resend") != string.Empty ? TranslationManager.Get("resend") : resend_change.text;
             done.text = TranslationManager.Get("done") != string.Empty ? TranslationManager.Get("done") : done.text;
+            TranslationManager.scene = "Home";
+            back_email.text = TranslationManager.Get("back_button");
         }
     }
 }

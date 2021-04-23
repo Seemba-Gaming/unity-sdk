@@ -1,5 +1,10 @@
-﻿namespace UnityEngine.UI
+﻿using System;
+using UnityEngine;
+using UnityEngine.Sprites;
+using UnityEngine.UI;
+namespace SeembaSDK.UI
 {
+    [CLSCompliant(false)]
     public class GlowImage : Image
     {
         [SerializeField]
@@ -109,7 +114,7 @@
             if (type == Type.Simple &&
                 overrideSprite != null)
             {
-                var padding = Sprites.DataUtility.GetPadding(overrideSprite);
+                var padding = DataUtility.GetPadding(overrideSprite);
                 var size = new Vector2(overrideSprite.rect.width, overrideSprite.rect.height);
 
                 int spriteW = Mathf.RoundToInt(size.x);
@@ -153,7 +158,7 @@
                     r.x + r.width * v.z,
                     r.y + r.height * v.w
                     );
-                var uvc = Sprites.DataUtility.GetOuterUV(overrideSprite);
+                var uvc = DataUtility.GetOuterUV(overrideSprite);
                 Vector2 pixelFix = new Vector2(unitPerPixel / (vp.z - vp.x), unitPerPixel / (vp.w - vp.y));
                 uvc += new Vector4(pixelFix.x, pixelFix.y, -pixelFix.x, -pixelFix.y);
 

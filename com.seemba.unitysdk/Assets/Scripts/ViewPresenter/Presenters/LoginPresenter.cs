@@ -33,6 +33,7 @@ namespace SeembaSDK
         {
             Signup.onClick.AddListener(delegate
             {
+                UserService.Get.ResetScreens();
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Signup.gameObject);
             });
             Login.onClick.AddListener(delegate

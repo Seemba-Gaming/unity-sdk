@@ -60,7 +60,7 @@ namespace SeembaSDK
 
 			if (CountryController.checkCountry(UserManager.Get.CurrentUser.country_code))
 			{
-				StartCoroutine(EventsController.Get.checkInternetConnection(async (isConnected) =>
+				StartCoroutine(EventsController.Get.checkInternetConnection((isConnected) =>
 				{
 
 					LoaderManager.Get.LoaderController.HideLoader();

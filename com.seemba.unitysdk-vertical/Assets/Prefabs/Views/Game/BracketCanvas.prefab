@@ -1502,7 +1502,7 @@ RectTransform:
   m_GameObject: {fileID: 7819585151502847706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 3511113716468563704}
   m_Father: {fileID: 0}
@@ -1987,6 +1987,46 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3627900841771259875}
     m_Modifications:
+    - target: {fileID: 601077975840892187, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077975840892187, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077975840892187, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 66.68158
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077975840892187, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077977191705147, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077977191705147, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077977191705147, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 6.181576
+      objectReference: {fileID: 0}
+    - target: {fileID: 601077977191705147, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15
+      objectReference: {fileID: 0}
     - target: {fileID: 1398417029632061988, guid: f5dfa7e4afc5ebf4ba018465947a63e8,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size

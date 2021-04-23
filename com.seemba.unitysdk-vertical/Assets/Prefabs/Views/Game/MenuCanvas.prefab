@@ -670,7 +670,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 0}
   Amount: {fileID: 690970744}
-  Equals: {fileID: 8185982966424842120}
+  EqualsText: {fileID: 8185982966424842120}
   CrownsValue: {fileID: 2755466896590628639}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -19861,7 +19861,7 @@ MonoBehaviour:
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 10
-  m_fontSizeMax: 13
+  m_fontSizeMax: 16
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -26707,7 +26707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 76357941821352887}
   Amount: {fileID: 3732160997970159824}
-  Equals: {fileID: 664039297747112033}
+  EqualsText: {fileID: 664039297747112033}
   CrownsValue: {fileID: 1387655346974404292}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -27573,7 +27573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 5177353179995694060}
   Amount: {fileID: 7196703591797498240}
-  Equals: {fileID: 7332390864326721927}
+  EqualsText: {fileID: 7332390864326721927}
   CrownsValue: {fileID: 3736579307419201907}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -29161,7 +29161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 8837141586414503491}
   Amount: {fileID: 4705011292643487132}
-  Equals: {fileID: 2895129228357328327}
+  EqualsText: {fileID: 2895129228357328327}
   CrownsValue: {fileID: 1510400810617619505}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -29358,7 +29358,7 @@ MonoBehaviour:
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 10
-  m_fontSizeMax: 13
+  m_fontSizeMax: 16
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -36651,7 +36651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 3465210529766247365}
   Amount: {fileID: 3945311380739902750}
-  Equals: {fileID: 2081583361516139757}
+  EqualsText: {fileID: 2081583361516139757}
   CrownsValue: {fileID: 2511435011215738428}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -38043,7 +38043,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 187.5, y: -385.4167}
+  m_AnchoredPosition: {x: 187.5, y: -385.41675}
   m_SizeDelta: {x: 375, y: 770.8334}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &628579775774617142
@@ -46062,7 +46062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 2247797871264254417}
   Amount: {fileID: 8667246639577076794}
-  Equals: {fileID: 4695123012123491228}
+  EqualsText: {fileID: 4695123012123491228}
   CrownsValue: {fileID: 6986355205159507948}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -48937,7 +48937,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 0}
   Amount: {fileID: 4190962751439043911}
-  Equals: {fileID: 4913380928579303296}
+  EqualsText: {fileID: 4913380928579303296}
   CrownsValue: {fileID: 2017835781709421561}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -51916,7 +51916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 3579134210340158980}
   Amount: {fileID: 4755876212901641767}
-  Equals: {fileID: 3971651196849328449}
+  EqualsText: {fileID: 3971651196849328449}
   CrownsValue: {fileID: 2060962555901678039}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -59468,7 +59468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 2645547124871519122}
   Amount: {fileID: 6238565371674429929}
-  Equals: {fileID: 1739237344826887767}
+  EqualsText: {fileID: 1739237344826887767}
   CrownsValue: {fileID: 3382733931959687021}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
@@ -63259,7 +63259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedText: {fileID: 4839570590162773549}
   Amount: {fileID: 2192497034810035593}
-  Equals: {fileID: 8836336868710289860}
+  EqualsText: {fileID: 8836336868710289860}
   CrownsValue: {fileID: 6046373913063744751}
   SelectedOffColor: {r: 0.7372549, g: 0.7137255, b: 0.7607844, a: 1}
   AmountOffColor: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}

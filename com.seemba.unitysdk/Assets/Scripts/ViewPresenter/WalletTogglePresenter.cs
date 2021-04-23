@@ -13,7 +13,8 @@ namespace SeembaSDK
 
         public Text SelectedText;
         public Text Amount;
-        public Text Equals;
+        public Text EqualsText;
+
         public TextMeshProUGUI CrownsValue;
         public Color SelectedOffColor;
         public Color AmountOffColor;
@@ -49,7 +50,7 @@ namespace SeembaSDK
             {
                 SelectedText.text = TranslationManager.Get("selected");
                 SelectedText.color = Color.white;
-                Equals.color = Color.white;
+                EqualsText.color = Color.white;
                 CrownsValue.color = Color.white;
                 Amount.color = Color.white;
                 IsSelected = true;
@@ -59,7 +60,7 @@ namespace SeembaSDK
                 SelectedText.text = TranslationManager.Get("select");
                 SelectedText.color = SelectedOffColor;
                 Amount.color = AmountOffColor;
-                Equals.color = AmountOffColor;
+                EqualsText.color = AmountOffColor;
                 CrownsValue.color = AmountOffColor;
                 IsSelected = false;
             }

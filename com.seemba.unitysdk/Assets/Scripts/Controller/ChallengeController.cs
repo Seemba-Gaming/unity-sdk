@@ -132,7 +132,6 @@ namespace SeembaSDK
         {
             VPNManager vpn = new VPNManager();
             return await vpn.isVpnConnectedAsync();
-            Debug.LogWarning("here");
         }
 
         private bool isCreditSuffisant(float entry_fee, string win_type)

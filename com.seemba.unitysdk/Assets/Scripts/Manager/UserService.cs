@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -109,12 +110,30 @@ namespace SeembaSDK
                 {
                     Done.interactable = true;
                 }
+                else
+                {
+                    Done.interactable = false;
+                }
+            });
+            newPassword.onValueChanged.AddListener(delegate
+            {
+                if (confirmPassword.text.Equals(newPassword.text))
+                {
+                    Done.interactable = true;
+                }
+                 else
+                {
+                    Done.interactable = false;
+                }
             });
             Done.onClick.AddListener(() =>
             {
                 resetPassword();
             });
-
+            submitCode.onClick.AddListener(() =>
+            {
+                OnClickSubmitCode();
+            });
         }
 
         private void Update()
@@ -124,6 +143,7 @@ namespace SeembaSDK
                 if (int.Parse(digits.text) == code && timeout == false)
                 {
                     submitCode.interactable = true;
+
                 }
                 else
                 {
@@ -146,7 +166,7 @@ namespace SeembaSDK
                 if (timeRemaining > 0)
                 {
                     timeRemaining -= Time.deltaTime;
-                    remainingMinutes = Mathf.FloorToInt(timeRemaining % 60);
+                    remainingMinutes = Mathf.FloorToInt(timeRemaining / 60);
 
                     if (remainingMinutes < 10)
                     {
@@ -185,10 +205,18 @@ namespace SeembaSDK
         #region Methods
         public void ResetScreens()
         {
+            Email.text = string.Empty;
+            digits.text = string.Empty;
             SignIn.SetActive(true);
             ResetPasswordCode.SetActive(false);
             ResetPasswordEmail.SetActive(false);
             ResetPasswordNewPassword.SetActive(false);
+        }
+
+        public void OnClickSubmitCode()
+        {
+            ResetPasswordCode.SetActive(false);
+            ResetPasswordNewPassword.SetActive(true);
         }
         public async void Logout()
         {
@@ -204,7 +232,7 @@ namespace SeembaSDK
         #endregion
 
         #region Implementation
-        private async System.Threading.Tasks.Task requestForResetPasswordAsync()
+        private async Task requestForResetPasswordAsync()
         {
             digits.text = "";
             LoaderManager.Get.LoaderController.ShowLoader(null);
@@ -231,17 +259,21 @@ namespace SeembaSDK
         }
         private async void resetPassword()
         {
-            LoaderManager.Get.LoaderController.ShowLoader(null);
-            bool res = await UserManager.Get.updatePassword(Email.text, newPassword.text);
-            LoaderManager.Get.LoaderController.HideLoader();
-
-            if (res == false)
+            if(newPassword.text.Equals(confirmPassword.text))
             {
-                PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
-            }
-            else
-            {
-                //what ?
+                LoaderManager.Get.LoaderController.ShowLoader(null);
+                bool res = await UserManager.Get.updatePassword(Email.text, newPassword.text);
+                LoaderManager.Get.LoaderController.HideLoader();
+                if (res == false)
+                {
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_CONNECTION_FAILED, PopupsText.Get.ConnectionFailed());
+                }
+                else
+                {
+                    ResetScreens();
+                    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
+                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_PASSWORD_UPDATED, PopupsText.Get.PasswordUpdated());
+                }
             }
         }
         private bool IsValidEmail(string email)

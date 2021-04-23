@@ -665,7 +665,6 @@ namespace SeembaSDK
             popup_duels_animator.SetBool("Show", false);
             yield return new WaitForSeconds(0.5f);
             ViewsEvents.Get.Brackets.GetComponent<TournamentController>().Play(_params);
-            SeembaAnalyticsManager.Get.SendDuelInfoEvent("Start Tournament", float.Parse(_params[0].ToString()), float.Parse(_params[1].ToString()), _params[2].ToString());
         }
         #endregion
     }

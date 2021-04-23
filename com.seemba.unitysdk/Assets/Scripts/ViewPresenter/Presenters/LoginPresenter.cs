@@ -99,10 +99,6 @@ namespace SeembaSDK
             }
             Password.ForceLabelUpdate();
         }
-        public void CodeMagique()
-        {
-            Debug.LogWarning("please implement this method");
-        }
         async void login()
         {
             var res = await LoginController.Get.Login(Username.text, Password.text);

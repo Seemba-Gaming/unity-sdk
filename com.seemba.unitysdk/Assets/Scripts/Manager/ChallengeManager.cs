@@ -12,110 +12,123 @@ namespace SeembaSDK
     [CLSCompliant(false)]
     public class GenericTournament
     {
-        public string _id;
-        public int nb_current_players;
-        public bool is_full;
-        public string[] rounds;
-        public string[] losers;
-        public string[] participants;
-        public string game_level;
-        public int nb_players;
-        public string gain;
-        public string gain_type;
-        public string game;
-        public string status;
-        public string createdAt;
-        public string updatedAt;
-        public string __v;
+        public string                               _id;
+        public int                                  nb_current_players;
+        public bool                                 is_full;
+        public Round[]                              rounds;
+        public string[]                             losers;
+        public User[]                               participants;
+        public string                               game_level;
+        public int                                  nb_players;
+        public string                               gain;
+        public string                               gain_type;
+        public string                               game;
+        public string                               status;
+        public string                               createdAt;
+        public string                               updatedAt;
+        public string                               __v;
+        public string                               winner_user;
     }
+
     [CLSCompliant(false)]
+    public class OldScores
+    {
+        public int                                  user_1_score;
+        public int                                  user_2_score;
+    }
+        [CLSCompliant(false)]
     public class GenericChallenge
     {
-        public string _id;
-        public string user_1_score;
-        public string user_2_score;
-        public string[] users_old_scores;
-        public string tournament_id;
-        public GenericGameInfo game;
-        public int? game_level;
-        public string status;
-        public string challenge_type;
-        public string gain;
-        public string gain_type;
-        public string next_challenge_id;
-        public string createdAt;
-        public string updatedAt;
-        public GenericUser matched_user_1;
-        public string matched_user_1_contry;
-        public string user_1_joined_at;
-        public GenericUser matched_user_2;
-        public string matched_user_2_contry;
-        public string user_2_joined_at;
-        public string winner_user;
-        public string __v;
-        public GenericTournament tournament;
+        public string                               _id;
+        public float?                               user_1_score;
+        public float?                               user_2_score;
+        public OldScores[]                          users_old_scores;
+        public string                               tournament_id;
+        public GenericGameInfo                      game;
+        public int?                                 game_level;
+        public string                               status;
+        public string                               challenge_type;
+        public string                               gain;
+        public string                               gain_type;
+        public string                               next_challenge_id;
+        public string                               createdAt;
+        public string                               updatedAt;
+        public User                                 matched_user_1;
+        public string                               matched_user_1_contry;
+        public string                               user_1_joined_at;
+        public User                                 matched_user_2;
+        public string                               matched_user_2_contry;
+        public string                               user_2_joined_at;
+        public string                               winner_user;
+        public string                               __v;
+        public GenericTournament                    tournament;
     }
     [CLSCompliant(false)]
     public class GenericUser
     {
-        public string _id;
-        public bool username_changed;
-        public bool email_verified;
-        public string address;
-        public string country;
-        public string firstname;
-        public string lastname;
-        public int highest_victories_streak;
-        public int current_victories_count;
-        public string last_bubble_click;
-        public string level;
-        public string payment_account_id;
-        public string city;
-        public string state;
-        public string max_withdraw;
-        public bool is_bot;
-        public string[] games;
-        public string username;
-        public string email;
-        public string avatar;
-        public string country_code;
-        public string long_lat;
-        public string paymentGateway;
-        public string createdAt;
-        public string updatedAt;
-        public string bubbles;
-        public string coins;
-        public string customer_id;
-        public string last_connection;
-        public string zipcode;
+        public string                               _id;
+        public bool                                 username_changed;
+        public bool                                 email_verified;
+        public string                               address;
+        public string                               country;
+        public string                               firstname;
+        public string                               lastname;
+        public int                                  highest_victories_streak;
+        public int                                  current_victories_count;
+        public string                               last_bubble_click;
+        public string                               level;
+        public string                               payment_account_id;
+        public string                               city;
+        public string                               state;
+        public string                               max_withdraw;
+        public bool                                 is_bot;
+        public string[]                             games;
+        public string                               username;
+        public string                               email;
+        public string                               avatar;
+        public string                               country_code;
+        public string                               long_lat;
+        public string                               paymentGateway;
+        public string                               createdAt;
+        public string                               updatedAt;
+        public string                               bubbles;
+        public string                               coins;
+        public string                               customer_id;
+        public string                               last_connection;
+        public string                               zipcode;
     }
     [CLSCompliant(false)]
     public class GenericGameInfo
     {
-        public string _id;
-        public string play_store_link;
-        public string app_store_link;
-        public bool completed;
-        public bool deleted;
-        public string[] platforms;
-        public string name;
-        public string description;
-        public string editor;
-        public string team;
-        public string score_mode;
-        public string status;
-        public string engine;
-        public string orientation;
-        public string[] brackets;
-        public string[] tournaments;
-        public string icon;
-        public string background_image;
-        public string appstore_id;
-        public string bundle_id;
-        public string createdAt;
-        public string updatedAt;
-        public string __v;
-        public string secret;
+        public string                               _id;
+        public string[]                             platforms;
+        public string[]                             brackets;
+        public string[]                             tournaments;
+        public string                               name;
+        public string                               editor;
+        public string                               team;
+        public string                               appstore_id;
+        public string                               bundle_id;
+        public string                               createdAt;
+        public string                               description;
+        public string                               store_link; //android
+        public string                               icon;
+        public string                               background_image;
+        public string                               gcm_api_key;
+        public string                               status;
+        public string                               orientation;
+        public string                               engine;
+        public string                               secret;
+        public string                               android_name;
+        public string                               android_version;
+        public string                               ios_name;
+        public string                               ios_version;
+        public string                               __v;
+        public bool                                 completed;
+        public bool                                 deleted;
+        public string                               app_store_link;
+        public string                               score_mode;
+        public string                               updatedAt;
     }
     [CLSCompliant(false)]
     public class ChallengeManager : MonoBehaviour
@@ -126,43 +139,42 @@ namespace SeembaSDK
         private static ChallengeManager sInstance;
         #endregion
 
-        //UserManager UserManager.Get = new UserManager ();
-        public string AdversaryId;
-        public static string CurrentChallengeGain, CurrentChallengeGainType;
-        public static string CurrentChallengeId;
-        public static Challenge CurrentChallenge;
-        public static string CurrentChallengeRequestId;
-        public static string CurrentChallengeStatus;
-        public static System.Timers.Timer aTimer = new System.Timers.Timer();
-        public static System.Timers.Timer t;
+        public string                               AdversaryId;
+        public static string                        CurrentChallengeGain, CurrentChallengeGainType;
+        public static string                        CurrentChallengeId;
+        public static Challenge                     CurrentChallenge;
+        public static string                        CurrentChallengeRequestId;
+        public static string                        CurrentChallengeStatus;
+        public static System.Timers.Timer           aTimer = new System.Timers.Timer();
+        public static System.Timers.Timer           t;
         public static string date;
         //Set All Challenges Details
-        public static float FEE_1V1_CASH_CONFIDENT;// = 1.20f;
-        public static float FEE_1V1_CASH_CHAMPION;// = 3.00f;
-        public static float FEE_1V1_CASH_LEGEND;// = 6.00f;
-        public static float WIN_1V1_CASH_CONFIDENT;// = 2.00f;
-        public static float WIN_1V1_CASH_CHAMPION;// = 5.00f;
-        public static float WIN_1V1_CASH_LEGEND;// = 10.00f;
-        public static int FEE_1V1_BUBBLES_CONFIDENT;// = 1.00f;
-        public static int FEE_1V1_BUBBLES_CHAMPION;// = 3.00f;
-        public static int FEE_1V1_BUBBLES_LEGEND;// = 5.00f;
-        public static int WIN_1V1_BUBBLES_CONFIDENT;// = 2f;
-        public static int WIN_1V1_BUBBLES_CHAMPION;// = 6f;
-        public static int WIN_1V1_BUBBLES_LEGEND;// = 10f;
-        public const string CHALLENGE_TYPE_BRACKET = "Bracket";
-        public const string CHALLENGE_TYPE_1V1 = "1vs1";
-        public const string CHALLENGE_WIN_TYPE_BUBBLES = "bubble";
-        public const string CHALLENGE_WIN_TYPE_CASH = "cash";
-        public const string CHALLENGE_STATUS_RESULT_PENDING = "results pending";
-        public const string CHALLENGE_STATUS_SEE_RESULT_FOR_USER1 = "see results for user 1";
-        public const string CHALLENGE_STATUS_SEE_RESULT_FOR_USER2 = "see results for user 2";
-        public const string CHALLENGE_STATUS_FINISHED = "finished";
+        public static float                         FEE_1V1_CASH_CONFIDENT;// = 1.20f;
+        public static float                         FEE_1V1_CASH_CHAMPION;// = 3.00f;
+        public static float                         FEE_1V1_CASH_LEGEND;// = 6.00f;
+        public static float                         WIN_1V1_CASH_CONFIDENT;// = 2.00f;
+        public static float                         WIN_1V1_CASH_CHAMPION;// = 5.00f;
+        public static float                         WIN_1V1_CASH_LEGEND;// = 10.00f;
+        public static int                           FEE_1V1_BUBBLES_CONFIDENT;// = 1.00f;
+        public static int                           FEE_1V1_BUBBLES_CHAMPION;// = 3.00f;
+        public static int                           FEE_1V1_BUBBLES_LEGEND;// = 5.00f;
+        public static int                           WIN_1V1_BUBBLES_CONFIDENT;// = 2f;
+        public static int                           WIN_1V1_BUBBLES_CHAMPION;// = 6f;
+        public static int                           WIN_1V1_BUBBLES_LEGEND;// = 10f;
+        public const string                         CHALLENGE_TYPE_BRACKET = "Bracket";
+        public const string                         CHALLENGE_TYPE_1V1 = "1vs1";
+        public const string                         CHALLENGE_WIN_TYPE_BUBBLES = "bubble";
+        public const string                         CHALLENGE_WIN_TYPE_CASH = "cash";
+        public const string                         CHALLENGE_STATUS_RESULT_PENDING = "results pending";
+        public const string                         CHALLENGE_STATUS_SEE_RESULT_FOR_USER1 = "see results for user 1";
+        public const string                         CHALLENGE_STATUS_SEE_RESULT_FOR_USER2 = "see results for user 2";
+        public const string                         CHALLENGE_STATUS_FINISHED = "finished";
 
-        public const string CHALLENGE_TYPE_AMATEUR = "Amateur";
-        public const string CHALLENGE_TYPE_NOVICE = "Novice";
-        public const string CHALLENGE_TYPE_CONFIRMED = "Confirmed";
+        public const string                         CHALLENGE_TYPE_AMATEUR = "Amateur";
+        public const string                         CHALLENGE_TYPE_NOVICE = "Novice";
+        public const string                         CHALLENGE_TYPE_CONFIRMED = "Confirmed";
 
-        public static List<string> AVALAIBLE_CHALLENGE = new List<string>();
+        public static List<string>                  AVALAIBLE_CHALLENGE = new List<string>();
 
         private void Awake()
         {
@@ -246,14 +258,13 @@ namespace SeembaSDK
             EventsController.Get.AudioListener.enabled = true;
             ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ResultPresenter.gameObject);
         }
-        public async Task<JSONNode> getChallengebyIdAsync(string challengeId, string token)
+        public async Task<GenericChallenge> getChallengebyIdAsync(string challengeId)
         {
             string url = Endpoint.classesURL + "/challenges/" + challengeId;
-            var response = await SeembaWebRequest.Get.HttpsGet(url);
-            var N = JSON.Parse(response);
-            if (N != null)
+            var response = await SeembaWebRequest.Get.HttpsGetJSON<GenericChallenge>(url);
+            if (response != null)
             {
-                return N;
+                return response;
             }
             else
             {
@@ -285,6 +296,7 @@ namespace SeembaSDK
         public async Task<GenericChallenge[]> GetOnGoingChallenges(int page, int pageSize)
         {
             string url = Endpoint.classesURL + "/challenges/ongoing?game_id=" + GamesManager.GAME_ID + "&page=" + page + "&pagesize=" + pageSize;
+            Debug.LogWarning(url);
             var response = await SeembaWebRequest.Get.HttpsGetJSON<GenericChallenge[]>(url);
             return response;
         }
@@ -292,6 +304,7 @@ namespace SeembaSDK
         {
             string url = Endpoint.classesURL + "/challenges/last_results?game_id=" + GamesManager.GAME_ID + "&page=" + page + "&pagesize=" + pageSize;
             var response = await SeembaWebRequest.Get.HttpsGetJSON<GenericChallenge[]>(url);
+            //Debug.LogWarning(url);
             return response;
         }
         public async Task<ArrayList> getFinishedChallenges(string token)
@@ -392,83 +405,51 @@ namespace SeembaSDK
             challenges.AddRange(await getPendingChallenges(token));
             return challenges;
         }
-        public async Task<Challenge> UpdateChallengeStatusToFinishedAsync(string token, string challengeId)
+        public async Task<GenericChallenge> UpdateChallengeStatusToFinishedAsync(string token, string challengeId)
         {
             string url = Endpoint.classesURL + "/challenges";
             string json = "challenge_id=" + challengeId + "&is_finished=" + true;
             byte[] jsonAsBytes = Encoding.UTF8.GetBytes(json);
-            var response = await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
-            var N = JSON.Parse(response);
-            User matched_user_1 = null, matched_user_2 = null;
-            if (N["data"]["status"].Value != "pending")
-            {
-                matched_user_2 = new User(N["data"]["matched_user_2"]["_id"].Value, N["data"]["matched_user_2"]["username"].Value, N["data"]["matched_user_2"]["avatar"].Value, N["data"]["matched_user_2"]["username_changed"].AsBool, N["data"]["matched_user_2"]["personal_id_number"].Value,
-                    "", "", N["data"]["matched_user_2"]["money_credit"].AsFloat,
-                    N["data"]["matched_user_2"]["bubble_credit"].AsFloat, N["data"]["matched_user_2"]["email"].Value, N["data"]["matched_user_2"]["password"].Value,
-                    N["data"]["matched_user_2"]["amateur_bubble"].AsInt, N["data"]["matched_user_2"]["novice_bubble"].AsInt, N["data"]["matched_user_2"]["legend_bubble"].AsInt,
-                    N["data"]["matched_user_2"]["confident_bubble"].AsInt, N["data"]["matched_user_2"]["confirmed_bubble"].AsInt, N["data"]["matched_user_2"]["champion_bubble"].AsInt,
-                    N["data"]["matched_user_2"]["amateur_money"].AsInt, N["data"]["matched_user_2"]["novice_money"].AsInt, N["data"]["matched_user_2"]["legend_money"].AsInt,
-                    N["data"]["matched_user_2"]["confident_money"].AsInt, N["data"]["matched_user_2"]["confirmed_money"].AsInt, N["data"]["matched_user_2"]["champion_money"].AsInt,
-                    N["data"]["matched_user_2"]["losses_streak"].AsInt, N["data"]["matched_user_2"]["victories_streak"].AsInt, N["data"]["matched_user_2"]["long_lat"].Value,
-                    "", N["data"]["matched_user_2"]["email_verified"].AsBool, N["data"]["matched_user_2"]["iban_uploaded"].AsBool,
-                    N["data"]["matched_user_2"]["level"].AsInt, "", N["data"]["matched_user_2"]["id_proof_1_uploaded"].AsBool,
-                    N["data"]["matched_user_2"]["id_proof_2_uploaded"].AsBool, "", N["data"]["matched_user_2"]["country_code"].Value,
-                    "", 0, "",
-                    N["data"]["matched_user_2"]["passport_uploaded"].AsBool, N["data"]["matched_user_2"]["last_result"].Value, "",
-                    "", "", N["data"]["matched_user_2"]["residency_proof_uploaded"].AsBool,
-                    N["data"]["matched_user_2"]["victories_count"].AsInt, N["data"]["matched_user_2"]["phone"].Value);
-            }
-            matched_user_1 = new User(N["data"]["matched_user_1"]["_id"].Value, N["data"]["matched_user_1"]["username"].Value, N["data"]["matched_user_1"]["avatar"].Value, N["data"]["matched_user_1"]["username_changed"].AsBool, N["data"]["matched_user_1"]["personal_id_number"].Value,
-                "", "", N["data"]["matched_user_2"]["money_credit"].AsFloat,
-                N["data"]["matched_user_1"]["bubble_credit"].AsFloat, N["data"]["matched_user_1"]["email"].Value, N["data"]["matched_user_1"]["password"].Value,
-                N["data"]["matched_user_1"]["amateur_bubble"].AsInt, N["data"]["matched_user_1"]["novice_bubble"].AsInt, N["data"]["matched_user_1"]["legend_bubble"].AsInt,
-                N["data"]["matched_user_1"]["confident_bubble"].AsInt, N["data"]["matched_user_1"]["confirmed_bubble"].AsInt, N["data"]["matched_user_1"]["champion_bubble"].AsInt,
-                N["data"]["matched_user_1"]["amateur_money"].AsInt, N["data"]["matched_user_1"]["novice_money"].AsInt, N["data"]["matched_user_1"]["legend_money"].AsInt,
-                N["data"]["matched_user_1"]["confident_money"].AsInt, N["data"]["matched_user_1"]["confirmed_money"].AsInt, N["data"]["matched_user_1"]["champion_money"].AsInt,
-                N["data"]["matched_user_1"]["losses_streak"].AsInt, N["data"]["matched_user_1"]["victories_streak"].AsInt, N["data"]["matched_user_1"]["long_lat"].Value,
-                "", N["data"]["matched_user_1"]["email_verified"].AsBool, N["data"]["matched_user_1"]["iban_uploaded"].AsBool,
-                N["data"]["matched_user_1"]["level"].AsInt, "", N["data"]["matched_user_1"]["id_proof_1_uploaded"].AsBool,
-                N["data"]["matched_user_1"]["id_proof_2_uploaded"].AsBool, "", N["data"]["matched_user_1"]["country_code"].Value,
-                "", 0, "",
-                N["data"]["matched_user_1"]["passport_uploaded"].AsBool, N["data"]["matched_user_1"]["last_result"].Value, "",
-                "", "", N["data"]["matched_user_1"]["residency_proof_uploaded"].AsBool,
-                N["data"]["matched_user_1"]["victories_count"].AsInt, N["data"]["matched_user_1"]["phone"].Value);
+            var responseText = await SeembaWebRequest.Get.HttpsPut(url, jsonAsBytes);
+
+            SeembaResponse<GenericChallenge> response = JsonConvert.DeserializeObject<SeembaResponse<GenericChallenge>>(responseText);
+
             float? user_1_score, user_2_score;
             int? game_level;
+
             try
             {
-                user_2_score = N["data"]["user_2_score"].AsFloat;
+                user_2_score = response.data.user_2_score;
             }
             catch (NullReferenceException)
             {
                 user_2_score = null;
             }
+
             try
             {
-                user_1_score = N["data"]["user_1_score"].AsFloat;
+                user_1_score = response.data.user_1_score;
             }
             catch (NullReferenceException)
             {
                 user_1_score = null;
             }
+
             try
             {
-                game_level = N["data"]["game_level"].AsInt;
+                game_level = response.data.game_level;
             }
             catch (NullReferenceException)
             {
                 game_level = null;
             }
-            Game game = new Game(N["data"]["game"]["_id"].Value, N["data"]["game"]["name"].Value);
-            var created_at = string.IsNullOrEmpty(N["data"]["created_at"]) ? N["data"]["createdAt"].Value : N["data"]["created_at"].Value;
-            Challenge Challenge = new Challenge(N["data"]["_id"].Value, matched_user_1, matched_user_2, user_1_score, user_2_score, N["data"]["challenge_type"].Value, game, N["data"]["status"].Value, N["data"]["gain"].Value, N["data"]["gain_type"].Value, N["data"]["level"].AsInt, TimeZone.CurrentTimeZone.ToLocalTime(DateTime.Parse(created_at)).ToString(), N["data"]["winner_user"].Value, game_level);
-
-            return Challenge;
+            Game game =  new Game(response.data.game._id, response.data.game.name); 
+            var created_at = string.IsNullOrEmpty(response.data.createdAt) ? response.data.createdAt : response.data.createdAt;
+            return response.data;
         }
         public async Task<ArrayList> getChallengesUserResults(string token)
         {
             ArrayList challenges = new ArrayList();
-            JSONArray challengesIDs = new JSONArray();
             challenges = await getSeeResultsChallenges(token);
             challenges.AddRange(await getPendingChallenges(token));
             challenges.AddRange(await getFinishedChallenges(token));

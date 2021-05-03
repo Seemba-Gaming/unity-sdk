@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using SimpleJSON;
 using System;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
@@ -101,11 +101,10 @@ namespace SeembaSDK
             WWWForm form = new WWWForm();
             form.AddBinaryData("avatar", avatar);
             var url = Endpoint.classesURL + "/users/avatars/upload";
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<string> response = JsonConvert.DeserializeObject<SeembaResponse<string>>(responseText);
             //Save The current Session ID
-            AvatarURL = N["data"].Value;
-            return AvatarURL;
+            return response.data;
         }
     }
 }

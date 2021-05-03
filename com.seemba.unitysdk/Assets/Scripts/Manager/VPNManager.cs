@@ -1,22 +1,33 @@
-﻿using SimpleJSON;
+﻿using Newtonsoft.Json;
+using UnityEngine;
 namespace SeembaSDK
 {
+	class VpnInfo
+    {
+		public VpnBody body;
+    }
+	class VpnBody
+    {
+		public string ip;
+		public string proxy;
+    }
 	public class VPNManager
 	{
 		public async System.Threading.Tasks.Task<bool> isVpnConnectedAsync()
 		{
 			string negativeResponse = "no";
 			string url = Endpoint.classesURL + "/users/check/vpn";
-			var response = await SeembaWebRequest.Get.HttpsGet(url);
-			var N = JSON.Parse(response);
-			if (N["body"]["proxy"].Value.ToString() == negativeResponse)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+			var responseText = await SeembaWebRequest.Get.HttpsGet(url);
+			VpnInfo response = JsonConvert.DeserializeObject<VpnInfo>(responseText);
+
+            if (response.body.proxy == negativeResponse)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
 		}
 	}
 }

@@ -1,8 +1,6 @@
 using UnityEngine;
-using System.Collections;
 using System;
 using UnityEngine.UI;
-using SimpleJSON;
 
 namespace SeembaSDK
 {
@@ -13,10 +11,6 @@ namespace SeembaSDK
         public GameObject ProfilePopup;
         public GameObject ListItemPrefab;
         public GameObject ListTournamentItemPrefab;
-        //public GameObject GradientComponent;
-        ArrayList Items, lastResultItem;
-        JSONArray ItemsTournament;
-        //private Gradient gradient;
         public GameObject ContentLastResult, PanelObjects;
         public int nbElement = 0;
         public Button SeeMoreResult;
@@ -52,9 +46,6 @@ namespace SeembaSDK
             page = 1;
             HomeController.NoLastResult = false;
             ContentLastResult.SetActive(false);
-            Items = new ArrayList();
-            lastResultItem = new ArrayList();
-            ItemsTournament = new JSONArray();
             UserId = UserManager.Get.getCurrentUserId();
             token = UserManager.Get.getCurrentSessionToken();
             if (token != null)
@@ -175,7 +166,6 @@ namespace SeembaSDK
             newItem.transform.SetParent(ContentPanel.transform);
             RectTransform myLayoutElement = newItem.GetComponent<RectTransform>();
             myLayoutElement.transform.localScale = Vector3.one;
-            Debug.LogWarning("InitTournamentLastResult");
         }
         private async System.Threading.Tasks.Task InitChallengeLastResultAsync(GenericChallenge challenge)
         {

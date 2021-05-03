@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using Newtonsoft.Json;
+using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,6 +11,12 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
+    [CLSCompliant(false)]
+    public class TournamentInfo
+    {
+        public GenericTournament tournament;
+        public GenericChallenge current_challenge;
+    }
     [CLSCompliant(false)]
     public class TournamentManager : MonoBehaviour
     {
@@ -102,27 +109,14 @@ namespace SeembaSDK
                 }
             }
         }
-        public async Task<JSONArray> getUserPendingTournaments(string token)
-        {
-            string url = Endpoint.classesURL + "/tournaments/pending/" + GamesManager.GAME_ID;
-            var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
-            return json["data"].AsArray;
-        }
-        public async Task<JSONArray> getUserFinishedTournaments()
-        {
-
-            string url = Endpoint.classesURL + "/tournaments/finished/" + GamesManager.GAME_ID;
-            var req = await SeembaWebRequest.Get.HttpsGet(url);
-            var json = JSON.Parse(req);
-            return json["data"].AsArray;
-        }
-        public async Task<JSONNode> getTournament(string id, string token)
+        public async Task<TournamentInfo> getTournament(string id)
         {
             string url = Endpoint.classesURL + "/tournaments/" + id;
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-            var response = await SeembaWebRequest.Get.HttpsGet(url);
-            var json = JSON.Parse(response);
-            return json;
+            string responseText = await SeembaWebRequest.Get.HttpsGet(url);
+            Debug.LogWarning(responseText);
+            SeembaResponse<TournamentInfo> response = JsonConvert.DeserializeObject<SeembaResponse<TournamentInfo>>(responseText);
+            return response.data;
         }
         public async Task<bool> addScore(string tournamentsID, float score)
         {

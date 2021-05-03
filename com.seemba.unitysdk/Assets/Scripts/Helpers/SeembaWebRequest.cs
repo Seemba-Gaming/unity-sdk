@@ -7,18 +7,16 @@ using UnityEngine.Networking;
 namespace SeembaSDK
 {
     [Serializable]
-    class SeembaResponse<T>
+    public class SeembaResponse<T>
     {
         public bool success;
         public string message;
         public T data;
-        public string token;
         public SeembaResponse(bool success, string message, T data, string token)
         {
             this.success = success;
             this.message = message;
             this.data = data;
-            this.token = token;
         }
     }
 

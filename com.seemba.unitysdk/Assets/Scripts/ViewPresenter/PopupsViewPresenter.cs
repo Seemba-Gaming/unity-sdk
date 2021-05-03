@@ -93,10 +93,23 @@ namespace SeembaSDK
 
         [Header("popup Win")]
         public Animator PopupWinAnimator;
-        public Text PopupWinAmout;
-        public Text PopupWinCurrency;
+        public TextMeshProUGUI PopupWinAmout;
         public Button PopupWinConfirmButton;
         public Text PopupWinConfirmButtonText;
+
+        [Header("popup Tournament Draw")]
+        public Animator PopupTournamentDrawAnimator;
+        public TextMeshProUGUI PopupDrawTitle;
+        public TextMeshProUGUI PopupDrawSubtitle;
+        public Image PopupDrawMyImage;
+        public Image PopupDrawOpponentImage;
+        public TextMeshProUGUI PopupDrawMyScore;
+        public TextMeshProUGUI PopupDrawOpponentScore;
+        public TextMeshProUGUI PopupDrawTimeLimitInfo;
+        public Button PopupDrawPlayNowButton;
+        public Button PopupDrawPlayLaterButton;
+        public TextMeshProUGUI PopupDrawPlayNowButtonText;
+        public TextMeshProUGUI PopupDrawPlayLaterButtonText;
 
         [Header("popup Congrats")]
         public Animator PopupCongrats;
@@ -239,6 +252,19 @@ namespace SeembaSDK
             ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
             InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
             PopupInfoConfirmButton.onClick.RemoveAllListeners();
+        }
+        public async void ShowTournamentDrawPopupAsync(object[] _params)
+        {
+            ShowPopupContent(PopupManager.Get.PopupController.PopupTournamentDraw.gameObject);
+            PopupDrawTitle.text = _params[0].ToString();
+            PopupDrawSubtitle.text = _params[1].ToString();
+            PopupDrawMyImage.sprite = await UserManager.Get.getAvatar(_params[2].ToString());
+            PopupDrawOpponentImage.sprite = await UserManager.Get.getAvatar(_params[3].ToString());
+            PopupDrawMyScore.text = _params[4].ToString();
+            PopupDrawOpponentScore.text = _params[5].ToString();
+            PopupDrawTimeLimitInfo.text = _params[6].ToString() + " " + _params[7].ToString();
+            PopupDrawPlayNowButtonText.text = _params[8].ToString();
+            PopupDrawPlayLaterButtonText.text = _params[9].ToString();
         }
         public void ShowInsufficientBalancePopup(object[] _paras)
         {
@@ -511,8 +537,6 @@ namespace SeembaSDK
             PopupPaymentTitle.text = _param[0].ToString();
             PopupPaymentSubtitle.text = _param[1].ToString();
             PopupPaymentConfirmButtonText.text = _param[2].ToString();
-            //VisaToggleText.text = _param[3].ToString();
-            //MasterCardText.text = _param[4].ToString();
             SeembaAnalyticsManager.Get.SendCreditEvent("Popup Payment Method", WalletScript.LastCredit);
         }
         public void ShowAgeVerificationPopup(object[] _param)
@@ -532,8 +556,14 @@ namespace SeembaSDK
             _params = _param;
             ShowPopupContent(PopupManager.Get.PopupController.PopupWin.gameObject);
             PopupManager.Get.PopupController.PopupWin.SetBool("Show", true);
-            PopupWinAmout.text = gain;
-            PopupWinCurrency.text = _param[0].ToString();
+            if(_param[3].Equals("bubble"))
+            {
+                PopupWinAmout.text = _param[2].ToString() + " <sprite=0>";
+            }
+            else
+            {
+                PopupWinAmout.text = _param[2].ToString() + " <sprite=1>";
+            }
             PopupWinConfirmButtonText.text = _param[1].ToString();
             PopupWinConfirmButton.onClick.AddListener(() =>
             {

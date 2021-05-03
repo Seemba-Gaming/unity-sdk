@@ -52,6 +52,7 @@ namespace SeembaSDK
         POPUP_PRIVACY_POLICY,
         POPUP_GIFT_CARD_SUCCESS,
         POPUP_GIFT_CARD_INFO,
+        TOURNAMENT_DRAW,
         SESSION_EXPIRED
     }
 
@@ -79,6 +80,7 @@ namespace SeembaSDK
     public Animator                                 PopupCongratsWithdrawal;
     public Animator                                 PopupPrivacyPolicy;
     public Animator                                 PopupGiftCard;
+    public Animator                                 PopupTournamentDraw;
 
         #endregion
 
@@ -203,6 +205,9 @@ namespace SeembaSDK
                     break;
                 case PopupType.INFO_POPUP_EMAIL_NOT_FOUND:
                     PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                    break;
+                case PopupType.TOURNAMENT_DRAW:
+                    PopupManager.Get.PopupViewPresenter.ShowTournamentDrawPopupAsync(_params);
                     break;
                 default:
                     Debug.LogWarning(popupType);

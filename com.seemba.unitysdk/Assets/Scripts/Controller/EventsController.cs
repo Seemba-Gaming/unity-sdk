@@ -1,4 +1,4 @@
-﻿using SimpleJSON;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -9,6 +9,19 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
+    [CLSCompliant(false)]
+    public class StripeError
+    {
+        public StripeErrorInfo error; 
+    }
+    [CLSCompliant(false)]
+    public class StripeErrorInfo
+    {
+        public string code;
+        public string doc_url;
+        public string message;
+        public string type;
+    }
     [CLSCompliant(false)]
     public class EventsController : MonoBehaviour
     {
@@ -67,32 +80,34 @@ namespace SeembaSDK
             }
             else if (www.uri.ToString().Contains("stripe"))
             {
-                var responseJson = JSON.Parse(www.downloadHandler.text);
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_number"))
+                Debug.LogWarning(www.downloadHandler.text);
+                StripeError response = JsonConvert.DeserializeObject<StripeError>(www.downloadHandler.text);
+
+                if (response.error.code.Replace('"', ' ').Trim().Equals("incorrect_number"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect Card Number", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_NUMBER, PopupsText.Get.StripeIncorrectNumber());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("card_declined"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("card_declined"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Card Declined", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_CARD_DECLINED, PopupsText.Get.StripeCardDeclined());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_cvc"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("incorrect_cvc"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect CVC", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_CVC, PopupsText.Get.StripeIncorrectCVC());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("balance_insufficient"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("balance_insufficient"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Card Balance Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("insufficient_funds"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("insufficient_funds"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Card funds Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());

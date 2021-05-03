@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using SimpleJSON;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using SimpleJSON;
 
 namespace SeembaSDK
 {
@@ -18,12 +18,10 @@ namespace SeembaSDK
         static string systemLanguage = Application.systemLanguage.ToString();
         public static Dictionary<string, string> ShortLanguages = new Dictionary<string, string>();
 
-        static string CurrentUserLanguage;
 #if UNITY_EDITOR
         private static bool d_OverrideLanguage = true;
         private static SystemLanguage d_Language = SystemLanguage.French;
 #endif
-        private static SystemLanguage current_language;
 
         private void Start()
         {
@@ -51,7 +49,6 @@ namespace SeembaSDK
                 if (Array.IndexOf<SystemLanguage>(Languages, lang) == -1)
                     lang = Languages[0];
 
-                current_language = lang;
 
                 if (getTranslationFile() != null)
                 {
@@ -75,8 +72,6 @@ namespace SeembaSDK
         }
         public static async Task<bool> SavePreferedLanguage()
         {
-
-
             var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
             var lastmodified = await SeembaWebRequest.Get.HttpsLastModifed(url);
             var mCurrentLastModifed = PlayerPrefs.GetString("Last-Modified");

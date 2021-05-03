@@ -1,11 +1,26 @@
 ﻿using SimpleJSON;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
+    [CLSCompliant(false)]
+    public class Round
+    {
+        public GenericChallenge[] challenges;
+        public bool closed;
+        public string _id;
+        public string tournament;
+        public int round_number;
+        public string start_at;
+        public string ends_at;
+        public string createdAt;
+        public string updatedAt;
+        public string __v;
+    }
     [CLSCompliant(false)]
     public class TournamentPresenter : MonoBehaviour
     {
@@ -16,10 +31,10 @@ namespace SeembaSDK
         #endregion
 
         #region Fields
-        private JSONNode tournamentJson;
-        private JSONArray rounds;
-        private JSONArray challenges;
-        private JSONArray participants;
+        private TournamentInfo tournamentJson;
+        private Round[] rounds;
+        private List<GenericChallenge> challenges = new List<GenericChallenge>();
+        private User[] participants;
         private string userId;
         private string token;
         private GameObject mCurrentBracket;
@@ -30,8 +45,7 @@ namespace SeembaSDK
         public async void OnEnable()
         {
             userId = UserManager.Get.getCurrentUserId();
-            token = UserManager.Get.getCurrentSessionToken();
-            tournamentJson = await TournamentManager.Get.getTournament(TournamentController.getCurrentTournamentID(), token);
+            tournamentJson = await TournamentManager.Get.getTournament(TournamentController.getCurrentTournamentID());
             setTournamentData();
             initUI(challenges, participants);
             if (!isAvailable() || !isNextChallengeAvailable())
@@ -63,19 +77,19 @@ namespace SeembaSDK
             SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Play Tournament", fee, TournamentController.CURRENT_TOURNAMENT_GAIN, TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE);
             SceneManager.LoadScene(GamesManager.GAME_SCENE_NAME, LoadSceneMode.Additive);
         }
-        public JSONArray getChallenges(JSONArray rounds)
+        public List<GenericChallenge> getChallenges(Round[] rounds)
         {
-            JSONArray challenges = new JSONArray();
-            foreach (JSONNode round in rounds)
+            List<GenericChallenge> challenges = new List<GenericChallenge>();
+            foreach (Round round in rounds)
             {
-                foreach (JSONNode challenge in round["challenges"].AsArray)
+                foreach (GenericChallenge challenge in round.challenges)
                 {
                     challenges.Add(challenge);
                 }
             }
             return challenges;
         }
-        public void initUI(JSONArray challenges, JSONArray participants)
+        public void initUI(List<GenericChallenge> challenges, User[] participants)
         {
             mCurrentBracket = Instantiate(BracketsPrefab, BracketContent);
             mToursController = mCurrentBracket.GetComponent<ToursController>();
@@ -101,7 +115,7 @@ namespace SeembaSDK
                 }
             }
         }
-        public void InitBracketsAsync(JSONNode match, int pos, JSONArray participants, int tourIndex)
+        public void InitBracketsAsync(GenericChallenge match, int pos, User[] participants, int tourIndex)
         {
             if (match != null)
             {
@@ -110,28 +124,28 @@ namespace SeembaSDK
                 float? user_1_old_score = null;
                 float? user_2_old_score = null;
 
-                if (match["user_1_score"] != null)
+                if (match.user_1_score != null)
                 {
-                    user_1_score = match["user_1_score"].AsFloat;
+                    user_1_score = match.user_1_score;
                 }
 
-                if (match["user_2_score"] != null)
+                if (match.user_2_score != null)
                 {
-                    user_2_score = match["user_2_score"].AsFloat;
+                    user_2_score = match.user_2_score;
                 }
 
-                if (match["users_old_scores"].Count > 0)
+                if (match.users_old_scores.Length > 0)
                 {
-                    user_1_old_score = match["users_old_scores"][match["users_old_scores"].Count - 1]["user_1_score"].AsFloat;
+                    user_1_old_score = match.users_old_scores[match.users_old_scores.Length -1].user_1_score;
                 }
 
-                if (match["users_old_scores"].Count > 0)
+                if (match.users_old_scores.Length > 0)
                 {
-                    user_2_old_score = match["users_old_scores"][match["users_old_scores"].Count - 1]["user_2_score"].AsFloat;
+                    user_2_old_score = match.users_old_scores[match.users_old_scores.Length - 1].user_2_score; ;
                 }
 
-                var mFirstMatchedUser = getUserFromParticipants(match["matched_user_1"]["_id"].Value, participants);
-                var mSecondMatchedUser = getUserFromParticipants(match["matched_user_2"]["_id"].Value, participants);
+                var mFirstMatchedUser = getUserFromParticipants(match.matched_user_1._id, participants);
+                var mSecondMatchedUser = getUserFromParticipants(match.matched_user_2._id, participants);
 
                 if (tourIndex < mToursController.Tours.Count - 1)
                 {
@@ -155,14 +169,14 @@ namespace SeembaSDK
                         }
                         else
                         {
-                            if (match["user_1_score"] != null)
+                            if (match.matched_user_1 != null)
                             {
-                                mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.Score.text = ((float)Math.Round(match["user_1_score"].AsFloat * 100f) / 100f).ToString();
+                                mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.Score.text = ((float)Math.Round((float)match.user_1_score * 100f) / 100f).ToString();
                             }
 
-                            if (match["user_2_score"] != null)
+                            if (match.matched_user_2 != null)
                             {
-                                mToursController.Tours[tourIndex].ToursChallenges[pos].Player2.Score.text = ((float)Math.Round(match["user_2_score"].AsFloat * 100f) / 100f).ToString();
+                                mToursController.Tours[tourIndex].ToursChallenges[pos].Player2.Score.text = ((float)Math.Round((float)match.user_2_score * 100f) / 100f).ToString();
                             }
                         }
                     }
@@ -179,26 +193,26 @@ namespace SeembaSDK
                         }
                         else
                         {
-                            if (match["matched_user_1"]["_id"].Value == match["winner_user"].Value)
+                            if (match.matched_user_1._id == match.winner_user)
                             {
                                 mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.Score.text = user_1_score.ToString();
-                                JSONNode user = getUserFromParticipants(match["matched_user_1"]["_id"].Value, participants);
+                                User user = getUserFromParticipants(match.matched_user_1._id, participants);
                                 mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.InitAsync(user);
 
-                                if (match["matched_user_1"]["_id"].Value == UserManager.Get.getCurrentUserId())
+                                if (match.matched_user_1._id == UserManager.Get.getCurrentUserId())
                                 {
-                                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_WIN, PopupsText.Get.Win());
+                                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_WIN, PopupsText.Get.Win(int.Parse(match.gain), match.gain_type));
                                 }
                             }
-                            else if (match["matched_user_2"]["_id"].Value == match["winner_user"].Value)
+                            else if (match.matched_user_2._id == match.winner_user)
                             {
                                 mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.Score.text = user_2_score.ToString();
-                                JSONNode user = getUserFromParticipants(match["matched_user_2"]["_id"].Value, participants);
+                                User user = getUserFromParticipants(match.matched_user_2._id, participants);
                                 mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.InitAsync(user);
 
-                                if (match["matched_user_2"]["_id"].Value == UserManager.Get.getCurrentUserId())
+                                if (match.matched_user_2._id == UserManager.Get.getCurrentUserId())
                                 {
-                                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_WIN, PopupsText.Get.Win(), match["gain"].Value);
+                                    PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_WIN, PopupsText.Get.Win(int.Parse(match.gain), match.gain_type));
                                 }
                             }
                         }
@@ -206,7 +220,7 @@ namespace SeembaSDK
                 }
             }
         }
-        private void initBrakcetPlayersInfo(JSONNode player1, JSONNode player2, int pos, int tourIndex)
+        private void initBrakcetPlayersInfo(User player1, User player2, int pos, int tourIndex)
         {
             mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.InitAsync(player1);
             mToursController.Tours[tourIndex].ToursChallenges[pos].Player2.InitAsync(player2);
@@ -219,27 +233,27 @@ namespace SeembaSDK
             float? user_1_score = null;
             try
             {
-                user_1_score = tournamentJson["current_challenge"]["user_1_score"].AsFloat;
+                user_1_score = tournamentJson.current_challenge.user_1_score;
             }
             catch (NullReferenceException ) {};
             float? user_2_score = null;
             try
             {
-                user_2_score = tournamentJson["current_challenge"]["user_2_score"].AsFloat;
+                user_2_score = tournamentJson.current_challenge.user_2_score;
             }
             catch (NullReferenceException ) { };
 
             string matched_user_1 = null;
             try
             {
-                matched_user_1 = tournamentJson["current_challenge"]["matched_user_1"]["_id"].Value;
+                matched_user_1 = tournamentJson.current_challenge.matched_user_1._id;
             }
             catch (NullReferenceException ) {};
 
             string matched_user_2 = null;
             try
             {
-                matched_user_2 = tournamentJson["current_challenge"]["matched_user_2"]["_id"].Value;
+                matched_user_2 = tournamentJson.current_challenge.matched_user_2._id;
             }
             catch (NullReferenceException ) { };
 
@@ -256,9 +270,9 @@ namespace SeembaSDK
         private bool isAvailable()
         {
             var lose = false;
-            foreach (JSONNode loser in tournamentJson["tournament"]["losers"].AsArray)
+            foreach (string loser in tournamentJson.tournament.losers)
             {
-                if (loser.Value == userId)
+                if (loser == userId)
                 {
                     lose = true;
                     break;
@@ -269,7 +283,7 @@ namespace SeembaSDK
             {
                 return false;
             }
-            else if (lose == false && tournamentJson["tournament"]["status"].Value == "finished")
+            else if (lose == false && tournamentJson.tournament.status == "finished")
             {
                 return false;
             }
@@ -277,18 +291,18 @@ namespace SeembaSDK
         }
         private void setTournamentData()
         {
-            rounds = tournamentJson["tournament"]["rounds"].AsArray;
+            rounds = tournamentJson.tournament.rounds;
             challenges = getChallenges(rounds);
-            participants = tournamentJson["tournament"]["participants"].AsArray;
-            TournamentController.CURRENT_TOURNAMENT_NB_PLAYER = tournamentJson["tournament"]["nb_players"].AsInt;
-            TournamentController.CURRENT_TOURNAMENT_GAIN = tournamentJson["tournament"]["gain"].AsFloat;
-            TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE = tournamentJson["tournament"]["gain_type"].Value;
+            participants = tournamentJson.tournament.participants;
+            TournamentController.CURRENT_TOURNAMENT_NB_PLAYER = tournamentJson.tournament.nb_players;
+            TournamentController.CURRENT_TOURNAMENT_GAIN = int.Parse(tournamentJson.tournament.gain);
+            TournamentController.CURRENT_TOURNAMENT_GAIN_TYPE = tournamentJson.tournament.gain_type;
         }
-        private JSONNode getUserFromParticipants(string id, JSONArray participants)
+        private User getUserFromParticipants(string id, User[] participants)
         {
-            foreach (JSONNode player in participants)
+            foreach (User player in participants)
             {
-                if (player["_id"].Value == id)
+                if (player._id == id)
                 {
                     return player;
                 }

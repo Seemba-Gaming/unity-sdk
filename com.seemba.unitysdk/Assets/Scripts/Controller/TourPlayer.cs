@@ -26,15 +26,15 @@ namespace SeembaSDK
             TranslationManager.scene = "Bracket";
             Username.text = TranslationManager.Get("to_be_determined");
         }
-        public async void InitAsync(JSONNode info)
+        public async void InitAsync(User info)
         {
-            if (info != null && info["avatar"] != null)
+            if(info != null && info.avatar != null)
             {
-                Username.text = info["username"].Value;
-                StartCoroutine(initPlayerAvatar(info["avatar"].Value, Avatar));
-                var mTexture = await UserManager.Get.GetFlagBytes(info["country_code"].Value);
+                Username.text = info.username;
+                StartCoroutine(initPlayerAvatar(info.avatar, Avatar));
+                var mTexture = await UserManager.Get.GetFlagBytes(info.country_code);
                 SetPlayerFlag(Flag, mTexture);
-                if (info["money_credit"] != null && info["money_credit"].AsFloat > 0f)
+                if( info.money_credit > 0f)
                 {
                     Pro.enabled = true;
                 }

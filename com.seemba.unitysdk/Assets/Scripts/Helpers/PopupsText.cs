@@ -77,9 +77,10 @@ namespace SeembaSDK
         {
             return new object[] { "DOWNLOAD", "FROM STORE", "To get all our features you need to download full version from our store", "DOWNLOAD" };
         }
-        public object[] Win()
+        public object[] Win(int gain, string gainType)
         {
-            return new object[] { TranslationManager.Get("bubbles"), TranslationManager.Get("great") };
+            TranslationManager.scene = "Home";
+            return new object[] { TranslationManager.Get("bubbles"), TranslationManager.Get("great"), gain, gainType };
         }
 
         public object[] SecureConfirmation()

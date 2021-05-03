@@ -1,13 +1,17 @@
 ﻿using Newtonsoft.Json;
-using SimpleJSON;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 namespace SeembaSDK
 {
+    public class FavouriteChallenge
+    {
+        public string gain;
+        public string gain_type;
+        public string type;
+    }
     [CLSCompliant(false)]
     public class FavouritTournament : MonoBehaviour
     {
@@ -43,11 +47,11 @@ namespace SeembaSDK
         public async Task<bool> GetFavoriteTournament(string userId)
         {
             string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
-            var res = await SeembaWebRequest.Get.HttpsGet(url);
-            if (!string.IsNullOrEmpty(res))
+            var responseText = await SeembaWebRequest.Get.HttpsGet(url);
+            if (!string.IsNullOrEmpty(responseText))
             {
-                var json = JSON.Parse(res);
-                ShowFavTournament(json["data"]["gain"].Value, json["data"]["gain_type"].Value, json["data"]["type"].Value);
+                SeembaResponse<FavouriteChallenge> response = JsonConvert.DeserializeObject<SeembaResponse<FavouriteChallenge>>(responseText);
+                ShowFavTournament(response.data.gain, response.data.gain_type, response.data.type);
             }
             return true;
         }

@@ -7,7 +7,7 @@ namespace SeembaSDK
     {
         public static string stripeURL = "https://api.stripe.com/v1";
         public static string locationURL = "https://ipinfo.io/json/";
-        public static string laguagesURL = "https://seemba-1556155050.s3.amazonaws.com/sdk/laguages_files";
+        public static string laguagesURL = "https://assets.seemba.com/lang";
 
         public static string classesURL = "https://api.seemba.com/api/v1";
         public static string flagsURL = "https://api.seemba.com/flags/";
@@ -20,7 +20,7 @@ namespace SeembaSDK
             {
                 stripeURL = "https://api.stripe.com/v1";
                 locationURL = "https://ipinfo.io/json/";
-                laguagesURL = "https://seemba-1556155050.s3.amazonaws.com/sdk/laguages_files";
+                laguagesURL = "https://assets.seemba.com/lang";
 
                 classesURL = "http://api-staging.seemba.com/api/v1";
                 flagsURL = "http://api-staging.seemba.com/flags/";

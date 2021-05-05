@@ -151,6 +151,12 @@ namespace SeembaSDK
             {
                 Debug.LogWarning("downloading");
             }
+            Debug.LogWarning(url);
+            if(!string.IsNullOrEmpty(www.error))
+            {
+                Debug.LogWarning(www.error);
+                return null;
+            }
             var texture = DownloadHandlerTexture.GetContent(www);
             return texture;
         }
@@ -184,37 +190,45 @@ namespace SeembaSDK
         }
         public async Task<Sprite> getAvatar(string url)
         {
-            var hashCode = url.GetHashCode();
-            Sprite sprite = null;
-            if (!Images.TryGetValue(hashCode, out sprite))
+            if(string.IsNullOrEmpty(url))
             {
-                Texture2D texture = new Texture2D(100, 100);
-                string prefsURL = PlayerPrefs.GetString(url);
-                if (string.IsNullOrEmpty(url))
-                {
-                    return null;
-                }
-                UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
-                await www.SendWebRequest();
-
-                if (www.isNetworkError || www.isHttpError)
-                {
-                    Debug.LogWarning(www.error);
-                    return null;
-                }
-                var avatarTexture = DownloadHandlerTexture.GetContent(www);
-                texture = ImagesManager.RoundCrop(avatarTexture);
-                PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
-                sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
-                if(!Images.ContainsKey(hashCode))
-                {
-                    Images.Add(hashCode, sprite);
-                }
-                return sprite;
+                Debug.LogWarning("avatar url is empty");
+                return null;
             }
             else
             {
-                return sprite;
+                var hashCode = url.GetHashCode();
+                Sprite sprite = null;
+                if (!Images.TryGetValue(hashCode, out sprite))
+                {
+                    Texture2D texture = new Texture2D(100, 100);
+                    string prefsURL = PlayerPrefs.GetString(url);
+                    if (string.IsNullOrEmpty(url))
+                    {
+                        return null;
+                    }
+                    UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+                    await www.SendWebRequest();
+
+                    if (www.isNetworkError || www.isHttpError)
+                    {
+                        Debug.LogWarning(www.error);
+                        return null;
+                    }
+                    var avatarTexture = DownloadHandlerTexture.GetContent(www);
+                    texture = ImagesManager.RoundCrop(avatarTexture);
+                    PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
+                    sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
+                    if(!Images.ContainsKey(hashCode))
+                    {
+                        Images.Add(hashCode, sprite);
+                    }
+                    return sprite;
+                }
+                else
+                {
+                    return sprite;
+                }
             }
         }
         public void saveUserId(string user)

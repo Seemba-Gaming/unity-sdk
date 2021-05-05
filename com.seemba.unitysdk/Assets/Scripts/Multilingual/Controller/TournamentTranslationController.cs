@@ -10,7 +10,11 @@ namespace SeembaSDK
     public class TournamentTranslationController : MonoBehaviour
     {
         #region Script Parameters
-        public Text Tour1;
+        public Text OneHundredTwentyEight;
+        public Text Sixtyfour;
+        public Text ThirtyTwo;
+        public Text Sixteenth;
+        public Text QuarterFinal;
         public Text SemiFinal;
         public Text Final;
         public Text Champion;
@@ -20,13 +24,34 @@ namespace SeembaSDK
         void Start()
         {
             TranslationManager.scene = "Bracket";
-            Tour1.text = TranslationManager.Get("tour1");
-            SemiFinal.text = TranslationManager.Get("semi_final");
-            Final.text = TranslationManager.Get("final");
-            Champion.text = TranslationManager.Get("champion");
-            Play.text = TranslationManager.Get("play");
-            TranslationManager.scene = "Home";
-            Back.text = TranslationManager.Get("back_button");
+            if(Sixtyfour)
+                Sixtyfour.text = TranslationManager.Get("64");
+            if(OneHundredTwentyEight)
+                OneHundredTwentyEight.text = TranslationManager.Get("128");
+
+            if (ThirtyTwo)
+                ThirtyTwo.text = TranslationManager.Get("32");
+
+            if (Sixteenth)
+                Sixteenth.text = TranslationManager.Get("16");
+
+            if(QuarterFinal)
+                QuarterFinal.text = TranslationManager.Get("8");
+            if (SemiFinal)
+                SemiFinal.text = TranslationManager.Get("4");
+
+            if (Final)
+                Final.text = TranslationManager.Get("2");
+
+            if (Champion)
+                Champion.text = TranslationManager.Get("champion");
+
+            if (Play)
+                Play.text = TranslationManager.Get("play");
+
+                TranslationManager.scene = "Home";
+            if (Back)
+                Back.text = TranslationManager.Get("back_button");
         }
     }
 }

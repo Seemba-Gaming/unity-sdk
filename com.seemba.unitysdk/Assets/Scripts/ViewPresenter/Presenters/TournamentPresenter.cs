@@ -9,10 +9,24 @@ namespace SeembaSDK
     [CLSCompliant(false)]
     public class TournamentPresenter : MonoBehaviour
     {
+        public enum MaxPlayers
+        {
+            _8 = 8,
+            _16 = 16,
+            _32 = 32,
+            _64 = 64,
+            _128 = 128
+        }
+
         #region Script Parameters
         public Button Play;
-        public GameObject BracketsPrefab;
+        public GameObject BracketsPrefab8;
+        public GameObject BracketsPrefab16;
+        public GameObject BracketsPrefab32;
+        public GameObject BracketsPrefab64;
+        public GameObject BracketsPrefab128;
         public Transform BracketContent;
+        public MaxPlayers max;
         #endregion
 
         #region Fields
@@ -77,7 +91,28 @@ namespace SeembaSDK
         }
         public void initUI(JSONArray challenges, JSONArray participants)
         {
-            mCurrentBracket = Instantiate(BracketsPrefab, BracketContent);
+            GameObject prefabTournament;
+            if(max.Equals(MaxPlayers._8))
+            {
+                prefabTournament = BracketsPrefab8;
+            }
+            else if(max.Equals(MaxPlayers._16))
+            {
+                prefabTournament = BracketsPrefab16;
+            }
+            else if (max.Equals(MaxPlayers._32))
+            {
+                prefabTournament = BracketsPrefab32;
+            }
+            else if (max.Equals(MaxPlayers._64))
+            {
+                prefabTournament = BracketsPrefab64;
+            }
+            else
+            {
+                prefabTournament = BracketsPrefab128;
+            }
+            mCurrentBracket = Instantiate(prefabTournament, BracketContent);
             mToursController = mCurrentBracket.GetComponent<ToursController>();
             int pos = 0;
             int tourIndex = 0;

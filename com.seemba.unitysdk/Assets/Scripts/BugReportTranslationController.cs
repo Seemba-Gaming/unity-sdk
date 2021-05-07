@@ -15,7 +15,7 @@ namespace SeembaSDK
 
         private void Start()
         {
-            TranslationManager.scene = "BugReport";
+            TranslationManager._instance.scene = "BugReport";
         }
     }
 }

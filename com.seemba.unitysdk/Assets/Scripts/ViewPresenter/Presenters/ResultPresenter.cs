@@ -92,7 +92,12 @@ namespace SeembaSDK
             if (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId())
             {
                 OpponentUserName.text = challenge.matched_user_2.username;
-                OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                var sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                if (sprite != null)
+                {
+                    OpponentAvatar.sprite = sprite;
+
+                }
                 var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_2.country_code);
                 OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_2_score.ToString();
@@ -101,7 +106,12 @@ namespace SeembaSDK
             else
             {
                 OpponentUserName.text = challenge.matched_user_1.username;
-                OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                var sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                if (sprite != null)
+                {
+                    OpponentAvatar.sprite = sprite;
+
+                }
                 var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_1.country_code);
                 OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_1_score.ToString();
@@ -119,7 +129,12 @@ namespace SeembaSDK
             if (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId())
             {
                 OpponentUserName.text = challenge.matched_user_2.username;
-                OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                var sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                if (sprite != null)
+                {
+                    OpponentAvatar.sprite = sprite;
+
+                }
                 var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_2.country_code);
                 OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_2_score.ToString();
@@ -128,7 +143,12 @@ namespace SeembaSDK
             else
             {
                 OpponentUserName.text = challenge.matched_user_1.username;
-                OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                var sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                if (sprite != null)
+                {
+                    OpponentAvatar.sprite = sprite;
+
+                }
                 OpponentScore.text = challenge.user_1_score.ToString();
             }
             SeembaAnalyticsManager.Get.SendUserEvent("Challenge Won");
@@ -145,7 +165,12 @@ namespace SeembaSDK
             if (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId())
             {
                 OpponentUserName.text = challenge.matched_user_2.username;
-                OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                var sprite = await UserManager.Get.getAvatar(challenge.matched_user_2.avatar);
+                if (sprite != null)
+                {
+                    OpponentAvatar.sprite = sprite;
+
+                }
                 var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_2.country_code);
                 OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_2_score.ToString();
@@ -154,7 +179,12 @@ namespace SeembaSDK
             else
             {
                 OpponentUserName.text = challenge.matched_user_1.username;
-                OpponentAvatar.sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                var sprite = await UserManager.Get.getAvatar(challenge.matched_user_1.avatar);
+                if (sprite != null)
+                {
+                    OpponentAvatar.sprite = sprite;
+
+                }
                 var Flag = await UserManager.Get.GetFlagBytes(challenge.matched_user_1.country_code);
                 OpponentFlag.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
                 OpponentScore.text = challenge.user_1_score.ToString();
@@ -180,7 +210,7 @@ namespace SeembaSDK
             DateValue.text = challenge.CreatedAt.Substring(0, challenge.CreatedAt.IndexOf("T"));
             IdValue.text = challenge._id;
             CurrentUserScore.text = (challenge.matched_user_1._id == UserManager.Get.getCurrentUserId()) ? challenge.user_1_score.ToString() : challenge.user_2_score.ToString();
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             PlayAgainButton.GetComponentInChildren<Text>().text = ResultController.PLAY_AGAIN_TEXT;
             ContinueButton.GetComponentInChildren<Text>().text = ResultController.CONTINUE_TEXT;
             CurrentUserName.text = UserManager.Get.CurrentUser.username;
@@ -189,15 +219,15 @@ namespace SeembaSDK
             CurrentUserFlag.sprite = Sprite.Create(flag, new Rect(0f, 0f, flag.width, flag.height), Vector2.zero);
             if (challenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
-                Gain.text = HtmlOpenOrangeColor + TranslationManager.Get("gain") + " : " + HtmlCloseOrangeColor + challenge.gain;
-                EntryFee.text = HtmlOpenOrangeColor + TranslationManager.Get("entry_fee") + " : " + HtmlCloseOrangeColor + ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type);
+                Gain.text = HtmlOpenOrangeColor + TranslationManager._instance.Get("gain") + " : " + HtmlCloseOrangeColor + challenge.gain;
+                EntryFee.text = HtmlOpenOrangeColor + TranslationManager._instance.Get("entry_fee") + " : " + HtmlCloseOrangeColor + ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type);
                 EntryFee.text += " " + "<sprite=0>";
                 Gain.text += " " + "<sprite=0>";
             }
             else
             {
-                Gain.text = HtmlOpenOrangeColor + TranslationManager.Get("gain") + " : " + HtmlCloseOrangeColor + challenge.gain;
-                EntryFee.text = HtmlOpenOrangeColor + TranslationManager.Get("entry_fee") + " : " + HtmlCloseOrangeColor + (ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type) * 100).ToString();
+                Gain.text = HtmlOpenOrangeColor + TranslationManager._instance.Get("gain") + " : " + HtmlCloseOrangeColor + challenge.gain;
+                EntryFee.text = HtmlOpenOrangeColor + TranslationManager._instance.Get("entry_fee") + " : " + HtmlCloseOrangeColor + (ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type) * 100).ToString();
                 EntryFee.text += " " + "<sprite=1>";
                 Gain.text += " " + "<sprite=1>";
             }

@@ -26,22 +26,22 @@ namespace SeembaSDK
             transaction_fees_may_apply;
         void Start()
         {
-            TranslationManager.scene = "BankingInfo";
-            cardholder_full_name.text = TranslationManager.Get("cardholder_full_name") != string.Empty ? TranslationManager.Get("cardholder_full_name") : cardholder_full_name.text;
-            wrong_cardholder_name.text = TranslationManager.Get("wrong_cardholder_name") != string.Empty ? TranslationManager.Get("wrong_cardholder_name") : wrong_cardholder_name.text;
-            card_number.text = TranslationManager.Get("card_number") != string.Empty ? TranslationManager.Get("card_number") : card_number.text;
-            wrong_card_number.text = TranslationManager.Get("wrong_card_number") != string.Empty ? TranslationManager.Get("wrong_card_number") : wrong_card_number.text;
-            expiry_date.text = TranslationManager.Get("expiry_date") != string.Empty ? TranslationManager.Get("expiry_date") : expiry_date.text;
-            wrong_expiry_date.text = TranslationManager.Get("wrong_expiry_date") != string.Empty ? TranslationManager.Get("wrong_expiry_date") : wrong_expiry_date.text;
-            security_code.text = TranslationManager.Get("security_code") != string.Empty ? TranslationManager.Get("security_code") : security_code.text;
-            wrong_security_code.text = TranslationManager.Get("wrong_security_code") != string.Empty ? TranslationManager.Get("wrong_security_code") : wrong_security_code.text;
-            i_agree_to_Seemba.text = TranslationManager.Get("i_agree_to_Seemba") != string.Empty ? TranslationManager.Get("i_agree_to_Seemba") : i_agree_to_Seemba.text;
-            and.text = TranslationManager.Get("and") != string.Empty ? TranslationManager.Get("and") : and.text;
-            terms_conditions.text = TranslationManager.Get("terms_conditions") != string.Empty ? TranslationManager.Get("terms_conditions") : terms_conditions.text;
-            privacy_policy.text = TranslationManager.Get("privacy_policy") != string.Empty ? TranslationManager.Get("privacy_policy") : privacy_policy.text;
-            credit.text = TranslationManager.Get("credit") != string.Empty ? TranslationManager.Get("credit") : credit.text;
-            secured_payment.text = TranslationManager.Get("secured_payment") != string.Empty ? TranslationManager.Get("secured_payment") : secured_payment.text;
-            transaction_fees_may_apply.text = TranslationManager.Get("transaction_fees_may_apply");
+            TranslationManager._instance.scene = "BankingInfo";
+            cardholder_full_name.text = TranslationManager._instance.Get("cardholder_full_name") != string.Empty ? TranslationManager._instance.Get("cardholder_full_name") : cardholder_full_name.text;
+            wrong_cardholder_name.text = TranslationManager._instance.Get("wrong_cardholder_name") != string.Empty ? TranslationManager._instance.Get("wrong_cardholder_name") : wrong_cardholder_name.text;
+            card_number.text = TranslationManager._instance.Get("card_number") != string.Empty ? TranslationManager._instance.Get("card_number") : card_number.text;
+            wrong_card_number.text = TranslationManager._instance.Get("wrong_card_number") != string.Empty ? TranslationManager._instance.Get("wrong_card_number") : wrong_card_number.text;
+            expiry_date.text = TranslationManager._instance.Get("expiry_date") != string.Empty ? TranslationManager._instance.Get("expiry_date") : expiry_date.text;
+            wrong_expiry_date.text = TranslationManager._instance.Get("wrong_expiry_date") != string.Empty ? TranslationManager._instance.Get("wrong_expiry_date") : wrong_expiry_date.text;
+            security_code.text = TranslationManager._instance.Get("security_code") != string.Empty ? TranslationManager._instance.Get("security_code") : security_code.text;
+            wrong_security_code.text = TranslationManager._instance.Get("wrong_security_code") != string.Empty ? TranslationManager._instance.Get("wrong_security_code") : wrong_security_code.text;
+            i_agree_to_Seemba.text = TranslationManager._instance.Get("i_agree_to_Seemba") != string.Empty ? TranslationManager._instance.Get("i_agree_to_Seemba") : i_agree_to_Seemba.text;
+            and.text = TranslationManager._instance.Get("and") != string.Empty ? TranslationManager._instance.Get("and") : and.text;
+            terms_conditions.text = TranslationManager._instance.Get("terms_conditions") != string.Empty ? TranslationManager._instance.Get("terms_conditions") : terms_conditions.text;
+            privacy_policy.text = TranslationManager._instance.Get("privacy_policy") != string.Empty ? TranslationManager._instance.Get("privacy_policy") : privacy_policy.text;
+            credit.text = TranslationManager._instance.Get("credit") != string.Empty ? TranslationManager._instance.Get("credit") : credit.text;
+            secured_payment.text = TranslationManager._instance.Get("secured_payment") != string.Empty ? TranslationManager._instance.Get("secured_payment") : secured_payment.text;
+            transaction_fees_may_apply.text = TranslationManager._instance.Get("transaction_fees_may_apply");
         }
     }
 }

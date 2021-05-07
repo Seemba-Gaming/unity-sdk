@@ -13,11 +13,11 @@ namespace SeembaSDK
         public Text Monthly;
         void Start()
         {
-            TranslationManager.scene = "Leaderboard";
-            Leaderboard.text = TranslationManager.Get("leaderboard");
-            Daily.text = TranslationManager.Get("daily");
-            Weekly.text = TranslationManager.Get("weekly");
-            Monthly.text = TranslationManager.Get("monthly");
+            TranslationManager._instance.scene = "Leaderboard";
+            Leaderboard.text = TranslationManager._instance.Get("leaderboard");
+            Daily.text = TranslationManager._instance.Get("daily");
+            Weekly.text = TranslationManager._instance.Get("weekly");
+            Monthly.text = TranslationManager._instance.Get("monthly");
         }
     }
 }

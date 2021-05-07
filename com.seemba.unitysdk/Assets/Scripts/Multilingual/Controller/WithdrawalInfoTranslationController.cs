@@ -14,9 +14,9 @@ namespace SeembaSDK
 
         void Start()
         {
-            TranslationManager.scene = "Home";
-            BackButton.text = TranslationManager.Get("back_button");
-            ContinuerButton.text = TranslationManager.Get("continue");
+            TranslationManager._instance.scene = "Home";
+            BackButton.text = TranslationManager._instance.Get("back_button");
+            ContinuerButton.text = TranslationManager._instance.Get("continue");
         }
     }
 }

@@ -21,9 +21,9 @@ namespace SeembaSDK
         #region Methods
         public void Init(AchievementItem item)
         {
-            TranslationManager.scene = "Achievements";
-            Title.text = TranslationManager.Get(item.name);
-            description.text = TranslationManager.Get(item.name + "_description");
+            TranslationManager._instance.scene = "Achievements";
+            Title.text = TranslationManager._instance.Get(item.name);
+            description.text = TranslationManager._instance.Get(item.name + "_description");
             Progress.text = item.current_amount + "/" + item.total_amount;
             ProgressBar.fillAmount = (float)item.current_amount / item.total_amount;
         }

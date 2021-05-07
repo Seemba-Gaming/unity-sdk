@@ -29,7 +29,7 @@ namespace SeembaSDK
         // Start is called before the first frame update
         void OnEnable()
         {
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             _pretext = "<color=#535CB3>" + HomeTranslationController.WIN + "</color>";
 
             switch (challenges_type)

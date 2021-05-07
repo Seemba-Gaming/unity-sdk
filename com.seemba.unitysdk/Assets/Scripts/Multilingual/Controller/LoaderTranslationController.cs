@@ -14,7 +14,7 @@ namespace SeembaSDK
         private Text reconnect, check_connection, setting_language;
         void Start()
         {
-            TranslationManager.scene = "Loader";
+            TranslationManager._instance.scene = "Loader";
         }
     }
 }

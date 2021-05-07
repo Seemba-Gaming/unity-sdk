@@ -19,14 +19,14 @@ namespace SeembaSDK
         #endregion
         void Start()
         {
-            TranslationManager.scene = "Bracket";
-            Tour1.text = TranslationManager.Get("tour1");
-            SemiFinal.text = TranslationManager.Get("semi_final");
-            Final.text = TranslationManager.Get("final");
-            Champion.text = TranslationManager.Get("champion");
-            Play.text = TranslationManager.Get("play");
-            TranslationManager.scene = "Home";
-            Back.text = TranslationManager.Get("back_button");
+            TranslationManager._instance.scene = "Bracket";
+            Tour1.text = TranslationManager._instance.Get("tour1");
+            SemiFinal.text = TranslationManager._instance.Get("semi_final");
+            Final.text = TranslationManager._instance.Get("final");
+            Champion.text = TranslationManager._instance.Get("champion");
+            Play.text = TranslationManager._instance.Get("play");
+            TranslationManager._instance.scene = "Home";
+            Back.text = TranslationManager._instance.Get("back_button");
         }
     }
 }

@@ -101,11 +101,11 @@ namespace SeembaSDK
                         Debug.LogWarning("Draw in a tournament");
                         InitOnGoingTournament(challenge);
 
-                        var _params =  new object[] { TranslationManager.Get("tournament"), TranslationManager.Get("draw"),
+                        var _params =  new object[] { TranslationManager._instance.Get("tournament"), TranslationManager._instance.Get("draw"),
                             challenge.matched_user_1.avatar, challenge.matched_user_2.avatar,
                             challenge.users_old_scores[0].user_1_score, challenge.users_old_scores[0].user_2_score,
-                            TranslationManager.Get("you_have"), TranslationManager.Get("play_or_lose"),
-                            TranslationManager.Get("play_now"),TranslationManager.Get("play_later")};
+                            TranslationManager._instance.Get("you_have"), TranslationManager._instance.Get("play_or_lose"),
+                            TranslationManager._instance.Get("play_now"),TranslationManager._instance.Get("play_later")};
 
                         PopupManager.Get.PopupController.ShowPopup(PopupType.TOURNAMENT_DRAW, _params);
                         SeembaAnalyticsManager.Get.SendTournamentEvent("Tournament Draw", challenge.tournament_id, challenge.users_old_scores[0].user_1_score);
@@ -144,8 +144,8 @@ namespace SeembaSDK
             string date = challenge.createdAt.Substring(0, challenge.createdAt.IndexOf("T"));
             string hour = challenge.createdAt.Substring(challenge.createdAt.IndexOf("T") + 1, 5).Replace(":", "H") + "MIN";
             controller.Date.text = date + " " + HomeTranslationController.AT + " " + hour;
-            TranslationManager.scene = "Home";
-            controller.status.text = TranslationManager.Get("pending");
+            TranslationManager._instance.scene = "Home";
+            controller.status.text = TranslationManager._instance.Get("pending");
             controller.tournamentId.text = challenge.tournament_id;
             controller.gainType = challenge.tournament.gain_type;
             controller.CreatedAt = challenge.tournament.createdAt;
@@ -169,8 +169,8 @@ namespace SeembaSDK
             SetControllerTitle(challenge, controller);
             if (challenge.status.Equals("results pending") || challenge.status.Equals("pending") || challenge.status.Equals("on going"))
             {
-                TranslationManager.scene = "Home";
-                controller.pending_text.text = TranslationManager.Get("pending");
+                TranslationManager._instance.scene = "Home";
+                controller.pending_text.text = TranslationManager._instance.Get("pending");
                 controller.SeeResult.transform.localScale = Vector3.zero;
                 controller.Result.gameObject.SetActive(true);
                 controller.Result.onClick.AddListener(async () =>

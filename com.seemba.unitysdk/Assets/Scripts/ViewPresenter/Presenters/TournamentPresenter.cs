@@ -1,5 +1,4 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -144,8 +143,16 @@ namespace SeembaSDK
                     user_2_old_score = match.users_old_scores[match.users_old_scores.Length - 1].user_2_score; ;
                 }
 
-                var mFirstMatchedUser = getUserFromParticipants(match.matched_user_1._id, participants);
-                var mSecondMatchedUser = getUserFromParticipants(match.matched_user_2._id, participants);
+                User mFirstMatchedUser = null;
+                if(match.matched_user_1 != null)
+                {
+                    mFirstMatchedUser = getUserFromParticipants(match.matched_user_1._id, participants);
+                }
+                User mSecondMatchedUser = null;
+                if (match.matched_user_2 != null)
+                {
+                    mSecondMatchedUser = getUserFromParticipants(match.matched_user_2._id, participants);
+                }
 
                 if (tourIndex < mToursController.Tours.Count - 1)
                 {
@@ -171,12 +178,18 @@ namespace SeembaSDK
                         {
                             if (match.matched_user_1 != null)
                             {
-                                mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.Score.text = ((float)Math.Round((float)match.user_1_score * 100f) / 100f).ToString();
+                                if(match.user_1_score != null)
+                                {
+                                    mToursController.Tours[tourIndex].ToursChallenges[pos].Player1.Score.text = ((float)Math.Round((float)match.user_1_score * 100f) / 100f).ToString();
+                                }
                             }
 
                             if (match.matched_user_2 != null)
                             {
-                                mToursController.Tours[tourIndex].ToursChallenges[pos].Player2.Score.text = ((float)Math.Round((float)match.user_2_score * 100f) / 100f).ToString();
+                                if (match.user_2_score != null)
+                                {
+                                    mToursController.Tours[tourIndex].ToursChallenges[pos].Player2.Score.text = ((float)Math.Round((float)match.user_2_score * 100f) / 100f).ToString();
+                                }
                             }
                         }
                     }

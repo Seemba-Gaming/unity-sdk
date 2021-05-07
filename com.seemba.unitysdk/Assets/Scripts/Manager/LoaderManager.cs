@@ -51,15 +51,15 @@ namespace SeembaSDK
         #region Methods
         void SetLoadingTexts()
         {
-            TranslationManager.scene = "Loader";
-            SETTING_LANGUAGE = TranslationManager.Get("setting_language");
-            CHECKING_CONNECTION = TranslationManager.Get("checking_connection");
-            RECONNECTING = TranslationManager.Get("reconnecting");
-            DONWLOADING = TranslationManager.Get("downloading");
-            LOADING = TranslationManager.Get("loading");
-            FIRST_CHALLENGE = TranslationManager.Get("first_challenge_load");
-            SAVING = TranslationManager.Get("saving");
-            ACCOUNT_CREATING = TranslationManager.Get("account_creating");
+            TranslationManager._instance.scene = "Loader";
+            SETTING_LANGUAGE = TranslationManager._instance.Get("setting_language");
+            CHECKING_CONNECTION = TranslationManager._instance.Get("checking_connection");
+            RECONNECTING = TranslationManager._instance.Get("reconnecting");
+            DONWLOADING = TranslationManager._instance.Get("downloading");
+            LOADING = TranslationManager._instance.Get("loading");
+            FIRST_CHALLENGE = TranslationManager._instance.Get("first_challenge_load");
+            SAVING = TranslationManager._instance.Get("saving");
+            ACCOUNT_CREATING = TranslationManager._instance.Get("account_creating");
         }
         #endregion
 

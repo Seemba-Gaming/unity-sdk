@@ -73,18 +73,18 @@ namespace SeembaSDK
             mCurrentGain = gain;
             mCurrentGainType = gainType;
             mCurrentChallengeType = challengeType;
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             if (challengeType.Equals("1vs1"))
             {
                 Fav1V1.SetActive(true);
                 FavTournament.SetActive(false);
                 if (gainType.Contains("cash"))
                 {
-                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=1>";
+                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager._instance.Get("win") + " " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=1>";
                 }
                 else
                 {
-                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + float.Parse(gain) + " <sprite=0>";
+                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager._instance.Get("win") + " " + CloseHtmlColorBracket + float.Parse(gain) + " <sprite=0>";
                 }
             }
             else

@@ -12,8 +12,8 @@ namespace SeembaSDK
 
         public void Init()
         {
-            TranslationManager.scene = "Home";
-            MyGifts.text = TranslationManager.Get("my_gifts");
+            TranslationManager._instance.scene = "Home";
+            MyGifts.text = TranslationManager._instance.Get("my_gifts");
         }
     }
 }

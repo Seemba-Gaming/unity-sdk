@@ -1,5 +1,4 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -23,8 +22,8 @@ namespace SeembaSDK
 
         private void Awake()
         {
-            TranslationManager.scene = "Bracket";
-            Username.text = TranslationManager.Get("to_be_determined");
+            TranslationManager._instance.scene = "Bracket";
+            Username.text = TranslationManager._instance.Get("to_be_determined");
         }
         public async void InitAsync(User info)
         {
@@ -66,6 +65,11 @@ namespace SeembaSDK
 
         public IEnumerator initPlayerAvatar(string url, Image avatar)
         {
+            if(string.IsNullOrEmpty(url))
+            {
+                Debug.LogWarning("url is " + url);
+                yield break;
+            }
             UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
             yield return www.SendWebRequest();
             var texture = DownloadHandlerTexture.GetContent(www);

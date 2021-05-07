@@ -88,7 +88,7 @@ namespace SeembaSDK
                     }
                 }
             }
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             foreach (Challenge item in proItems)
             {
                 if ((item.user_1_score != null && item.user_2_score != null) || item.status == "results pending")

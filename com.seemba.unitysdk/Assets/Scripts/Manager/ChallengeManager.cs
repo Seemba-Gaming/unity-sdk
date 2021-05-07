@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.Text;
-using SimpleJSON;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -22,7 +21,7 @@ namespace SeembaSDK
         public int                                  nb_players;
         public string                               gain;
         public string                               gain_type;
-        public string                               game;
+        public GameInfo                             game;
         public string                               status;
         public string                               createdAt;
         public string                               updatedAt;
@@ -296,7 +295,6 @@ namespace SeembaSDK
         public async Task<GenericChallenge[]> GetOnGoingChallenges(int page, int pageSize)
         {
             string url = Endpoint.classesURL + "/challenges/ongoing?game_id=" + GamesManager.GAME_ID + "&page=" + page + "&pagesize=" + pageSize;
-            Debug.LogWarning(url);
             var response = await SeembaWebRequest.Get.HttpsGetJSON<GenericChallenge[]>(url);
             return response;
         }

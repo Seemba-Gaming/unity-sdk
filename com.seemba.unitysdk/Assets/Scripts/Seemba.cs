@@ -28,9 +28,15 @@ namespace SeembaSDK
 
         #region Fields
         private GameObject mSeembaManagers;
+
         #endregion
         private void Awake()
         {
+#if UNITY_EDITOR
+            Debug.unityLogger.logEnabled = true;
+#else
+            Debug.unityLogger.logEnabled = false;
+#endif
             Application.targetFrameRate = 60;
             sInstance = this;
         }
@@ -116,7 +122,7 @@ namespace SeembaSDK
                 await BackgroundController.SaveBackgroundImage(GamesManager.BACKGROUND_IMAGE_URL);
                 await GamesManager.SaveIcon(GamesManager.ICON_URL);
                 LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SETTING_LANGUAGE);
-                await TranslationManager.SavePreferedLanguage();
+                await TranslationManager._instance.SavePreferedLanguage();
                 LoaderManager.Get.LoaderController.HideLoader();
                 GamesManager.GAME_ORIENTATION = res.game.orientation;
                 return true;

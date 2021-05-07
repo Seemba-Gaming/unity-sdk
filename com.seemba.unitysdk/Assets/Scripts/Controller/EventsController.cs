@@ -243,7 +243,7 @@ namespace SeembaSDK
             yield return new WaitForSeconds(0.2f);
             ViewsEvents.Get.WinMoneyClick();
             LoaderManager.Get.LoaderController.HideLoader();
-            object[] _params = { headertext, headertext2, msg, TranslationManager.Get("continue") };
+            object[] _params = { headertext, headertext2, msg, TranslationManager._instance.Get("continue") };
             PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
         }
         public void withdrawSucceeded()

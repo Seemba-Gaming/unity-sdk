@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 using System.Net;
 using SimpleJSON;
 using System.Security.Cryptography.X509Certificates;
@@ -42,6 +41,7 @@ namespace SeembaSDK
             form.AddField("card[cvc]", cvc);
             form.AddField("type", PAYMENT_TYPE);
             var response = await SeembaWebRequest.Get.HttpsPostBearer(url, form, Endpoint.TokenizationAccount);
+            Debug.LogWarning(response);
             var res = JSON.Parse(response);
             return res["id"].Value;
         }

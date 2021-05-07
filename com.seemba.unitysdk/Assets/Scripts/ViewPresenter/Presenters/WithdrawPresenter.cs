@@ -1,5 +1,4 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,40 +37,40 @@ namespace SeembaSDK
 
         private async void Start()
         {
-            controller = new WithdrawController();
-            string token = UserManager.Get.getCurrentSessionToken();
-            var accountStatus = await withdrawManager.accountVerificationStatus(token);
+            //controller = new WithdrawController();
+            //string token = UserManager.Get.getCurrentSessionToken();
+            //var accountStatus = await withdrawManager.accountVerificationStatus(token);
 
-            balance.text = UserManager.Get.CurrentUser.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
+            //balance.text = UserManager.Get.CurrentUser.money_credit.ToString("N2") + CurrencyManager.CURRENT_CURRENCY;
 
-            WithdrawButton.onClick.AddListener(() =>
-            {
-                SeembaAnalyticsManager.Get.SendWithdrawalEvent("Click On Withdrawal", AmountToWithdraw);
-                CheckAndWithdraw();
-            });
+            //WithdrawButton.onClick.AddListener(() =>
+            //{
+            //    SeembaAnalyticsManager.Get.SendWithdrawalEvent("Click On Withdrawal", AmountToWithdraw);
+            //    CheckAndWithdraw();
+            //});
 
-            Amount.onValueChanged.AddListener(delegate
-            {
-                if (string.IsNullOrEmpty(Amount.text))
-                {
-                    WithdrawButton.interactable = false;
-                    TextEuro.text = "";
-                }
-                else
-                {
-                    TextEuro.text = CurrencyManager.CURRENT_CURRENCY;
-                    AmountToWithdraw = float.Parse(Amount.text);
-                    if ((float.Parse(Amount.text, CultureInfo.InvariantCulture) > 0) &&
-                    (float.Parse(Amount.text, CultureInfo.InvariantCulture) <= (float.Parse(UserManager.Get.GetCurrentMoneyCredit()))))
-                    {
-                        WithdrawButton.interactable = true;
-                    }
-                    else
-                    {
-                        WithdrawButton.interactable = false;
-                    }
-                }
-            });
+            //Amount.onValueChanged.AddListener(delegate
+            //{
+            //    if (string.IsNullOrEmpty(Amount.text))
+            //    {
+            //        WithdrawButton.interactable = false;
+            //        TextEuro.text = "";
+            //    }
+            //    else
+            //    {
+            //        TextEuro.text = CurrencyManager.CURRENT_CURRENCY;
+            //        AmountToWithdraw = float.Parse(Amount.text);
+            //        if ((float.Parse(Amount.text, CultureInfo.InvariantCulture) > 0) &&
+            //        (float.Parse(Amount.text, CultureInfo.InvariantCulture) <= (float.Parse(UserManager.Get.GetCurrentMoneyCredit()))))
+            //        {
+            //            WithdrawButton.interactable = true;
+            //        }
+            //        else
+            //        {
+            //            WithdrawButton.interactable = false;
+            //        }
+            //    }
+            //});
         }
         private void OnEnable()
         {
@@ -99,19 +98,19 @@ namespace SeembaSDK
             {
                 var token = UserManager.Get.getCurrentSessionToken();
                 LoaderManager.Get.LoaderController.ShowLoader();
-                var accountStatus = await withdrawManager.accountVerificationStatus(token);
+                //var accountStatus = await withdrawManager.accountVerificationStatus(token);
                 LoaderManager.Get.LoaderController.HideLoader();
 
-                if (accountStatus.payouts_enabled)
-                {
-                    controller.Withdraw(float.Parse(Amount.text, CultureInfo.InvariantCulture));
-                    Amount.text = string.Empty;
-                }
-                else
-                {
-                    SeembaAnalyticsManager.Get.SendWithdrawalEvent("Popup Missing Iban", AmountToWithdraw);
-                    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_MISSING_INFO, PopupsText.Get.MissingInfo(), "withdraw");
-                }
+                //if (accountStatus.payouts_enabled)
+                //{
+                //    controller.Withdraw(float.Parse(Amount.text, CultureInfo.InvariantCulture));
+                //    Amount.text = string.Empty;
+                //}
+                //else
+                //{
+                //    SeembaAnalyticsManager.Get.SendWithdrawalEvent("Popup Missing Iban", AmountToWithdraw);
+                //    PopupManager.Get.PopupController.ShowPopup(PopupType.INFO_POPUP_MISSING_INFO, PopupsText.Get.MissingInfo(), "withdraw");
+                //}
             }
             else
             {

@@ -3,6 +3,8 @@ using System;
 using System.IO;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SeembaSDK
 {
@@ -145,6 +147,7 @@ namespace SeembaSDK
         {
             var url = Endpoint.classesURL + "/games/" + gameId;
             var req = await SeembaWebRequest.Get.HttpsGetJSON<GameInfo>(url);
+
             if (req != null)
             {
                 ChallengeManager.Get.InitFees(req.fees);

@@ -58,8 +58,8 @@ namespace SeembaSDK
                             if (Application.platform == RuntimePlatform.Android)
                                 platform = "android";
                             else platform = "ios";
-                        //Add Device Token To Receive notification on current device
-                        try
+                            //Add Device Token To Receive notification on current device
+                            try
                             {
                                 await UserManager.Get.addUserDeviceToken(userid, GamesManager.GAME_ID, deviceToken, platform);
 
@@ -67,6 +67,8 @@ namespace SeembaSDK
                             catch (Exception)
                             {
                             }
+                            UserManager.Get.CurrentUser = Res.data.user;
+                            UserManager.Get.CurrentUser.token = Res.data.token;
                             UserManager.Get.CurrentUser.username = username;
                             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SAVING);
                             UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);

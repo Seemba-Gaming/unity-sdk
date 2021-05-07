@@ -29,14 +29,14 @@ namespace SeembaSDK
         {
             if (SelectedText != null)
             {
-                TranslationManager.scene = "Home";
+                TranslationManager._instance.scene = "Home";
                 if (IsSelected)
                 {
-                    SelectedText.text = TranslationManager.Get("selected");
+                    SelectedText.text = TranslationManager._instance.Get("selected");
                 }
                 else
                 {
-                    SelectedText.text = TranslationManager.Get("select");
+                    SelectedText.text = TranslationManager._instance.Get("select");
                 }
             }
         }
@@ -45,10 +45,10 @@ namespace SeembaSDK
         #region Methods
         public void ToggleSelected(bool selected)
         {
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             if (selected)
             {
-                SelectedText.text = TranslationManager.Get("selected");
+                SelectedText.text = TranslationManager._instance.Get("selected");
                 SelectedText.color = Color.white;
                 EqualsText.color = Color.white;
                 CrownsValue.color = Color.white;
@@ -57,7 +57,7 @@ namespace SeembaSDK
             }
             else
             {
-                SelectedText.text = TranslationManager.Get("select");
+                SelectedText.text = TranslationManager._instance.Get("select");
                 SelectedText.color = SelectedOffColor;
                 Amount.color = AmountOffColor;
                 EqualsText.color = AmountOffColor;

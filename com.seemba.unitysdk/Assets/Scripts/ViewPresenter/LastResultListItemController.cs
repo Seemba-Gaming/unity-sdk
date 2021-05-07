@@ -212,7 +212,10 @@ namespace SeembaSDK
             var Flag = await UserManager.Get.GetFlagBytes(user.country_code);
             controller.Drapeau.sprite = Sprite.Create(Flag, new Rect(0f, 0f, Flag.width, Flag.height), Vector2.zero);
             controller.Drapeau.transform.localScale = Vector3.one;
-            controller.avatar.sprite = sprite;
+            if(sprite != null)
+            {
+                controller.avatar.sprite = sprite;
+            }
             controller.AdversaryName.text = user.username;
             controller.AdvId.text = user._id;
         }

@@ -45,7 +45,12 @@ namespace SeembaSDK
             RealMoney.text = (user.money_credit *100).ToString() + " <sprite=1>";
             var mTexture = await UserManager.Get.GetFlagBytes(user.country_code);
             Flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
-            Avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
+            var sprite = await UserManager.Get.getAvatar(user.avatar);
+            if(sprite != null)
+            {
+                Avatar.sprite = sprite;
+
+            }
             UserManager.Get.CurrentAvatarBytesString = Avatar.sprite;
         }
 

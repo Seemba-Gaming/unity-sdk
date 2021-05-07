@@ -37,7 +37,7 @@ namespace SeembaSDK
             user_flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
             user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
 
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             if(ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
                 gain.text = ChallengeManager.CurrentChallenge.gain + " <sprite=0>";

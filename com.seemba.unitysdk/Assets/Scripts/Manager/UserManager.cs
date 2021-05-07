@@ -151,7 +151,6 @@ namespace SeembaSDK
             {
                 Debug.LogWarning("downloading");
             }
-            Debug.LogWarning(url);
             if(!string.IsNullOrEmpty(www.error))
             {
                 Debug.LogWarning(www.error);
@@ -209,7 +208,6 @@ namespace SeembaSDK
                     }
                     UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
                     await www.SendWebRequest();
-
                     if (www.isNetworkError || www.isHttpError)
                     {
                         Debug.LogWarning(www.error);

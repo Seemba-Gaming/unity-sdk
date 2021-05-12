@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace SeembaSDK.Kakera
 {
-#pragma warning disable 0649
-    [CLSCompliant(false)]
+    #pragma warning disable 649
     public class PickerController : MonoBehaviour
     {
         #region Static

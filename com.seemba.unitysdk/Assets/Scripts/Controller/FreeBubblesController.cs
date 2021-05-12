@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class FreeBubblesController : MonoBehaviour
     {
         private const int rewardIntervalHours = 2;

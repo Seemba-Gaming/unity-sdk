@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[CLSCompliant(false)]
 public class SendLink : MonoBehaviour
 {
 	public Button sendLink;

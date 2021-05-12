@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class MyGiftsTranslationController : MonoBehaviour
     {
         public Text MyGifts;

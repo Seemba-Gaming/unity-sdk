@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
+    #pragma warning disable 649
     public class HomeTranslationController : MonoBehaviour
     {
         [Header("Home")]
@@ -92,14 +91,14 @@ namespace SeembaSDK
         [SerializeField]
         private TextMeshProUGUI stripe_fees_settings, stripe_fees_wallet;
         [Space]
-        [Header("Withdraw")]
-        [SerializeField]
-        private Text WithdrawBackButton;
-        [SerializeField]
-        private Text money;
-        [SerializeField]
-        private Text withdrawTitle, available_balance, enter_the_amount_to_withdraw;
-        [Space]
+        //[Header("Withdraw")]
+        //[SerializeField]
+        //private Text WithdrawBackButton;
+        //[SerializeField]
+        //private Text money;
+        //[SerializeField]
+        //private Text withdrawTitle, available_balance, enter_the_amount_to_withdraw;
+        //[Space]
         [Header("HelpCenter")]
         [SerializeField]
         private Text HelpCenterBackButton;
@@ -139,7 +138,7 @@ namespace SeembaSDK
             ContactBackButton.text = TranslationManager._instance.Get("back_button");
             LegalBackButton.text = TranslationManager._instance.Get("back_button");
             HelpCenterBackButton.text = TranslationManager._instance.Get("back_button");
-            WithdrawBackButton.text = TranslationManager._instance.Get("back_button");
+            //WithdrawBackButton.text = TranslationManager._instance.Get("back_button");
             WalletSettingBackButton.text = TranslationManager._instance.Get("back_button");
             WalletHeaderBackButton.text = TranslationManager._instance.Get("back_button");
             SecurityBackButton.text = TranslationManager._instance.Get("back_button");
@@ -262,10 +261,10 @@ namespace SeembaSDK
             legal.text = TranslationManager._instance.Get("legal") != string.Empty ? TranslationManager._instance.Get("legal") : legal.text;
             contact.text = TranslationManager._instance.Get("contact") != string.Empty ? TranslationManager._instance.Get("contact") : contact.text;
             //Wihdraw
-            money.text = TranslationManager._instance.Get("money");
-            withdrawTitle.text = TranslationManager._instance.Get("withdraw");
-            available_balance.text = TranslationManager._instance.Get("available_balance");
-            enter_the_amount_to_withdraw.text = TranslationManager._instance.Get("enter_the_amount_to_withdraw");
+            //money.text = TranslationManager._instance.Get("money");
+            //withdrawTitle.text = TranslationManager._instance.Get("withdraw");
+            //available_balance.text = TranslationManager._instance.Get("available_balance");
+            //enter_the_amount_to_withdraw.text = TranslationManager._instance.Get("enter_the_amount_to_withdraw");
             BubblesMarket.text = TranslationManager._instance.Get("bubbles_market");
 
             //Achievements

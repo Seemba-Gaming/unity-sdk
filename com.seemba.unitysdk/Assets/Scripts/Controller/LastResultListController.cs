@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System;
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class LastResultListController : MonoBehaviour
 	{
 		public Image FeeIcon, proWon, bubbleWon, lost, avatar;

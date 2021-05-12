@@ -1,12 +1,10 @@
 using UnityEngine;
-using System;
 using System.Threading;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class WalletScript : MonoBehaviour
 	{
 		#region Script Parameters

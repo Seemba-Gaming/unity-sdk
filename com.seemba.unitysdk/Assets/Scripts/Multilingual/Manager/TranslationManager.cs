@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public sealed class TranslationManager : MonoBehaviour
     {
         #region Static

@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LoginController : MonoBehaviour
     {
         // Start is called before the first frame update
@@ -48,7 +47,6 @@ namespace SeembaSDK
             }
             else if (!res)
             {
-                Debug.LogWarning("auth failed");
                 ShowLoginFailedAnimation();
                 SeembaAnalyticsManager.Get.SendUserEvent("Auth Failed");
                 return false;

@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class UnityWebRequestAwaiter : INotifyCompletion
     {
         private UnityWebRequestAsyncOperation asyncOp;
@@ -26,7 +25,6 @@ namespace SeembaSDK
             continuation();
         }
     }
-    [CLSCompliant(false)]
     public static class ExtensionMethods
     {
         public static UnityWebRequestAwaiter GetAwaiter(this UnityWebRequestAsyncOperation asyncOp)

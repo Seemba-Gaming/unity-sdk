@@ -6,7 +6,6 @@ using UnityEngine.Networking;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class GameListItemController : MonoBehaviour
 	{
 		public GameObject ContentPanel;

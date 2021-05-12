@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class NotificationSceneController : MonoBehaviour
     {
         private static NotificationSceneController _instance;

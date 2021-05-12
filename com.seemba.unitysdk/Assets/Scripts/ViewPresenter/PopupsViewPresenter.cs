@@ -6,8 +6,7 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
+    #pragma warning disable 649
     public class PopupsViewPresenter : MonoBehaviour
     {
         #region static
@@ -293,26 +292,6 @@ namespace SeembaSDK
             ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
             InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
             PopupInfoConfirmButton.onClick.RemoveAllListeners();
-        }
-        public void ShowMissingInfoPopup(object[] _param, string source)
-        {
-            _params = _param;
-            PopupInfoCancelButton.gameObject.SetActive(false);
-            ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-            InitPopupInfo(_param[0].ToString(), _param[1].ToString(), _param[2].ToString(), _param[3].ToString());
-            PopupInfoConfirmButton.onClick.RemoveAllListeners();
-            PopupInfoConfirmButton.onClick.AddListener(() =>
-            {
-                if (source.Equals("Idproof"))
-                {
-                    //ViewsEvents.Get.IdProof.GetComponent<IDProofPresenter>().missingInfoContinue();
-                }
-                else if (source.Equals("withdraw"))
-                {
-                    HidePopupContent(PopupManager.Get.PopupController.PopupInfo);
-                    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.WithdrawalInfo.gameObject);
-                }
-            });
         }
         public void ShowEqualityRefundPopup(object[] _param)
         {

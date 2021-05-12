@@ -2,10 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-#pragma warning disable 0649
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
+    #pragma warning disable 649
     public class SignupTranslationController : MonoBehaviour
     {
         // Start is called before the first frame update

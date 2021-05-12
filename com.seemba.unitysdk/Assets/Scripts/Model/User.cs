@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	[Serializable]
 	public class User
 	{

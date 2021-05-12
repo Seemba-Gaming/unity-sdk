@@ -56,7 +56,6 @@ namespace SeembaSDK
         SESSION_EXPIRED
     }
 
-    [CLSCompliant(false)]
     public class PopupsController : MonoBehaviour
     {
         #region static
@@ -145,9 +144,6 @@ namespace SeembaSDK
                     break;
                 case PopupType.INFO_POPUP_TOO_YOUNG:
                     PopupManager.Get.PopupViewPresenter.ShowTooyoungPopup(_params);
-                    break;
-                case PopupType.INFO_POPUP_MISSING_INFO:
-                    PopupManager.Get.PopupViewPresenter.ShowMissingInfoPopup(_params, note);
                     break;
                 case PopupType.POPUP_CONGRATS:
                     PopupManager.Get.PopupViewPresenter.ShowCongratsPopup(_params);

@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class Seemba : MonoBehaviour
     {
 

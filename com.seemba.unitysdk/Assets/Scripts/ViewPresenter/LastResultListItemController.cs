@@ -1,10 +1,8 @@
 using UnityEngine;
-using System;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LastResultListItemController : MonoBehaviour
     {
         public GameObject ContentPanel;

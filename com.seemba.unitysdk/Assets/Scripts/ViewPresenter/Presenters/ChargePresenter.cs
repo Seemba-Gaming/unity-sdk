@@ -1,5 +1,4 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +16,6 @@ namespace SeembaSDK
             this.endColor = endColor;
         }
     }
-    [CLSCompliant(false)]
-
     public class ChargePresenter : MonoBehaviour
     {
         #region Script Parameters
@@ -290,20 +287,21 @@ namespace SeembaSDK
 
             if (!_paymentMethodID.Equals("-1"))
             {
-                JSONNode _paymentIntent = await ChargeManager.Get.CreatePaymentIntentAsync(_paymentMethodID, WalletScript.LastCredit, token);
+                var _paymentIntent = await ChargeManager.Get.CreatePaymentIntentAsync(_paymentMethodID, WalletScript.LastCredit, token);
 
                 if (!_paymentIntent.Equals("-1"))
                 {
-                    _paymentIntentID = _paymentIntent["data"]["id"].Value;
-                    if (_paymentIntent["success"].AsBool)
+                    _paymentIntentID = _paymentIntent.data.payment_intent.id;
+                    if (_paymentIntent.success)
                     {
-                        if (Is3DSecure(_paymentIntent))
+                        if (Is3DSecure(_paymentIntent.data.payment_intent))
                         {
-                            Confirm3DSecure(_paymentIntent);
+                            Confirm3DSecure(_paymentIntent.data);
                         }
                         else
                         {
-                            if (_paymentIntent["status"].Value == ChargeManager.PAYMENT_STATUS_SUCCEEDED)
+                            Debug.LogWarning("here");
+                            if (_paymentIntent.data.payment_intent.status == ChargeManager.PAYMENT_STATUS_SUCCEEDED)
                             {
                                 mChargeStatus = 1;
                                 ChargeSucceeded();
@@ -314,7 +312,6 @@ namespace SeembaSDK
                                 ChargeCanceled();
                             }
                         }
-
                     }
                     else
                     {
@@ -329,13 +326,13 @@ namespace SeembaSDK
             return true;
         }
 
-        private bool Is3DSecure(JSONNode json)
+        private bool Is3DSecure(PaymentIntent paymentIntent)
         {
-            return json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_ACTION || json["status"].Value == ChargeManager.PAYMENT_STATUS_REQUIRES_SOURCE_ACTION;
+            return paymentIntent.status == ChargeManager.PAYMENT_STATUS_REQUIRES_ACTION || paymentIntent.status == ChargeManager.PAYMENT_STATUS_REQUIRES_SOURCE_ACTION;
         }
-        private void Confirm3DSecure(JSONNode json)
+        private void Confirm3DSecure(PaymentIntentURL paymentIntent)
         {
-            var _3DSecureURL = json["redirect_url"].Value;
+            var _3DSecureURL = paymentIntent.redirect_url;
             OpenBrowserFor3dSecure(_3DSecureURL);
         }
         private void OpenBrowserFor3dSecure(string url)

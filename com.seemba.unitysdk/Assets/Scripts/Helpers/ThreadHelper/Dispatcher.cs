@@ -2,10 +2,8 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Threading;
-using UnityEngine;
 namespace UnityThreading
 {
-    [CLSCompliant(false)]
     public abstract class DispatcherBase : IDisposable
     {
         protected int lockCount = 0;
@@ -183,7 +181,6 @@ namespace UnityThreading
         }
         #endregion
     }
-    [CLSCompliant(false)]
     public class NullDispatcher : DispatcherBase
 	{
 		public static NullDispatcher Null = new NullDispatcher();
@@ -195,7 +192,6 @@ namespace UnityThreading
 			task.DoInternal();
 		}
 	}
-    [CLSCompliant(false)]
     public class Dispatcher : DispatcherBase
     {
         [ThreadStatic]

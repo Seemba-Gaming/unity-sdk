@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
+    #pragma warning disable 649
     public class LoginTranslationController : MonoBehaviour
     {
         [Header("--------------Signin------------")]
@@ -85,13 +81,13 @@ namespace SeembaSDK
             enter_your_email_below_to_reset_password.text = TranslationManager._instance.Get("enter_your_email_below_to_reset_password") != string.Empty ? TranslationManager._instance.Get("enter_your_email_below_to_reset_password") : enter_your_email_below_to_reset_password.text;
             email.text = TranslationManager._instance.Get("email") != string.Empty ? TranslationManager._instance.Get("email") : email.text;
             //--------------Code------------
-            reset_password_code.text = TranslationManager._instance.Get("reset_password") != string.Empty ? TranslationManager._instance.Get("reset_password_code") : reset_password_code.text;
+            reset_password_code.text = TranslationManager._instance.Get("reset_password") != string.Empty ? TranslationManager._instance.Get("reset_password") : reset_password_code.text;
             Enter_the_code.text = TranslationManager._instance.Get("Enter_the_code") != string.Empty ? TranslationManager._instance.Get("Enter_the_code") : Enter_the_code.text;
             code_expired.text = TranslationManager._instance.Get("code_expired") != string.Empty ? TranslationManager._instance.Get("code_expired") : code_expired.text;
             resend.text = TranslationManager._instance.Get("resend") != string.Empty ? TranslationManager._instance.Get("resend") : resend.text;
             submit.text = TranslationManager._instance.Get("submit") != string.Empty ? TranslationManager._instance.Get("submit") : submit.text;
             //--------------Change Password------------
-            reset_password_change.text = TranslationManager._instance.Get("reset_password") != string.Empty ? TranslationManager._instance.Get("reset_password_code") : reset_password_change.text;
+            reset_password_change.text = TranslationManager._instance.Get("reset_password") != string.Empty ? TranslationManager._instance.Get("reset_password") : reset_password_change.text;
             Enter_the_new_password.text = TranslationManager._instance.Get("Enter_the_new_password") != string.Empty ? TranslationManager._instance.Get("Enter_the_new_password") : Enter_the_new_password.text;
             new_password.text = TranslationManager._instance.Get("new_password") != string.Empty ? TranslationManager._instance.Get("new_password") : new_password.text;
             confirm_password.text = TranslationManager._instance.Get("confirm_password") != string.Empty ? TranslationManager._instance.Get("confirm_password") : confirm_password.text;

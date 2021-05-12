@@ -1,13 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-
     public class GiftCard
     {
         public string _id;
@@ -19,7 +15,6 @@ namespace SeembaSDK
         public string altText;
         public string __v;
     }
-    [CLSCompliant(false)]
     public class GiftsOrder
     {
         public string status;
@@ -33,7 +28,6 @@ namespace SeembaSDK
         public string __v;
     }
 
-    [CLSCompliant(false)]
     public class MarketController : MonoBehaviour
     {
         #region Script Parameters

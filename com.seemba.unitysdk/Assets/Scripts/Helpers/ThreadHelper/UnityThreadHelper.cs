@@ -7,7 +7,6 @@ using UnityEngine;
 #endif
 #if !NO_UNITY
 [ExecuteInEditMode]
-[CLSCompliant(false)]
 public class UnityThreadHelper : MonoBehaviour
 #else
 public class UnityThreadHelper

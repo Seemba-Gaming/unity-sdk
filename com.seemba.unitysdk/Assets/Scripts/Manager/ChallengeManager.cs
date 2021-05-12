@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class GenericTournament
     {
         public string                               _id;
@@ -29,13 +28,11 @@ namespace SeembaSDK
         public string                               winner_user;
     }
 
-    [CLSCompliant(false)]
     public class OldScores
     {
         public int                                  user_1_score;
         public int                                  user_2_score;
     }
-        [CLSCompliant(false)]
     public class GenericChallenge
     {
         public string                               _id;
@@ -62,7 +59,6 @@ namespace SeembaSDK
         public string                               __v;
         public GenericTournament                    tournament;
     }
-    [CLSCompliant(false)]
     public class GenericUser
     {
         public string                               _id;
@@ -96,7 +92,6 @@ namespace SeembaSDK
         public string                               last_connection;
         public string                               zipcode;
     }
-    [CLSCompliant(false)]
     public class GenericGameInfo
     {
         public string                               _id;
@@ -129,7 +124,6 @@ namespace SeembaSDK
         public string                               score_mode;
         public string                               updatedAt;
     }
-    [CLSCompliant(false)]
     public class ChallengeManager : MonoBehaviour
     {
         #region Static

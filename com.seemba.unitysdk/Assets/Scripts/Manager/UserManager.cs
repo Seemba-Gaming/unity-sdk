@@ -13,47 +13,11 @@ using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-
     public class UserInfo
     {
         public User user;
         public string token;
     }
-    //public class UserDetails
-    //{
-    //    public bool username_changed;
-    //    public bool email_verified;
-    //    public string address;
-    //    public string country;
-    //    public string lastname;
-    //    public string firstname;
-    //    public int highest_victories_streak;
-    //    public int current_victories_count;
-    //    public string last_bubble_click;
-    //    public int level;
-    //    public string payment_account_id;
-    //    public string city;
-    //    public string state;
-    //    public float max_withdraw;
-    //    public bool is_bot;
-    //    public string[] games;
-    //    public string _id;
-    //    public string username;
-    //    public string email;
-    //    public string avatar;
-    //    public string country_code;
-    //    public string long_lat;
-    //    public string createdAt;
-    //    public string updatedAt;
-    //    public string customer_id;
-    //    public string last_connection;
-    //    public string birthdate;
-    //    public float money_credit;
-    //    public float bubble_credit;
-    //}
-    [CLSCompliant(false)]
-
     public class GeoLocInfo
     {
         public string ip;
@@ -65,15 +29,11 @@ namespace SeembaSDK
         public string timezone;
         public string readme;
     }
-    [CLSCompliant(false)]
-
     public class EmailCode
     {
         public bool success;
         public int code;
     }
-
-    [CLSCompliant(false)]
     public class UserManager : MonoBehaviour
     {
 
@@ -280,21 +240,19 @@ namespace SeembaSDK
             }
             string url = Endpoint.classesURL + "/authenticate";
             var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
-            Debug.LogWarning(responseText);
             SeembaResponse<UserInfo> response = JsonConvert.DeserializeObject<SeembaResponse<UserInfo>>(responseText);
-            CurrentUser = response.data.user; 
-            CurrentUser.token = response.data.token;
-            LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
-            Debug.LogWarning(CurrentUser.avatar);
-            CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
-            CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
-            var mTexture = await GetFlagBytes(await GetGeoLoc());
-            CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
-            PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
-            LoaderManager.Get.LoaderController.HideLoader();
-
             if (response.success)
             {
+                CurrentUser = response.data.user;
+                CurrentUser.token = response.data.token;
+                LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
+                Debug.LogWarning(CurrentUser.avatar);
+                CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
+                CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
+                var mTexture = await GetFlagBytes(await GetGeoLoc());
+                CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
+                PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
+                LoaderManager.Get.LoaderController.HideLoader();
                 saveSessionToken(response.data.token);
                 saveUserId(response.data.user._id);
                 CurrentUser._id = response.data.user._id;

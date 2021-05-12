@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SeembaAnalyticsManager : MonoBehaviour
     {
         #region Static

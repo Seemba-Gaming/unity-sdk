@@ -6,7 +6,6 @@ using SeembaSDK.Sentry;
 using UnityEngine.Networking;
 using UnityDebug = UnityEngine.Debug;
 
-[CLSCompliant(false)]
 public class SentrySdk : MonoBehaviour
 {
     private float _timeLastError = 0;

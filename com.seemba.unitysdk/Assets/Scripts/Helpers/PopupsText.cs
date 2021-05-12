@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class PopupsText : MonoBehaviour
     {
         public static PopupsText Get { get { return sInstance; } }

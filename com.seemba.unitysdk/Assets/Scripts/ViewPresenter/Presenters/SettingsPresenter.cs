@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SettingsPresenter : MonoBehaviour
     {
         #region Script Parameters

@@ -2,7 +2,6 @@ using System.Collections;
 using System;
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class Tournament
 	{
 		int nb_player;
@@ -22,7 +21,6 @@ namespace SeembaSDK
 		}
 	}
 
-	[CLSCompliant(false)]
 	public class TournamentData
 	{
 		public bool success;

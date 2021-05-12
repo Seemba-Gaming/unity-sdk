@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[CLSCompliant(false)]
 public class NotificationBadgeViewPresenter : MonoBehaviour
 {
     // Start is called before the first frame update

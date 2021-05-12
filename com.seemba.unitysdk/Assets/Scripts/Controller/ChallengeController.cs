@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ChallengeController : MonoBehaviour
     {
         #region Static

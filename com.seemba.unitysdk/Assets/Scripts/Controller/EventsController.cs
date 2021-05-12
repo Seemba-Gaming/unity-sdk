@@ -9,12 +9,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class StripeError
     {
         public StripeErrorInfo error; 
     }
-    [CLSCompliant(false)]
     public class StripeErrorInfo
     {
         public string code;
@@ -22,7 +20,6 @@ namespace SeembaSDK
         public string message;
         public string type;
     }
-    [CLSCompliant(false)]
     public class EventsController : MonoBehaviour
     {
         #region Static
@@ -216,49 +213,6 @@ namespace SeembaSDK
                     ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
                 });
             });
-        }
-        public void missingInfowithdrawContinue()
-        {
-            UnityThreading.ActionThread thread;
-            thread = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(300);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.IdProof.gameObject);
-                });
-            });
-        }
-
-        public void withdrawFailed(string headertext, string headertext2, string msg)
-        {
-            StartCoroutine(WithdrawFailed(headertext, headertext2, msg));
-        }
-
-        IEnumerator WithdrawFailed(string headertext, string headertext2, string msg)
-        {
-            ViewsEvents.Get.Menu.ScrollSnap.LerpToPage(0);
-            BottomMenuController.Get.selectSettings();
-            ViewsEvents.Get.SettingsClick();
-            yield return new WaitForSeconds(0.2f);
-            ViewsEvents.Get.WinMoneyClick();
-            LoaderManager.Get.LoaderController.HideLoader();
-            object[] _params = { headertext, headertext2, msg, TranslationManager._instance.Get("continue") };
-            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
-        }
-        public void withdrawSucceeded()
-        {
-            StartCoroutine(WithdrawSucceeded());
-        }
-        IEnumerator WithdrawSucceeded()
-        {
-            ViewsEvents.Get.Menu.ScrollSnap.LerpToPage(0);
-            BottomMenuController.Get.selectSettings();
-            ViewsEvents.Get.SettingsClick();
-            yield return new WaitForSeconds(0.2f);
-            ViewsEvents.Get.WinMoneyClick();
-            LoaderManager.Get.LoaderController.HideLoader();
-            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS_WITHDRAW, PopupsText.Get.CongratsWithdraw());
         }
         public void backToWinMoney()
         {

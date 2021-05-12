@@ -2,7 +2,6 @@
 
 namespace UnityThreading
 {
-	[CLSCompliant(false)]
 	public static class ActionExtension
 	{
         /// <summary>

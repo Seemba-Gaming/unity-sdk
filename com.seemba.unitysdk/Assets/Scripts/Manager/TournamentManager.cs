@@ -9,20 +9,17 @@ using System.Threading.Tasks;
 using UnityEngine;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class TournamentInfo
     {
         public GenericTournament tournament;
         public GenericChallenge current_challenge;
     }
-    [CLSCompliant(false)]
     public class NewTournament
     {
         public GenericTournament tournament;
         public GenericChallenge current_challenge;
         public User user;
     }
-    [CLSCompliant(false)]
     public class TournamentManager : MonoBehaviour
     {
         #region Static
@@ -152,12 +149,6 @@ namespace SeembaSDK
             form.AddField("user_id", userId);
             var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
             UserManager.Get.CurrentUser.username = responseText;
-            Debug.LogWarning(nb_player);
-            Debug.LogWarning(gain);
-            Debug.LogWarning(gain_type);
-            Debug.LogWarning(GamesManager.GAME_ID);
-            Debug.LogWarning(userId);
-            Debug.LogWarning(url);
             SeembaResponse<NewTournament> response = JsonConvert.DeserializeObject<SeembaResponse<NewTournament>>(responseText);
 
             //var tournementdata = JSON.Parse(response);

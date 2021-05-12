@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class GiftHistoryItemController : MonoBehaviour
     {
         public Dictionary<int, Sprite> Images = new Dictionary<int, Sprite>();

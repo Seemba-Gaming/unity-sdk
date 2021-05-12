@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LoaderManager : MonoBehaviour
     {
         #region Static

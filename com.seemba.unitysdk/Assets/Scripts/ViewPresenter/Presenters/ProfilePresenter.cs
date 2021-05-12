@@ -4,7 +4,6 @@ using System;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ProfilePresenter : MonoBehaviour
     {
         #region Script Parameters

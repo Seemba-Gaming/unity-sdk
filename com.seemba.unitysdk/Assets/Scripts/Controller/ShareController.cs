@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.IO;
-using System;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ShareController : MonoBehaviour
     {
         private string text;

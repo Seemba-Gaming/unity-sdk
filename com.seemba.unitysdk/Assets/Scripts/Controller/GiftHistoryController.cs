@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class GiftItem
     {
         public string status;
@@ -22,7 +21,6 @@ namespace SeembaSDK
         public GiftOrder response;
     }
 
-    [CLSCompliant(false)]
     public class GiftDetails
     {
         public string active;
@@ -40,7 +38,6 @@ namespace SeembaSDK
         public string error;
         public string code;
     }
-    [CLSCompliant(false)]
     public class GiftHistoryController : MonoBehaviour
     {
         #region Script Parameters

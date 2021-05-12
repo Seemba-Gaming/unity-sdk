@@ -1,11 +1,9 @@
 ﻿using SeembaSDK.UI;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LeaderboardItemController : MonoBehaviour
     {
         public Image Avatar;

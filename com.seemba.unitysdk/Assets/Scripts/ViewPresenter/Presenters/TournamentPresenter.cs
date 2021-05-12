@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class Round
     {
         public GenericChallenge[] challenges;
@@ -20,7 +19,6 @@ namespace SeembaSDK
         public string updatedAt;
         public string __v;
     }
-    [CLSCompliant(false)]
     public class TournamentPresenter : MonoBehaviour
     {
         #region Script Parameters

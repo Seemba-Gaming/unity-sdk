@@ -4,16 +4,12 @@ using UnityEditor;
 using System.IO;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Reflection;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class IntegrationGUI : EditorWindow
     {
         private Texture2D m_Logo = null;

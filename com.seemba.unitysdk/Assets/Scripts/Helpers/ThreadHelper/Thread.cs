@@ -1,12 +1,8 @@
-using System.Collections.Generic;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Collections;
-using System.Diagnostics;
 namespace UnityThreading
 {
-    [CLSCompliant(false)]
     public abstract class ThreadBase : IDisposable
 	{
 		public static int AvailableProcessors
@@ -260,7 +256,6 @@ namespace UnityThreading
 			}
 		}
     }
-    [CLSCompliant(false)]
     public sealed class ActionThread : ThreadBase
     {
         private Action<ActionThread> action;
@@ -291,7 +286,6 @@ namespace UnityThreading
             return null;
         }
     }
-    [CLSCompliant(false)]
     public sealed class EnumeratableActionThread : ThreadBase
     {
         private Func<ThreadBase, IEnumerator> enumeratableAction;
@@ -321,7 +315,6 @@ namespace UnityThreading
             return enumeratableAction(this);
         }
     }
-    [CLSCompliant(false)]
     public sealed class TickThread : ThreadBase
 	{
 		private Action action;

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace SeembaSDK
 {
     [RequireComponent(typeof(Canvas))]
-    [CLSCompliant(false)]
     public class CanvasHelper : MonoBehaviour
     {
         private static List<CanvasHelper> helpers = new List<CanvasHelper>();

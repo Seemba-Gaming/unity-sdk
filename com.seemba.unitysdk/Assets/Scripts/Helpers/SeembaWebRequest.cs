@@ -20,7 +20,6 @@ namespace SeembaSDK
         }
     }
 
-    [CLSCompliant(false)]
     public class SeembaWebRequest : MonoBehaviour
     {
         #region Static

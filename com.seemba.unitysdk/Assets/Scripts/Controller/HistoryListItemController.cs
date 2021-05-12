@@ -5,7 +5,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class HistoryListItemController : MonoBehaviour
 	{
 		public Image Icon, Goutte;

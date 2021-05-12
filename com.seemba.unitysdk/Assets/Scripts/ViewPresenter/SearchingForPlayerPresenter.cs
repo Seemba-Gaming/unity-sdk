@@ -7,7 +7,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SearchingForPlayerPresenter : MonoBehaviour
     {
         #region Static

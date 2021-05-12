@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class MarketBottomBarController : MonoBehaviour
     {
         // Start is called before the first frame update

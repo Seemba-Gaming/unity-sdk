@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using System;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class TournamentController : MonoBehaviour
     {
         #region Static

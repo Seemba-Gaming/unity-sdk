@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-    [System.Serializable]
     public class TourPlayer : MonoBehaviour
     {
         public Text Username;

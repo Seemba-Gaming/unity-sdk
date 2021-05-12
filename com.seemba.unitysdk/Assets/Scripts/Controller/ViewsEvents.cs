@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ViewsEvents : MonoBehaviour
     {
 
@@ -25,12 +23,10 @@ namespace SeembaSDK
         public ResultPresenter ResultPresenter;
         public GameObject ReplayChallenge;
         public LoginPresenter Login;
-        public GameObject IdProof;
         public ChargePresenter BankingInfo;
         public ProfilePresenter Profile;
         public PersonalInfoPresenter PersonalInfo;
         public HistoryPresenter History;
-        public WithdrawalInfoPresenter WithdrawalInfo;
         public BugReportPresenter BugReport;
         public GiftHistoryController GiftOrderHistory;
         public GameObject Overlay;

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class PullToRefresh : MonoBehaviour
     {
         public static bool isActivated;

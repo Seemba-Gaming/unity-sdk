@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ImagesManager : MonoBehaviour
     {
         public static string AvatarURL;

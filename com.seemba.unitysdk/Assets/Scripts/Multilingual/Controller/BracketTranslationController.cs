@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-#pragma warning disable 0649
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
+    #pragma warning disable 649
     public class BracketTranslationController : MonoBehaviour
     {
         [SerializeField]

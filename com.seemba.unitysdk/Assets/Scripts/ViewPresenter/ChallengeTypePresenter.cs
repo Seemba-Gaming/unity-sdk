@@ -5,7 +5,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ChallengeTypePresenter : MonoBehaviour
     {
         public enum ChallengesType // your custom enumeration

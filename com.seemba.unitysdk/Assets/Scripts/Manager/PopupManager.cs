@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class PopupManager : MonoBehaviour
     {
         #region Static

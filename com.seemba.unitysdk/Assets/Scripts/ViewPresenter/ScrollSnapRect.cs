@@ -11,7 +11,6 @@ namespace SeembaSDK
     [RequireComponent(typeof(Image))]
     [RequireComponent(typeof(Mask))]
     [RequireComponent(typeof(ScrollRect))]
-    [CLSCompliant(false)]
     public class ScrollSnapRect : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         [Tooltip("Set starting page index - starting from 0")]
@@ -365,7 +364,8 @@ namespace SeembaSDK
                 //Debug.LogWarning(_container.GetChild(i).GetComponent<RectTransform>().localPosition.x);
                 //Debug.LogWarning(_container.GetChild(i).GetComponent<RectTransform>().position.x);
                 //Debug.LogWarning(_container.GetChild(i).GetComponent<RectTransform>().rect.x);
-                Vector2 childPosition = new Vector2(child.localPosition.x - _container.GetChild(0).GetComponent<RectTransform>().localPosition.x, 0);
+                Vector2 childPosition = new Vector2((_container.sizeDelta.x/_container.childCount) * i, 0);
+                //Vector2 childPosition = new Vector2(child.localPosition.x - _container.GetChild(0).GetComponent<RectTransform>().localPosition.x, 0);
                 //if (_horizontal)
                 //{
                 //    childPosition = new Vector2(i * width - containerWidth / 2 + offsetX, 0f);

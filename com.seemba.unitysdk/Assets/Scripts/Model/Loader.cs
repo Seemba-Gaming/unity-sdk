@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class Loader : MonoBehaviour
     {
         public Text title;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class PhonePrefix
     {
         static Dictionary<string, string> dictionary = new Dictionary<string, string>();

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SignupController : MonoBehaviour
     {
         // Start is called before the first frame update

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class AchievementItem
     {
         public string name;
@@ -14,14 +13,12 @@ namespace SeembaSDK
         public int current_amount;
         public int total_amount;
     }
-    [CLSCompliant(false)]
     public class AchievemenstsList
     {
         public string user_id;
         public AchievementItem[] achievements;
     }
 
-    [CLSCompliant(false)]
     public class AchievementsController : MonoBehaviour
     {
 
@@ -117,6 +114,7 @@ namespace SeembaSDK
         {
             string url = Endpoint.classesURL + "/gamifications/achievements";
             var seembaResponse = await SeembaWebRequest.Get.HttpsGetJSON<AchievemenstsList>(url);
+            Debug.LogWarning(url);
             mMyAchievements = seembaResponse.achievements;
             return true;
         }

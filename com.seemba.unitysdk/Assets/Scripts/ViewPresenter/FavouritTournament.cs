@@ -12,7 +12,6 @@ namespace SeembaSDK
         public string gain_type;
         public string type;
     }
-    [CLSCompliant(false)]
     public class FavouritTournament : MonoBehaviour
     {
         #region Static

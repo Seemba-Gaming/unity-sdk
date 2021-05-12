@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class Endpoint : MonoBehaviour
     {
         public static string stripeURL = "https://api.stripe.com/v1";
@@ -19,8 +18,8 @@ namespace SeembaSDK
             if(Seemba.Get.DevelopmentMode)
             {
                 locationURL = "https://ipinfo.io/json/";
-                classesURL = "http://api-staging.seemba.com/api/v1";
-                flagsURL = "http://api-staging.seemba.com/flags/";
+                classesURL = "https://api-staging.seemba.com/api/v1";
+                flagsURL = "https://api-staging.seemba.com/flags/";
                 TokenizationAccount = "pk_test_A8fKBAogt5UIexspxnivPLGw00HslhmxSr";
             }
         }

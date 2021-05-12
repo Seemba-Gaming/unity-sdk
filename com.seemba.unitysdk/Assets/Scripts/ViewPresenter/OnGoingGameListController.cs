@@ -1,11 +1,9 @@
 using UnityEngine;
 using System.Collections;
-using System;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class OnGoingGameListController : MonoBehaviour
     {
         public GameObject ContentPanel, ContentOngoing;

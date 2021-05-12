@@ -1,11 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
+    #pragma warning disable 649
     public class BankingTranslationController : MonoBehaviour
     {
         [SerializeField]

@@ -5,7 +5,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class HeaderController : MonoBehaviour
     {
         #region Script Parameters

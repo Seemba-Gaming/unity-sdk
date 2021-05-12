@@ -2,6 +2,7 @@
 using UnityEngine;
 namespace SeembaSDK
 {
+	#pragma warning disable 649
 	class VpnInfo
     {
 		public VpnBody body;

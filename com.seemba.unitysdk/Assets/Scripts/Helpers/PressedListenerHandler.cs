@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
     public class PressedListenerHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         public InputField password;

@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class UserService : MonoBehaviour
     {
         #region Static

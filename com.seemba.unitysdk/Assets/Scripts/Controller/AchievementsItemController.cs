@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class AchievementsItemController : MonoBehaviour
     {
         #region Script Parameters

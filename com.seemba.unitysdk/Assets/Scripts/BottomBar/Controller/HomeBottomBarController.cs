@@ -1,9 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class HomeBottomBarController : MonoBehaviour
     {
         // Start is called before the first frame update

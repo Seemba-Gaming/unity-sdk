@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class WinMoneyBottomBarController : MonoBehaviour
     {
         // Start is called before the first frame update

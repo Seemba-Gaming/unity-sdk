@@ -6,7 +6,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ReplayChallengePresenter : MonoBehaviour
     {
         public static GenericChallenge ChallengeToReplay;

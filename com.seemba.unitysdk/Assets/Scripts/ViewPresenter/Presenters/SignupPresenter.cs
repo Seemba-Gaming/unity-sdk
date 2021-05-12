@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using TMPro;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SignupPresenter : MonoBehaviour
     {
         #region Script Parameters

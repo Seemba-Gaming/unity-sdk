@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class CountryListController : MonoBehaviour
     {
         public static string[] Countries = new string[]

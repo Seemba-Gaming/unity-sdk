@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class ConnectivityController : MonoBehaviour
 	{
 		public static string CURRENT_ACTION;

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-#pragma warning disable 0649
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
+    #pragma warning disable 649
     public class BracketTranslationController : MonoBehaviour
     {
         [SerializeField]
@@ -22,12 +18,12 @@ namespace SeembaSDK
         // Start is called before the first frame update
         void Start()
         {
-            TranslationManager.scene = "Bracket";
-            tour1.text = TranslationManager.Get("tour1") != string.Empty ? TranslationManager.Get("tour1") : tour1.text;
-            semi_final.text = TranslationManager.Get("semi_final") != string.Empty ? TranslationManager.Get("semi_final") : semi_final.text;
-            final.text = TranslationManager.Get("final") != string.Empty ? TranslationManager.Get("final") : final.text;
-            champion.text = TranslationManager.Get("champion") != string.Empty ? TranslationManager.Get("champion") : champion.text;
-            play.text = TranslationManager.Get("play") != string.Empty ? TranslationManager.Get("play") : play.text;
+            TranslationManager._instance.scene = "Bracket";
+            tour1.text = TranslationManager._instance.Get("tour1") != string.Empty ? TranslationManager._instance.Get("tour1") : tour1.text;
+            semi_final.text = TranslationManager._instance.Get("semi_final") != string.Empty ? TranslationManager._instance.Get("semi_final") : semi_final.text;
+            final.text = TranslationManager._instance.Get("final") != string.Empty ? TranslationManager._instance.Get("final") : final.text;
+            champion.text = TranslationManager._instance.Get("champion") != string.Empty ? TranslationManager._instance.Get("champion") : champion.text;
+            play.text = TranslationManager._instance.Get("play") != string.Empty ? TranslationManager._instance.Get("play") : play.text;
         }
     }
 }

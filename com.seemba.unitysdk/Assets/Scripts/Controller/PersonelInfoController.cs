@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class PersonelInfoController : MonoBehaviour
     {
         #region Script Parameters

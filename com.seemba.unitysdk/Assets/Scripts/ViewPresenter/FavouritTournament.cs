@@ -1,14 +1,17 @@
 ﻿using Newtonsoft.Json;
-using SimpleJSON;
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
+    public class FavouriteChallenge
+    {
+        public string gain;
+        public string gain_type;
+        public string type;
+    }
     public class FavouritTournament : MonoBehaviour
     {
         #region Static
@@ -43,11 +46,11 @@ namespace SeembaSDK
         public async Task<bool> GetFavoriteTournament(string userId)
         {
             string url = Endpoint.classesURL + "/users/" + userId + "/favorites";
-            var res = await SeembaWebRequest.Get.HttpsGet(url);
-            if (!string.IsNullOrEmpty(res))
+            var responseText = await SeembaWebRequest.Get.HttpsGet(url);
+            if (!string.IsNullOrEmpty(responseText))
             {
-                var json = JSON.Parse(res);
-                ShowFavTournament(json["data"]["gain"].Value, json["data"]["gain_type"].Value, json["data"]["type"].Value);
+                SeembaResponse<FavouriteChallenge> response = JsonConvert.DeserializeObject<SeembaResponse<FavouriteChallenge>>(responseText);
+                ShowFavTournament(response.data.gain, response.data.gain_type, response.data.type);
             }
             return true;
         }
@@ -69,18 +72,18 @@ namespace SeembaSDK
             mCurrentGain = gain;
             mCurrentGainType = gainType;
             mCurrentChallengeType = challengeType;
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             if (challengeType.Equals("1vs1"))
             {
                 Fav1V1.SetActive(true);
                 FavTournament.SetActive(false);
                 if (gainType.Contains("cash"))
                 {
-                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=1>";
+                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager._instance.Get("win") + " " + CloseHtmlColorBracket + (float.Parse(gain) * 100) + " <sprite=1>";
                 }
                 else
                 {
-                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager.Get("win") + " " + CloseHtmlColorBracket + float.Parse(gain) + " <sprite=0>";
+                    Fav1V1Text.text = OpenHtmlColorBracket + TranslationManager._instance.Get("win") + " " + CloseHtmlColorBracket + float.Parse(gain) + " <sprite=0>";
                 }
             }
             else

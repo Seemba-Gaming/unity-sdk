@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System;
 using TMPro;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class OnGoingGameListItemController : MonoBehaviour
 	{
 		public TextMeshProUGUI titre;

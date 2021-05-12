@@ -1,14 +1,10 @@
-﻿using SimpleJSON;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-    [System.Serializable]
     public class TourPlayer : MonoBehaviour
     {
         public Text Username;
@@ -23,18 +19,18 @@ namespace SeembaSDK
 
         private void Awake()
         {
-            TranslationManager.scene = "Bracket";
-            Username.text = TranslationManager.Get("to_be_determined");
+            TranslationManager._instance.scene = "Bracket";
+            Username.text = TranslationManager._instance.Get("to_be_determined");
         }
-        public async void InitAsync(JSONNode info)
+        public async void InitAsync(User info)
         {
-            if (info != null && info["avatar"] != null)
+            if(info != null && info.avatar != null)
             {
-                Username.text = info["username"].Value;
-                StartCoroutine(initPlayerAvatar(info["avatar"].Value, Avatar));
-                var mTexture = await UserManager.Get.GetFlagBytes(info["country_code"].Value);
+                Username.text = info.username;
+                StartCoroutine(initPlayerAvatar(info.avatar, Avatar));
+                var mTexture = await UserManager.Get.GetFlagBytes(info.country_code);
                 SetPlayerFlag(Flag, mTexture);
-                if (info["money_credit"] != null && info["money_credit"].AsFloat > 0f)
+                if( info.money_credit > 0f)
                 {
                     Pro.enabled = true;
                 }
@@ -66,6 +62,11 @@ namespace SeembaSDK
 
         public IEnumerator initPlayerAvatar(string url, Image avatar)
         {
+            if(string.IsNullOrEmpty(url))
+            {
+                Debug.LogWarning("url is " + url);
+                yield break;
+            }
             UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
             yield return www.SendWebRequest();
             var texture = DownloadHandlerTexture.GetContent(www);

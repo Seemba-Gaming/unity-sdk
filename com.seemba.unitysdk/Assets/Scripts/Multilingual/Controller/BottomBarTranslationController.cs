@@ -1,11 +1,9 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
+    #pragma warning disable 649
     public class BottomBarTranslationController : MonoBehaviour
     {
         [SerializeField]
@@ -13,14 +11,14 @@ namespace SeembaSDK
         // Start is called before the first frame update
         void Start()
         {
-            TranslationManager.scene = "BottomBar";
-            home.text = TranslationManager.Get("home") != string.Empty ? TranslationManager.Get("home") : home.text;
-            have_fun.text = TranslationManager.Get("have_fun") != string.Empty ? TranslationManager.Get("have_fun") : have_fun.text;
-           // win_money.text = TranslationManager.Get("win_money") != string.Empty ? TranslationManager.Get("win_money") : win_money.text;
-            win_money.text = TranslationManager.Get("crowns") != string.Empty ? TranslationManager.Get("crowns") : win_money.text;
-            setting.text = TranslationManager.Get("settings") != string.Empty ? TranslationManager.Get("settings") : setting.text;
+            TranslationManager._instance.scene = "BottomBar";
+            home.text = TranslationManager._instance.Get("home") != string.Empty ? TranslationManager._instance.Get("home") : home.text;
+            have_fun.text = TranslationManager._instance.Get("have_fun") != string.Empty ? TranslationManager._instance.Get("have_fun") : have_fun.text;
+           // win_money.text = TranslationManager._instance.Get("win_money") != string.Empty ? TranslationManager._instance.Get("win_money") : win_money.text;
+            win_money.text = TranslationManager._instance.Get("crowns") != string.Empty ? TranslationManager._instance.Get("crowns") : win_money.text;
+            setting.text = TranslationManager._instance.Get("settings") != string.Empty ? TranslationManager._instance.Get("settings") : setting.text;
             if(leaderboard != null)
-                leaderboard.text = TranslationManager.Get("leaderboard") != string.Empty ? TranslationManager.Get("leaderboard") : leaderboard.text;
+                leaderboard.text = TranslationManager._instance.Get("leaderboard") != string.Empty ? TranslationManager._instance.Get("leaderboard") : leaderboard.text;
         }
 
         // Update is called once per frame

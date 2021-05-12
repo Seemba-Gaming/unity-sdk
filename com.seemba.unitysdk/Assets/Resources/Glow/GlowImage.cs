@@ -1,10 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Sprites;
 using UnityEngine.UI;
 namespace SeembaSDK.UI
 {
-    [CLSCompliant(false)]
     public class GlowImage : Image
     {
         [SerializeField]

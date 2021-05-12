@@ -89,16 +89,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentFlagBytesString: 
   CurrentAvatarBytesString: {fileID: 0}
+  CurrentFlagBytes: {fileID: 0}
   CurrentUser:
-    _id: 
-    username: 
-    avatar: 
     username_changed: 0
+    email_verified: 0
+    address: 
+    country: 
     lastname: 
     firstname: 
+    current_victories_count: 0
+    highest_victories_streak: 0
+    last_bubble_click: 
+    level: 0
+    payment_account_id: 
+    city: 
+    state: 
+    max_withdraw: 0
+    is_bot: 0
+    games: []
+    _id: 
+    username: 
+    email: 
+    avatar: 
+    country_code: 
+    long_lat: 
+    createdAt: 
+    updatedAt: 
+    customer_id: 
+    last_connection: 
+    birthdate: 
     money_credit: 0
     bubble_credit: 0
-    email: 
     password: 
     personal_id_number: 
     phone: 
@@ -115,30 +136,17 @@ MonoBehaviour:
     confirmed_money: 0
     champion_money: 0
     losses_streak: 0
-    current_victories_count: 0
-    long_lat: 
-    last_bubble_click: 
-    email_verified: 0
     iban_uploaded: 0
-    level: 0
     connect_account_id: 
     id_proof_1_uploaded: 0
     id_proof_2_uploaded: 0
-    city: 
-    country_code: 
-    state: 
-    max_withdraw: 0
     zipcode: 
     passport_uploaded: 0
     last_result: 
-    birthdate: 
-    address: 
-    country: 
     residency_proof_uploaded: 0
     victories_count: 0
     token: 
     flag: 
-    payment_account_id: 
     proLabel: 0
 --- !u!1 &3815232973937849900
 GameObject:
@@ -176,6 +184,7 @@ Transform:
   - {fileID: 8576071937036763167}
   - {fileID: 8924541790555986975}
   - {fileID: 1121196711064589142}
+  - {fileID: 1208789748404933623}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -268,6 +277,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7f375305b4d8e40bfb03469ec600e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5520467610873373076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1208789748404933623}
+  - component: {fileID: 7067004106334673851}
+  m_Layer: 0
+  m_Name: TranslationsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1208789748404933623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520467610873373076}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3815232973937849937}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7067004106334673851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520467610873373076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ed5d8f700d1c7446969ae25af516506, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scene: 
 --- !u!1 &6397853558252185863
 GameObject:
   m_ObjectHideFlags: 0

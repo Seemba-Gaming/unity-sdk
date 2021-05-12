@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class HistoryListController : MonoBehaviour
     {
         #region Script Parameters
@@ -76,8 +75,6 @@ namespace SeembaSDK
             Items = await ChallengeManager.Get.getChallengesUserResults(token);
             nbGameWon.text = UserManager.Get.CurrentUser.victories_count.ToString();
             nbGameWonInARow.text = UserManager.Get.CurrentUser.current_victories_count.ToString();
-            Debug.LogWarning(UserManager.Get.CurrentUser.current_victories_count);
-            Debug.LogWarning(UserManager.Get.CurrentUser.highest_victories_streak);
             if (Items != null)
             {
                 foreach (Challenge item in Items)
@@ -88,7 +85,7 @@ namespace SeembaSDK
                     }
                 }
             }
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             foreach (Challenge item in proItems)
             {
                 if ((item.user_1_score != null && item.user_2_score != null) || item.status == "results pending")

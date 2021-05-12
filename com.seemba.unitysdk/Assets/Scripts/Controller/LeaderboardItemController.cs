@@ -1,11 +1,9 @@
 ﻿using SeembaSDK.UI;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LeaderboardItemController : MonoBehaviour
     {
         public Image Avatar;
@@ -17,7 +15,12 @@ namespace SeembaSDK
         {
             if(!string.IsNullOrEmpty(item.user.avatar))
             {
-                Avatar.sprite = await UserManager.Get.getAvatar(item.user.avatar);
+                var sprite = await UserManager.Get.getAvatar(item.user.avatar);
+                if (sprite != null)
+                {
+                    Avatar.sprite = sprite;
+
+                }
             }
             Username.text = item.user.username;
             if(item.user._id == UserManager.Get.CurrentUser._id)

@@ -1,12 +1,8 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	public class NativePicker : MonoBehaviour
 	{
 		public enum PickerType

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LoginPresenter : MonoBehaviour
     {
         [Header("Login")]

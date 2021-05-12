@@ -5,7 +5,6 @@ using System.Text.RegularExpressions;
 using TMPro;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SignupPresenter : MonoBehaviour
     {
         #region Script Parameters
@@ -41,9 +40,9 @@ namespace SeembaSDK
         #region Unity Methods
         void Start()
         {
-            TranslationManager.scene = "Signup";
-            mTermsConditions = TranslationManager.Get("terms_conditions");
-            mPrivacyPolicy = TranslationManager.Get("privacy_policy");
+            TranslationManager._instance.scene = "Signup";
+            mTermsConditions = TranslationManager._instance.Get("terms_conditions");
+            mPrivacyPolicy = TranslationManager._instance.Get("privacy_policy");
 
             Signin.onClick.AddListener(delegate
             {
@@ -53,8 +52,8 @@ namespace SeembaSDK
 
             changeCharacter.onClick.AddListener(() =>
             {
-                TranslationManager.scene = "Signup";
-                object[] _params = { TranslationManager.Get("choose_your_character") };
+                TranslationManager._instance.scene = "Signup";
+                object[] _params = { TranslationManager._instance.Get("choose_your_character") };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CHOOSE_CHARACTER, _params);
             });
 

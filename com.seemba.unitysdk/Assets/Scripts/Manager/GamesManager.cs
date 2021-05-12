@@ -3,10 +3,11 @@ using System;
 using System.IO;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class GameInfo
     {
         public GamesData game;
@@ -14,7 +15,6 @@ namespace SeembaSDK
         public GameChallengesInfo gain;
     }
 
-    [CLSCompliant(false)]
     public class GamesData
     {
         public string app_store_link;
@@ -72,7 +72,6 @@ namespace SeembaSDK
         public float cash;
         public float bubbles;
     }
-    [CLSCompliant(false)]
     public class GamesManager : MonoBehaviour
     {
         #region Static
@@ -145,6 +144,7 @@ namespace SeembaSDK
         {
             var url = Endpoint.classesURL + "/games/" + gameId;
             var req = await SeembaWebRequest.Get.HttpsGetJSON<GameInfo>(url);
+
             if (req != null)
             {
                 ChallengeManager.Get.InitFees(req.fees);

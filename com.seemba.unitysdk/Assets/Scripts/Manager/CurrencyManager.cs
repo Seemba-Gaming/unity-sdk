@@ -2,7 +2,6 @@
 using UnityEngine;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class CurrencyManager : MonoBehaviour
     {
         public const string CURRENCY_SYMBOL_TYPE_EURO = "€";

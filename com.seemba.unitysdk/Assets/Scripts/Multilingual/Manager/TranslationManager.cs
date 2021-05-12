@@ -1,32 +1,38 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using SimpleJSON;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public sealed class TranslationManager : MonoBehaviour
     {
-        public static string scene = null;
+        #region Static
+        public static TranslationManager _instance { get { return sInstance; } }
+        private static TranslationManager sInstance;
+        #endregion
+        [HideInInspector]
+        public string scene = null;
         public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
-        private static JSONNode Translations = null;
         public static bool? isDownloaded = null;
         //static string systemLanguage = SystemLanguage.English.ToString();
-        static string systemLanguage = Application.systemLanguage.ToString();
+        static string systemLanguage;
         public static Dictionary<string, string> ShortLanguages = new Dictionary<string, string>();
+        private Dictionary<string, Dictionary<string, string>> Translations = new Dictionary<string, Dictionary<string, string>>();
 
-        static string CurrentUserLanguage;
 #if UNITY_EDITOR
         private static bool d_OverrideLanguage = true;
         private static SystemLanguage d_Language = SystemLanguage.French;
 #endif
-        private static SystemLanguage current_language;
-
+        private void Awake()
+        {
+            sInstance = this;
+        }
         private void Start()
         {
+            systemLanguage = Application.systemLanguage.ToString();
             ShortLanguages.Add(SystemLanguage.English.ToString(), "en");
             ShortLanguages.Add(SystemLanguage.French.ToString(), "fr");
             ShortLanguages.Add(SystemLanguage.German.ToString(), "de");
@@ -34,9 +40,9 @@ namespace SeembaSDK
             ShortLanguages.Add(SystemLanguage.Spanish.ToString(), "es");
         }
 
-        private static void CheckInstance()
+        private void CheckInstance()
         {
-            if (Translations == null)
+            if (Translations.Count == 0)
             {
                 // Get the current language.
                 var lang = Application.systemLanguage;
@@ -51,7 +57,6 @@ namespace SeembaSDK
                 if (Array.IndexOf<SystemLanguage>(Languages, lang) == -1)
                     lang = Languages[0];
 
-                current_language = lang;
 
                 if (getTranslationFile() != null)
                 {
@@ -60,27 +65,33 @@ namespace SeembaSDK
             }
         }
         // Returns the translation for this key.
-        public static string Get(string key, string defaultString = null)
+        public string Get(string key, string defaultString = null)
         {
             CheckInstance();
             try
             {
-                return Translations[scene][key].Value;
+                if (Translations.Count == 0)
+                {
+                    return null;
+                }
+                return Translations[scene][key];
             }
             catch (NullReferenceException) { return defaultString; }
         }
-        public static void ParseFile(string data)
+        public void ParseFile(string data)
         {
-            Translations = JSON.Parse(data);
+            var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
+            Translations.Clear();
+            foreach (KeyValuePair<string, object> entry in dict)
+            {
+                Translations.Add(entry.Key, JsonConvert.DeserializeObject<Dictionary<string, string>>(entry.Value.ToString()));
+            }
         }
-        public static async Task<bool> SavePreferedLanguage()
+        public async Task<bool> SavePreferedLanguage()
         {
-
-
             var url = Endpoint.laguagesURL + "/" + systemLanguage + ".json";
             var lastmodified = await SeembaWebRequest.Get.HttpsLastModifed(url);
             var mCurrentLastModifed = PlayerPrefs.GetString("Last-Modified");
-
             if (!string.IsNullOrEmpty(mCurrentLastModifed))
             {
                 if (mCurrentLastModifed.Equals(lastmodified.ToString()))
@@ -120,6 +131,7 @@ namespace SeembaSDK
             }
             else
             {
+                Debug.LogWarning("here");
                 Debug.Log("File Downloaded.");
                 string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, language);
                 System.IO.File.WriteAllText(savePath, req);

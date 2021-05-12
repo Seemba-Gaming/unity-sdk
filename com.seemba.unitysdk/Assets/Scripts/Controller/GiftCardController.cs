@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class GiftCardController : MonoBehaviour
     {
         #region Script Parameters
@@ -75,8 +74,8 @@ namespace SeembaSDK
         public void OnClickGift()
         {
             ViewsEvents.Get.Menu.Market.GetComponent<MarketController>().SetCurrentGiftCard(mCurrentCard);
-            TranslationManager.scene = "Home";
-            object[] _params = { TranslationManager.Get("purchase"), mCurrentCard.name, TranslationManager.Get("you_are_about_to_pay"), mCurrentCard.price, TranslationManager.Get("spend_bubbles") };
+            TranslationManager._instance.scene = "Home";
+            object[] _params = { TranslationManager._instance.Get("purchase"), mCurrentCard.name, TranslationManager._instance.Get("you_are_about_to_pay"), mCurrentCard.price, TranslationManager._instance.Get("spend_bubbles") };
             PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_GIFT_CARD_INFO, _params, null, GiftImage);
         }
         #endregion

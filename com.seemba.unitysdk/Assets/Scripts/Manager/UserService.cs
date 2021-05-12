@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class UserService : MonoBehaviour
     {
         #region Static

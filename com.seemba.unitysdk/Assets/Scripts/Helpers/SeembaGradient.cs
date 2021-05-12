@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using System;
 
 
 namespace SeembaSDK
 {
 	[AddComponentMenu("UI/Effects/SeembaGradient")]
-	[CLSCompliant(false)]
 	public class SeembaGradient : BaseMeshEffect
 	{
 		public enum Type

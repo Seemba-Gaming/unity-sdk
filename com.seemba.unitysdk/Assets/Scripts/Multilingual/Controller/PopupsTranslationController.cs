@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class PopupsTranslationController : MonoBehaviour
     {
         [Header("Popup duels")]
@@ -24,17 +23,17 @@ namespace SeembaSDK
 
         public void Init()
         {
-            TranslationManager.scene = "Home";
-            Challenge.text = TranslationManager.Get("challenge") != string.Empty ? TranslationManager.Get("challenge") : Challenge.text;
-            Selection.text = TranslationManager.Get("selection") != string.Empty ? TranslationManager.Get("selection") : Selection.text;
-            WinAndGet.text = TranslationManager.Get("win_and_get") != string.Empty ? TranslationManager.Get("win_and_get") : WinAndGet.text;
-            EntryFee.text = TranslationManager.Get("entry_fee") != string.Empty ? TranslationManager.Get("entry_fee") : EntryFee.text;
-            Bubbles.text = TranslationManager.Get("bubbles") != string.Empty ? TranslationManager.Get("bubbles") : Bubbles.text;
-            DuelConfirmButtonText.text = TranslationManager.Get("go") != string.Empty ? TranslationManager.Get("go") : DuelConfirmButtonText.text;
+            TranslationManager._instance.scene = "Home";
+            Challenge.text = TranslationManager._instance.Get("challenge") != string.Empty ? TranslationManager._instance.Get("challenge") : Challenge.text;
+            Selection.text = TranslationManager._instance.Get("selection") != string.Empty ? TranslationManager._instance.Get("selection") : Selection.text;
+            WinAndGet.text = TranslationManager._instance.Get("win_and_get") != string.Empty ? TranslationManager._instance.Get("win_and_get") : WinAndGet.text;
+            EntryFee.text = TranslationManager._instance.Get("entry_fee") != string.Empty ? TranslationManager._instance.Get("entry_fee") : EntryFee.text;
+            Bubbles.text = TranslationManager._instance.Get("bubbles") != string.Empty ? TranslationManager._instance.Get("bubbles") : Bubbles.text;
+            DuelConfirmButtonText.text = TranslationManager._instance.Get("go") != string.Empty ? TranslationManager._instance.Get("go") : DuelConfirmButtonText.text;
 
-            Select.text = TranslationManager.Get("select") != string.Empty ? TranslationManager.Get("select") : Select.text;
-            PaymentMethod.text = TranslationManager.Get("payment_method") != string.Empty ? TranslationManager.Get("payment_method") : PaymentMethod.text;
-            PaymentConfirmButtonText.text = TranslationManager.Get("confirm") != string.Empty ? TranslationManager.Get("confirm") : PaymentConfirmButtonText.text;
+            Select.text = TranslationManager._instance.Get("select") != string.Empty ? TranslationManager._instance.Get("select") : Select.text;
+            PaymentMethod.text = TranslationManager._instance.Get("payment_method") != string.Empty ? TranslationManager._instance.Get("payment_method") : PaymentMethod.text;
+            PaymentConfirmButtonText.text = TranslationManager._instance.Get("confirm") != string.Empty ? TranslationManager._instance.Get("confirm") : PaymentConfirmButtonText.text;
         }
 
     }

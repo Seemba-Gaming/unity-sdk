@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class BugReportTranslationController : MonoBehaviour
     {
         public Text Title;
@@ -15,7 +14,7 @@ namespace SeembaSDK
 
         private void Start()
         {
-            TranslationManager.scene = "BugReport";
+            TranslationManager._instance.scene = "BugReport";
         }
     }
 }

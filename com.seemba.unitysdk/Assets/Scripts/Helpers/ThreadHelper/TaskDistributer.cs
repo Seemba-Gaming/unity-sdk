@@ -4,7 +4,6 @@ using System.Threading;
 using System.Collections;
 namespace UnityThreading
 {
-	[CLSCompliant(false)]
 	public class TaskDistributor : DispatcherBase
 	{
         private TaskWorker[] workerThreads;

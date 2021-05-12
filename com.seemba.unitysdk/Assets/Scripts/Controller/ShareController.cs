@@ -1,11 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.IO;
-using System;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ShareController : MonoBehaviour
     {
         private string text;
@@ -21,8 +19,8 @@ namespace SeembaSDK
         {
 
             yield return new WaitForEndOfFrame();
-            TranslationManager.scene = "Sharing";
-            text = TranslationManager.Get("i_challenge_you_on") + " "  + GamesManager.GAME_NAME + ". " + TranslationManager.Get("are_you_up") + GamesManager.GAME_ANDROID_URL + " \n" + GamesManager.GAME_IOS_URL;
+            TranslationManager._instance.scene = "Sharing";
+            text = TranslationManager._instance.Get("i_challenge_you_on") + " "  + GamesManager.GAME_NAME + ". " + TranslationManager._instance.Get("are_you_up") + GamesManager.GAME_ANDROID_URL + " \n" + GamesManager.GAME_IOS_URL;
             Texture2D ss = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
             ss.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
             ss.Apply();

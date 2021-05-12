@@ -6,7 +6,6 @@ using System;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class BackgroundController : MonoBehaviour
     {
         public static Sprite CurrentBackground;

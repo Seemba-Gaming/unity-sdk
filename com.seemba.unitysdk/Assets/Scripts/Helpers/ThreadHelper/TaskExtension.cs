@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 namespace UnityThreading
 {
-	[CLSCompliant(false)]
 	public static class TaskExtension
 	{
 		/// <summary>

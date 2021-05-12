@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class FreeBubblesController : MonoBehaviour
     {
         private const int rewardIntervalHours = 2;
@@ -128,7 +127,7 @@ namespace SeembaSDK
         }
         private void updateHeader()
         {
-            ViewsEvents.Get.Menu.Header.GetComponent<HeaderController>().VirtualMoney.text = UserManager.Get.GetCurrentBubblesCredit();
+            ViewsEvents.Get.Menu.Header.GetComponent<HeaderController>().VirtualMoney.text = UserManager.Get.GetCurrentBubblesCredit() + " <sprite=0>";
         }
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class OpponentFound : MonoBehaviour
     {
         public static string adversaireName;
@@ -36,7 +35,12 @@ namespace SeembaSDK
             PanelLookingForPlayer.SetActive(false);
             PanelPlayerFound.SetActive(true);
             opponent_username.text = adversaireName;
-            opponent_avatar.sprite = await UserManager.Get.getAvatar(Avatar);
+            var sprite = await UserManager.Get.getAvatar(Avatar);
+            if (sprite != null)
+            {
+                opponent_avatar.sprite = sprite;
+
+            }
             try
             {
                 var mTexture = await UserManager.Get.GetFlagBytes(AdvCountryCode);

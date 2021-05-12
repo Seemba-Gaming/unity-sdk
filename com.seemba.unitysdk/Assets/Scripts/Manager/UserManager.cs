@@ -3,7 +3,6 @@ using System.Net;
 using System;
 using System.IO;
 using System.Text;
-using SimpleJSON;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
@@ -14,42 +13,11 @@ using Newtonsoft.Json;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-
     public class UserInfo
     {
-        public bool username_changed;
-        public bool email_verified;
-        public string address;
-        public string country;
-        public string lastname;
-        public string firstname;
-        public int highest_victories_streak;
-        public int current_victories_count;
-        public string last_bubble_click;
-        public int level;
-        public string payment_account_id;
-        public string city;
-        public string state;
-        public float max_withdraw;
-        public bool is_bot;
-        public string[] games;
-        public string _id;
-        public string username;
-        public string email;
-        public string avatar;
-        public string country_code;
-        public string long_lat;
-        public string createdAt;
-        public string updatedAt;
-        public string customer_id;
-        public string last_connection;
-        public string birthdate;
-        public float money_credit;
-        public float bubble_credit;
+        public User user;
+        public string token;
     }
-    [CLSCompliant(false)]
-
     public class GeoLocInfo
     {
         public string ip;
@@ -61,15 +29,11 @@ namespace SeembaSDK
         public string timezone;
         public string readme;
     }
-    [CLSCompliant(false)]
-
     public class EmailCode
     {
         public bool success;
         public int code;
     }
-
-    [CLSCompliant(false)]
     public class UserManager : MonoBehaviour
     {
 
@@ -147,6 +111,11 @@ namespace SeembaSDK
             {
                 Debug.LogWarning("downloading");
             }
+            if(!string.IsNullOrEmpty(www.error))
+            {
+                Debug.LogWarning(www.error);
+                return null;
+            }
             var texture = DownloadHandlerTexture.GetContent(www);
             return texture;
         }
@@ -159,7 +128,7 @@ namespace SeembaSDK
         }
 
         //signup with the new api
-        public async Task<JSONNode> signingUp(string username, string email, string password, string avatar)
+        public async Task<SeembaResponse<UserInfo>> signingUp(string username, string email, string password, string avatar)
         {
             WWWForm form = new WWWForm();
             form.AddField("username", username);
@@ -170,47 +139,54 @@ namespace SeembaSDK
             form.AddField("game_id", GamesManager.GAME_ID);
             form.AddField("avatar", avatar);
             var url = Endpoint.classesURL + "/users";
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<UserInfo> response = JsonConvert.DeserializeObject<SeembaResponse<UserInfo>>(responseText);
             //Save The current Session ID
-            saveUserId(N["data"]["_id"].Value);
+            saveUserId(response.data.user._id);
             //Save Session Token
-            saveSessionToken(N["token"].Value);
-            return N;
+            saveSessionToken(response.data.token);
+            return response;
         }
         public async Task<Sprite> getAvatar(string url)
         {
-            var hashCode = url.GetHashCode();
-            Sprite sprite = null;
-            if (!Images.TryGetValue(hashCode, out sprite))
+            if(string.IsNullOrEmpty(url))
             {
-                Texture2D texture = new Texture2D(100, 100);
-                string prefsURL = PlayerPrefs.GetString(url);
-                if (string.IsNullOrEmpty(url))
-                {
-                    return null;
-                }
-                UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
-                await www.SendWebRequest();
-
-                if (www.isNetworkError || www.isHttpError)
-                {
-                    Debug.LogWarning(www.error);
-                    return null;
-                }
-                var avatarTexture = DownloadHandlerTexture.GetContent(www);
-                texture = ImagesManager.RoundCrop(avatarTexture);
-                PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
-                sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
-                if(!Images.ContainsKey(hashCode))
-                {
-                    Images.Add(hashCode, sprite);
-                }
-                return sprite;
+                Debug.LogWarning("avatar url is empty");
+                return null;
             }
             else
             {
-                return sprite;
+                var hashCode = url.GetHashCode();
+                Sprite sprite = null;
+                if (!Images.TryGetValue(hashCode, out sprite))
+                {
+                    Texture2D texture = new Texture2D(100, 100);
+                    string prefsURL = PlayerPrefs.GetString(url);
+                    if (string.IsNullOrEmpty(url))
+                    {
+                        return null;
+                    }
+                    UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+                    await www.SendWebRequest();
+                    if (www.isNetworkError || www.isHttpError)
+                    {
+                        Debug.LogWarning(www.error);
+                        return null;
+                    }
+                    var avatarTexture = DownloadHandlerTexture.GetContent(www);
+                    texture = ImagesManager.RoundCrop(avatarTexture);
+                    PlayerPrefs.SetString(url, System.Convert.ToBase64String(texture.EncodeToPNG()));
+                    sprite = Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), Vector2.zero);
+                    if(!Images.ContainsKey(hashCode))
+                    {
+                        Images.Add(hashCode, sprite);
+                    }
+                    return sprite;
+                }
+                else
+                {
+                    return sprite;
+                }
             }
         }
         public void saveUserId(string user)
@@ -265,24 +241,22 @@ namespace SeembaSDK
             string url = Endpoint.classesURL + "/authenticate";
             var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
             SeembaResponse<UserInfo> response = JsonConvert.DeserializeObject<SeembaResponse<UserInfo>>(responseText);
-            var userData = JsonUtility.FromJson<UserData>(responseText); // à verifier et supprimer
-            CurrentUser = userData.data; // à verifier et supprimer
-            CurrentUser.token = response.token;
-            LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
-
-            CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
-            CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
-            var mTexture = await GetFlagBytes(await GetGeoLoc());
-            CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
-            PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
-            LoaderManager.Get.LoaderController.HideLoader();
-
             if (response.success)
             {
-                saveSessionToken(response.token);
-                saveUserId(response.data._id);
-                CurrentUser._id = response.data._id;
-                CurrentUser.token = response.token;
+                CurrentUser = response.data.user;
+                CurrentUser.token = response.data.token;
+                LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
+                Debug.LogWarning(CurrentUser.avatar);
+                CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
+                CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
+                var mTexture = await GetFlagBytes(await GetGeoLoc());
+                CurrentFlagBytesString = Convert.ToBase64String(mTexture.EncodeToPNG());
+                PlayerPrefs.SetString("CurrentFlagBytesString", CurrentFlagBytesString);
+                LoaderManager.Get.LoaderController.HideLoader();
+                saveSessionToken(response.data.token);
+                saveUserId(response.data.user._id);
+                CurrentUser._id = response.data.user._id;
+                CurrentUser.token = response.data.token;
                 return true;
             }
             else
@@ -394,18 +368,18 @@ namespace SeembaSDK
 
             form.AddField("email", email);
             form.AddField("password", password);
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
-            return N["success"].AsBool;
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<UserData> response = JsonConvert.DeserializeObject<SeembaResponse<UserData>>(responseText);
+            return response.success;
         }
         public async Task<bool> checkMailAsync(string mail)
         {
             string url = Endpoint.classesURL + "/users/check/email";
             WWWForm form = new WWWForm();
             form.AddField("email", mail);
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
-            return N["success"].AsBool;
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<object> response = JsonConvert.DeserializeObject<SeembaResponse<object>>(responseText);
+            return response.success;
         }
         public async Task<bool> checkUsernameAsync(string username)
         {
@@ -413,9 +387,9 @@ namespace SeembaSDK
             string url = Endpoint.classesURL + "/users/check/username";
             WWWForm form = new WWWForm();
             form.AddField("username", username);
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var N = JSON.Parse(response);
-            return N["success"].AsBool;
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            SeembaResponse<object> response = JsonConvert.DeserializeObject<SeembaResponse<object>>(responseText);
+            return response.success;
         }
         string getDataPath()
         {

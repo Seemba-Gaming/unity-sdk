@@ -52,10 +52,10 @@ namespace SeembaSDK
         POPUP_PRIVACY_POLICY,
         POPUP_GIFT_CARD_SUCCESS,
         POPUP_GIFT_CARD_INFO,
+        TOURNAMENT_DRAW,
         SESSION_EXPIRED
     }
 
-    [CLSCompliant(false)]
     public class PopupsController : MonoBehaviour
     {
         #region static
@@ -79,6 +79,7 @@ namespace SeembaSDK
     public Animator                                 PopupCongratsWithdrawal;
     public Animator                                 PopupPrivacyPolicy;
     public Animator                                 PopupGiftCard;
+    public Animator                                 PopupTournamentDraw;
 
         #endregion
 
@@ -144,9 +145,6 @@ namespace SeembaSDK
                 case PopupType.INFO_POPUP_TOO_YOUNG:
                     PopupManager.Get.PopupViewPresenter.ShowTooyoungPopup(_params);
                     break;
-                case PopupType.INFO_POPUP_MISSING_INFO:
-                    PopupManager.Get.PopupViewPresenter.ShowMissingInfoPopup(_params, note);
-                    break;
                 case PopupType.POPUP_CONGRATS:
                     PopupManager.Get.PopupViewPresenter.ShowCongratsPopup(_params);
                     break;
@@ -203,6 +201,9 @@ namespace SeembaSDK
                     break;
                 case PopupType.INFO_POPUP_EMAIL_NOT_FOUND:
                     PopupManager.Get.PopupViewPresenter.ShowInfoPopup(_params);
+                    break;
+                case PopupType.TOURNAMENT_DRAW:
+                    PopupManager.Get.PopupViewPresenter.ShowTournamentDrawPopupAsync(_params);
                     break;
                 default:
                     Debug.LogWarning(popupType);

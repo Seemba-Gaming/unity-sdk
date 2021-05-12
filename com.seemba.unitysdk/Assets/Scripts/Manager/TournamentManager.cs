@@ -1,4 +1,4 @@
-﻿using SimpleJSON;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,10 +7,19 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
+    public class TournamentInfo
+    {
+        public GenericTournament tournament;
+        public GenericChallenge current_challenge;
+    }
+    public class NewTournament
+    {
+        public GenericTournament tournament;
+        public GenericChallenge current_challenge;
+        public User user;
+    }
     public class TournamentManager : MonoBehaviour
     {
         #region Static
@@ -102,27 +111,15 @@ namespace SeembaSDK
                 }
             }
         }
-        public async Task<JSONArray> getUserPendingTournaments(string token)
-        {
-            string url = Endpoint.classesURL + "/tournaments/pending/" + GamesManager.GAME_ID;
-            var json = JSON.Parse(await SeembaWebRequest.Get.HttpsGet(url));
-            return json["data"].AsArray;
-        }
-        public async Task<JSONArray> getUserFinishedTournaments()
-        {
-
-            string url = Endpoint.classesURL + "/tournaments/finished/" + GamesManager.GAME_ID;
-            var req = await SeembaWebRequest.Get.HttpsGet(url);
-            var json = JSON.Parse(req);
-            return json["data"].AsArray;
-        }
-        public async Task<JSONNode> getTournament(string id, string token)
+        public async Task<TournamentInfo> getTournament(string id)
         {
             string url = Endpoint.classesURL + "/tournaments/" + id;
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-            var response = await SeembaWebRequest.Get.HttpsGet(url);
-            var json = JSON.Parse(response);
-            return json;
+            string responseText = await SeembaWebRequest.Get.HttpsGet(url);
+            Debug.LogWarning(url);
+            Debug.LogWarning(responseText);
+            SeembaResponse<TournamentInfo> response = JsonConvert.DeserializeObject<SeembaResponse<TournamentInfo>>(responseText);
+            return response.data;
         }
         public async Task<bool> addScore(string tournamentsID, float score)
         {
@@ -150,11 +147,15 @@ namespace SeembaSDK
             form.AddField("gain_type", gain_type);
             form.AddField("game_id", GamesManager.GAME_ID);
             form.AddField("user_id", userId);
-            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
-            var tournementdata = JSON.Parse(response);
-            UserManager.Get.UpdateUserCredit((tournementdata["user"]["money_credit"].AsFloat).ToString(), tournementdata["user"]["bubble_credit"].Value);
-            TournamentController.setCurrentTournamentID(tournementdata["tournament"]["_id"].Value);
-            return tournementdata["tournament"]["_id"].Value;
+            var responseText = await SeembaWebRequest.Get.HttpsPost(url, form);
+            UserManager.Get.CurrentUser.username = responseText;
+            SeembaResponse<NewTournament> response = JsonConvert.DeserializeObject<SeembaResponse<NewTournament>>(responseText);
+
+            //var tournementdata = JSON.Parse(response);
+            UserManager.Get.UpdateUserCredit(response.data.user.money_credit.ToString(), response.data.user.bubble_credit.ToString());
+            //UserManager.Get.UpdateUserCredit((tournementdata["user"]["money_credit"].AsFloat).ToString(), tournementdata["user"]["bubble_credit"].Value);
+            TournamentController.setCurrentTournamentID(response.data.tournament._id);
+            return response.data.tournament._id;
         }
         public bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {

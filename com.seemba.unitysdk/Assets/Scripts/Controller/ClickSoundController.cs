@@ -6,8 +6,6 @@ using System;
 namespace SeembaSDK
 {
     [RequireComponent(typeof(Button))]
-
-    [CLSCompliant(false)]
     public class ClickSoundController : MonoBehaviour
     {
         public AudioClip sound;

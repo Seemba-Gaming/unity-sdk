@@ -1,10 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SeembaSDK
 {
     [System.Serializable]
-    [CLSCompliant(false)]
     public class TourChallengePresenter : MonoBehaviour
     {
         public TourPlayer Player1;

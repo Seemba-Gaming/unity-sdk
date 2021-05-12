@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LoaderTranslationController : MonoBehaviour
     {
         [Header("Loader")]
@@ -14,7 +13,7 @@ namespace SeembaSDK
         private Text reconnect, check_connection, setting_language;
         void Start()
         {
-            TranslationManager.scene = "Loader";
+            TranslationManager._instance.scene = "Loader";
         }
     }
 }

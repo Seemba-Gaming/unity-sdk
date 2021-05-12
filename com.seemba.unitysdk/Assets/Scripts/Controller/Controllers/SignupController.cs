@@ -1,11 +1,9 @@
-﻿using SimpleJSON;
-using System;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SignupController : MonoBehaviour
     {
         // Start is called before the first frame update
@@ -43,14 +41,14 @@ namespace SeembaSDK
 
                         var avatarUrl = await ImagesManager.FixImage(bytes);
 
-                        JSONNode Res = null;
+                        SeembaResponse<UserInfo> Res = null;
                         if (avatarUrl != "error")
                         {
                             Res = await UserManager.Get.signingUp(username.ToUpper(), email, password, avatarUrl);
                         }
                         LoaderManager.Get.LoaderController.HideLoader();
 
-                        if (Res["success"].AsBool)
+                        if (Res.success)
                         {
                             SeembaAnalyticsManager.Get.SendGameEvent("Signed up");
                             var deviceToken = PlayerPrefs.GetString("DeviceToken");
@@ -59,8 +57,8 @@ namespace SeembaSDK
                             if (Application.platform == RuntimePlatform.Android)
                                 platform = "android";
                             else platform = "ios";
-                        //Add Device Token To Receive notification on current device
-                        try
+                            //Add Device Token To Receive notification on current device
+                            try
                             {
                                 await UserManager.Get.addUserDeviceToken(userid, GamesManager.GAME_ID, deviceToken, platform);
 
@@ -68,6 +66,8 @@ namespace SeembaSDK
                             catch (Exception)
                             {
                             }
+                            UserManager.Get.CurrentUser = Res.data.user;
+                            UserManager.Get.CurrentUser.token = Res.data.token;
                             UserManager.Get.CurrentUser.username = username;
                             LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.SAVING);
                             UserManager.Get.CurrentAvatarBytesString = await UserManager.Get.getAvatar(avatarUrl);
@@ -78,7 +78,7 @@ namespace SeembaSDK
                             ChallengeManager.CurrentChallengeGain = "2";
                             ChallengeManager.CurrentChallengeGainType = ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES;
                             LoaderManager.Get.LoaderController.HideLoader();
-                            EventsController.Get.startFirstChallenge(Res["token"].Value);
+                            EventsController.Get.startFirstChallenge(Res.data.token);
                             SeembaAnalyticsManager.Get.SendUserEvent("Signed up with Email");
                         }
                         else

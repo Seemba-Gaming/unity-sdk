@@ -3,19 +3,38 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-	[CLSCompliant(false)]
 	[Serializable]
 	public class User
 	{
-		public string _id;
-		public string username;
-		public string avatar;
 		public bool username_changed;
+		public bool email_verified;
+		public string address;
+		public string country;
 		public string lastname;
 		public string firstname;
+		public int current_victories_count;
+		public int highest_victories_streak;
+		public string last_bubble_click;
+		public int level;
+		public string payment_account_id;
+		public string city;
+		public string state;
+		public float max_withdraw;
+		public bool is_bot;
+		public string[] games;
+		public string _id;
+		public string username;
+		public string email;
+		public string avatar;
+		public string country_code;
+		public string long_lat;
+		public string createdAt;
+		public string updatedAt;
+		public string customer_id;
+		public string last_connection;
+		public string birthdate;
 		public float money_credit;
 		public float bubble_credit;
-		public string email;
 		public string password;
 		public string personal_id_number;
 		public string phone;
@@ -32,33 +51,20 @@ namespace SeembaSDK
 		public int confirmed_money;
 		public int champion_money;
 		public int losses_streak;
-		public int current_victories_count;
-		public int highest_victories_streak;
-		public string long_lat;
-		public string last_bubble_click;
-		public bool email_verified;
 		public bool iban_uploaded;
-		public int level;
 		public string connect_account_id;
 		public bool id_proof_1_uploaded;
 		public bool id_proof_2_uploaded;
-		public string city;
-		public string country_code;
-		public string state;
-		public float max_withdraw;
 		public string zipcode;
 		public bool passport_uploaded;
 		public string last_result;
-		public string birthdate;
-		public string address;
-		public string country;
 		public bool residency_proof_uploaded;
 		public int victories_count;
 		public string token;
 		public string flag;
-		public string payment_account_id;
 		public bool proLabel;
-		public User(string _id, string username, string avatar, bool username_changed, string personal_id_number, string lastname, string firstname, float money_credit, float bubble_credit,
+	
+	public User(string _id, string username, string avatar, bool username_changed, string personal_id_number, string lastname, string firstname, float money_credit, float bubble_credit,
 			string email, string password, int amateur_bubble, int novice_bubble, int legend_bubble,
 			int confident_bubble, int confirmed_bubble, int champion_bubble, int amateur_money, int novice_money,
 			int legend_money, int confident_money, int confirmed_money, int champion_money, int losses_streak,

@@ -2,8 +2,6 @@
 using SeembaSDK.Sentry;
 using UnityEngine;
 
-[CLSCompliant(false)]
-#pragma warning disable CS3019 // La vérification de conformité CLS ne sera pas effectuée, car l'objet inspecté n'est pas visible hors de cet assembly
 class SentryController
 {
     private static SentryController _Instance = null;

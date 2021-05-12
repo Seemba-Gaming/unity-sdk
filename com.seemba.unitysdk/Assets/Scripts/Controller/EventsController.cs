@@ -1,4 +1,4 @@
-﻿using SimpleJSON;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -9,7 +9,17 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
+    public class StripeError
+    {
+        public StripeErrorInfo error; 
+    }
+    public class StripeErrorInfo
+    {
+        public string code;
+        public string doc_url;
+        public string message;
+        public string type;
+    }
     public class EventsController : MonoBehaviour
     {
         #region Static
@@ -67,32 +77,34 @@ namespace SeembaSDK
             }
             else if (www.uri.ToString().Contains("stripe"))
             {
-                var responseJson = JSON.Parse(www.downloadHandler.text);
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_number"))
+                Debug.LogWarning(www.downloadHandler.text);
+                StripeError response = JsonConvert.DeserializeObject<StripeError>(www.downloadHandler.text);
+
+                if (response.error.code.Replace('"', ' ').Trim().Equals("incorrect_number"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect Card Number", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_NUMBER, PopupsText.Get.StripeIncorrectNumber());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("card_declined"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("card_declined"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Card Declined", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_CARD_DECLINED, PopupsText.Get.StripeCardDeclined());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("incorrect_cvc"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("incorrect_cvc"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect CVC", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_INCORRECT_CVC, PopupsText.Get.StripeIncorrectCVC());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("balance_insufficient"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("balance_insufficient"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Card Balance Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
                     return;
                 }
-                if (responseJson["error"]["code"].ToString().Replace('"', ' ').Trim().Equals("insufficient_funds"))
+                if (response.error.code.Replace('"', ' ').Trim().Equals("insufficient_funds"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Card funds Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
@@ -201,49 +213,6 @@ namespace SeembaSDK
                     ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Login.gameObject);
                 });
             });
-        }
-        public void missingInfowithdrawContinue()
-        {
-            UnityThreading.ActionThread thread;
-            thread = UnityThreadHelper.CreateThread(() =>
-            {
-                Thread.Sleep(300);
-                UnityThreadHelper.Dispatcher.Dispatch(() =>
-                {
-                    ViewsEvents.Get.GoToMenu(ViewsEvents.Get.IdProof.gameObject);
-                });
-            });
-        }
-
-        public void withdrawFailed(string headertext, string headertext2, string msg)
-        {
-            StartCoroutine(WithdrawFailed(headertext, headertext2, msg));
-        }
-
-        IEnumerator WithdrawFailed(string headertext, string headertext2, string msg)
-        {
-            ViewsEvents.Get.Menu.ScrollSnap.LerpToPage(0);
-            BottomMenuController.Get.selectSettings();
-            ViewsEvents.Get.SettingsClick();
-            yield return new WaitForSeconds(0.2f);
-            ViewsEvents.Get.WinMoneyClick();
-            LoaderManager.Get.LoaderController.HideLoader();
-            object[] _params = { headertext, headertext2, msg, TranslationManager.Get("continue") };
-            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_PAYMENT_FAILED, _params);
-        }
-        public void withdrawSucceeded()
-        {
-            StartCoroutine(WithdrawSucceeded());
-        }
-        IEnumerator WithdrawSucceeded()
-        {
-            ViewsEvents.Get.Menu.ScrollSnap.LerpToPage(0);
-            BottomMenuController.Get.selectSettings();
-            ViewsEvents.Get.SettingsClick();
-            yield return new WaitForSeconds(0.2f);
-            ViewsEvents.Get.WinMoneyClick();
-            LoaderManager.Get.LoaderController.HideLoader();
-            PopupManager.Get.PopupController.ShowPopup(PopupType.POPUP_CONGRATS_WITHDRAW, PopupsText.Get.CongratsWithdraw());
         }
         public void backToWinMoney()
         {

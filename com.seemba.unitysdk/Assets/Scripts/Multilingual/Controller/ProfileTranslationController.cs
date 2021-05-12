@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
-#pragma warning disable 0649
+    #pragma warning disable 649
     public class ProfileTranslationController : MonoBehaviour
     {
         [SerializeField]
@@ -19,14 +18,14 @@ namespace SeembaSDK
         // Start is called before the first frame update
         void Start()
         {
-            TranslationManager.scene = "Profile";
-            games_won.text = TranslationManager.Get("games_won") != string.Empty ? TranslationManager.Get("games_won") : games_won.text;
-            in_a_row.text = TranslationManager.Get("in_a_row") != string.Empty ? TranslationManager.Get("in_a_row") : in_a_row.text;
-            favourite.text = TranslationManager.Get("favourite") != string.Empty ? TranslationManager.Get("favourite") : favourite.text;
-            verified.text = TranslationManager.Get("verified") != string.Empty ? TranslationManager.Get("verified") : verified.text;
-            pending.text = TranslationManager.Get("pending") != string.Empty ? TranslationManager.Get("pending") : pending.text;
-            unverified.text = TranslationManager.Get("unverified") != string.Empty ? TranslationManager.Get("unverified") : unverified.text;
-            history.text = TranslationManager.Get("history") != string.Empty ? TranslationManager.Get("history") : history.text;
+            TranslationManager._instance.scene = "Profile";
+            games_won.text = TranslationManager._instance.Get("games_won") != string.Empty ? TranslationManager._instance.Get("games_won") : games_won.text;
+            in_a_row.text = TranslationManager._instance.Get("in_a_row") != string.Empty ? TranslationManager._instance.Get("in_a_row") : in_a_row.text;
+            favourite.text = TranslationManager._instance.Get("favourite") != string.Empty ? TranslationManager._instance.Get("favourite") : favourite.text;
+            verified.text = TranslationManager._instance.Get("verified") != string.Empty ? TranslationManager._instance.Get("verified") : verified.text;
+            pending.text = TranslationManager._instance.Get("pending") != string.Empty ? TranslationManager._instance.Get("pending") : pending.text;
+            unverified.text = TranslationManager._instance.Get("unverified") != string.Empty ? TranslationManager._instance.Get("unverified") : unverified.text;
+            history.text = TranslationManager._instance.Get("history") != string.Empty ? TranslationManager._instance.Get("history") : history.text;
         }
     }
 }

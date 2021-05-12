@@ -3,17 +3,14 @@ using System.Threading;
 using System.Collections;
 namespace UnityThreading
 {
-	[CLSCompliant(false)]
 	public enum TaskSortingSystem
     {
         NeverReorder,
         ReorderWhenAdded,
         ReorderWhenExecuted
     }
-	[CLSCompliant(false)] 
 	public delegate void TaskEndedEventHandler(Task sender);
 
-	[CLSCompliant(false)]
 	public abstract class Task
     {
         /// <summary>
@@ -340,7 +337,6 @@ namespace UnityThreading
 			return new Task<T>(that, methodName, args);
 		}
 	}
-	[CLSCompliant(false)]
 	public class Task<T> : Task
     {
 		private Func<Task, T> function;

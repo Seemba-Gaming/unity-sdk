@@ -4,7 +4,6 @@ using System;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ProfilePresenter : MonoBehaviour
     {
         #region Script Parameters
@@ -27,17 +26,14 @@ namespace SeembaSDK
         public async void InitProfile(User user)
         {
             PlayerId = user._id;
-            avatar.sprite = await UserManager.Get.getAvatar(user.avatar);
-            username.text = user.username;
-            string token = UserManager.Get.getCurrentSessionToken();
-            string userId = UserManager.Get.getCurrentUserId();
-            WithdrawManager wm = new WithdrawManager();
-            AccountStatus accountStatus = null;
-
-            if (PlayerId == userId)
+            var sprite = await UserManager.Get.getAvatar(user.avatar);
+            if (sprite != null)
             {
-                accountStatus = await wm.accountVerificationStatus(token);
+                avatar.sprite = sprite;
+
             }
+            username.text = user.username;
+            string userId = UserManager.Get.getCurrentUserId();
 
             string Vectoires = user.victories_count.ToString();
             string SerieVectoires = user.current_victories_count.ToString();
@@ -46,18 +42,6 @@ namespace SeembaSDK
             if (PlayerId != userId)
             {
                 changeAvatar.interactable = false;
-            }
-            else
-            {
-                if (accountStatus.verification_status == WithdrawManager.ACCOUNT_VERIFICATION_STATUS_PENDING)
-                {
-                    pending.SetActive(true);
-                }
-                else if (accountStatus.verification_status == WithdrawManager.ACCOUNT_VERIFICATION_STATUS_VERIFIED)
-                {
-                    verified.SetActive(true);
-                }
-                else unverified.SetActive(true);
             }
             username.text = user.username;
             try

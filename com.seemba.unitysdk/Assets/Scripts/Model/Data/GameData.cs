@@ -2,7 +2,6 @@
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class GameData
     {
         public bool success;

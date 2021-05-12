@@ -1,9 +1,7 @@
-using System;
 using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ConfigFileHelper : MonoBehaviour
     {
         public const string CONFIG_FILE_NAME = "seemba-services";

@@ -7,7 +7,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class SearchingForPlayerPresenter : MonoBehaviour
     {
         #region Static
@@ -37,7 +36,7 @@ namespace SeembaSDK
             user_flag.sprite = Sprite.Create(mTexture, new Rect(0f, 0f, mTexture.width, mTexture.height), Vector2.zero);
             user_avatar.sprite = UserManager.Get.CurrentAvatarBytesString;
 
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             if(ChallengeManager.CurrentChallenge.gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES))
             {
                 gain.text = ChallengeManager.CurrentChallenge.gain + " <sprite=0>";
@@ -50,8 +49,10 @@ namespace SeembaSDK
 
             try
             {
-
-                int count = 10;
+                Continue.interactable = false;
+                int count = 5;
+                counter.gameObject.SetActive(true);
+                counter.text = count.ToString();
                 UnityThreadHelper.CreateThread(() =>
                  {
                      while (count > 0)
@@ -59,27 +60,11 @@ namespace SeembaSDK
                          Thread.Sleep(1000);
                          UnityThreadHelper.Dispatcher.Dispatch(() =>
                          {
-                             if ((10 - count) == 3)
+                             if (count == 0 || EventsController.advFound)
                              {
-                                 try
-                                 {
-                                     Continue.transform.localScale = Vector3.one;
-                                 }
-                                 catch (NullReferenceException)
-                                 {
-                                 }
-                             }
-                             if ((10 - count) == 9)
-                             {
-                                 try
-                                 {
-                                     looking_for_opponent.transform.localScale = Vector3.one;
-                                     start_now.transform.localScale = Vector3.zero;
-                                     same_game.transform.localScale = Vector3.zero;
-                                 }
-                                 catch (NullReferenceException)
-                                 {
-                                 }
+                                Continue.interactable = true;
+                                counter.gameObject.SetActive(false);
+                                count = 0;
                              }
                              counter.text = count.ToString();
                          });
@@ -87,8 +72,9 @@ namespace SeembaSDK
                      }
                  });
             }
-            catch (NullReferenceException)
+            catch (NullReferenceException ex)
             {
+                Debug.LogWarning(ex.Message);
             }
         }
 
@@ -99,30 +85,29 @@ namespace SeembaSDK
         public IEnumerator CheckOpponentCoroutine()
         {
             yield return new WaitForSeconds(0.5f);
-            while(!EventsController.advFound)
+            while (!EventsController.advFound)
             {
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(1f);
                 CheckOpponent();
             }
         }
         private async void CheckOpponent()
         {
-            string token = UserManager.Get.getCurrentSessionToken();
             string userID = UserManager.Get.getCurrentUserId();
-            var N = await ChallengeManager.Get.getChallengebyIdAsync(ChallengeManager.CurrentChallengeId, token);
-            if (!string.IsNullOrEmpty(N["data"]["matched_user_1"]["_id"].Value) && !string.IsNullOrEmpty(N["data"]["matched_user_2"]["_id"].Value))
+            var response = await ChallengeManager.Get.getChallengebyIdAsync(ChallengeManager.CurrentChallengeId);
+            if (response.matched_user_1 != null && !string.IsNullOrEmpty(response.matched_user_1._id) && response.matched_user_2 != null  && !string.IsNullOrEmpty(response.matched_user_2._id))
             {
-                if (N["data"]["matched_user_1"]["_id"].Value.Equals(userID))
+                if (response.matched_user_1._id.Equals(userID))
                 {
-                    OpponentFound.adversaireName = N["data"]["matched_user_2"]["username"];
-                    OpponentFound.Avatar = N["data"]["matched_user_2"]["avatar"];
-                    OpponentFound.AdvCountryCode = N["data"]["matched_user_2"]["country_code"];
+                    OpponentFound.adversaireName = response.matched_user_2.username;
+                    OpponentFound.Avatar = response.matched_user_2.avatar;
+                    OpponentFound.AdvCountryCode = response.matched_user_2.country_code;
                 }
                 else
                 {
-                    OpponentFound.adversaireName = N["data"]["matched_user_1"]["username"];
-                    OpponentFound.Avatar = N["data"]["matched_user_1"]["avatar"];
-                    OpponentFound.AdvCountryCode = N["data"]["matched_user_1"]["country_code"];
+                    OpponentFound.adversaireName = response.matched_user_1.username;
+                    OpponentFound.Avatar = response.matched_user_1.avatar;
+                    OpponentFound.AdvCountryCode = response.matched_user_1.country_code;
                 }
                 EventsController.advFound = true;
             }

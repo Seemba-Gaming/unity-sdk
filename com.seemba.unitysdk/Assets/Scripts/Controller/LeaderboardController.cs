@@ -2,18 +2,14 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace SeembaSDK
 {
-    #pragma warning disable CS4014
-    [CLSCompliant(false)]
     public class LeaderBoardItem
     {
         public User user;
         public int score;
     }
-    [CLSCompliant(false)]
     public class LeaderboardController : MonoBehaviour
     {
         #region Script Parameters
@@ -51,7 +47,7 @@ namespace SeembaSDK
             foreach(LeaderBoardItem item in LeaderBoardItems)
             {
                 var leaderboardItem = Instantiate(LeaderboarditemPrefab, Content);
-                leaderboardItem.GetComponent<LeaderboardItemController>().InitAsync(item);
+                _ = leaderboardItem.GetComponent<LeaderboardItemController>().InitAsync(item);
             }
         }
 

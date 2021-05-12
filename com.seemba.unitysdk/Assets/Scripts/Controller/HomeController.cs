@@ -5,7 +5,6 @@ using UnityEngine.Networking;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class HomeController : MonoBehaviour
     {
         public static bool NoLastResult, NoOngoing;

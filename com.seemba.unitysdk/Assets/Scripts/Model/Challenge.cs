@@ -1,7 +1,6 @@
 ﻿using System;
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class Challenge
     {
         //public string objectId;

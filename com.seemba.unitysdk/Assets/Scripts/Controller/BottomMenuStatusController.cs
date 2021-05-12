@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class BottomMenuStatusController : MonoBehaviour
     {
         public GameObject Toolbar;

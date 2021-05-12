@@ -1,9 +1,7 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class LoaderController : MonoBehaviour
     {
         public Loader Loader;

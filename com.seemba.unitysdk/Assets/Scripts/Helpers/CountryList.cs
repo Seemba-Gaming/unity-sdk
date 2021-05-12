@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class CountryList
     {
         private static CountryList instance;

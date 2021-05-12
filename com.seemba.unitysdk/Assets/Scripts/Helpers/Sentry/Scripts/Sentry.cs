@@ -12,7 +12,6 @@ namespace SeembaSDK.Sentry
     /// </remarks>
     /// <seealso href="https://feedback.unity3d.com/suggestions/add-support-for-nullable-types-to-jsonutility"/>
     [Serializable]
-    [CLSCompliant(false)]
     public class Gpu
     {
         /// <summary>
@@ -270,7 +269,6 @@ namespace SeembaSDK.Sentry
     }
 
     [Serializable]
-    [CLSCompliant(false)]
     public class Context
     {
         public App app;
@@ -373,7 +371,6 @@ namespace SeembaSDK.Sentry
         public string screenOrientation;
     }
     [Serializable]
-[CLSCompliant(false)]
     public class Game
     {
         public string _id;
@@ -387,7 +384,6 @@ namespace SeembaSDK.Sentry
     }
 
     [Serializable]
-[   CLSCompliant(false)]
     public class User
     {
         public string email;
@@ -401,7 +397,6 @@ namespace SeembaSDK.Sentry
     }
 
     [Serializable]
-[   CLSCompliant(false)]
     public class SentryEvent
     {
         public string event_id;
@@ -490,7 +485,6 @@ namespace SeembaSDK.Sentry
         }
     }
 
-    [CLSCompliant(false)]
     public class SentryExceptionEvent : SentryEvent
     {
         public ExceptionContainer exception;

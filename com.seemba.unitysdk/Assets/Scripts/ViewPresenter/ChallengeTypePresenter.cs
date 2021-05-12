@@ -5,7 +5,6 @@ using TMPro;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class ChallengeTypePresenter : MonoBehaviour
     {
         public enum ChallengesType // your custom enumeration
@@ -29,7 +28,7 @@ namespace SeembaSDK
         // Start is called before the first frame update
         void OnEnable()
         {
-            TranslationManager.scene = "Home";
+            TranslationManager._instance.scene = "Home";
             _pretext = "<color=#535CB3>" + HomeTranslationController.WIN + "</color>";
 
             switch (challenges_type)

@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
-using SimpleJSON;
-using System;
 using UnityEngine.UI;
 
 namespace SeembaSDK
 {
-    [CLSCompliant(false)]
     public class TournamentController : MonoBehaviour
     {
         #region Static
@@ -19,7 +16,6 @@ namespace SeembaSDK
         #endregion
 
         public TournamentPresenter tp;
-        public JSONNode tournamentJson;
         public Button _Play, _Great;
         public GameObject Bubbles, Others;
 

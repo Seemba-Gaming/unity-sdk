@@ -21,7 +21,8 @@ namespace SeembaSDK
             privacy_policy,
             credit,
             secured_payment,
-            transaction_fees_may_apply;
+            transaction_fees_may_apply,
+            back_button;
         void Start()
         {
             TranslationManager._instance.scene = "BankingInfo";
@@ -40,6 +41,9 @@ namespace SeembaSDK
             credit.text = TranslationManager._instance.Get("credit") != string.Empty ? TranslationManager._instance.Get("credit") : credit.text;
             secured_payment.text = TranslationManager._instance.Get("secured_payment") != string.Empty ? TranslationManager._instance.Get("secured_payment") : secured_payment.text;
             transaction_fees_may_apply.text = TranslationManager._instance.Get("transaction_fees_may_apply");
+            TranslationManager._instance.scene = "Home";
+            back_button.text = TranslationManager._instance.Get("back_button");
+
         }
     }
 }

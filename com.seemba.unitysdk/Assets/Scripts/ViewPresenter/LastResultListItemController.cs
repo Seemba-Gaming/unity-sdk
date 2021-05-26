@@ -10,6 +10,7 @@ namespace SeembaSDK
         public GameObject ListItemPrefab;
         public GameObject ListTournamentItemPrefab;
         public GameObject ContentLastResult, PanelObjects;
+        public GameObject NoResults;
         public int nbElement = 0;
         public Button SeeMoreResult;
         public Sprite[] spriteArray;
@@ -43,7 +44,6 @@ namespace SeembaSDK
             nbElement = 0;
             page = 1;
             HomeController.NoLastResult = false;
-            ContentLastResult.SetActive(false);
             UserId = UserManager.Get.getCurrentUserId();
             token = UserManager.Get.getCurrentSessionToken();
             if (token != null)
@@ -54,6 +54,8 @@ namespace SeembaSDK
                 {
                     ContentPanel.SetActive(true);
                     ContentLastResult.SetActive(true);
+                    SeeMoreResult.gameObject.SetActive(true);
+                    NoResults.SetActive(false);
                     await DisplayLastResultsChallengesAsync(mChallengesList);
                     SeeMoreResult.onClick.RemoveAllListeners();
                     SeeMoreResult.onClick.AddListener(async () =>
@@ -74,8 +76,10 @@ namespace SeembaSDK
                 }
                 else
                 {
-                    ContentPanel.SetActive(false);
-                    ContentLastResult.SetActive(false);
+                    //ContentPanel.SetActive(false);
+                    //ContentLastResult.SetActive(false);
+                    SeeMoreResult.gameObject.SetActive(false);
+                    NoResults.SetActive(true);
                 }
             }
         }

@@ -11,6 +11,7 @@ namespace SeembaSDK
 {
     public class StripeError
     {
+        public bool success;
         public StripeErrorInfo error; 
     }
     public class StripeErrorInfo
@@ -79,7 +80,7 @@ namespace SeembaSDK
             {
                 Debug.LogWarning(www.downloadHandler.text);
                 StripeError response = JsonConvert.DeserializeObject<StripeError>(www.downloadHandler.text);
-
+                LoaderManager.Get.LoaderController.HideLoader();
                 if (response.error.code.Replace('"', ' ').Trim().Equals("incorrect_number"))
                 {
                     SeembaAnalyticsManager.Get.SendCreditEvent("Incorrect Card Number", WalletScript.LastCredit);
@@ -134,6 +135,16 @@ namespace SeembaSDK
         {
             LoaderManager.Get.LoaderController.HideLoader();
         }
+        public void SetArabicFont()
+        {
+            Text[] myLabels = Resources.FindObjectsOfTypeAll<Text>();
+            Debug.LogWarning(myLabels.Length);
+            foreach (Text text in myLabels)
+            {
+                text.font = TranslationManager._instance.ArabicFont;
+            }
+        }
+
 
         public void SendEmail()
         {

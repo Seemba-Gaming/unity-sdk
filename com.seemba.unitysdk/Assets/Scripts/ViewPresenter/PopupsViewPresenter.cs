@@ -155,14 +155,16 @@ namespace SeembaSDK
         public Button PopupGiftCardConfirmButton;
         public Text PopupGiftCardConfirmButtonText;
 
-        [Header("popup error")]
-        public Animator popup_error_animator;
-        public Text popup_error_title;
-        public Text popup_error_subtitle;
-        public Text popup_error_main_text;
-        public Text popup_error_button_text;
-        public Button popup_error_button;
-        
+        [Header("popup balance Insufficent")]
+        public Animator PopupBalanceInsufficentAnimator;
+        public Text PopupBalanceInsufficentTitle;
+        public Text PopupBalanceInsufficentSubtitle;
+        public Text PopupBalanceInsufficentText;
+        public Text PopupBalanceInsufficentConfirmButtonText;
+        public Button PopupBalanceInsufficentConfirmButton;
+        public Text PopupBalanceInsufficentPlayFunButtonText;
+        public Button PopupBalanceInsufficentPlayFunButton;
+
         #endregion
 
         #region Unity Methods
@@ -274,15 +276,23 @@ namespace SeembaSDK
             PopupDrawPlayNowButtonText.text = _params[8].ToString();
             PopupDrawPlayLaterButtonText.text = _params[9].ToString();
         }
-        public void ShowInsufficientBalancePopup(object[] _paras)
+        public void ShowInsufficientBalancePopup(object[] _params)
         {
-            ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
-            InitPopupInfo(_paras[0].ToString(), _paras[1].ToString(), _paras[2].ToString(), _paras[3].ToString());
-            PopupInfoConfirmButton.onClick.RemoveAllListeners();
-            PopupInfoConfirmButton.onClick.AddListener(() =>
+ 
+            PopupBalanceInsufficentTitle.text = _params[0].ToString();
+            PopupBalanceInsufficentSubtitle.text = _params[1].ToString();
+            PopupBalanceInsufficentText.text = _params[2].ToString();
+            PopupBalanceInsufficentConfirmButtonText.text = _params[3].ToString();
+            PopupBalanceInsufficentPlayFunButtonText.text = _params[4].ToString();
+            PopupBalanceInsufficentConfirmButton.onClick.AddListener(() =>
             {
-                HidePopupContent(PopupManager.Get.PopupController.PopupInfo);
+                HidePopupContent(PopupManager.Get.PopupController.PopupInsufficentBalance);
                 EventsController.Get.OpenWallet("WinMoney");
+            });
+            PopupBalanceInsufficentPlayFunButton.onClick.AddListener(() =>
+            {
+                HidePopupContent(PopupManager.Get.PopupController.PopupInsufficentBalance);
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Menu.HaveFun);
             });
         }
         public void ShowPasswordUpdatedPopup(object[] _param)
@@ -676,7 +686,15 @@ namespace SeembaSDK
             popup_duels_animator.SetBool("Show", false);
             yield return new WaitForSeconds(0.5f);
             ChallengeController.Get.Play(_params);
-            SeembaAnalyticsManager.Get.SendDuelInfoEvent("Start Duel", float.Parse(_params[0].ToString()), float.Parse(_params[1].ToString()), _params[2].ToString());
+            TranslationManager._instance.scene = "Home";
+            if (_params[0].ToString().Equals(TranslationManager._instance.Get("insufficient")))
+            {
+                yield return null;
+            }
+            else
+            {
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Start Duel", float.Parse(_params[0].ToString()), float.Parse(_params[1].ToString()), _params[2].ToString());
+            }
         }
         private IEnumerator StartTournament()
         {

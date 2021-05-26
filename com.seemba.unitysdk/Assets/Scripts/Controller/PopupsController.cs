@@ -62,12 +62,12 @@ namespace SeembaSDK
         public static PopupType CURRENT_POPUP;
         #endregion
 
-
-    #region Script Parameters
+        #region Script Parameters
     public Animator                                 PopupDuels;
     public Animator                                 PopupAds;
     public Animator                                 PopupError;
     public Animator                                 PopupInfo;
+    public Animator                                 PopupInsufficentBalance;
     public Animator                                 PopupAgeVerification;
     public Animator                                 PopupUpdatePassword;
     public Animator                                 PopupForgetPassword;

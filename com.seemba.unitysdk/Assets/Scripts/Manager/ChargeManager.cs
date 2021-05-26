@@ -86,6 +86,7 @@ namespace SeembaSDK
     {
         public PaymentIntent payment_intent;
         public string redirect_url = null;
+        public StripeErrorInfo error;
     }
     public class ChargeConfirmation
     {
@@ -138,7 +139,16 @@ namespace SeembaSDK
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
             Debug.LogWarning(response);
             var res = JsonConvert.DeserializeObject<SeembaResponse<PaymentIntentURL>>(response);
-            return res;
+            if(res.success)
+            {
+                return res;
+            }
+            else
+            {
+                var error = JsonConvert.DeserializeObject<StripeError>(response);
+                Debug.LogWarning(error.error.code);
+                return null;
+            }
         }
         public async System.Threading.Tasks.Task<string> isChargeConfirmedAsync(string _paymentIntent, string token)
         {

@@ -170,7 +170,7 @@ namespace SeembaSDK
                     await www.SendWebRequest();
                     if (www.isNetworkError || www.isHttpError)
                     {
-                        Debug.LogWarning(www.error);
+                        Debug.LogWarning(www.url + " "+  www.error);
                         return null;
                     }
                     var avatarTexture = DownloadHandlerTexture.GetContent(www);

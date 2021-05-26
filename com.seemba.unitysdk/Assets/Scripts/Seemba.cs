@@ -41,6 +41,7 @@ namespace SeembaSDK
         }
         private void Start()
         {
+            SceneManager.sceneLoaded += OnSceneLoaded;
             if (UserManager.Get == null)
             {
                 mSeembaManagers = Instantiate(Resources.Load("SeembaManagers") as GameObject);
@@ -203,6 +204,13 @@ namespace SeembaSDK
         {
             if (!isGameOver())
             {
+            }
+        }
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            if(TranslationManager.systemLanguage.Equals(SystemLanguage.Arabic.ToString()))
+            {
+                EventsController.Get.SetArabicFont();
             }
         }
     }

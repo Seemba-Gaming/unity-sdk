@@ -9,6 +9,7 @@ namespace SeembaSDK
         public GameObject ContentPanel, ContentOngoing;
         public GameObject ListItemPrefab;
         public GameObject tournamentPrefab;
+        public GameObject NoResults;
         public Button SeeMoreResult;
         public int nbElement = 0;
         string token;
@@ -34,12 +35,16 @@ namespace SeembaSDK
                     {
                         ContentPanel.SetActive(true);
                         ContentOngoing.SetActive(true);
+                        SeeMoreResult.gameObject.SetActive(true);
+                        NoResults.SetActive(false);
                         DisplayOnGoingChallenges(mChallengesList);
                     }
                     else
                     {
-                        ContentOngoing.SetActive(false);
-                        ContentPanel.SetActive(false);
+                        //ContentOngoing.SetActive(false);
+                        //ContentPanel.SetActive(false);
+                        SeeMoreResult.gameObject.SetActive(false);
+                        NoResults.SetActive(true);
                     }
                     SeeMoreResult.onClick.RemoveAllListeners();
                     SeeMoreResult.onClick.AddListener(async () =>

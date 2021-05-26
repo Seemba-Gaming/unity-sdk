@@ -215,7 +215,7 @@ namespace SeembaSDK
                         // properties["$android_manufacturer"] = "";
                         // properties["$android_brand"] = "";
                         // properties["$android_app_version_code"] = Application.version;
-                    #else
+                    #elif !UNITY_WEBGL
                         properties["$lib_version"] = Mixpanel.MixpanelUnityVersion;
                     #endif
                 _autoEngageProperties = properties;

@@ -4,6 +4,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SeembaSDK.ArabicSupport;
+using UnityEngine.UI;
 
 namespace SeembaSDK
 {
@@ -13,12 +15,13 @@ namespace SeembaSDK
         public static TranslationManager _instance { get { return sInstance; } }
         private static TranslationManager sInstance;
         #endregion
+        public Font ArabicFont;
         [HideInInspector]
         public string scene = null;
-        public static readonly SystemLanguage[] Languages = { SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
+        public static readonly SystemLanguage[] Languages = { SystemLanguage.Arabic, SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
         public static bool? isDownloaded = null;
-        //static string systemLanguage = SystemLanguage.English.ToString();
-        static string systemLanguage;
+        //public static string systemLanguage = SystemLanguage.Arabic.ToString();
+        public static string systemLanguage;
         public static Dictionary<string, string> ShortLanguages = new Dictionary<string, string>();
         private Dictionary<string, Dictionary<string, string>> Translations = new Dictionary<string, Dictionary<string, string>>();
 
@@ -74,7 +77,14 @@ namespace SeembaSDK
                 {
                     return null;
                 }
-                return Translations[scene][key];
+                if (systemLanguage.Equals(SystemLanguage.Arabic.ToString()))
+                {
+                    return ArabicFixer.Fix(Translations[scene][key]);
+                }
+                else
+                {
+                    return Translations[scene][key];
+                }
             }
             catch (NullReferenceException) { return defaultString; }
         }
@@ -104,7 +114,15 @@ namespace SeembaSDK
                     }
                     else
                     {
-                        ParseFile(getTranslationFile());
+                        var file = getTranslationFile();
+                        if(file != null)
+                        {
+                            ParseFile(getTranslationFile());
+                        }
+                        else
+                        {
+                            return await GetUserLanguage(systemLanguage, lastmodified);
+                        }
                         return true;
                     }
                 }

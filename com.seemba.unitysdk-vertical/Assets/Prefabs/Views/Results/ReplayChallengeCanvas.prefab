@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -194,6 +195,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -202,9 +204,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 16
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -274,6 +276,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -348,6 +351,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -356,9 +360,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 13
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 13
     m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -426,6 +430,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -434,9 +439,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 15
     m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -504,6 +509,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -512,9 +518,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 16
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 16
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -582,6 +588,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.33333334, g: 0.3647059, b: 0.7058824, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -660,6 +667,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -739,6 +747,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -815,6 +824,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -889,6 +899,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -897,9 +908,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 15
     m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1132,6 +1143,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1206,6 +1218,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1214,9 +1227,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 15
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1285,6 +1298,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1293,9 +1307,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 24
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
-    m_MaxSize: 40
+    m_MaxSize: 24
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1378,6 +1392,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.9647059, g: 0.48235294, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1458,6 +1473,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1532,6 +1548,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.3254902, g: 0.36078432, b: 0.7019608, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1540,9 +1557,9 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: 95fcd3a922b4f4f11b685b4655f3534d, type: 3}
     m_FontSize: 15
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 15
     m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1612,6 +1629,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1686,6 +1704,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.33333334, g: 0.3647059, b: 0.7058824, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1768,6 +1787,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1826,6 +1846,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
         m_MethodName: ContinueButtonClick
         m_Mode: 1
         m_Arguments:

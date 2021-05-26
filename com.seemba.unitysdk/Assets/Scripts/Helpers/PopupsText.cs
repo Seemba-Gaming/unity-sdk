@@ -35,7 +35,7 @@ namespace SeembaSDK
         public object[] insufficient_balance()
         {
             TranslationManager._instance.scene = "Home";
-            return new object[] { TranslationManager._instance.Get("insufficient"), TranslationManager._instance.Get("balance"), TranslationManager._instance.Get("credit_your_account") + "?", TranslationManager._instance.Get("credit") };
+            return new object[] { TranslationManager._instance.Get("insufficient"), TranslationManager._instance.Get("balance"), TranslationManager._instance.Get("credit_or_play_for_fun"), TranslationManager._instance.Get("credit"), TranslationManager._instance.Get("play_with_coins") };
         }
         public object[] insufficient_bubbles()
         {

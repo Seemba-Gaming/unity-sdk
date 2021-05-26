@@ -1,6 +1,12 @@
 {
     "name": "Seemba",
-    "references": ["NativeShare.Editor", "NativeShare.Runtime", "Unity.TextMeshPro", "Unity.TextMeshPro.Editor", "SeembaSDKMixPanel"],
+    "references": [
+        "NativeShare.Editor",
+        "NativeShare.Runtime",
+        "Unity.TextMeshPro",
+        "Unity.TextMeshPro.Editor",
+        "SeembaSDKMixPanel"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [
         "LinuxStandalone64",
@@ -11,12 +17,13 @@
         "Switch",
         "tvOS",
         "WSA",
-        "WebGL",
         "WindowsStandalone32",
         "WindowsStandalone64",
         "XboxOne"
     ],
     "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],

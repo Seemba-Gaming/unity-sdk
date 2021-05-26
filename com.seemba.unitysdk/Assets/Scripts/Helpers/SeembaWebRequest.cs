@@ -9,7 +9,7 @@ namespace SeembaSDK
     [Serializable]
     public class SeembaResponse<T>
     {
-        public bool success;
+        public bool success = false;
         public string message;
         public T data;
         public SeembaResponse(bool success, string message, T data, string token)

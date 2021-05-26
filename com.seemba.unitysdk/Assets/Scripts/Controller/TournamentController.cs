@@ -93,35 +93,6 @@ namespace SeembaSDK
                 ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);
             }
         }
-        private bool isDeveloperModeEnabled()
-        {
-
-#if UNITY_EDITOR
-            return false;
-#elif UNITY_ANDROID
-
-        using (var actClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-        {
-            var context = actClass.GetStatic<AndroidJavaObject>("currentActivity");
-            AndroidJavaClass systemGlobal = new AndroidJavaClass("android.provider.Settings$Global");
-            var DevMode = 1;
-            try
-            {
-                DevMode = systemGlobal.CallStatic<int>("getInt", context.Call<AndroidJavaObject>("getContentResolver"), "development_settings_enabled");
-            }
-            catch (NullReferenceException ex) { }
-            if (DevMode == 1)
-            {
-                //HidePopup("popup", false);
-                //ShowPopupError("popupDevMode");
-            }
-            return (DevMode == 1) ? true : false;
-        }
-
-#else
-		return false;
-#endif
-        }
         private bool isProhibitedLocation(string code)
         {
             return !CountryController.checkCountry(code);

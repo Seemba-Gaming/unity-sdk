@@ -25,6 +25,7 @@ namespace SeembaSDK
             Username.text = item.user.username;
             if(item.user._id == UserManager.Get.CurrentUser._id)
             {
+                glow.gameObject.SetActive(true);
                 glow.glowSize = 4;
             }
             Score.text = item.score.ToString();

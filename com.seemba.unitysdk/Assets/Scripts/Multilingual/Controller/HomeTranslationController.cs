@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +9,15 @@ namespace SeembaSDK
     {
         [Header("Home")]
         [SerializeField]
-        private Text ongoing;
+        private TextMeshProUGUI ongoing;
         [SerializeField]
-        private Text last_results;
+        private TextMeshProUGUI last_results;
         [SerializeField]
         private Text more_duels_lr;
+        [SerializeField]
+        private TextMeshProUGUI No_OnGoing_Challenges;
+        [SerializeField]
+        private TextMeshProUGUI No_LastResults;
         [Space]
         [Header("HaveFun")]
         [SerializeField]
@@ -135,6 +138,7 @@ namespace SeembaSDK
         private void Start()
         {
             TranslationManager._instance.scene = "Home";
+ 
             ContactBackButton.text = TranslationManager._instance.Get("back_button");
             LegalBackButton.text = TranslationManager._instance.Get("back_button");
             HelpCenterBackButton.text = TranslationManager._instance.Get("back_button");

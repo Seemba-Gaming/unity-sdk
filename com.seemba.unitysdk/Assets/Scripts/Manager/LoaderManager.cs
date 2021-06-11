@@ -23,7 +23,9 @@ namespace SeembaSDK
 
         #region Script Parameters
         public GameObject LoaderPrefab;
+        public GameObject SobFlousLoaderPrefab;
         public LoaderController LoaderController;
+        public LoaderController SobFlousLoaderController;
         #endregion
 
         #region Unity Methods
@@ -31,20 +33,15 @@ namespace SeembaSDK
         {
             sInstance = this;
         }
-        // Start is called before the first frame update
+
         void Start()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
             SetLoadingTexts();
             LoaderController = (Instantiate(LoaderPrefab) as GameObject).GetComponent<LoaderController>();
+            SobFlousLoaderController = (Instantiate(SobFlousLoaderPrefab) as GameObject).GetComponent<LoaderController>();
         }
 
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
         #endregion
 
         #region Methods

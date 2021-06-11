@@ -18,6 +18,11 @@ namespace SeembaSDK
             TranslationManager._instance.scene = "Home";
             return new object[] { TranslationManager._instance.Get("desactivate"), TranslationManager._instance.Get("your_vpn"), TranslationManager._instance.Get("you_cant_play_vpn"), TranslationManager._instance.Get("got_it") };
         }
+        public object[] SobFlousSuccess()
+        {
+            TranslationManager._instance.scene = "Popups";
+            return new object[] { TranslationManager._instance.Get("congratulations"), TranslationManager._instance.Get("payment_succeeded"), TranslationManager._instance.Get("payment_succeeded"), TranslationManager._instance.Get("i_understand") };
+        }
         public object[] dev_mode()
         {
             TranslationManager._instance.scene = "Home";

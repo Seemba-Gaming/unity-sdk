@@ -49,7 +49,7 @@ namespace SeembaSDK
         {
 			Application.OpenURL("https://stripe.com/fr/pricing");
         }
-		public async void creditClick()
+		public async void CreditClick()
 		{
 			if (string.IsNullOrEmpty(UserManager.Get.CurrentUser.country_code))
 			{

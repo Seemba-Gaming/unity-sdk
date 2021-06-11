@@ -53,6 +53,7 @@ namespace SeembaSDK
         POPUP_GIFT_CARD_SUCCESS,
         POPUP_GIFT_CARD_INFO,
         TOURNAMENT_DRAW,
+        SOB_FLOUS_SUCCESS,
         SESSION_EXPIRED
     }
 
@@ -204,6 +205,9 @@ namespace SeembaSDK
                     break;
                 case PopupType.TOURNAMENT_DRAW:
                     PopupManager.Get.PopupViewPresenter.ShowTournamentDrawPopupAsync(_params);
+                    break;
+                case PopupType.SOB_FLOUS_SUCCESS:
+                    PopupManager.Get.PopupViewPresenter.ShowSobFlousSuccessPopup(_params);
                     break;
                 default:
                     Debug.LogWarning(popupType);

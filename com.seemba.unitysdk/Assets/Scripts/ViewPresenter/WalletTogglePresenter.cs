@@ -118,7 +118,7 @@ namespace SeembaSDK
         {
             if(string.IsNullOrEmpty(OtherAmount.text))
             {
-                CrownsValue.text = string.Empty;
+                CrownsValue.text = string.Empty + " <sprite=1>";
             }
             else
             {

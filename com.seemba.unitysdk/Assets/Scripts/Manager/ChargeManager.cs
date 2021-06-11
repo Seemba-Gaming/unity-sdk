@@ -4,6 +4,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using System;
 using Newtonsoft.Json;
+using System.Collections;
+using System.Threading.Tasks;
 
 namespace SeembaSDK
 {
@@ -19,6 +21,33 @@ namespace SeembaSDK
 
     }
 
+    public class SobFlousCharge
+    {
+        public SobFlousPaymentResult payment;
+    }
+    public class SobFlousPaymentResult
+    {
+        public string TRANSM_ID;
+        public string AMOUNT;
+        public int DISCOUNT;
+        public int DISCOUNT_AMOUNT;
+        public string TRANSS_ID;
+        public string URL;
+        public string TOKEN;
+        public string CODE_COMMANDE;
+        public string URL_MOBILE;
+    }
+    public class SobFlousStatus
+    {
+        public SobFlousStatusInfo status;
+    }
+    public class SobFlousStatusInfo
+    {
+        public string MERCHANT_TRANS_ID;
+        public string AMOUNT;
+        public string SOBFLOUS_TRANS_ID;
+        public string TRANSACTION_STATE;
+    }
     public class BillingDetails
     {
         public Address address;
@@ -110,6 +139,8 @@ namespace SeembaSDK
         public const string PAYMENT_STATUS_PROCESSING = "processing";
         public const string PAYMENT_NEXT_ACTION_TYPE_USE_STRIPE_SDK = "use_stripe_sdk";
         public const string PAYMENT_NEXT_ACTION_TYPE_REDIRECT_TO_URL = "redirect_to_url";
+
+        private bool isConfirmed=false;
         private void Awake()
         {
             sInstance = this;
@@ -184,6 +215,58 @@ namespace SeembaSDK
                 }
             }
             return isOk;
+        }
+        public async void SobFlousCharge(float amount)
+        {
+            isConfirmed = false;
+            string url = Endpoint.classesURL + "/payments/sobflous/charge";
+            WWWForm form = new WWWForm();
+            form.AddField("amount", amount.ToString());
+            TranslationManager._instance.scene = "Loader";
+            LoaderManager.Get.SobFlousLoaderController.ShowLoader(TranslationManager._instance.Get("opening_app"), TranslationManager._instance.Get("close"));
+            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+            var res = JsonConvert.DeserializeObject<SeembaResponse<SobFlousCharge>>(response);
+            LoaderManager.Get.SobFlousLoaderController.HideLoader();
+            if (!string.IsNullOrEmpty(res.data.payment.URL_MOBILE))
+            {
+                LoaderManager.Get.SobFlousLoaderController.ShowLoader(TranslationManager._instance.Get("connect_to_sob_flous"));
+                Application.OpenURL(res.data.payment.URL_MOBILE);
+                StartCoroutine(VerifyTransaction(res.data.payment.TRANSS_ID));
+            }
+            else
+            {
+                CancelTransaction();
+            }
+        }
+        public IEnumerator VerifyTransaction(string transs_id)
+        {
+            while(!isConfirmed)
+            {
+                yield return new WaitForSeconds(1f);
+                SobFlousTransactionStatus(transs_id);
+            }
+            LoaderManager.Get.SobFlousLoaderController.HideLoader();
+            yield return new WaitForSeconds(0.25f);
+            PopupManager.Get.PopupViewPresenter.HidePopupContent(PopupManager.Get.PopupController.PopupPayment);
+            yield return new WaitForSeconds(0.25f);
+            PopupManager.Get.PopupController.ShowPopup(PopupType.SOB_FLOUS_SUCCESS, PopupsText.Get.SobFlousSuccess());
+        }
+        public void CancelTransaction()
+        {
+            LoaderManager.Get.SobFlousLoaderController.HideLoader();
+            Debug.LogWarning("CancelTransaction");
+        }
+        public async void SobFlousTransactionStatus(string transs_id)
+        {
+            string url = Endpoint.classesURL + "/payments/sobflous/status";
+            WWWForm form = new WWWForm();
+            form.AddField("TRANSS_ID", transs_id);
+            var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+            var res = JsonConvert.DeserializeObject<SeembaResponse<SobFlousStatus>>(response);
+            if(res.data.status.TRANSACTION_STATE.Equals("success"))
+            {
+                isConfirmed = true;
+            }
         }
     }
 }

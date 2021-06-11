@@ -12,10 +12,14 @@ namespace SeembaSDK
             DontDestroyOnLoad(this.gameObject);
             mContent = transform.GetChild(0).gameObject;
         }
-        public void ShowLoader(string message = null)
+        public void ShowLoader(string message = null, string close =null)
         {
             mContent.SetActive(true);
             Loader.title.text = message;
+            if(close != null)
+            {
+                Loader.close.text = close;
+            }
         }
         public void HideLoader()
         {

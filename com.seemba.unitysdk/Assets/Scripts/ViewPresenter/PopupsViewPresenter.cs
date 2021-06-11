@@ -42,8 +42,8 @@ namespace SeembaSDK
         public Button PopupPaymentConfirmButton;
         public Text PopupPaymentConfirmButtonText;
         public Button PopupPaymentCancelButton;
-        public Toggle VisaToggle;
-        public Toggle MasterCardToggle;
+        public Toggle CreditCard;
+        public Toggle SobFlous;
 
         [Header("popup Age Verification")]
         public Animator PopupAgeAnimator;
@@ -213,24 +213,18 @@ namespace SeembaSDK
 
             PopupPaymentConfirmButton.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendCreditEvent("Go to BankingInfo", WalletScript.LastCredit);
-                EventsController.Get.continuePayment();
-            });
-
-            VisaToggle.onValueChanged.AddListener((value) =>
-            {
-                if (value)
+                if(CreditCard.isOn)
                 {
-                    ViewsEvents.Get.BankingInfo.paymentCard = "Visa";
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Go to BankingInfo", WalletScript.LastCredit);
+                    EventsController.Get.continuePayment();
                 }
-            });
-
-            MasterCardToggle.onValueChanged.AddListener((value) =>
-            {
-                if (value)
+                else
                 {
-                    ViewsEvents.Get.BankingInfo.paymentCard = "Mastercard";
+                    //pay with sobflous
+                    Debug.LogWarning("pay with sobflous");
+                    ChargeManager.Get.SobFlousCharge(WalletScript.LastCredit);
                 }
+
             });
 
             PopupAgeDatePicker.onClick.AddListener(() =>
@@ -253,6 +247,16 @@ namespace SeembaSDK
             ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
             InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
             PopupInfoConfirmButton.onClick.RemoveAllListeners();
+        }
+        public void ShowSobFlousSuccessPopup(object[] _params)
+        {
+            ShowPopupContent(PopupManager.Get.PopupController.PopupInfo.gameObject);
+            InitPopupInfo(_params[0].ToString(), _params[1].ToString(), _params[2].ToString(), _params[3].ToString());
+            PopupInfoConfirmButton.onClick.RemoveAllListeners();
+            PopupInfoConfirmButton.onClick.AddListener(() =>
+            {
+                EventsController.Get.WalletBack();
+            });
         }
         public async void ShowTournamentDrawPopupAsync(object[] _params)
         {

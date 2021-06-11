@@ -233,7 +233,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LoaderPrefab: {fileID: 2835622758155963685, guid: 124fb6655d596ee48a7cee0b63f45199,
     type: 3}
+  SobFlousLoaderPrefab: {fileID: 2835622758155963685, guid: e6b02f249ecaa2e448a06bfad268ab08,
+    type: 3}
   LoaderController: {fileID: 0}
+  SobFlousLoaderController: {fileID: 0}
 --- !u!1 &5102411968029238263
 GameObject:
   m_ObjectHideFlags: 0

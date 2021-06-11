@@ -39,7 +39,6 @@ namespace SeembaSDK
         public InputField card_ExpireDate_Year;
         public InputField card_CVV;
         public string _paymentIntentID;
-        public string paymentCard;
         #endregion
 
         #region Fields

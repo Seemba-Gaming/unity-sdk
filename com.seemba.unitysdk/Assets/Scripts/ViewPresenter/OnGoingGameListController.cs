@@ -103,23 +103,38 @@ namespace SeembaSDK
                     {
                         Debug.LogWarning("Draw in a tournament");
                         InitOnGoingTournament(challenge);
+                        //if(!PlayerPrefs.HasKey("ShowPopup") || (PlayerPrefs.HasKey("ShowPopup") && PlayerPrefs.GetInt("ShowPopup") == 1))
+                        if(!PopupsViewPresenter.NeverShowAgain)
+                        {
+                            TranslationManager._instance.scene = "Popups";
+                            var _params = new object[] 
+                            {
+                                TranslationManager._instance.Get("tournament"),
+                                TranslationManager._instance.Get("draw"),
+                                challenge.matched_user_1.avatar,
+                                challenge.matched_user_2.avatar,
+                                challenge.users_old_scores[0].user_1_score,
+                                challenge.users_old_scores[0].user_2_score,
+                                TranslationManager._instance.Get("you_have"),
+                                TranslationManager._instance.Get("play_or_lose"),
+                                TranslationManager._instance.Get("play_now"),
+                                TranslationManager._instance.Get("play_later"),
+                                challenge.matched_user_1.username,
+                                challenge.matched_user_2.username,
+                                challenge.updatedAt,
+                                challenge.tournament_id
+                            };
+                            PopupManager.Get.PopupController.ShowPopup(PopupType.TOURNAMENT_DRAW, _params);
+                        }
 
-                        var _params =  new object[] { TranslationManager._instance.Get("tournament"), TranslationManager._instance.Get("draw"),
-                            challenge.matched_user_1.avatar, challenge.matched_user_2.avatar,
-                            challenge.users_old_scores[0].user_1_score, challenge.users_old_scores[0].user_2_score,
-                            TranslationManager._instance.Get("you_have"), TranslationManager._instance.Get("play_or_lose"),
-                            TranslationManager._instance.Get("play_now"),TranslationManager._instance.Get("play_later")};
-
-                        PopupManager.Get.PopupController.ShowPopup(PopupType.TOURNAMENT_DRAW, _params);
                         SeembaAnalyticsManager.Get.SendTournamentEvent("Tournament Draw", challenge.tournament_id, challenge.users_old_scores[0].user_1_score);
-                        return;
                     }
                     else
                     {
                         ChallengeManager.CurrentChallengeId = challenge._id;
                         ReplayChallengePresenter.ChallengeToReplay = challenge;
                         SeembaAnalyticsManager.Get.SendDuelInfoEvent("Bug Challenge", ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type), float.Parse(challenge.gain), challenge.gain_type);
-                        ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject);
+                        ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject,false,false);
                         return;
                     }
                 }

@@ -29,7 +29,15 @@ namespace SeembaSDK
         private void ReplayMissedChallenge()
         {
             ChallengeManager.CurrentChallengeId = ChallengeToReplay._id;
-            EventsController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
+            if(string.IsNullOrEmpty(ChallengeToReplay.tournament_id))
+            {
+                EventsController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
+            }
+            else
+            {
+                EventsController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_BRACKET;
+                TournamentController.setCurrentTournamentID(ChallengeToReplay.tournament_id);
+            }
             LoaderManager.Get.LoaderController.ShowLoader();
             BackgroundController.CurrentBackground = null;
 

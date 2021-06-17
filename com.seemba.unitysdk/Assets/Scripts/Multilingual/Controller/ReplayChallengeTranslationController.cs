@@ -21,7 +21,7 @@ namespace SeembaSDK
         {
             TranslationManager._instance.scene = "ReplayChallenge";
             sorry.text = TranslationManager._instance.Get("sorry") != string.Empty ? TranslationManager._instance.Get("sorry") : sorry.text;
-            bug.text = TranslationManager._instance.Get("bug") != string.Empty ? TranslationManager._instance.Get("bug") : bug.text;
+            bug.text = TranslationManager._instance.Get("challenge_not_finished") != string.Empty ? TranslationManager._instance.Get("challenge_not_finished") : bug.text;
             replay_now.text = TranslationManager._instance.Get("replay_now") != string.Empty ? TranslationManager._instance.Get("replay_now") : replay_now.text;
             game_id.text = TranslationManager._instance.Get("game_id") != string.Empty ? TranslationManager._instance.Get("game_id") : game_id.text;
             date.text = TranslationManager._instance.Get("date") != string.Empty ? TranslationManager._instance.Get("date") : date.text;

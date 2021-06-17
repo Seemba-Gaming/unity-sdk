@@ -25517,6 +25517,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ReplayChallengeCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 3322362590011043403, guid: 4adbf12d543b27245b2c9ae488416950,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3322362590011043442, guid: 4adbf12d543b27245b2c9ae488416950,
         type: 3}
       propertyPath: m_LocalPosition.x

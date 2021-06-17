@@ -13,6 +13,7 @@ namespace SeembaSDK
         private static PopupsViewPresenter _Instance;
         public static bool isActive;
         public static bool isBackgroundActive;
+        public static bool NeverShowAgain = false;
         #endregion
 
         #region script parameters
@@ -103,7 +104,9 @@ namespace SeembaSDK
         public Image PopupDrawMyImage;
         public Image PopupDrawOpponentImage;
         public TextMeshProUGUI PopupDrawMyScore;
+        public TextMeshProUGUI PopupDrawMyName;
         public TextMeshProUGUI PopupDrawOpponentScore;
+        public TextMeshProUGUI PopupDrawOpponentName;
         public TextMeshProUGUI PopupDrawTimeLimitInfo;
         public Button PopupDrawPlayNowButton;
         public Button PopupDrawPlayLaterButton;
@@ -261,6 +264,7 @@ namespace SeembaSDK
         public async void ShowTournamentDrawPopupAsync(object[] _params)
         {
             ShowPopupContent(PopupManager.Get.PopupController.PopupTournamentDraw.gameObject);
+            PopupManager.Get.PopupController.PopupTournamentDraw.SetBool("Show", true);
             PopupDrawTitle.text = _params[0].ToString();
             PopupDrawSubtitle.text = _params[1].ToString();
             var sprite = await UserManager.Get.getAvatar(_params[2].ToString());
@@ -274,11 +278,23 @@ namespace SeembaSDK
             {
                 PopupDrawOpponentImage.sprite = sprite_1;
             }
+            var timeLeft = DateTime.Parse(_params[12].ToString()).AddDays(1);
             PopupDrawMyScore.text = _params[4].ToString();
             PopupDrawOpponentScore.text = _params[5].ToString();
-            PopupDrawTimeLimitInfo.text = _params[6].ToString() + " " + _params[7].ToString();
+            PopupDrawTimeLimitInfo.text = _params[6].ToString() + " <color=#B70000>" + timeLeft + "</color> " + _params[7].ToString();
             PopupDrawPlayNowButtonText.text = _params[8].ToString();
             PopupDrawPlayLaterButtonText.text = _params[9].ToString();
+            PopupDrawMyName.text = _params[10].ToString();
+            PopupDrawOpponentName.text = _params[11].ToString();
+            PopupDrawPlayNowButton.onClick.AddListener(() =>
+            {
+                TournamentController.setCurrentTournamentID(_params[13].ToString());
+                ViewsEvents.Get.GoToMenu(ViewsEvents.Get.Brackets.gameObject);
+            });
+        }
+        public void OnToggleNeverShowThis(bool value)
+        {
+            NeverShowAgain = value;
         }
         public void ShowInsufficientBalancePopup(object[] _params)
         {

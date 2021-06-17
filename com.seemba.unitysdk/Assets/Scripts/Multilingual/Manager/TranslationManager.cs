@@ -149,8 +149,6 @@ namespace SeembaSDK
             }
             else
             {
-                Debug.LogWarning("here");
-                Debug.Log("File Downloaded.");
                 string savePath = string.Format("{0}/{1}.json", Application.persistentDataPath, language);
                 System.IO.File.WriteAllText(savePath, req);
                 PlayerPrefs.SetString(systemLanguage, systemLanguage);

@@ -116,8 +116,6 @@ namespace SeembaSDK
             string url = Endpoint.classesURL + "/tournaments/" + id;
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
             string responseText = await SeembaWebRequest.Get.HttpsGet(url);
-            Debug.LogWarning(url);
-            Debug.LogWarning(responseText);
             SeembaResponse<TournamentInfo> response = JsonConvert.DeserializeObject<SeembaResponse<TournamentInfo>>(responseText);
             return response.data;
         }

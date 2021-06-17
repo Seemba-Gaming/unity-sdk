@@ -29,14 +29,20 @@ namespace SeembaSDK
                 Username.text = info.username;
                 StartCoroutine(initPlayerAvatar(info.avatar, Avatar));
                 var mTexture = await UserManager.Get.GetFlagBytes(info.country_code);
-                SetPlayerFlag(Flag, mTexture);
-                if( info.money_credit > 0f)
+                if(Flag != null)
                 {
-                    Pro.enabled = true;
+                    SetPlayerFlag(Flag, mTexture);
                 }
-                else
+                if(Pro != null)
                 {
-                    Pro.enabled = false;
+                    if( info.money_credit > 0f)
+                    {
+                        Pro.enabled = true;
+                    }
+                    else
+                    {
+                        Pro.enabled = false;
+                    }
                 }
             }
             if (Loader != null)

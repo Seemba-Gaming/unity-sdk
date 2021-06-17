@@ -41,9 +41,10 @@ namespace SeembaSDK
         #region Unity Methods
         public async void OnEnable()
         {
+            Destroy(mCurrentBracket);
             userId = UserManager.Get.getCurrentUserId();
             tournamentJson = await TournamentManager.Get.getTournament(TournamentController.getCurrentTournamentID());
-            Debug.LogWarning(tournamentJson.tournament.nb_current_players);
+
             setTournamentData();
             initUI(challenges, participants);
             if (!isAvailable() || !isNextChallengeAvailable())
@@ -89,12 +90,14 @@ namespace SeembaSDK
         }
         public void initUI(List<GenericChallenge> challenges, User[] participants)
         {
+            if(mCurrentBracket != null)
+            {
+                Destroy(mCurrentBracket);
+            }
             mCurrentBracket = Instantiate(BracketsPrefab, BracketContent);
             mToursController = mCurrentBracket.GetComponent<ToursController>();
             int pos = 0;
             int tourIndex = 0;
-            Debug.LogWarning(challenges.Count);
-            Debug.LogWarning(participants.Length);
             for (int i = 0; i < challenges.Count; i++)
             {
                 InitBracketsAsync(challenges[i], pos, participants, tourIndex);

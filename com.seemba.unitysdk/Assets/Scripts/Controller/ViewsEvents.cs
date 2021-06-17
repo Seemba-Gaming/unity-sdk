@@ -268,7 +268,7 @@ namespace SeembaSDK
             Show(current, mHistory.First(), false);
             mCurrentMenu = mHistory.First();
         }
-        public void GoToMenu(GameObject menu, bool popBeforeGoing = false)
+        public void GoToMenu(GameObject menu, bool popBeforeGoing = false, bool stackMenu = true)
         {
             if (menu == mHistory.First() && menu != Intro.gameObject)
             {
@@ -283,7 +283,7 @@ namespace SeembaSDK
                 mHistory.Pop().SetActive(false);
             }
             //Debug.LogWarning("Going From " + mHistory.First().name + "To " + menu.name);
-            Show(mHistory.First(), menu);
+            Show(mHistory.First(), menu, stackMenu);
             mCurrentMenu = menu;
         }
         public GameObject GetCurrentMenu()

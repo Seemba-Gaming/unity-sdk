@@ -246,7 +246,6 @@ namespace SeembaSDK
                 CurrentUser = response.data.user;
                 CurrentUser.token = response.data.token;
                 LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
-                Debug.LogWarning(CurrentUser.avatar);
                 CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
                 CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
                 var mTexture = await GetFlagBytes(await GetGeoLoc());

@@ -175,14 +175,14 @@ namespace SeembaSDK
             GameObject newItem = Instantiate(ListItemPrefab);
             LastResultListController controller = newItem.GetComponent<LastResultListController>();
 
-            if (challenge.matched_user_1.Equals(UserManager.Get.CurrentUser._id))
+            if (challenge.matched_user_1._id.Equals(UserManager.Get.CurrentUser._id))
             {
-                mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_2._id);
+                mOpponent = challenge.matched_user_2;
                 await SetOpponentDetailsAsync(controller, mOpponent);
             }
             else
             {
-                mOpponent = await UserManager.Get.GetUserById(challenge.matched_user_1._id);
+                mOpponent = challenge.matched_user_1;
                 await SetOpponentDetailsAsync(controller, mOpponent);
             }
 

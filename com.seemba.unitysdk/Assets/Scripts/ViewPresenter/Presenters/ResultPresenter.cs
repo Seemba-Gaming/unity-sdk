@@ -65,7 +65,7 @@ namespace SeembaSDK
                     {
                         InitResultDraw(mCurrentChallenge);
                     }
-                    else if (mCurrentChallenge.winner_user == UserManager.Get.getCurrentUserId())
+                    else if (mCurrentChallenge.winner_user == UserManager.Get.CurrentUser._id)
                     {
                         InitResultWin(mCurrentChallenge);
                     }
@@ -78,6 +78,7 @@ namespace SeembaSDK
         }
 
         #endregion
+
         #region Methods
         public async void InitResultLose(Challenge challenge)
         {

@@ -80,6 +80,17 @@ namespace SeembaSDK
             {
                 var user = await UserManager.Get.getUser();
                 UserManager.Get.CurrentUser = user;
+
+                if (user.country_code.ToUpper() == "TN")
+                {
+                    CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_TND;
+                    CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_TND;
+                }
+                else
+                {
+                    CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_EURO;
+                    CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_EURO;
+                }
                 UserManager.Get.CurrentUser.money_credit = user.money_credit;
 
                 SeembaAnalyticsManager.Get.SendUserEvent("Login with Token");

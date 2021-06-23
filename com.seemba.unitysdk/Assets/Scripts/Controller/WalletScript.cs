@@ -23,7 +23,10 @@ namespace SeembaSDK
 		#region Unity Methods
 		private void Start()
 		{
-
+			Add5Euro.Init(5,CurrencyManager.CURRENT_CURRENCY, CurrencyManager.CURRENT_MULTIPLIER_FACTOR);
+			Add10Euro.Init(10, CurrencyManager.CURRENT_CURRENCY, CurrencyManager.CURRENT_MULTIPLIER_FACTOR);
+			Add15Euro.Init(15, CurrencyManager.CURRENT_CURRENCY, CurrencyManager.CURRENT_MULTIPLIER_FACTOR);
+			Add20Euro.Init(20, CurrencyManager.CURRENT_CURRENCY, CurrencyManager.CURRENT_MULTIPLIER_FACTOR);
 		}
 		public void OnEnable()
 		{

@@ -42,6 +42,12 @@ namespace SeembaSDK
         #endregion
 
         #region Methods
+
+        public void Init(int value, string currency, int factor)
+        {
+            Amount.text = value + " " + currency;
+            CrownsValue.text = (value * factor).ToString() + " <sprite=1>";
+        }
         public void ToggleSelected(bool selected)
         {
             TranslationManager._instance.scene = "Home";
@@ -122,7 +128,7 @@ namespace SeembaSDK
             }
             else
             {
-                CrownsValue.text = (int.Parse(OtherAmount.text) * 100).ToString() + " <sprite=1>";
+                CrownsValue.text = (int.Parse(OtherAmount.text) * CurrencyManager.CURRENT_MULTIPLIER_FACTOR).ToString() + " <sprite=1>";
             }
         }
         #endregion

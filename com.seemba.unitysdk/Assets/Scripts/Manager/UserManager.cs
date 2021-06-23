@@ -244,6 +244,18 @@ namespace SeembaSDK
             if (response.success)
             {
                 CurrentUser = response.data.user;
+                if (response.data.user.country_code.ToUpper() == "TN")
+                {
+                    Debug.LogWarning("here");
+                    CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_TND;
+                    CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_TND;
+                }
+                else
+                {
+                    Debug.LogWarning("here");
+                    CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_EURO;
+                    CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_EURO;
+                }
                 CurrentUser.token = response.data.token;
                 LoaderManager.Get.LoaderController.ShowLoader(LoaderManager.LOADING);
                 CurrentAvatarBytesString = await getAvatar(CurrentUser.avatar);
@@ -291,6 +303,16 @@ namespace SeembaSDK
                 return null;
             }
             CurrentUser = userData.data;
+            if(userData.data.country_code.ToUpper() == "TN")
+            {
+                CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_TND;
+                CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_TND;
+            }
+            else
+            {
+                CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_EURO;
+                CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_EURO;
+            }
             CurrentFlagBytes = await GetFlagBytes(CurrentUser.country_code);
 
             return CurrentUser;

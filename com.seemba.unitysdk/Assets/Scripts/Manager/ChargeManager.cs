@@ -166,7 +166,7 @@ namespace SeembaSDK
             ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
             WWWForm form = new WWWForm();
             form.AddField("payment_method", _paymentMethod);
-            form.AddField("amount", (amount * 100).ToString());
+            form.AddField("amount", (amount * CurrencyManager.CURRENT_MULTIPLIER_FACTOR).ToString());
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
             Debug.LogWarning(response);
             var res = JsonConvert.DeserializeObject<SeembaResponse<PaymentIntentURL>>(response);
@@ -223,8 +223,11 @@ namespace SeembaSDK
             WWWForm form = new WWWForm();
             form.AddField("amount", amount.ToString());
             TranslationManager._instance.scene = "Loader";
-            LoaderManager.Get.SobFlousLoaderController.ShowLoader(TranslationManager._instance.Get("opening_app"), TranslationManager._instance.Get("close"));
+            var openApp = TranslationManager._instance.Get("opening_app");
+            var close = TranslationManager._instance.Get("close");
+            LoaderManager.Get.SobFlousLoaderController.ShowLoader(openApp, close);
             var response = await SeembaWebRequest.Get.HttpsPost(url, form);
+            Debug.LogWarning(url  + "  " + response);
             var res = JsonConvert.DeserializeObject<SeembaResponse<SobFlousCharge>>(response);
             LoaderManager.Get.SobFlousLoaderController.HideLoader();
             if (!string.IsNullOrEmpty(res.data.payment.URL_MOBILE))

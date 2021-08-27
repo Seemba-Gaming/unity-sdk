@@ -29,7 +29,7 @@ namespace SeembaSDK
                 Username.text = info.username;
                 StartCoroutine(initPlayerAvatar(info.avatar, Avatar));
                 var mTexture = await UserManager.Get.GetFlagBytes(info.country_code);
-                if(Flag != null)
+                if(Flag != null && mTexture != null)
                 {
                     SetPlayerFlag(Flag, mTexture);
                 }

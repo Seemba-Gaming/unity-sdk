@@ -80,6 +80,7 @@ namespace SeembaSDK
                             LoaderManager.Get.LoaderController.HideLoader();
                             EventsController.Get.startFirstChallenge(Res.data.token);
                             SeembaAnalyticsManager.Get.SendUserEvent("Signed up with Email");
+                            SeembaAnalyticsManager.Get.SetUserInfo();
                         }
                         else
                         {

@@ -20,7 +20,7 @@ namespace SeembaSDK
         public string scene = null;
         public static readonly SystemLanguage[] Languages = { SystemLanguage.Arabic, SystemLanguage.English, SystemLanguage.French, SystemLanguage.Spanish, SystemLanguage.German };
         public static bool? isDownloaded = null;
-        //public static string systemLanguage = SystemLanguage.Arabic.ToString();
+        //public static string systemLanguage = SystemLanguage.English.ToString();
         public static string systemLanguage;
         public static Dictionary<string, string> ShortLanguages = new Dictionary<string, string>();
         private Dictionary<string, Dictionary<string, string>> Translations = new Dictionary<string, Dictionary<string, string>>();

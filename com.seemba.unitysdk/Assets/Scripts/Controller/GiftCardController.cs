@@ -73,6 +73,7 @@ namespace SeembaSDK
         }
         public void OnClickGift()
         {
+            SeembaAnalyticsManager.Get.SendGameEvent(mCurrentCard.name + " Opened");
             ViewsEvents.Get.Menu.Market.GetComponent<MarketController>().SetCurrentGiftCard(mCurrentCard);
             TranslationManager._instance.scene = "Home";
             object[] _params = { TranslationManager._instance.Get("purchase"), mCurrentCard.name, TranslationManager._instance.Get("you_are_about_to_pay"), mCurrentCard.price, TranslationManager._instance.Get("spend_bubbles") };

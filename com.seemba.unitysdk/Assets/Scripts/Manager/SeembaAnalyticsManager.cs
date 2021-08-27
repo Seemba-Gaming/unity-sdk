@@ -20,6 +20,16 @@ namespace SeembaSDK
 
         #region Methods
 
+        public void SetUserInfo()
+        {
+            SeembaMixpanel.Identify(UserManager.Get.CurrentUser._id);
+            SeembaMixpanel.Alias(UserManager.Get.CurrentUser.username);
+            SeembaMixpanel.People.Email = UserManager.Get.CurrentUser.email;
+            SeembaMixpanel.People.FirstName = UserManager.Get.CurrentUser.firstname;
+            SeembaMixpanel.People.LastName = UserManager.Get.CurrentUser.lastname;
+            SeembaMixpanel.People.Name = UserManager.Get.CurrentUser.username;
+        }
+
         public void GameOpened(string action)
         {
             var props = new Value();
@@ -100,22 +110,15 @@ namespace SeembaSDK
             SeembaMixpanel.Track(action, props);
         }
 
-        public void SendWithdrawalEvent(string action, float amount)
-        {
-            Debug.LogWarning(action);
-            var props = new Value();
-            InitProps(props);
-            props["User Id"] = UserManager.Get.CurrentUser._id;
-            props["Withdrawn Amount"] = amount;
-            props["Action"] = action;
-            SeembaMixpanel.Track(action, props);
-        }
-
         public void InitProps(Value value)
         {
             value["Game Name"] = GamesManager.GAME_NAME;
             value["Game Id"] = GamesManager.GAME_ID;
             value["Platform"] = Application.platform.ToString();
+            if(UserManager.Get.CurrentUser != null)
+            {
+                value["Username"] = UserManager.Get.CurrentUser.username;
+            }
         }
         #endregion
     }

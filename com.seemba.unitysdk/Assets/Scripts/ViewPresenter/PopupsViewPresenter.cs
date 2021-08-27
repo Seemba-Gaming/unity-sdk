@@ -662,6 +662,7 @@ namespace SeembaSDK
         }
         public void ShowPopupContent(GameObject gameObject)
         {
+            SeembaAnalyticsManager.Get.SendGameEvent(gameObject.name + " Opened");
             ShowOverlay();
             gameObject.SetActive(true);
         }
@@ -688,7 +689,10 @@ namespace SeembaSDK
         private IEnumerator WaitforAnimation(Animator animator)
         {
             animator.SetBool("Show", false);
-            yield return new WaitForSeconds(0.5f);
+            while(animator.IsInTransition(0))
+            {
+                yield return new WaitForEndOfFrame();
+            }
             HideOverlay();
         }
         private void OpenWallet(string last_view)

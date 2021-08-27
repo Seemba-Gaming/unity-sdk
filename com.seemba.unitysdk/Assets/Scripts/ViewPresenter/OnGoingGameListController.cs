@@ -131,11 +131,13 @@ namespace SeembaSDK
                     }
                     else
                     {
-                        ChallengeManager.CurrentChallengeId = challenge._id;
-                        ReplayChallengePresenter.ChallengeToReplay = challenge;
-                        SeembaAnalyticsManager.Get.SendDuelInfoEvent("Bug Challenge", ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type), float.Parse(challenge.gain), challenge.gain_type);
-                        ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject,false,false);
-                        return;
+                        if(challenge.tournament_id == null)
+                        {
+                            ChallengeManager.CurrentChallengeId = challenge._id;
+                            ReplayChallengePresenter.ChallengeToReplay = challenge;
+                            SeembaAnalyticsManager.Get.SendDuelInfoEvent("Bug Challenge", ChallengeManager.Get.GetChallengeFee(float.Parse(challenge.gain), challenge.gain_type), float.Parse(challenge.gain), challenge.gain_type);
+                            ViewsEvents.Get.GoToMenu(ViewsEvents.Get.ReplayChallenge.gameObject,false,false);
+                        }
                     }
                 }
                 else

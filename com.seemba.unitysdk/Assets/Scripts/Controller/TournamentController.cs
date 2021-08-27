@@ -40,7 +40,7 @@ namespace SeembaSDK
 
                 ChallengeController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_BRACKET;
                 EventsController.ChallengeType = ChallengeManager.CHALLENGE_TYPE_1V1;
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Start Tournament", entry_fee, gain, gain_type);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Start Tournament", entry_fee, gain, gain_type);
 
                 if (gain_type.Equals(ChallengeManager.CHALLENGE_WIN_TYPE_CASH))
                 {

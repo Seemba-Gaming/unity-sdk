@@ -17,7 +17,6 @@ namespace SeembaSDK
         {
             if(Seemba.Get.DevelopmentMode)
             {
-                locationURL = "https://ipinfo.io/json/";
                 classesURL = "https://api-staging.seemba.com/api/v1";
                 flagsURL = "https://api-staging.seemba.com/flags/";
                 TokenizationAccount = "pk_test_A8fKBAogt5UIexspxnivPLGw00HslhmxSr";

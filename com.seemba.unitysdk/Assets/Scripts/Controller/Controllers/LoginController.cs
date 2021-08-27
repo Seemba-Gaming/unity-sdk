@@ -42,7 +42,7 @@ namespace SeembaSDK
                 ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.Home);
                 //ViewsEvents.Get.ShowScene(ViewsEvents.Get.Menu.HaveFun);
                 SeembaAnalyticsManager.Get.SendUserEvent("Logged In");
-
+                SeembaAnalyticsManager.Get.SetUserInfo();
                 return true;
             }
             else if (!res)

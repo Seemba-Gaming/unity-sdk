@@ -94,6 +94,7 @@ namespace SeembaSDK
                 UserManager.Get.CurrentUser.money_credit = user.money_credit;
 
                 SeembaAnalyticsManager.Get.SendUserEvent("Login with Token");
+                SeembaAnalyticsManager.Get.SetUserInfo();
                 GoToMenu(Menu.gameObject);
                 ShowScene(Menu.Home);
             }

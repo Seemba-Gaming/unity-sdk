@@ -64,19 +64,19 @@ namespace SeembaSDK
             });
             _bracket_cash_confident.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_AMATEUR, TournamentManager.WIN_BRACKET_CASH_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_AMATEUR, TournamentManager.WIN_BRACKET_CASH_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { (TournamentManager.FEE_BRACKET_CASH_AMATEUR ).ToString(), (TournamentManager.WIN_BRACKET_CASH_AMATEUR ).ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _bracket_cash_champion.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_NOVICE, TournamentManager.WIN_BRACKET_CASH_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_NOVICE, TournamentManager.WIN_BRACKET_CASH_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { (TournamentManager.FEE_BRACKET_CASH_NOVICE).ToString(), (TournamentManager.WIN_BRACKET_CASH_NOVICE ).ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _bracket_cash_legend.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_CONFIRMED, TournamentManager.WIN_BRACKET_CASH_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Money", TournamentManager.FEE_BRACKET_CASH_CONFIRMED, TournamentManager.WIN_BRACKET_CASH_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_CASH);
                 object[] _params = { (TournamentManager.FEE_BRACKET_CASH_CONFIRMED ).ToString(), (TournamentManager.WIN_BRACKET_CASH_CONFIRMED).ToString(), ChallengeManager.CHALLENGE_WIN_TYPE_CASH, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });

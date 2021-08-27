@@ -113,7 +113,7 @@ namespace SeembaSDK
             }
             if(!string.IsNullOrEmpty(www.error))
             {
-                Debug.LogWarning(www.error);
+                Debug.LogWarning(www.error + " "  + url);
                 return null;
             }
             var texture = DownloadHandlerTexture.GetContent(www);
@@ -170,7 +170,6 @@ namespace SeembaSDK
                     await www.SendWebRequest();
                     if (www.isNetworkError || www.isHttpError)
                     {
-                        Debug.LogWarning(www.url + " "+  www.error);
                         return null;
                     }
                     var avatarTexture = DownloadHandlerTexture.GetContent(www);
@@ -303,7 +302,7 @@ namespace SeembaSDK
                 return null;
             }
             CurrentUser = userData.data;
-            if(userData.data.country_code.ToUpper() == "TN")
+            if (userData.data.country_code.ToUpper() == "TN")
             {
                 CurrencyManager.CURRENT_CURRENCY = CurrencyManager.CURRENCY_SYMBOL_TYPE_TND;
                 CurrencyManager.CURRENT_MULTIPLIER_FACTOR = CurrencyManager.CURRENCY_MUTLIPLIER_FACTOR_TND;

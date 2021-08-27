@@ -46,41 +46,41 @@ namespace SeembaSDK
             });
             _1v1_bubbles_amateur.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Bubbles", ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT, ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Coins", ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT, ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
                 object[] _params = { ChallengeManager.FEE_1V1_BUBBLES_CONFIDENT, ChallengeManager.WIN_1V1_BUBBLES_CONFIDENT, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_1V1 };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
             _1v1_bubbles_novice.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Bubbles", ChallengeManager.FEE_1V1_BUBBLES_CHAMPION, ChallengeManager.WIN_1V1_BUBBLES_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Coins", ChallengeManager.FEE_1V1_BUBBLES_CHAMPION, ChallengeManager.WIN_1V1_BUBBLES_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
                 object[] _params = { ChallengeManager.FEE_1V1_BUBBLES_CHAMPION, ChallengeManager.WIN_1V1_BUBBLES_CHAMPION, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_1V1 };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
             });
             _1v1_bubbles_confirmed.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Bubbles", ChallengeManager.FEE_1V1_BUBBLES_LEGEND, ChallengeManager.WIN_1V1_BUBBLES_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
+                SeembaAnalyticsManager.Get.SendDuelInfoEvent("Duel Coins", ChallengeManager.FEE_1V1_BUBBLES_LEGEND, ChallengeManager.WIN_1V1_BUBBLES_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
                 object[] _params = { ChallengeManager.FEE_1V1_BUBBLES_LEGEND, ChallengeManager.WIN_1V1_BUBBLES_LEGEND, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_1V1 };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
             });
             _bracket_bubbles_confident.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Bubbles", TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Coins", TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
                 object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
             });
             _bracket_bubbles_champion.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Bubbles", TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Coins", TournamentManager.FEE_BRACKET_BUBBLE_AMATEUR, TournamentManager.WIN_BRACKET_BUBBLE_AMATEUR, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
                 object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_NOVICE, TournamentManager.WIN_BRACKET_BUBBLE_NOVICE, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
 
             });
             _bracket_bubbles_legend.onClick.AddListener(() =>
             {
-                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Bubbles", TournamentManager.FEE_BRACKET_BUBBLE_CONFIRMED, TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
+                SeembaAnalyticsManager.Get.SendTournamentInfoEvent("Tournament Coins", TournamentManager.FEE_BRACKET_BUBBLE_CONFIRMED, TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES);
                 object[] _params = { TournamentManager.FEE_BRACKET_BUBBLE_CONFIRMED, TournamentManager.WIN_BRACKET_BUBBLE_CONFIRMED, ChallengeManager.CHALLENGE_WIN_TYPE_BUBBLES, ChallengeManager.CHALLENGE_TYPE_BRACKET };
                 PopupManager.Get.PopupController.ShowPopup(PopupType.DUELS, _params);
             });
@@ -88,7 +88,7 @@ namespace SeembaSDK
 
         private void MoreDuels()
         {
-            SeembaAnalyticsManager.Get.SendUserEvent("More Bubbles Duels");
+            SeembaAnalyticsManager.Get.SendUserEvent("More Coins Duels");
             ShowAvailableChallenges(SHOW_MORE);
             less_duels.gameObject.SetActive(true);
             more_duels.gameObject.SetActive(false);
@@ -103,7 +103,7 @@ namespace SeembaSDK
 
         private void MoreTournaments()
         {
-            SeembaAnalyticsManager.Get.SendUserEvent("More Bubbles Tournaments");
+            SeembaAnalyticsManager.Get.SendUserEvent("More Coins Tournaments");
             ShowAvailableTournaments(SHOW_MORE);
             less_tournaments.gameObject.SetActive(true);
             more_tournaments.gameObject.SetActive(false);

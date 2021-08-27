@@ -9,7 +9,7 @@ namespace SeembaSDK
     public class UserService : MonoBehaviour
     {
         #region Static
-        public static string Seemba_Email = "noreply@seemba.com,djo@seemba.com,slim@seemba.com,geoffrey@seemba.com,jean-philippe@seemba.com,mohamed@seemba.com";
+        public static string Seemba_Email = "noreply@seemba.com,slim@seemba.com,jean-philippe@seemba.com,jacer@seemba.com,bachar.b@team.seemba.com";
         public static UserService Get { get { return sInstance; } }
         private static UserService sInstance;
         #endregion

@@ -107,7 +107,7 @@ namespace SeembaSDK
                 }
                 if (response.error.code.Replace('"', ' ').Trim().Equals("insufficient_funds"))
                 {
-                    SeembaAnalyticsManager.Get.SendCreditEvent("Card funds Insufficient", WalletScript.LastCredit);
+                    SeembaAnalyticsManager.Get.SendCreditEvent("Card Balance Insufficient", WalletScript.LastCredit);
                     PopupManager.Get.PopupController.ShowPopup(PopupType.STRIPE_BALANCE_INSUFFICIENT, PopupsText.Get.StripeBalanceInsufficient());
                     return;
                 }

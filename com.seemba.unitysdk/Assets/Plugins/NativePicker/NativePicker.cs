@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-
+using System.Runtime.InteropServices;
 namespace SeembaSDK
 {
 	public class NativePicker : MonoBehaviour

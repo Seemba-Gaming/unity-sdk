@@ -262,15 +262,21 @@ namespace SeembaSDK
                 if (GamesManager.GAME_ORIENTATION == "portrait")
                 {
                     startInfo.Arguments = "/C openupm add com.seemba.unitysdk-vertical";
-                    GetScenes("Packages/com.seemba.unitysdk-vertical/Seemba/Scenes");
                 }
                 else
                 {
                     startInfo.Arguments = "/C openupm add com.seemba.unitysdk-horizental";
-                    GetScenes("Packages/com.seemba.unitysdk-horizental/Seemba/Scenes");
                 }
                 process.StartInfo = startInfo;
                 process.Start();
+                if (GamesManager.GAME_ORIENTATION == "portrait")
+                {
+                    GetScenes("Packages/com.seemba.unitysdk-vertical/Assets/Scenes");
+                }
+                else
+                {
+                    GetScenes("Packages/com.seemba.unitysdk-horizental/Assets/Scenes");
+                }
 #endif
 
             }
